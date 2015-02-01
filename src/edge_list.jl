@@ -26,3 +26,4 @@ edges(g::GenericEvolvingEdgeList) = g.edges
 # mutation
 
 add_vertex!{V}(g::GenericEvolvingEdgeList{V}, v::V) = (push!(g.vertices, v); v)
+add_edge!{V,E}(g::GenericEvolvingEdgeList{V,E}, e::E) = (push!(g.edges, e); e)

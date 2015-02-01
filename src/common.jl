@@ -1,9 +1,6 @@
-abstract EvolvingGraph
+# root type
 
-
-abstract EvolvingVertexList <: EvolvingGraph
-
-abstract AdjacencyTensor <: EvolvingGraph
+abstract EvolvingGraph{V, E, T}
 
 
 ##########################################
@@ -13,17 +10,22 @@ abstract AdjacencyTensor <: EvolvingGraph
 ##########################################
 
 
-immutable TimeEdge{T}
+immutable EvolvingEdge{T}
     index::Nullable{Int}
     source::Nullable{T}
     target::Nullable{T}
     time::Real
 end
 
-edge_index(e::TimeEdge) = e.index
-source(e::TimeEdge) = e.source
-target(e::TimeEdge) = e.target
-edge_time(e::TimeEdge) = e.time
+edge_index(e::EvolvingEdge) = e.index
+source(e::EvolvingEdge) = e.source
+target(e::EvolvingEdge) = e.target
+edge_time(e::EvolvingEdge) = e.time
+source{V}(e::EvolvingEdge{V}, g::EvolvingEdge{V}) = e.source
+target{V}(e::EvolvingEdge{V}, g::EvolvingEdge{V}) = e.target
+
+
+
 
 ##############################################
 #
@@ -32,14 +34,14 @@ edge_time(e::TimeEdge) = e.time
 ##############################################
 
 
-immutable TimeKeyVertex{T}
+immutable EvolvingVertex{T}
     index::Nullable{Int}
     key::Nullable{T}
     time::Real
 end
 
-vertex_index(v::TimeKeyVertex) = v.index
-vertex_time(v::TimeKeyVertex) = v.time
+vertex_index(v::EvolvingVertex) = v.index
+vertex_time(v::EvolvingVertex) = v.time
 
 
 
