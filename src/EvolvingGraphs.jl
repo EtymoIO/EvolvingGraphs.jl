@@ -9,7 +9,7 @@ EvolvingGraph,
 
 TimeEdge, TimeKeyVertex,
 
-edge_index, source, target, time
+edge_index, source, target, edge_time, vertex_index
 
 
 
@@ -17,5 +17,7 @@ edge_index, source, target, time
 
 
 include("common.jl")
+include("tensor.jl")  # generate adjacency tensor 
+
 
 end # module

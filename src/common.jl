@@ -23,7 +23,7 @@ end
 edge_index(e::TimeEdge) = e.index
 source(e::TimeEdge) = e.source
 target(e::TimeEdge) = e.target
-time(e::TimeEdge) = e.time
+edge_time(e::TimeEdge) = e.time
 
 ##############################################
 #
@@ -37,6 +37,10 @@ immutable TimeKeyVertex{T}
     key::Nullable{T}
     time::Real
 end
+
+vertex_index(v::TimeKeyVertex) = v.index
+vertex_time(v::TimeKeyVertex) = v.time
+
 
 
 
