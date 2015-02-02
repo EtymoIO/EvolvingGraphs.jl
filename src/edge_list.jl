@@ -8,14 +8,14 @@ type GenericEvolvingEdgeList{V, E, T, VList, EList, TList} <: EvolvingGraph{V, E
     is_directed::Bool
     vertices::VList
     edges::EList
-    times::Tlist
+    times::TList
 end
 
 typealias EvolvingEdgeList{V, E, T} GenericEvolvingEdgeList{V, E, T, Matrix{V}, Matrix{E}, Vector{T}}
 
 # interfaces
 
-is_directed(g::GenericTimeEdgeList) = g.is_directed
+is_directed(g::GenericEvolvingEdgeList) = g.is_directed
 
 num_vertices(g::GenericEvolvingEdgeList) = length(g.edges)
 vertices(g::GenericEvolvingEdgeList) = g.vertices

@@ -24,7 +24,9 @@ edge_time(e::EvolvingEdge) = e.time
 source{V}(e::EvolvingEdge{V}, g::EvolvingEdge{V}) = e.source
 target{V}(e::EvolvingEdge{V}, g::EvolvingEdge{V}) = e.target
 
-
+function show(io::IO, e::EvolvingEdge)
+    print(io, "edge $(e.source) -> $(e.target) at time $(e.time)")
+end
 
 
 ##############################################
