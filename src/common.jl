@@ -14,7 +14,7 @@ immutable TimeEdge{T}
     source::T
     target::T
     time::Real
-    function TimeEdge(source::T, target::T, time::Real = 0.)
+    function TimeEdge(source::T, target::T, time::Real = 0)
         time >= 0 || error("time must be non-negative")
         new(source, target, time)
     end
@@ -42,12 +42,15 @@ immutable TimeVertex{T}
     index::Int
     key::T
     time::Real
-    function TimeVertex(index::Int = 1, key::T, time::Real = 0.)
+
+    function TimeVertex(index::Int, key::T, time::Real = 0)
         time >= 0 || error("time must be non-negative.")
+
         new(index, key, time)
     end
 end
 
+vertex_key(v::TimeVertex) = v.key
 vertex_index(v::TimeVertex) = v.index
 vertex_time(v::TimeVertex) = v.time
 

@@ -7,7 +7,7 @@ export
 # common
 EvolvingGraph, 
 
-EvolvingEdge, EvolvingVertex,
+TimeEdge, TimeVertex,
 
 edge_index, source, target, edge_time, vertex_index
 
