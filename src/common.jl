@@ -10,21 +10,23 @@ abstract EvolvingGraph{V, E, T}
 ##########################################
 
 
-immutable EvolvingEdge{T}
-    index::Nullable{Int}
-    source::Nullable{T}
-    target::Nullable{T}
+immutable TimeEdge{T}
+    source::T
+    target::T
     time::Real
+    function TimeEdge(source::T, target::T, time::Real = 0.)
+        time >= 0 || error("time must be non-negative")
+        new(source, target, time)
+    end
 end
 
-edge_index(e::EvolvingEdge) = e.index
-source(e::EvolvingEdge) = e.source
-target(e::EvolvingEdge) = e.target
-edge_time(e::EvolvingEdge) = e.time
-source{V}(e::EvolvingEdge{V}, g::EvolvingEdge{V}) = e.source
-target{V}(e::EvolvingEdge{V}, g::EvolvingEdge{V}) = e.target
+source(e::TimeEdge) = e.source
+target(e::TimeEdge) = e.target
+edge_time(e::TimeEdge) = e.time
+source{V}(e::TimeEdge{V}, g::TimeEdge{V}) = e.source
+target{V}(e::TimeEdge{V}, g::TimeEdge{V}) = e.target
 
-function show(io::IO, e::EvolvingEdge)
+function show(io::IO, e::TimeEdge)
     print(io, "edge $(e.source) -> $(e.target) at time $(e.time)")
 end
 
@@ -36,14 +38,18 @@ end
 ##############################################
 
 
-immutable EvolvingVertex{T}
-    index::Nullable{Int}
-    key::Nullable{T}
+immutable TimeVertex{T}
+    index::Int
+    key::T
     time::Real
+    function TimeVertex(index::Int = 1, key::T, time::Real = 0.)
+        time >= 0 || error("time must be non-negative.")
+        new(index, key, time)
+    end
 end
 
-vertex_index(v::EvolvingVertex) = v.index
-vertex_time(v::EvolvingVertex) = v.time
+vertex_index(v::TimeVertex) = v.index
+vertex_time(v::TimeVertex) = v.time
 
 
 
