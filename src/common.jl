@@ -1,6 +1,6 @@
 # root type
 
-abstract EvolvingGraph{V, E, T}
+abstract AbstractEvolvingGraph{V, E, T}
 
 
 ##########################################
