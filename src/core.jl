@@ -9,21 +9,18 @@ abstract AbstractEvolvingGraph
 #
 ##############################################
 
-immutable TimeNode{T}
-    index::Int
-    key::T
-    time::Real
-
-    function TimeNode(index::Int, key::T, time::Real = 0)
-        time >= 0 || error("time must be non-negative.")
-
-        new(index, key, time)
-    end
+immutable Node{K,T}
+    key::K
+    time::T
 end
 
-node_key(v::TimeNode) = v.key
-node_index(v::TimeNode) = v.index
-node_time(v::TimeNode) = v.time
+node_key(v::Node) = v.key
+node_time(v::Node) = v.time
+==(v1::Node, v2::Node) = (v1.key == v2.key && v1.time == v2.time)
+
+function show(io::IO, v::Node)
+    print(io, "Node($(v.key), $(v.time))")
+end
 
 
 ##########################################
@@ -32,22 +29,20 @@ node_time(v::TimeNode) = v.time
 #
 ##########################################
 
-immutable TimeEdge{T}
-    source::T
-    target::T
-    time::Real
-    function TimeEdge(source::T, target::T, time::Real = 0)
-        time >= 0 || error("time must be non-negative")
-        new(source, target, time)
-    end
+immutable Edge{K,T}
+    source::K
+    target::K
+    time::T
 end
 
-source(e::TimeEdge) = e.source
-target(e::TimeEdge) = e.target
-edge_time(e::TimeEdge) = e.time
-source{V}(e::TimeEdge{V}, g::TimeEdge{V}) = e.source
-target{V}(e::TimeEdge{V}, g::TimeEdge{V}) = e.target
+source(e::Edge) = e.source
+target(e::Edge) = e.target
+edge_time(e::Edge) = e.time
+==(e1::Edge, e2::Edge) = (e1.source == e2.source && 
+                                  e1.target == e2.target &&
+                                  e1.time == e2.time)
 
-function show(io::IO, e::TimeEdge)
-    print(io, "edge $(e.source) -> $(e.target) at time $(e.time)")
+
+function show(io::IO, e::Edge)
+    print(io, "Edge($(e.source)->$(e.target)) at time $(e.time)")
 end

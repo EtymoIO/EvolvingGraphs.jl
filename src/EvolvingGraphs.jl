@@ -5,7 +5,7 @@ import Base: ==, show
 export 
 
 # core
-TimeEdge, TimeNode 
+Node, Edge, AbstractEvolvingGraph 
 
 
 include("core.jl")
