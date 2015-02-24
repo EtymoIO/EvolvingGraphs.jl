@@ -4,7 +4,7 @@
 #
 ######################################
 
-function tensor_from_adjpairs!(a::AbstractMatrix, g::GenericEvolvingEdgeList, gen)
+function tensor_from_adjpairs!(a::AbstractMatrix, g::EdgeList, gen)
     if is_directed(g)
         for e in edges(g)
             u = source(e, g)
@@ -32,7 +32,7 @@ function tensor_from_adjpairs!(a::AbstractMatrix, g::GenericEvolvingEdgeList, ge
     return a
 end
 
-function tensor_from_adjpairs(g::EvolvingGraph, gen) 
+function tensor_from_adjpairs(g::EdgeList, gen) 
     n = num_vertices(g)
     l = num_times(g)
     tensor_from_adjpairs!(zeros(eltype(gen), n, n, l), g, gen)
@@ -40,7 +40,7 @@ end
   
 type _GenUnit{T} end
 
-Base.get{T,V}(::_GenUnit{T}, g::EvolvingGraph{V}, u::V, v::V) = one(T)
+Base.get{T,V}(::_GenUnit{T}, g::EdgeList, u::V, v::V) = one(T)
 Base.eltype{T}(::_GenUnit{T}) = T
 
-adjacency_tensor{T}(g::EvolvingGraph, ::Type{T}) = tensor_from_adjpairs(g, _GenUnit{T}())
+adjacency_tensor{T}(g::EdgeList, ::Type{T}) = tensor_from_adjpairs(g, _GenUnit{T}())

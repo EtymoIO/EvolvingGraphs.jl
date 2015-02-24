@@ -1,6 +1,6 @@
 # root type
 
-abstract AbstractEvolvingGraph{V, E, T}
+abstract AbstractEvolvingGraph
 
 
 ##############################################
@@ -51,32 +51,3 @@ target{V}(e::TimeEdge{V}, g::TimeEdge{V}) = e.target
 function show(io::IO, e::TimeEdge)
     print(io, "edge $(e.source) -> $(e.target) at time $(e.time)")
 end
-
-##############################################
-#
-# adjacency list
-#
-##############################################
-
-type AdjacencyList <: AbstractEvolvingGraph
-    is_directed::Bool
-    nodes::Vector{TimeNode}
-    adjlist::Dict{TimeNode, Vector{TimeNode}}
-    function AdjacencyList(;is_directed::Bool = true,
-                           node::Vector{TimeNode} = TimeNode[],
-                           adjlist::Dict{TimeNode, Vector{TimeNode}}() )
-        new(is_directed, nodes, adjlist)
-    end
-end
-
-
-function add_node!(g::AdjacencyList, v::TimeNode)
-    if v in g.nodes
-        error("Duplicate node")
-    else 
-        push!(g.nodes, v)
-        g.adjlist[v] = TimeNode[]
-    end
-    return v
-end
-
