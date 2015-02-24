@@ -3,12 +3,34 @@
 abstract AbstractEvolvingGraph{V, E, T}
 
 
+##############################################
+#
+# Node types
+#
+##############################################
+
+immutable TimeNode{T}
+    index::Int
+    key::T
+    time::Real
+
+    function TimeNode(index::Int, key::T, time::Real = 0)
+        time >= 0 || error("time must be non-negative.")
+
+        new(index, key, time)
+    end
+end
+
+node_key(v::TimeNode) = v.key
+node_index(v::TimeNode) = v.index
+node_time(v::TimeNode) = v.time
+
+
 ##########################################
 #
 #  edge types
 #
 ##########################################
-
 
 immutable TimeEdge{T}
     source::T
@@ -30,31 +52,31 @@ function show(io::IO, e::TimeEdge)
     print(io, "edge $(e.source) -> $(e.target) at time $(e.time)")
 end
 
-
 ##############################################
 #
-# vertex types
+# adjacency list
 #
 ##############################################
 
-
-immutable TimeVertex{T}
-    index::Int
-    key::T
-    time::Real
-
-    function TimeVertex(index::Int, key::T, time::Real = 0)
-        time >= 0 || error("time must be non-negative.")
-
-        new(index, key, time)
+type AdjacencyList <: AbstractEvovlingGraph
+    is_directed::Bool
+    nodes::Vector{TimeNode}
+    adjlist::Dict{TimeNode, Vector{TimeNode}}
+    function AdjacencyList(;is_directed::Bool = true,
+                           node::Vector{TimeNode} = TimeNode[],
+                           adjlist::Dict{TimeNode, Vector{TimeNode}}() )
+        new(is_directed, nodes, adjlist)
     end
 end
 
-vertex_key(v::TimeVertex) = v.key
-vertex_index(v::TimeVertex) = v.index
-vertex_time(v::TimeVertex) = v.time
 
-
-
-
+function add_node!(g::AdjacencyList, v::TimeNode)
+    if v in g.nodes
+        error("Duplicate node")
+    else 
+        push!(g.nodes, v)
+        g.adjlist[v] = TimeNode[]
+    end
+    return v
+end
 
