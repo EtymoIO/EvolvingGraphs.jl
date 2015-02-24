@@ -58,7 +58,7 @@ end
 #
 ##############################################
 
-type AdjacencyList <: AbstractEvovlingGraph
+type AdjacencyList <: AbstractEvolvingGraph
     is_directed::Bool
     nodes::Vector{TimeNode}
     adjlist::Dict{TimeNode, Vector{TimeNode}}
