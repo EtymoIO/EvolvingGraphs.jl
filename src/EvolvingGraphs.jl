@@ -8,7 +8,10 @@ export
 Node, Edge, TimeNode, TimeEdge, AbstractEvolvingGraph, 
 
 # graphs
-AdjacencyList, build_tree
+AdjacencyList, build_tree,
+
+# algorithms
+BFS
 
 include("core.jl")
 
@@ -16,6 +19,8 @@ include("core.jl")
 include("graphs/adjacency_list.jl")
 include("graphs/edge_list.jl")
 include("graphs/tensor.jl")
+
+include("algorithms/bfs.jl")
 
 # simple test
 include("graphs/test_graph.jl")
