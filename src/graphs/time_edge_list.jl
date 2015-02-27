@@ -46,5 +46,14 @@ function add_edge!(g::TimeEdgeList, e::TimeEdge)
     return e
 end
 
+add_edge!(g::TimeEdgeList, u::IndexNode, v::IndexNode, t) = add_edge!(g, make_edge(g, u, v, t))
 
-add_edge!(g::TimeEdgeList, u::IndexNode, v::IndexNode, t) = (g, make_edge(g, u, v, t))
+function show(io::IO, a::TimeEdgeList)
+    for v in nodes(a)
+        print(io, "$(v) \n")
+    end
+
+    for e in edges(a)
+        print(io, "$(e) \n")
+    end
+end
