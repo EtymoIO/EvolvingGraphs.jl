@@ -20,7 +20,6 @@ num_nodes(g::AdjacencyList) = length(g.nodes)
 vertices(g::AdjacencyList) = g.nodes
 
 function show(io::IO, a::AdjacencyList)
-    print(io, "Adjacency List \n")
     for k in keys(a.adjlist)
         for d in a.adjlist[k]
             print(io, "Edge $(k)->$(d)  \n")
