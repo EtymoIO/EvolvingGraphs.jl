@@ -6,11 +6,11 @@ A Julia Package for evolving graphs.
 
 * Static Graph Types:
 
-	``Node``, ``Edge``, ``AdjacencyList``
+	``Node``, ``Edge``, ``IndexNode``, ``AdjacencyList``
 
 * Evolving Graph Types:
 
-	``TimeNode``, ``TimeEdge``
+	``TimeNode``, ``TimeEdge``, ``TimeEdgeList``
 
 ### Algorithms
 
