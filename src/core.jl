@@ -1,6 +1,6 @@
 # root type
 
-abstract AbstractEvolvingGraph
+abstract AbstractEvolvingGraph{N, E}
 
 
 ##############################################
@@ -16,20 +16,38 @@ end
 key(v::Node) = v.key
 ==(v1::Node, v2::Node) = (v1.key == v2.key)
  
- 
 function show(io::IO, v::Node)
     print(io, "Node($(v.key))")
 end
 
+immutable IndexNode{T}
+    index::Int
+    key::T
+end
+
+index(v::IndexNode) = v.index
+key(v::IndexNode) = v.key
+==(v1::IndexNode, v2::IndexNode) = (v1.key == v2.key && v1.index == v2.index)
+
+make_node{N<:IndexNode}(g::AbstractEvolvingGraph{N}, key) = V(num_nodes(g)+1, key)
+
+function show(io::IO, v::IndexNode)
+    print(io, "IndexNode($(v.key))")
+end
+
 
 immutable TimeNode{K,T}
+    index::Int
     key::K
     time::T
 end
 
 node_key(v::TimeNode) = v.key
 node_time(v::TimeNode) = v.time
+node_index(v::TimeNode) = v.index
 ==(v1::TimeNode, v2::TimeNode) = (v1.key == v2.key && v1.time == v2.time)
+
+
 
 function show(io::IO, v::TimeNode)
     print(io, "TimeNode($(v.key), $(v.time))")
@@ -61,6 +79,7 @@ end
  
 
 immutable TimeEdge{K,T}
+    index::Int
     source::K
     target::K
     time::T
