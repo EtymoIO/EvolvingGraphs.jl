@@ -16,9 +16,9 @@ A Julia Package for evolving graphs.
 
 * Static graph
 
-	- Breath first search (``BFS(g::AdjacencyList, v::Node)``)
+	- Breath first search: ``BFS(g::AdjacencyList, v::Node)``
 
-	- Depth first search (``DFS(g::AdjacencyList, start_node::Node, end_node::Node``))
+	- Depth first search:``DFS(g::AdjacencyList, start_node::Node, end_node::Node)``
 
 ### Examples
 
