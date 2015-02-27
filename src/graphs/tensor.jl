@@ -4,43 +4,35 @@
 #
 ######################################
 
-function tensor_from_adjpairs!(a::AbstractMatrix, g::EdgeList, gen)
+function tensor_from_time_edge_list!{T}(a::Array{T, 3}, g::TimeEdgeList)
     if is_directed(g)
         for e in edges(g)
             u = source(e, g)
             v = target(e, g)
-            t = time(e, g)
-            ui = vertex_index(u, g)
-            vi = vertex_index(v, g)
-            ti = vertex_index(t, g)
-            a[ui, vi, ti] = get(gen, g, u, v, t)
+            t = edge_time(e, g)
+            ui = node_index(u, g)
+            vi = node_index(v, g)
+            a[ui, vi, t] = one(T)
         end
     else
         for e in edges(g)
             u = source(e, g)
             v = target(e, g)
             t = time(e, g)
-            ui = vertex_index(u, g)
-            vi = vertex_index(v, g)
-            ti = vertex_index(t, g)
-            val = get(gen, g, u, v, t)
-            a[ui, vi, ti] = val
-            a[vi, ui, ti] = val
+            ui = node_index(u, g)
+            vi = node_index(v, g)
+            a[ui, vi, t] = one(T)
+            a[vi, ui, t] = one(T)
         end
     end
 
     return a
 end
 
-function tensor_from_adjpairs(g::EdgeList, gen) 
-    n = num_vertices(g)
-    l = num_times(g)
-    tensor_from_adjpairs!(zeros(eltype(gen), n, n, l), g, gen)
+function adjacency_tensor{T}(::Type{T}, g::TimeEdgeList) 
+    n = num_nodes(g)
+    l = dim_times(g)
+    tensor_from_time_edge_list!(zeros(T, n, n, l), g)
 end    
-  
-type _GenUnit{T} end
 
-Base.get{T,V}(::_GenUnit{T}, g::EdgeList, u::V, v::V) = one(T)
-Base.eltype{T}(::_GenUnit{T}) = T
-
-adjacency_tensor{T}(g::EdgeList, ::Type{T}) = tensor_from_adjpairs(g, _GenUnit{T}())
+adjacency_tensor(g::TimeEdgeList) = adjacency_tensor(Float64, g)
