@@ -17,7 +17,7 @@ nodes(g::TimeEdgeList) = g.nodes
 edges(g::TimeEdgeList) = g.edges
 
 function dim_times(g::TimeEdgeList)
-    time = []
+    time = Real[]
     for e in g.edges
         push!(time, edge_time(e))
     end
@@ -25,7 +25,7 @@ function dim_times(g::TimeEdgeList)
     return length(time)
 end
 
-function add_node!(g::TimeEdgeList, v::Node)
+function add_node!(g::TimeEdgeList, v::IndexNode)
     if v in g.nodes
         error("Duplicate node")
     else
