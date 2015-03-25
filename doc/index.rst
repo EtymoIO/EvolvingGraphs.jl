@@ -3,20 +3,18 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to EvolvingGraphs's documentation!
-==========================================
+EvolvingGraphs: Dynamic Graph Analysis in Julia
+===============================================
+
+We are interested in two types of graphs: a graph with fixed nodes but 
+varying edges and a graph that grows new nodes and edges over time. 
 
 Contents:
 
 .. toctree::
    :maxdepth: 2
+  
+   core.rst
+	      
 
-
-
-Indices and tables
-==================
-
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
