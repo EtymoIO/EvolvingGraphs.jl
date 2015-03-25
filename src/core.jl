@@ -10,6 +10,7 @@ abstract AbstractEvolvingGraph{N, E}
 ##############################################
 
 immutable Node{T}
+    index::Int
     key::T
 end
  
