@@ -2,6 +2,8 @@
 
 A Julia Package for evolving graphs.
 
+* [Documentation](http://evolvinggraphsjl.readthedocs.org/en/latest/)
+
 ### Types
 
 * Static Graph Types:
@@ -63,42 +65,34 @@ A Julia Package for evolving graphs.
 
     # build a simple evolving graph
 	julia> g = build_evolving_graph()
-	IndexNode(a) 
-	IndexNode(b) 
-	IndexNode(c) 
-	IndexNode(d) 
-	TimeEdge(IndexNode(a)->IndexNode(b)) at time 1 
-	TimeEdge(IndexNode(b)->IndexNode(c)) at time 1 
-	TimeEdge(IndexNode(a)->IndexNode(c)) at time 1 
-	TimeEdge(IndexNode(a)->IndexNode(d)) at time 1 
-	TimeEdge(IndexNode(b)->IndexNode(a)) at time 1 
-	TimeEdge(IndexNode(c)->IndexNode(a)) at time 1 
-	TimeEdge(IndexNode(a)->IndexNode(b)) at time 2 
-	TimeEdge(IndexNode(b)->IndexNode(c)) at time 2 
-	TimeEdge(IndexNode(a)->IndexNode(c)) at time 2 
-	TimeEdge(IndexNode(a)->IndexNode(c)) at time 3 
-	TimeEdge(IndexNode(b)->IndexNode(c)) at time 3 
-	TimeEdge(IndexNode(c)->IndexNode(a)) at time 3 
+	Directed IntEvolvingGraph (6 nodes, 7 edges, 3 timestamps)
+
 
 	# convert g to adjacency tensor
 	julia> adjacency_tensor(g)
-	4x4x3 Array{Float64,3}:
+	6x6x3 Array{Bool,3}:
 	[:, :, 1] =
-	0.0  1.0  1.0  1.0
-	1.0  0.0  1.0  0.0
-	1.0  0.0  0.0  0.0
-	0.0  0.0  0.0  0.0
+	false   true  false  false  false  false
+	false  false  false  false  false  false
+	false  false  false  false  false  false
+	false  false  false  false  false  false
+	false  false  false  false  false  false
+	false  false  false  false  false  false
 
 	[:, :, 2] =
-	0.0  1.0  1.0  0.0
-	0.0  0.0  1.0  0.0
-	0.0  0.0  0.0  0.0
-	0.0  0.0  0.0  0.0
+	false  false  false  false  false   true
+	false  false   true  false  false  false
+	false   true  false  false   true  false
+	false  false  false  false  false  false
+	false  false  false  false  false  false
+	false  false  false  false  false  false
 
 	[:, :, 3] =
-	0.0  0.0  1.0  0.0
-	0.0  0.0  1.0  0.0
-	1.0  0.0  0.0  0.0
-	0.0  0.0  0.0  0.0
-
+	false  false  false  false  false  false
+	false  false  false  false   true  false
+	false  false  false  false  false  false
+	false  false   true  false  false  false
+	false  false  false  false  false  false
+	true   false  false  false  false  false
+	
 ```
