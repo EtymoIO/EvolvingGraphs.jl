@@ -43,6 +43,6 @@ end
 function build_evolving_graph2(;is_directed = true)
     a = [1, 2, 3, 3, 4, 2, 6]
     b = [2, 3, 2, 5, 3, 5, 1]
-    times = [1.:7]
+    times = [1, 2, 2, 2, 3, 3, 3]
     return evolving_graph(a, b, times, is_directed = is_directed)
 end

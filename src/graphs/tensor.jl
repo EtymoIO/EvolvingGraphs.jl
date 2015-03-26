@@ -1,3 +1,28 @@
+
+function adjacency_tensor(g::IntEvolvingGraph)
+    n = num_nodes(g)
+    k = num_timestamps(g)
+    A = Array(Bool, n, n, k)
+    if is_directed(g)
+        for e in edges(g)
+            ui = source(e, g)
+            vi = target(e, g)
+            ti = edge_time(e, g)
+            A[ui, vi, ti] = true
+        end
+    else
+        for e in edges(g)
+            ui = source(e, g)
+            vi = target(e, g)
+            ti = edge_time(e, g)
+            A[ui, vi, ti] = true
+            A[vi, ui, ti] = true
+        end
+    end
+    return A
+end
+
+
 #######################################
 #
 # tensor generation functions

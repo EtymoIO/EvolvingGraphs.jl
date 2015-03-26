@@ -10,7 +10,7 @@ type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V,T}
     timestamps::Vector{T}
 end
 
-
+typealias IntEvolvingGraph EvolvingGraph{Int, Int}
 
 function evolving_graph{V,T}(ils::Vector{V}, jls::Vector{V}, timestamps::Vector{T}; is_directed::Bool=true)
     length(ils) == length(jls) == length(timestamps)|| error("3 input vectors must have the same length.")
@@ -20,6 +20,8 @@ end
 
 
 is_directed(g::EvolvingGraph) = g.is_directed
+timestamps(g::EvolvingGraph) = unique(g.timestamps)
+num_timestamps(g::EvolvingGraph) = length(timestamps(g))
 
 nodes(g::EvolvingGraph) = union(g.ilist, g.jlist)
 num_nodes(g::EvolvingGraph) = length(nodes(g))
