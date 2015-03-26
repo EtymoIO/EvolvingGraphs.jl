@@ -9,13 +9,16 @@ EvolvingGraphs: Dynamic Graph Analysis in Julia
 We are interested in two types of graphs: a graph with fixed nodes but 
 varying edges and a graph that grows new nodes and edges over time. 
 
+The type system of this package is experimental and is subject to
+change in the future.
+
 Contents:
 
 .. toctree::
    :maxdepth: 2
   
-   core.rst
-   graphs.rst
+   types.rst
+   examples.rst
 
 
 

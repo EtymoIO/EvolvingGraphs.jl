@@ -1,5 +1,0 @@
-Graph Types
-===========
-
-* ``EvolvingGraph``
-
