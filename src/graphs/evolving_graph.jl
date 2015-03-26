@@ -25,8 +25,6 @@ nodes(g::EvolvingGraph) = union(g.ilist, g.jlist)
 num_nodes(g::EvolvingGraph) = length(nodes(g))
 
 
-num_edges(g::EvolvingGraph) = g.is_directed ? length(g.ilist) : length(g.ilist)*2
-
 function edges(g::EvolvingGraph)
     n = length(g.ilist)
 
@@ -45,3 +43,4 @@ function edges(g::EvolvingGraph)
     return edgelists
 end
 
+num_edges(g::EvolvingGraph) = g.is_directed ? length(g.ilist) : length(g.ilist)*2
