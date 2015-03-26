@@ -14,7 +14,16 @@ function build_tree(;is_directed = true)
     return g
 end
 
+
 function build_evolving_graph(;is_directed = true)
+    a = [1, 2, 3, 3, 4, 2, 6]
+    b = [2, 3, 2, 5, 3, 5, 1]
+    times = [1, 2, 2, 2, 3, 3, 3]
+    return evolving_graph(a, b, times, is_directed = is_directed)
+end
+
+
+function build_evolving_graph2(;is_directed = true)
     g = TimeEdgeList(is_directed = is_directed)
     a = IndexNode(1, 'a')
     b = IndexNode(2, 'b')
@@ -38,11 +47,4 @@ function build_evolving_graph(;is_directed = true)
     add_edge!(g, b, c, 3)
     add_edge!(g, c, a, 3)
     return g
-end
-
-function build_evolving_graph2(;is_directed = true)
-    a = [1, 2, 3, 3, 4, 2, 6]
-    b = [2, 3, 2, 5, 3, 5, 1]
-    times = [1, 2, 2, 2, 3, 3, 3]
-    return evolving_graph(a, b, times, is_directed = is_directed)
 end

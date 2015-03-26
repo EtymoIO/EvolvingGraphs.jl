@@ -1,6 +1,6 @@
 # root type
 
-abstract AbstractEvolvingGraph{N, E, T}
+abstract AbstractEvolvingGraph{V, E, T}
 
 
 ##############################################
@@ -44,7 +44,7 @@ immutable TimeNode{K,T}
     time::T
 end
 
-node_key(v::TimeNode) = v.key
+key(v::TimeNode) = v.key
 node_time(v::TimeNode) = v.time
 node_index(v::TimeNode) = v.index
 ==(v1::TimeNode, v2::TimeNode) = (v1.key == v2.key && v1.time == v2.time)
@@ -63,20 +63,20 @@ end
 ##########################################
 
 immutable Edge
-    src::Node
-    dest::Node        
+    source::Node
+    target::Node        
 end
  
 Edge(src::Char, dest::Char) = Edge(Node(src), Node(dest))
  
-source(e::Edge) = e.src
-destination(e::Edge) = e.dest
-==(e1::Edge, e2::Edge) = (e1.src == e2.src && e1.dest == e2.dest)
+source(e::Edge) = e.source
+target(e::Edge) = e.target
+==(e1::Edge, e2::Edge) = (e1.source == e2.source && e1.target == e2.target)
  
-rev(e::Edge) = Edge(e.dest, e.src)
+rev(e::Edge) = Edge(e.source, e.target)
  
 function show(io::IO, e::Edge)
-    print(io, "Edge $(e.src)->$(e.dest)")
+    print(io, "Edge $(e.source)->$(e.target)")
 end
  
 

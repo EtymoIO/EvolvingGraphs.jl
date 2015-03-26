@@ -3,7 +3,7 @@
 # V:: Node type
 # T:: Time type
 #
-type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V,T}
+type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V, TimeEdge, T}
     is_directed::Bool
     ilist::Vector{V}
     jlist::Vector{V}
