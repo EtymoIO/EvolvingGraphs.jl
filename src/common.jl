@@ -1,6 +1,6 @@
 # root type
 
-abstract AbstractEvolvingGraph{N, E}
+abstract AbstractEvolvingGraph{N, E, T}
 
 
 ##############################################
@@ -10,8 +10,7 @@ abstract AbstractEvolvingGraph{N, E}
 ##############################################
 
 immutable Node{T}
-    index::Int
-    key::T
+    Key::T
 end
  
 key(v::Node) = v.key
