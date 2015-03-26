@@ -1,5 +1,12 @@
 using EvolvingGraphs
 using Base.Test
 
-# write your own tests here
-@test 1 == 1
+tests = ["show",    
+         "graphs"
+         ]
+
+for t in tests
+    tp = joinpath(Pkg.dir("EvolvingGraphs"), "test", "$(t).jl")
+    println("running $(tp) ...")
+    include(tp)
+end
