@@ -15,6 +15,7 @@ Contents:
    :maxdepth: 2
   
    core.rst
-	      
+   graphs.rst
+
 
 
