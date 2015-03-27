@@ -8,12 +8,12 @@ export
 Node, Edge, TimeNode, IndexNode, TimeEdge, AbstractEvolvingGraph, 
 
 # graphs
-AdjacencyList, build_tree, TimeEdgeList, EvolvingGraph,
+AdjacencyList, build_tree, TimeEdgeList, EvolvingGraph, TimeTensor,
 
 # graph functions
 add_node!, add_edge!, build_tree, adjacency_tensor, build_evolving_graph,
 evolving_graph, nodes, num_nodes, edges, num_edges, build_evolving_graph2,
-source, target, edge_time, 
+source, target, edge_time, time_tensor,
 
 # algorithms
 BFS, DFS

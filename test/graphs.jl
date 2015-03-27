@@ -14,3 +14,12 @@ g2 = evolving_graph(a, b, times, is_directed = false)
 @test num_nodes(g2) == 6
 @test num_edges(g2) == 14
 edges(g2)
+
+As = Matrix{Float64}[]
+for i = 1:3
+    push!(As, rand(3,3))
+end
+
+times = [1:3]
+
+g3 = time_tensor(times, As)

@@ -1,4 +1,29 @@
 
+# TimeTensor graph type
+# T : Time type
+# M : Matrix type
+#
+immutable TimeTensor{T, M} <: AbstractEvolvingGraph
+    is_directed::Bool
+    times::Vector{T}
+    matrices::Vector{Matrix{M}}
+end
+
+typealias BoolTimeTensor{T} TimeTensor{T, Bool}
+
+function time_tensor{T, M}(ts::Vector{T}, ms::Vector{Matrix{M}}; is_directed::Bool=true)
+    length(g.times) == length(g.matrices) || error("times and matrices must have the same length.")
+    return TimeTensor(is_directed, ts, ms)
+end
+
+is_directed(g::TimeTensor) = g.is_directed
+timestamps(g::TimeTensor) = g.times
+num_timestamps(g::TimeTensor) = length(g.times)
+
+matrices(g::TimeTensor) = g.matrices
+num_matrices(g::TimeTensor) = length(g.matrices)
+
+
 function adjacency_tensor(g::IntEvolvingGraph)
     n = num_nodes(g)
     k = num_timestamps(g)
