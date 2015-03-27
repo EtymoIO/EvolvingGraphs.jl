@@ -116,4 +116,33 @@ The following functions are defined on ``EvolvingGraph``.
    return the number of time stamps of graph ``g``.
 
 
+Here is the definition of ``TimeTensor``::
+
+  immutable TimeTensor{T, M} <: AbstractEvolvingGraph
+    is_directed::Bool
+    times::Vector{T}
+    matrices::Vector{Matrix{M}}
+  end
+
+The following functions are defined on ``TimeTensor`` 
+
+.. function:: is_directed(g)
+	      
+   return ``true`` if graph ``g`` is a directed graph and ``false``
+   otherwise.
+
+.. function:: matrices(g)
+
+   return a list of adjacency matrices in ``g``.
+
+.. function:: num_matrices(g)
+
+   return the number of adjacency matrices in ``g``.
+
+.. function:: timestamps(g)
+
+   return the time stamps of graph ``g``.
+
+.. function:: num_timestamps(g)
  
+   return the number of time stamps of graph ``g``.
