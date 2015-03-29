@@ -12,8 +12,38 @@ end
 typealias BoolTimeTensor{T} TimeTensor{T, Bool}
 
 function time_tensor{T, M}(ts::Vector{T}, ms::Vector{Matrix{M}}; is_directed::Bool=true)
-    length(g.times) == length(g.matrices) || error("times and matrices must have the same length.")
+    length(ts) == length(ms) || error("times and matrices must have the same length.")
     return TimeTensor(is_directed, ts, ms)
+end
+
+function time_tensor(g::IntEvolvingGraph)
+    As = Matrix{Bool}[]
+    n = num_nodes(g)
+    A = zeros(Bool, n, n)
+    times = unique(timestamps(g))
+    if is_directed(g)
+        for t in times
+            for e in edges(g, t)
+                ui = source(e, g)
+                vi = target(e, g)
+                A[ui, vi] = true
+            end
+            push!(As, A)
+            A = zeros(Bool, n, n)            
+        end
+    else
+        for t in times
+            for e in edges(g, t)
+                ui = source(e, g)
+                vi = target(e, g)
+                A[ui, vi] = true
+                A[vi, ui] = true
+            end
+            push!(As, A)
+            A = zeros(Bool, n, n)
+        end
+    end
+    return time_tensor(times, As, is_directed = is_directed(g))
 end
 
 is_directed(g::TimeTensor) = g.is_directed
