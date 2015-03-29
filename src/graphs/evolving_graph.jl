@@ -1,8 +1,9 @@
 
-# Graph type
+# EvolvingGraph Graph type
 # V:: Node type
 # T:: Time type
 #
+# ? Add nodes::Vector{V} for a list of nodes
 type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V, TimeEdge, T}
     is_directed::Bool
     ilist::Vector{V}
@@ -40,6 +41,27 @@ function edges(g::EvolvingGraph)
         for i = 1:n
             e = TimeEdge(g.jlist[i], g.ilist[i], g.timestamps[i])
             push!(edgelists, e)
+        end
+    end
+    return edgelists
+end
+
+# edge of an evolving graph at a given time
+function edges{T}(g::EvolvingGraph, t::T)
+    t in g.timestamps || error("unknown time stamp $(t)")
+
+    n = length(g.ilist)
+    
+    edgelists = TimeEdge[]
+            
+    for i = 1:n
+        if t == g.timestamps[i]
+            e = TimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i])
+            push!(edgelists, e)
+            if !(g.is_directed)
+                e2 = TimeEdge(g.jlist[i], g.ilist[i], g.timestamps[i])
+                push!(edgelists, e2)
+            end
         end
     end
     return edgelists

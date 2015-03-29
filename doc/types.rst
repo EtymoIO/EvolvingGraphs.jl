@@ -99,9 +99,10 @@ The following functions are defined on ``EvolvingGraph``.
 
    return the number of nodes of graph ``g``.
 
-.. function:: edges(g)
+.. function:: edges(g [, time])
 
-   return a list of edges of graph ``g``.
+   return a list of edges of graph ``g``. If ``time`` is present,
+   return edge list at given ``time``. 
 
 .. function:: num_edges(g)
 
