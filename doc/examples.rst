@@ -48,5 +48,35 @@ and convert it an adjacency tensor with::
   false  false  false  false  false  false
   true   false  false  false  false  false
 
+We can also convert an ``EvolvingGraph`` to ``TimeTensor``::
 
+  julia> tt = time_tensor(g)
+  Directed TimeTensor (3 matrices, 3 timestamps)
 
+Notice ``TimeTensor`` store graph data as a vector of matrices::
+
+  julia> matrices(tt)
+  3-element Array{Array{Bool,2},1}:
+  6x6 Array{Bool,2}:
+  false   true  false  false  false  false
+  false  false  false  false  false  false
+  false  false  false  false  false  false
+  false  false  false  false  false  false
+  false  false  false  false  false  false
+  false  false  false  false  false  false
+  6x6 Array{Bool,2}:
+  false  false  false  false  false  false
+  false  false   true  false  false  false
+  false   true  false  false   true  false
+  false  false  false  false  false  false
+  false  false  false  false  false  false
+  false  false  false  false  false  false
+  6x6 Array{Bool,2}:
+  false  false  false  false  false  false
+  false  false  false  false   true  false
+  false  false  false  false  false  false
+  false  false   true  false  false  false
+  false  false  false  false  false  false
+  true   false  false  false  false  false
+
+  
