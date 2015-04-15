@@ -1,5 +1,7 @@
 module EvolvingGraphs
 
+using Compat
+
 import Base: ==, show
 
 export 

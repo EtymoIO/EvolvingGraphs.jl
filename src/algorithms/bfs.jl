@@ -1,6 +1,6 @@
 # Breadth First Search
 function BFS(g::AdjacencyList, s::Node)
-    level = {s => 0}
+    level = @compat Dict{Any, Any}(s => 0)
     i = 1
     froniter = [s]
     while length(froniter) != 0
