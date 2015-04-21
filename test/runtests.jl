@@ -2,7 +2,8 @@ using EvolvingGraphs
 using Base.Test
 
 tests = ["show",    
-         "graphs"
+         "graphs",
+         "io"
          ]
 
 for t in tests

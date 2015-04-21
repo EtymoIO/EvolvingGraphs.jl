@@ -4,6 +4,7 @@
 # T:: Time type
 #
 # ? Add nodes::Vector{V} for a list of nodes
+
 type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V, TimeEdge, T}
     is_directed::Bool
     ilist::Vector{V}
@@ -68,3 +69,5 @@ function edges{T}(g::EvolvingGraph, t::T)
 end
 
 num_edges(g::EvolvingGraph) = g.is_directed ? length(g.ilist) : length(g.ilist)*2
+
+

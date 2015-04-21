@@ -17,6 +17,9 @@ add_node!, add_edge!, build_tree, adjacency_tensor, build_evolving_graph,
 evolving_graph, nodes, num_nodes, edges, num_edges, build_evolving_graph2,
 source, target, edge_time, time_tensor, matrices, num_matrices, 
 
+# io
+egreader,
+
 # algorithms
 BFS, DFS
 
