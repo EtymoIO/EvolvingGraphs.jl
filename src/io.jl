@@ -3,10 +3,10 @@
 
 """
 Read the contents of the Evolving Graph format file into a 
-EvolvingGraph type.
-
+EvolvingGraph type object. If info is true, only return information 
+about the number of nodes, the number of edges and the number of timestamps.
 """
-function egreader(filename)
+function egreader(filename, info::Bool = false)
     egfile = open(filename, "r")
     # Read the first line
     firstline = chomp(readline(egfile))
@@ -16,6 +16,7 @@ function egreader(filename)
     end
     (object, nodetype, timetype) = map(lowercase, tokens[2:4])
     is_directed = object == "directed" ? true : false
+    
 
     # skip all comments and empty lines
     ll = readline(egfile)
@@ -31,6 +32,10 @@ function egreader(filename)
     nodes = dd[2]
     times = dd[3]
 
+    if info
+        return (nodes, edges, times)
+    end
+        
     if nodetype == "integer" && timetype == "integer"
         ilist = Array(Int, edges)
         jlist = Array(Int, edges)
