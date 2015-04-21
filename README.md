@@ -4,7 +4,7 @@
 
 A Julia Package for evolving graphs.
 
-**Installation**  `Pkg.clone("https://github.com/weijianzhang/EvolvingGraphs.jl.git")`
+**Installation:**  `Pkg.clone("https://github.com/weijianzhang/EvolvingGraphs.jl.git")`
 
-* [Documentation](http://evolvinggraphsjl.readthedocs.org/en/latest/)
+**Documentation:** http://evolvinggraphsjl.readthedocs.org/en/latest/
 
