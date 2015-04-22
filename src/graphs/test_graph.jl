@@ -23,11 +23,12 @@ function build_evolving_graph(;is_directed = true)
 end
 
 function build_sparse_tensor(;is_directed = true)
-    v = [1,2,3,4]
+    v = [1,2,3]
     As = SparseMatrixCSC[]
     A1 = speye(4)
     A2 = speye(5)
     push!(As, A1)
+    push!(As, A2)
     push!(As, A2)
     return sparse_time_tensor(v, As, is_directed = is_directed)
 end
