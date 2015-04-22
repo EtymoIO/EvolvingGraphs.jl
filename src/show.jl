@@ -14,3 +14,9 @@ function show(io::IO, g::TimeTensor)
     title = is_directed(g) ? "Directed TimeTensor" : "Undirected TimeTensor"
     print(io, "$(title) ($(num_matrices(g)) matrices, $(num_timestamps(g)) timestamps)")
 end
+
+function show(io::IO, g::SparseTimeTensor)
+    title = is_directed(g) ? "Directed SparseTimeTensor" : "Undirected SparseTimeTensor"
+    print(io, "$(title) ($(num_matrices(g)) matrices, $(num_timestamps(g)) timestamps)")
+end
+

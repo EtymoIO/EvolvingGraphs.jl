@@ -1,15 +1,15 @@
 
-# EvolvingGraph Graph type
-# V:: Node type
-# T:: Time type
+####################################################
 #
-# ? Add nodes::Vector{V} for a list of nodes
+# EvolvingGraph type
+#
+#####################################################
 
 type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V, TimeEdge, T}
     is_directed::Bool
     ilist::Vector{V}
     jlist::Vector{V}
-    timestamps::Vector{T}
+    timestamps::Vector{T} 
 end
 
 typealias IntEvolvingGraph EvolvingGraph{Int, Int}
@@ -71,3 +71,17 @@ end
 num_edges(g::EvolvingGraph) = g.is_directed ? length(g.ilist) : length(g.ilist)*2
 
 
+
+####################################################
+#
+# Weighted EvolvingGraph type
+#
+#####################################################
+
+type WeightedEvolvingGraph{V,W,T} <: AbstractEvolvingGraph{V, TimeEdge, T}
+    is_directed::Bool
+    ilist::Vector{V}
+    jlist::Vector{V}
+    weights::Vector{W}
+    timestamps::Vector{T} 
+end

@@ -1,18 +1,23 @@
+# root
+abstract AbstractTensor
 
-# TimeTensor graph type
-# T : Time type
-# M : Matrix type
+###########################################
 #
-immutable TimeTensor{T, M} <: AbstractEvolvingGraph
+# TimeTensor type
+#
+###########################################
+
+type TimeTensor{T, M} <: AbstractTensor
     is_directed::Bool
     times::Vector{T}
     matrices::Vector{Matrix{M}}
 end
 
-typealias BoolTimeTensor{T} TimeTensor{T, Bool}
-
-function time_tensor{T, M}(ts::Vector{T}, ms::Vector{Matrix{M}}; is_directed::Bool=true)
-    length(ts) == length(ms) || error("times and matrices must have the same length.")
+function time_tensor{T, M}(ts::Vector{T}, 
+                           ms::Vector{Matrix{M}}; 
+                           is_directed::Bool=true)
+    length(ts) == length(ms) || 
+             throw(ArgumentError("times and matrices must have the same length."))
     return TimeTensor(is_directed, ts, ms)
 end
 
@@ -46,12 +51,57 @@ function time_tensor(g::IntEvolvingGraph)
     return time_tensor(times, As, is_directed = is_directed(g))
 end
 
-is_directed(g::TimeTensor) = g.is_directed
-timestamps(g::TimeTensor) = g.times
-num_timestamps(g::TimeTensor) = length(g.times)
+###########################################
+#
+# SparseTimeTensor type
+#
+###########################################
 
-matrices(g::TimeTensor) = g.matrices
-num_matrices(g::TimeTensor) = length(g.matrices)
+type SparseTimeTensor{T} <: AbstractTensor
+    is_directed::Bool
+    times::Vector{T}
+    matrices::Vector{SparseMatrixCSC}
+end
+
+function sparse_time_tensor{T}(ts::Vector{T}, 
+                           ms::Vector{SparseMatrixCSC}; 
+                           is_directed::Bool=true)
+    length(ts) == length(ms) || 
+          throw(ArgumentError("times and matrices must have the same length."))
+    return SparseTimeTensor(is_directed, ts, ms)
+end
+
+
+function sparse_time_tensor(g::IntEvolvingGraph)
+    is_directed = g.is_directed
+    times = unique(g.timestamps)
+    num_mats =  length(times)
+    min_nodes = minimum(nodes(g))
+    ilist = g.ilist - min_nodes + 1  # normalize the nodes
+    jlist = g.jlist - min_nodes + 1  # normalize the nodes
+        
+    symlabel = is_directed ? identity : Symmetric
+   
+    dim = num_nodes(g)
+    As = Array(SparseMatrixCSC, num_mats)
+    
+    for (i,t) in enumerate(times)
+        v = find(x -> x==t, g.timestamps)
+        rr = ilist[v]
+        cc = jlist[v]
+        xx = ones(Bool, length(rr))
+        As[i] = symlabel(sparse(rr,cc, xx, dim, dim))
+    end
+    return sparse_time_tensor(times, As, is_directed = is_directed)    
+end
+
+
+is_directed(g::AbstractTensor) = g.is_directed
+timestamps(g::AbstractTensor) = g.times
+num_timestamps(g::AbstractTensor) = length(g.times)
+
+matrices(g::AbstractTensor) = g.matrices
+num_matrices(g::AbstractTensor) = length(g.matrices)
 
 
 function adjacency_tensor(g::IntEvolvingGraph)
