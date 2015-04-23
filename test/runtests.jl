@@ -3,7 +3,8 @@ using Base.Test
 
 tests = ["show",    
          "graphs",
-         "io"
+         "io",
+         "time_graph"
          ]
 
 for t in tests

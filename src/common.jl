@@ -10,7 +10,7 @@ abstract AbstractEvolvingGraph{V, E, T}
 ##############################################
 
 immutable Node{T}
-    Key::T
+    key::T
 end
  
 key(v::Node) = v.key
