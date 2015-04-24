@@ -1,5 +1,5 @@
-Examples
-========
+Getting Started
+===============
 
 We can specify the two lists of nodes ``a`` and ``b`` and a list of 
 time stamps ``c``, so that ``(a[i], b[i], c[i])`` is a ``TimeEdge``, i.e., 
