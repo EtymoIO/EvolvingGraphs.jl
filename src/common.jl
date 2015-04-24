@@ -25,13 +25,13 @@ immutable IndexNode{T}
     key::T
 end
 
-node_index(v::IndexNode) = v.index
+index(v::IndexNode) = v.index
 key(v::IndexNode) = v.key
 ==(v1::IndexNode, v2::IndexNode) = (v1.key == v2.key && v1.index == v2.index)
 
 make_node(g::AbstractEvolvingGraph, key) = IndexNode(num_nodes(g)+1, key)
 
-node_index(v::IndexNode, g::AbstractEvolvingGraph) = node_index(v)
+index(v::IndexNode, g::AbstractEvolvingGraph) = index(v)
 
 function show(io::IO, v::IndexNode)
     print(io, "IndexNode($(v.key))")
@@ -45,8 +45,8 @@ immutable TimeNode{K,T}
 end
 
 key(v::TimeNode) = v.key
-node_time(v::TimeNode) = v.time
-node_index(v::TimeNode) = v.index
+time(v::TimeNode) = v.time
+index(v::TimeNode) = v.index
 ==(v1::TimeNode, v2::TimeNode) = (v1.key == v2.key && v1.time == v2.time)
 
 
@@ -88,10 +88,10 @@ end
 
 source(e::TimeEdge) = e.source
 target(e::TimeEdge) = e.target
-edge_time(e::TimeEdge) = e.time
+time(e::TimeEdge) = e.time
 source(e::TimeEdge, g::AbstractEvolvingGraph) = e.source
 target(e::TimeEdge, g::AbstractEvolvingGraph) = e.target
-edge_time(e::TimeEdge, g::AbstractEvolvingGraph) = e.time
+time(e::TimeEdge, g::AbstractEvolvingGraph) = e.time
 ==(e1::TimeEdge, e2::TimeEdge) = (e1.source == e2.source && 
                                   e1.target == e2.target &&
                                   e1.time == e2.time)

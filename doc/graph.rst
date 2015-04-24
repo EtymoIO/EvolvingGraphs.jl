@@ -1,4 +1,4 @@
-Graphs Type
+Graph Types
 ===========
 
 TimeGraph

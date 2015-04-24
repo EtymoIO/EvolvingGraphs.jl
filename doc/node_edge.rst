@@ -31,10 +31,15 @@ The definition of ``TimeNode`` is::
    return the key of a node ``v``, where ``v`` could be ``Node``,
    ``IndexNode`` or ``TimeNode``. 
 
-.. function:: node_index(v)
+.. function:: index(v)
 	   
-   return the index of a node ``v``. ``node_index`` is defined for 
+   return the index of a node ``v``. ``index`` is defined for 
    ``IndexNode`` and ``TimeNode``.
+
+
+.. function:: time(v)
+
+   return the time of node ``v``.	 
 
 
 Edge Types
@@ -66,6 +71,6 @@ The definition of ``TimeEdge`` is::
 
    return the target of the edge ``e``, where ``g`` is a graph.
 
-.. function:: edge_time(e)
+.. function:: time(e)
 
    return the time of a ``TimeEdge`` type ``e``.
