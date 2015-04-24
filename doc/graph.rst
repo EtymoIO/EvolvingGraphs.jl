@@ -21,6 +21,10 @@ The following functions are defined on ``TimeGraph``.
 
    initialize a ``TimeGraph`` at time ``t``.
 
+.. function:: time(g)
+	      
+   return the time of the graph ``g``.	
+
 .. function:: add_node!(g, v)
 	      
     add a node ``v`` to ``TimeGraph`` g.
@@ -94,7 +98,7 @@ TimeTensor
 Sometimes it is convenient to work with matrices and that is why we
 provide a ``TimeTensor`` type. Here is the definition::
 
-  immutable TimeTensor{T, M} <: AbstractEvolvingGraph
+  immutable TimeTensor{T, M} <: AbstractTensor
     is_directed::Bool
     times::Vector{T}
     matrices::Vector{Matrix{M}}
@@ -126,3 +130,18 @@ The following functions are defined on ``TimeTensor``
 .. function:: num_timestamps(g)
  
    return the number of time stamps of graph ``g``.
+
+
+SparseTimeTensor
+----------------
+
+Here is the definition of ``SparseTimeTensor``::
+
+  type SparseTimeTensor{T} <: AbstractTensor
+    is_directed::Bool
+    times::Vector{T}
+    matrices::Vector{SparseMatrixCSC}
+  end
+
+Note the only difference from ``TimeTensor`` is that ``matrices`` are
+stored as a vector of sparse matrices.
