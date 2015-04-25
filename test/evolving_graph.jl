@@ -19,6 +19,7 @@ gg = evolving_graph(aa, bb, tt, is_directed = false)
 nodes(gg)
 @test num_nodes(gg) == 3
 edges(gg)
+edges(gg, "t1")
 @test num_edges(gg) == 10
 timestamps(gg)
 @test num_timestamps(gg) == 5

@@ -25,7 +25,15 @@ end
 
 
 is_directed(g::EvolvingGraph) = g.is_directed
-timestamps(g::EvolvingGraph) = unique(g.timestamps)
+
+function timestamps(g::EvolvingGraph)
+    ts = unique(g.timestamps)
+    if eltype(ts) <: Real
+        ts = sort(ts)
+    end
+    return ts
+end
+
 num_timestamps(g::EvolvingGraph) = length(timestamps(g))
 
 nodes(g::EvolvingGraph) = union(g.ilist, g.jlist)
@@ -37,14 +45,17 @@ function edges(g::EvolvingGraph)
 
     edgelists = TimeEdge[]
 
-    for i = 1:n
-        e = TimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i])
-        push!(edgelists, e)
-    end
-    if !(g.is_directed)
+    if g.is_directed
+       for i = 1:n
+           e = TimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i])
+           push!(edgelists, e)
+       end
+    else
         for i = 1:n
-            e = TimeEdge(g.jlist[i], g.ilist[i], g.timestamps[i])
-            push!(edgelists, e)
+            e1 = TimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i])
+            e2 = TimeEdge(g.jlist[i], g.ilist[i], g.timestamps[i])
+            push!(edgelists, e1)
+            push!(edgelists, e2)
         end
     end
     return edgelists
@@ -57,26 +68,30 @@ function edges{T}(g::EvolvingGraph, t::T)
     n = length(g.ilist)
     
     edgelists = TimeEdge[]
-            
-    for i = 1:n
-        if t == g.timestamps[i]
-            e = TimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i])
-            push!(edgelists, e)
-            if !(g.is_directed)
+  
+    if g.is_directed
+        for i = 1:n
+            if t == g.timestamps[i]
+                e = TimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i])
+                push!(edgelists, e)
+            end
+        end
+    else
+        for i = 1:n
+            if t == g.timestamps[i]
+                e1 = TimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i])
                 e2 = TimeEdge(g.jlist[i], g.ilist[i], g.timestamps[i])
+                push!(edgelists, e1)
                 push!(edgelists, e2)
             end
         end
     end
+          
     return edgelists
 end
 
 num_edges(g::EvolvingGraph) = g.is_directed ? length(g.ilist) : length(g.ilist)*2
 
-# 
-function slicing!(g::EvolvingGraph, t::Int)
-    
-end
 
 ####################################################
 #
