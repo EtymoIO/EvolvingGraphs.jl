@@ -14,10 +14,13 @@ end
 
 typealias IntEvolvingGraph EvolvingGraph{Int, Int}
 
-function evolving_graph{V,T}(ils::Vector{V}, jls::Vector{V}, timestamps::Vector{T}; is_directed::Bool=true)
-    length(ils) == length(jls) == length(timestamps)|| error("3 input vectors must have the same length.")
-    g = EvolvingGraph{V,T}(is_directed, ils, jls, timestamps)
-    return g
+function evolving_graph{V,T}(ils::Vector{V}, 
+                             jls::Vector{V}, 
+                             timestamps::Vector{T}; 
+                             is_directed::Bool=true)
+    length(ils) == length(jls) == length(timestamps)|| 
+            error("3 input vectors must have the same length.")
+    return EvolvingGraph{V,T}(is_directed, ils, jls, timestamps)    
 end
 
 
@@ -70,7 +73,10 @@ end
 
 num_edges(g::EvolvingGraph) = g.is_directed ? length(g.ilist) : length(g.ilist)*2
 
-
+# 
+function slicing!(g::EvolvingGraph, t::Int)
+    
+end
 
 ####################################################
 #

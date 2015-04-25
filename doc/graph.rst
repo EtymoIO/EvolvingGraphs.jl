@@ -46,7 +46,7 @@ The following functions are defined on ``TimeGraph``.
 EvolvingGraph
 -------------
 
-The most important graph types is ``EvolvingGraph``. Here is the
+The most important graph type is ``EvolvingGraph``. Here is the
 definition::
 
   type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V, TimeEdge, T}
@@ -56,10 +56,13 @@ definition::
     timestamps::Vector{T} 
   end
 
-where the three vectors ``ilist``, ``jlist`` and ``timestamps`` have
-the same length. The elements ``ilist[i], jlist[i], timestamps[i]``
-represent an edge between ``ilist[i]`` and ``jlist[i]`` at time 
-``timestamps[i]``.
+
+.. function:: evolving_graph(ils, jls, timestamps [, is_directed = true)
+	    
+   generate an ``EvolvingGraph`` type object from 3 vectors ``ils``,
+   ``jls`` and ``timestamps`` such that ``ils[i] jls[i] timestamps[i]`` 
+   represent an edge from ``ils[i]`` to ``jls[i]`` at time ``timestamps[i]``.
+   The 3 vectors need to have the same length.
 
 .. function:: is_directed(g)
 	      

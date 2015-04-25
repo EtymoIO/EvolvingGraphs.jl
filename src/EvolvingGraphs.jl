@@ -18,6 +18,7 @@ add_node!, add_edge!, build_tree, adjacency_tensor, build_evolving_graph,
 evolving_graph, nodes, num_nodes, edges, num_edges, build_evolving_graph2,
 source, target, edge_time, matrices, num_matrices, timestamps, time_tensor,
 sparse_time_tensor, build_sparse_tensor, time_graph, out_neighbors, has_node,
+is_directed,
 
 # io
 egreader,
