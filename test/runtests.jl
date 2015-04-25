@@ -4,7 +4,8 @@ using Base.Test
 tests = ["show",    
          "graphs",
          "io",
-         "time_graph"
+         "time_graph",
+         "evolving_graph"
          ]
 
 for t in tests
