@@ -17,11 +17,13 @@ typealias IntEvolvingGraph EvolvingGraph{Int, Int}
 function evolving_graph{V,T}(ils::Vector{V}, 
                              jls::Vector{V}, 
                              timestamps::Vector{T}; 
-                             is_directed::Bool=true)
+                             is_directed::Bool = true)
     length(ils) == length(jls) == length(timestamps)|| 
             error("3 input vectors must have the same length.")
     return EvolvingGraph{V,T}(is_directed, ils, jls, timestamps)    
 end
+
+evolving_graph(;is_directed::Bool = true) = EvolvingGraph(is_directed, [], [], [])
 
 
 is_directed(g::EvolvingGraph) = g.is_directed
