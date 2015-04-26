@@ -23,3 +23,5 @@ edges(gg, "t1")
 @test num_edges(gg) == 10
 timestamps(gg)
 @test num_timestamps(gg) == 5
+reduce_timestamps!(gg)
+@test num_timestamps(gg) == 3 

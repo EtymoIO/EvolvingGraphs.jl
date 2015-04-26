@@ -94,6 +94,10 @@ definition::
  
    return the number of time stamps of graph ``g``.
 
+.. function:: reduce_timestamps!(g [,n = 2])
+	      
+   reduce the number of timestamps by emerging the graph with less
+   than ``n`` edges to a neighbour graph.  
 
 TimeTensor
 ----------

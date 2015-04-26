@@ -92,6 +92,33 @@ end
 
 num_edges(g::EvolvingGraph) = g.is_directed ? length(g.ilist) : length(g.ilist)*2
 
+# reduce the number of timestamps by emerging the graph with less
+# than n edges to a neighbour graph
+function reduce_timestamps!(g::EvolvingGraph, n::Int = 2)
+    times = timestamps(g)    
+    
+    for (i,t) in enumerate(times)
+        v = find(x -> x == t, g.timestamps)
+        if length(v) >= n
+            continue
+        end
+        try 
+            [g.timestamps[j] = times[i+1] for j in v] 
+        catch BoundsError
+        end
+    end
+    g
+end 
+
+# add a TimeGraph to an EvolvingGraph
+function add_graph!(g::EvolvingGraph, tg::TimeGraph)
+
+end
+
+# merge two EvolvingGraph type objects
+function merge!(g1::EvolvingGraph, g2::EvolvingGraph)
+
+end
 
 ####################################################
 #
