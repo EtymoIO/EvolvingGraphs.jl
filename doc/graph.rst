@@ -112,6 +112,15 @@ definition::
 	      
    add a TimeGraph ``tg`` to EvolvingGraph ``g``.
 
+.. function:: matrix(g, t)
+	      
+   return an adjacency matrix representation of the EvolvingGraph
+   ``g`` at time ``t``.
+
+.. function:: spmatrix(g, t)
+
+   return a sparse adjacency matrix representation of the
+   EvolvingGraph ``g`` at time ``t``.
 
 TimeTensor
 ----------

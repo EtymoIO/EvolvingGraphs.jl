@@ -148,6 +148,37 @@ function merge(g1::EvolvingGraph, g2::EvolvingGraph)
     return EvolvingGraph(g1.is_directed, newilist, newjlist, newtimestamps)               
 end
 
+# get the adjacency matrix representation of an EvolvingGraph at a 
+# specific time
+function matrix(g::EvolvingGraph, t)
+    ns = nodes(g)
+    n = num_nodes(g)
+    es = edges(g, t)
+    A = zeros(Bool, n, n)
+    for e in es
+        i = find(x -> x == e.source, ns)
+        j = find(x -> x == e.target, ns)
+        A[(j-1)*n + i] = true
+    end
+    return A
+end
+
+function spmatrix(g::EvolvingGraph, t)
+    ns = nodes(g)
+    n = num_nodes(g)
+    is = Int[]
+    js = Int[]
+    es = edges(g, t)
+    for e in es
+        i = find(x -> x == e.source, ns)
+        j = find(x -> x == e.target, ns)
+        append!(is, i)
+        append!(js, j)
+    end
+    vs = ones(Bool, length(is))
+    return sparse(is, js, vs, n, n)    
+end
+
 ####################################################
 #
 # Weighted EvolvingGraph type

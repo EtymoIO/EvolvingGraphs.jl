@@ -48,9 +48,9 @@ Edge Types
 There are two edge types in the collection. The definition of ``Edge``
 is::
 
-  immutable Edge
-    source::Node
-    target::Node        
+  immutable Edge{V}
+    source::V
+    target::V        
   end
 
 The definition of ``TimeEdge`` is::

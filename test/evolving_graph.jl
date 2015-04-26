@@ -26,3 +26,6 @@ timestamps(gg)
 reduce_timestamps!(gg)
 @test num_timestamps(gg) == 3 
 g2 = evolving_graph(Int, is_directed = true)
+
+# convert to matrix
+@test matrix(gg, "t2") == full(spmatrix(gg, "t2"))

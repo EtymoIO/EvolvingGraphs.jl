@@ -20,6 +20,7 @@ source, target, matrices, num_matrices,
 timestamps, num_timestamps, reduce_timestamps!,
 has_node, out_neighbors, is_directed,
 time_graph, evolving_graph, adjacency_tensor, time_tensor, sparse_time_tensor,
+matrix, spmatrix,
  
 # examples
 build_tree, build_evolving_graph, build_evolving_graph2, 
