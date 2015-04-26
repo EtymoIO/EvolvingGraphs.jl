@@ -116,8 +116,15 @@ function add_graph!(g::EvolvingGraph, tg::TimeGraph)
 end
 
 # merge two EvolvingGraph type objects
-function merge!(g1::EvolvingGraph, g2::EvolvingGraph)
-
+function merge(g1::EvolvingGraph, g2::EvolvingGraph)
+    g1.is_directed == g2.is_directed || 
+               error("one EvolvingGraph is directed, while the other is undiredted ")
+    eltype(g1.ilist) == eltype(g2.ilist) && eltype(g1.timestamps) == eltype(g2.timestamps) ||
+               error("the type of input graphs must agree.")
+    newilist = cat(1, g1.ilist, g2.ilist)
+    newjlist = cat(1, g1.jlist, g2.jlist)
+    newtimestamps = cat(1, g1.timestamps, g2.timestamps)
+    return EvolvingGraph(g1.is_directed, newilist, newjlist, newtimestamps)               
 end
 
 ####################################################
