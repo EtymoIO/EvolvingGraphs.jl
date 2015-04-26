@@ -25,4 +25,4 @@ timestamps(gg)
 @test num_timestamps(gg) == 5
 reduce_timestamps!(gg)
 @test num_timestamps(gg) == 3 
-g2 = evolving_graph()
+g2 = evolving_graph(Int, is_directed = true)

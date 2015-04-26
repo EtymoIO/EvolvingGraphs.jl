@@ -23,7 +23,7 @@ function evolving_graph{V,T}(ils::Vector{V},
     return EvolvingGraph{V,T}(is_directed, ils, jls, timestamps)    
 end
 
-evolving_graph(;is_directed::Bool = true) = EvolvingGraph(is_directed, [], [], [])
+evolving_graph{T}(::Type{T} ;is_directed::Bool = true) = EvolvingGraph(is_directed, T[], T[], T[])
 
 
 is_directed(g::EvolvingGraph) = g.is_directed

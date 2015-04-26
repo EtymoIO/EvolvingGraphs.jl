@@ -64,9 +64,10 @@ definition::
    represent an edge from ``ils[i]`` to ``jls[i]`` at time ``timestamps[i]``.
    The 3 vectors need to have the same length.
 
-.. function:: evolving_graph([is_directed = true])
+.. function:: evolving_graph(type [, is_directed = true])
 
-   initialize an evolving graph with 0 nodes, 0 edges and 0 timestamps.
+   initialize an evolving graph with 0 nodes, 0 edges and 0 timestamps, ``type``
+   is the type of nodes.
 
 .. function:: is_directed(g)
 	      
