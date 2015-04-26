@@ -62,12 +62,10 @@ end
 #
 ##########################################
 
-immutable Edge
-    source::Node
-    target::Node        
+immutable Edge{V}
+    source::V
+    target::V       
 end
- 
-Edge(src::Char, dest::Char) = Edge(Node(src), Node(dest))
  
 source(e::Edge) = e.source
 target(e::Edge) = e.target
@@ -80,9 +78,9 @@ function show(io::IO, e::Edge)
 end
  
 
-immutable TimeEdge{K,T}
-    source::K
-    target::K
+immutable TimeEdge{V,T}
+    source::V
+    target::V
     time::T
 end
 

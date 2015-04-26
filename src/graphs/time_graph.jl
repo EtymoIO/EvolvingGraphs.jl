@@ -4,20 +4,20 @@
 #
 ##################################
 
-type TimeGraph{T} <: AbstractEvolvingGraph
+type TimeGraph{V, T} <: AbstractEvolvingGraph
     is_directed::Bool
     time::T
-    nodes::Vector{Node}
+    nodes::Vector{V}
     nedges::Int
-    adjlist::Dict{Node, Vector{Node}}
+    adjlist::Dict{V, Vector{V}}
 end
 
-time_graph{T}(time::T; is_directed::Bool = true) =
-    TimeGraph{T}(is_directed, 
-                 time::T,
-                 Node[],
-                 0,
-                 Dict{Node, Vector{Node}}())
+time_graph{V,T}(::Type{V}, time::T; is_directed::Bool = true) =
+    TimeGraph{V,T}(is_directed, 
+                   time::T,
+                   [],
+                   0,
+                   Dict{V, Vector{V}}())
 
 
 is_directed(g::TimeGraph) = g.is_directed
@@ -30,12 +30,10 @@ num_edges(g::TimeGraph) = g.nedges
 time(g::TimeGraph) = g.time
 
 
-function add_node!(g::TimeGraph, v::Node)
-    if v in g.nodes
-        error("Duplicate node $(v)")
-    else 
+function add_node!{V}(g::TimeGraph, v::V)
+    if !(v in g.nodes)
         push!(g.nodes, v)
-        g.adjlist[v] = Node[]
+        g.adjlist[v] = V[]
     end
     return v
 end
@@ -43,18 +41,25 @@ end
 function add_edge!(g::TimeGraph, e::Edge)
     src = e.source
     dest = e.target
-    if !(src in g.nodes && dest in g.nodes)
-        error("$(src) or $(dest) not in $(g)")
+    if !(src in g.nodes)
+        add_node!(g, src)
     end
-    push!(g.adjlist[src], dest)    
-    if !g.is_directed
-        push!(g.adjlist[dest], src)
+    if !(dest in g.nodes)
+        add_node!(g, dest)
     end
-    g.nedges += 1
+
+    if !(dest in g.adjlist[src])
+        push!(g.adjlist[src], dest)    
+        if !g.is_directed
+            push!(g.adjlist[dest], src)
+        end
+        g.nedges += 1
+    end
+    return g
 end
  
-out_neighbors(g::TimeGraph, v::Node) = g.adjlist[v]
-has_node(g::TimeGraph, v::Node) = (v in g.nodes)
+out_neighbors{V}(g::TimeGraph, v::V) = g.adjlist[v]
+has_node{V}(g::TimeGraph, v::V) = (v in g.nodes)
 
 
 

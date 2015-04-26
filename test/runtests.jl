@@ -2,10 +2,11 @@ using EvolvingGraphs
 using Base.Test
 
 tests = ["show",    
-         "graphs",
          "io",
          "time_graph",
-         "evolving_graph"
+         "evolving_graph",
+         "time_tensor",
+         "sparse_time_tensor"
          ]
 
 for t in tests

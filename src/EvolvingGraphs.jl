@@ -14,11 +14,16 @@ AdjacencyList, build_tree, TimeEdgeList, EvolvingGraph, TimeTensor,
 SparseTimeTensor, TimeGraph,
 
 # graph functions
-add_node!, add_edge!, build_tree, adjacency_tensor, build_evolving_graph,
-evolving_graph, nodes, num_nodes, edges, num_edges, build_evolving_graph2,
-source, target, edge_time, matrices, num_matrices, timestamps, time_tensor,
-sparse_time_tensor, build_sparse_tensor, time_graph, out_neighbors, has_node,
-is_directed, num_timestamps, reduce_timestamps!,
+add_node!, add_edge!, add_graph!,
+nodes, num_nodes, edges, num_edges,
+source, target, matrices, num_matrices, 
+timestamps, num_timestamps, reduce_timestamps!,
+has_node, out_neighbors, is_directed,
+time_graph, evolving_graph, adjacency_tensor, time_tensor, sparse_time_tensor,
+ 
+# examples
+build_tree, build_evolving_graph, build_evolving_graph2, 
+build_sparse_tensor,
 
 # io
 egreader,
