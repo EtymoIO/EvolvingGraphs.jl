@@ -7,19 +7,19 @@ TimeGraph
 The ``TimeGraph`` type represent a graph at given a time. The data is
 stored as an adjacency list. Here is the definition::
   
-  type TimeGraph{T} <: AbstractEvolvingGraph
+  type TimeGraph{V, T} <: AbstractEvolvingGraph
     is_directed::Bool
     time::T
-    nodes::Vector{Node}
+    nodes::Vector{V}
     nedges::Int
-    adjlist::Dict{Node, Vector{Node}}
+    adjlist::Dict{V, Vector{V}}
   end
 
 The following functions are defined on ``TimeGraph``.
 
-.. function:: time_graph(t [, is_directed = true])
+.. function:: time_graph(type, t [, is_directed = true])
 
-   initialize a ``TimeGraph`` at time ``t``.
+   initialize a ``TimeGraph`` at time ``t``, where ``type`` is the node type.
 
 .. function:: time(g)
 	      
@@ -102,6 +102,15 @@ definition::
 	      
    reduce the number of timestamps by emerging the graph with less
    than ``n`` edges to a neighbour graph.  
+
+.. function:: add_edge!(g, te)
+	      
+   add a TimeEdge ``te`` to EvolvingGraph ``g``.
+
+.. function:: add_graph!(g, tg)
+	      
+   add a TimeGraph ``tg`` to EvolvingGraph ``g``.
+
 
 TimeTensor
 ----------
