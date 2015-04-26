@@ -1,24 +1,29 @@
-# return a ranking vector
-function katz_centrality{T}(g::Array{T, 3}, α::Real = 0.3, β::Real = 0.2; 
-                            broadcast::Bool = true, receive::Bool = false)
-    n, n, k = size(g)
-    A = Array(T, n, n)
-    v = Array()
-    for i = 1:k
-        copy!(A, )
-        S = (I + e^(-βΔt)*S)*(I - αA)^(-1) - I
-    end
-    if broadcast
-        v1 = S*ones(n)
-    end
-    if receive
-        v2 = At_mul_B(S, ones(n))
-    end
+type Rank{V}
+    broadcast::Dict{V, Real}
+    receive::Dict{V, Real}
 end
 
-# return a dictionary: node => value
-function katz_centrality(g::TimeTensor, α::Real = 0.3, β::Real = 0.2;
-                         broadcast::Bool = true, receive::Bool = false)
 
+# return the broadcast centrality
+function katz_centrality(g::EvolvingGraph, α::Real = 0.3, β::Real = 0.2)
+    n = num_nodes(g)
+    ns = nodes(g)
+    ts = timestamps(g) 
+    S = spzeros(Bool, n, n)
+    I = speye(Float64, n)
+    v1 = Array(Float64, n) 
+    Δt = 1
+    for t in ts 
+        Δt += 0.01
+        S = (I + e^(-β*Δt)*S)*(I + α*spmatrix(g,t) + 
+                               α^2*spmatrix(g,t)^2 + α^3*spmatrix(g,t)^3) - I
+        S = S/norm(S)
+    end
 
+    A_mul_B!(v1, S, ones(n))
+
+    return collect(zip(ns, v1))
+    
 end
+
+

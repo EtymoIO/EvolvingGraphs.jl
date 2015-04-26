@@ -30,7 +30,7 @@ build_sparse_tensor,
 egreader,
 
 # algorithms
-BFS, DFS
+BFS, DFS, katz_centrality
 
 include("common.jl")
  
@@ -41,12 +41,12 @@ include("graphs/time_edge_list.jl")
 include("graphs/evolving_graph.jl")
 include("graphs/tensor.jl")
 
-
 include("io.jl")
 include("show.jl")
 
 include("algorithms/bfs.jl")
 include("algorithms/dfs.jl")
+include("algorithms/katz_centrality.jl")
 
 # simple test
 include("graphs/test_graph.jl")
