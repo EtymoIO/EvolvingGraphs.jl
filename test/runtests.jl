@@ -6,7 +6,8 @@ tests = ["show",
          "time_graph",
          "evolving_graph",
          "time_tensor",
-         "sparse_time_tensor"
+         "sparse_time_tensor",
+         "centrality"
          ]
 
 for t in tests

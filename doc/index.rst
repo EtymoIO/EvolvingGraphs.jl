@@ -18,6 +18,8 @@ types and algorithms for working with evolving graphs.
    examples.rst
    node_edge.rst
    graph.rst
+   algorithms.rst
+
 
 
 
