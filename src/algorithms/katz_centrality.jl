@@ -1,3 +1,19 @@
+# compute the Katz centrality broadcast vector of a given
+# evolving graph. 
+function katz_centrality(g::EvolvingGraph, α::Real = 0.3)
+    n = num_nodes(g)
+    ns = nodes(g)
+    ts = timestamps(g)
+    A = spzeros(Float64, n, n)
+    I = speye(Float64, n)
+    v = ones(Float64, n)
+    for t in ts
+        copy!(A, spmatrix(g,t))
+        copy!(v, (I - α*A)\v)
+        copy!(v, v/norm(v))
+    end
+    return collect(zip(ns, v))
+end
 
 # compute the Katz centrality of a given evolving graph
 # α and β are parameters that controls the influence of 
@@ -6,8 +22,8 @@
 #      = :receive (receive centrality vector)
 #      = :matrix (the communicability matrix)
 function katz_centrality(g::EvolvingGraph, 
-                         α::Real = 0.3, 
-                         β::Real = 0.2;
+                         α::Real, 
+                         β::Real;
                          mode::Symbol = :broadcast)
     n = num_nodes(g)
     ns = nodes(g)
@@ -37,5 +53,4 @@ function katz_centrality(g::EvolvingGraph,
     end
 
 end
-
 
