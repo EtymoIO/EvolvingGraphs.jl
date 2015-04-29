@@ -4,13 +4,13 @@ function katz_centrality(g::EvolvingGraph, α::Real = 0.3)
     n = num_nodes(g)
     ns = nodes(g)
     ts = timestamps(g)
-    A = spzeros(Float64, n, n)
-    I = speye(Float64, n)
     v = ones(Float64, n)
+    A = spzeros(Float64, n, n)
+    spI = speye(Float64, n)
     for t in ts
-        copy!(A, spmatrix(g,t))
-        copy!(v, (I - α*A)\v)
-        copy!(v, v/norm(v))
+        A =  spmatrix(g,t)
+        v = (spI - α*A)\v
+        v =  v/norm(v)
     end
     return collect(zip(ns, v))
 end
@@ -35,9 +35,9 @@ function katz_centrality(g::EvolvingGraph,
     Δt = 1.
     for t in ts
         Δt += 0.01
-        copy!(A, spmatrix(g,t))
-        copy!(S, (I + e^(-β*Δt)*S)*(I + α*A + α^2*A^2) - I)
-        copy!(S, S/norm(S,1))
+        A =  spmatrix(g,t)
+        S =  (I + e^(-β*Δt)*S)*(I + α*A + α^2*A^2) - I
+        S =  S/norm(S,1)
     end
 
     if mode == :matrix

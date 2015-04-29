@@ -15,7 +15,7 @@ end
 time_graph{V,T}(::Type{V}, time::T; is_directed::Bool = true) =
     TimeGraph{V,T}(is_directed, 
                    time::T,
-                   [],
+                   V[],
                    0,
                    Dict{V, Vector{V}}())
 
@@ -57,6 +57,10 @@ function add_edge!(g::TimeGraph, e::Edge)
     end
     return g
 end
+
+function add_edge!{V}(g::TimeGraph, i::V, j::V)
+    add_edge!(g, Edge(i,j))
+end 
  
 out_neighbors{V}(g::TimeGraph, v::V) = g.adjlist[v]
 has_node{V}(g::TimeGraph, v::V) = (v in g.nodes)
