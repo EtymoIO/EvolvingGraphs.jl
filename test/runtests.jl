@@ -3,6 +3,8 @@ using Base.Test
 
 tests = ["show",    
          "io",
+         "nodes",
+         "edges",
          "time_graph",
          "evolving_graph",
          "time_tensor",
