@@ -1,8 +1,8 @@
 Getting Started
 ===============
 
-After installation, the first thing to do is to type::
-
+To start using EvolvingGraphs, it should be imported into the local scope::
+ 
   julia> using EvolvingGraphs
 
 
@@ -11,34 +11,22 @@ Suppose we have an evolving network with 2 timestamps
 
 .. image:: eg1.png
 
-To represent this evolving network, we can first build two graphs at
+To represent this evolving network, we first build two graphs at
 time :math:`t_1` and :math:`t_2` with the function ``time_graph``::
 
-  julia> g1 = time_graph(Char, "t1")
-  Directed TimeGraph (0 nodes, 0 edges)
+  g1 = time_graph(Char, "t1")
+  add_edge!(g1, 'a', 'b')
+  add_edge!(g1, 'a', 'c')
 
-  julia> add_edge!(g1, 'a', 'b')
-  Directed TimeGraph (2 nodes, 1 edges)
+  g2 = time_graph(Char, "t2")
+  add_edge!(g2, 'b', 'c')
 
-  julia> add_edge!(g1, 'a', 'c')
-  Directed TimeGraph (3 nodes, 2 edges)
+and then build an evolving graph ``eg`` by adding ``g1`` and ``g2``::
 
-  julia> g2 = time_graph(Char, "t2")
-  Directed TimeGraph (0 nodes, 0 edges)
+  eg = evolving_graph(Char, String)
+  add_graph!(eg, g1)
+  add_graph!(eg, g2)
 
-  julia> add_edge!(g2, 'b', 'c')
-  Directed TimeGraph (2 nodes, 1 edges)
-
-and then build an evolving graph ``eg`` by combining ``g1`` and ``g2``::
-
-  julia> eg = evolving_graph(Char, String)
-  Directed EvolvingGraph (0 nodes, 0 edges, 0 timestamps)
-
-  julia> add_graph!(eg, g1)
-  Directed EvolvingGraph (3 nodes, 2 edges, 1 timestamps)
-
-  julia> add_graph!(eg, g2)
-  Directed EvolvingGraph (3 nodes, 3 edges, 2 timestamps)
 
 Now ``eg`` is a directed evolving graph with 3 nodes, 3 edges and 2 
 timestamps. We can retrieve information from ``eg``::
@@ -60,82 +48,43 @@ timestamps. We can retrieve information from ``eg``::
   "t1"
   "t2"
 
-We can specify the two lists of nodes ``a`` and ``b`` and a list of 
-time stamps ``c``, so that ``(a[i], b[i], c[i])`` is a ``TimeEdge``, i.e., 
-there is edge from ``a[i]`` to ``b[i]`` at time ``c[i]``. 
 
-Here is simple example. Suppose we define a function
-``build_evolving_graph`` as follows::
-
-  function build_evolving_graph(;is_directed = true)
-    a = [1, 2, 3, 3, 4, 2, 6]
-    b = [2, 3, 2, 5, 3, 5, 1]
-    times = [1, 2, 2, 2, 3, 3, 3]
-    return evolving_graph(a, b, times, is_directed = is_directed)
-  end
-
-Then we can generate an ``EvolvingGraph`` with::
-
-  julia> g = build_evolving_graph()
-  Directed IntEvolvingGraph (6 nodes, 7 edges, 3 timestamps)
-
-and convert it an adjacency tensor with::
-
-  julia> adjacency_tensor(g)
-  6x6x3 Array{Bool,3}:
-  [:, :, 1] =
-  false   true  false  false  false  false
-  false  false  false  false  false  false
-  false  false  false  false  false  false
-  false  false  false  false  false  false
-  false  false  false  false  false  false
-  false  false  false  false  false  false
-
-  [:, :, 2] =
-  false  false  false  false  false   true
-  false  false   true  false  false  false
-  false   true  false  false   true  false
-  false  false  false  false  false  false
-  false  false  false  false  false  false
-  false  false  false  false  false  false
-
-  [:, :, 3] =
-  false  false  false  false  false  false
-  false  false  false  false   true  false
-  false  false  false  false  false  false
-  false  false   true  false  false  false
-  false  false  false  false  false  false
-  true   false  false  false  false  false
-
-We can also convert an ``EvolvingGraph`` to ``TimeTensor``::
-
-  julia> tt = time_tensor(g)
-  Directed TimeTensor (3 matrices, 3 timestamps)
-
-Notice ``TimeTensor`` store graph data as a vector of matrices::
-
-  julia> matrices(tt)
-  3-element Array{Array{Bool,2},1}:
-  6x6 Array{Bool,2}:
-  false   true  false  false  false  false
-  false  false  false  false  false  false
-  false  false  false  false  false  false
-  false  false  false  false  false  false
-  false  false  false  false  false  false
-  false  false  false  false  false  false
-  6x6 Array{Bool,2}:
-  false  false  false  false  false  false
-  false  false   true  false  false  false
-  false   true  false  false   true  false
-  false  false  false  false  false  false
-  false  false  false  false  false  false
-  false  false  false  false  false  false
-  6x6 Array{Bool,2}:
-  false  false  false  false  false  false
-  false  false  false  false   true  false
-  false  false  false  false  false  false
-  false  false   true  false  false  false
-  false  false  false  false  false  false
-  true   false  false  false  false  false
-
+We can also generate an evolving graph by 3 vectors: ``i``, ``j`` and ``t`` 
+such that ``i[k], j[k], t[k]`` represent a edge from ``i[k]`` to ``j[k]``
+at time ``t[k]``. For example, the evolving graph in the following figure
+can be generated as::
   
+  i = ['a', 'd', 'b', 'b', 'c', 'd', 'a'];
+  j = ['b', 'b', 'c', 'a', 'd', 'a', 'b'];
+  t = ["t1", "t1", "t1", "t2", "t2", "t3", "t3"];
+  eg2 = evolving_graph(i, j, t)
+
+.. image:: eg2.png
+
+
+At each timestamp, ``eg`` can be represented as an adjacency matrix::
+  
+  julia> matrix(eg2, "t1")
+  4x4 Array{Bool,2}:
+  false  false   true  false
+  false  false   true  false
+  false  false  false   true
+  false  false  false  false
+
+where the :math:`(i,j)` entry is ``true`` if there is an edge from 
+``nodes(eg2)[i]`` to ``nodes(eg2)[j]`` and ``false`` otherwise. Note::
+
+  julia> nodes(eg2)
+  4-element Array{Char,1}:
+  'a'
+  'd'
+  'b'
+  'c'
+
+
+A sparse representation is also available::
+
+  julia> spmatrix(eg2, "t2")
+  4x4 sparse matrix with 2 Bool entries:
+        [3, 1]  =  true
+	[4, 2]  =  true

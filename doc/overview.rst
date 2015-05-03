@@ -10,10 +10,11 @@ Here are the main features:
   - [x] TimeNode
   - [x] TimeTensor
   - [x] EvolvingGraph     
-
+  - [ ] WeightedEvolvingGraph
 
 * State of the art algorithms for computing centrality on evolving graphs. 
 
+  - [ ] metric
   - [x] Katz centrality
   - [ ] betweenness centrality
 
