@@ -8,6 +8,7 @@ export
 
 # core
 Node, Edge, TimeNode, IndexNode, TimeEdge, AbstractEvolvingGraph, 
+key, make_node, index, time, rev,
 
 # graphs
 AdjacencyList, build_tree, TimeEdgeList, EvolvingGraph, TimeTensor,

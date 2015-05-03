@@ -94,8 +94,6 @@ time(e::TimeEdge, g::AbstractEvolvingGraph) = e.time
                                   e1.target == e2.target &&
                                   e1.time == e2.time)
 
-make_edge(g::AbstractEvolvingGraph, u::IndexNode, v::IndexNode, t) =
-TimeEdge(u, v, t)
 
 function show(io::IO, e::TimeEdge)
     print(io, "TimeEdge($(e.source)->$(e.target)) at time $(e.time)")

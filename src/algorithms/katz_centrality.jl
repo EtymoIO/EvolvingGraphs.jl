@@ -12,7 +12,7 @@ function katz_centrality(g::EvolvingGraph, α::Real = 0.3)
         v = (spI - α*A)\v
         v =  v/norm(v)
     end
-    return collect(zip(ns, v))
+    return v
 end
 
 # compute the Katz centrality of a given evolving graph
