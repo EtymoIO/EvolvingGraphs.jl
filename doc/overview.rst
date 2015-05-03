@@ -2,7 +2,6 @@
 Main Features
 =============
 
-
 Here are the main features:
 
 * A variety of data types for working with evolving graphs.
@@ -15,7 +14,7 @@ Here are the main features:
 
 * State of the art algorithms for computing centrality on evolving graphs. 
 
-  - [ ] Katz centrality
+  - [x] Katz centrality
   - [ ] betweenness centrality
 
 * io 

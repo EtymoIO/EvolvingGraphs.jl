@@ -6,10 +6,14 @@
 EvolvingGraphs: Dynamic Graph Analysis in Julia
 ===============================================
 
-Many real applications generate time ordered sequences of networks
-such as communication in distributed network and
-epidemiology. *EvolvingGraph.jl* is a Julia package that provides data
-types and algorithms for working with evolving graphs.
+Many network problems are time dependent. For example, the problem of 
+modelling information flow through a network, studying the spread of 
+diseases through a population, or understanding the correlated neural 
+activity in response to a functional task. We call such network 
+**Evolving Graph**.
+
+*EvolvingGraph.jl* is a Julia package that provides data types and 
+algorithms for working with evolving graphs.
 
 .. toctree::
    :maxdepth: 2

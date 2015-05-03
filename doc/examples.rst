@@ -1,6 +1,65 @@
 Getting Started
 ===============
 
+After installation, the first thing to do is to type::
+
+  julia> using EvolvingGraphs
+
+
+Suppose we have an evolving network with 2 timestamps 
+:math:`t_1, t_2` as shown in the figure below.
+
+.. image:: eg1.png
+
+To represent this evolving network, we can first build two graphs at
+time :math:`t_1` and :math:`t_2` with the function ``time_graph``::
+
+  julia> g1 = time_graph(Char, "t1")
+  Directed TimeGraph (0 nodes, 0 edges)
+
+  julia> add_edge!(g1, 'a', 'b')
+  Directed TimeGraph (2 nodes, 1 edges)
+
+  julia> add_edge!(g1, 'a', 'c')
+  Directed TimeGraph (3 nodes, 2 edges)
+
+  julia> g2 = time_graph(Char, "t2")
+  Directed TimeGraph (0 nodes, 0 edges)
+
+  julia> add_edge!(g2, 'b', 'c')
+  Directed TimeGraph (2 nodes, 1 edges)
+
+and then build an evolving graph ``eg`` by combining ``g1`` and ``g2``::
+
+  julia> eg = evolving_graph(Char, String)
+  Directed EvolvingGraph (0 nodes, 0 edges, 0 timestamps)
+
+  julia> add_graph!(eg, g1)
+  Directed EvolvingGraph (3 nodes, 2 edges, 1 timestamps)
+
+  julia> add_graph!(eg, g2)
+  Directed EvolvingGraph (3 nodes, 3 edges, 2 timestamps)
+
+Now ``eg`` is a directed evolving graph with 3 nodes, 3 edges and 2 
+timestamps. We can retrieve information from ``eg``::
+
+  julia> nodes(eg)
+  3-element Array{Char,1}:
+  'a'
+  'b'
+  'c'
+
+  julia> edges(eg)
+  3-element Array{EvolvingGraphs.TimeEdge{V,T},1}:
+  TimeEdge(a->b) at time t1
+  TimeEdge(a->c) at time t1
+  TimeEdge(b->c) at time t2
+
+  julia> timestamps(eg)
+  2-element Array{AbstractString,1}:
+  "t1"
+  "t2"
+
 We can specify the two lists of nodes ``a`` and ``b`` and a list of 
 time stamps ``c``, so that ``(a[i], b[i], c[i])`` is a ``TimeEdge``, i.e., 
 there is edge from ``a[i]`` to ``b[i]`` at time ``c[i]``. 
