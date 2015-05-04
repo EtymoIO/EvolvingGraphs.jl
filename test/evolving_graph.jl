@@ -25,7 +25,13 @@ timestamps(gg)
 @test num_timestamps(gg) == 5
 reduce_timestamps!(gg)
 @test num_timestamps(gg) == 3 
-g2 = evolving_graph(Int, Char, is_directed = true)
 
 # convert to matrix
 @test matrix(gg, "t2") == full(spmatrix(gg, "t2"))
+
+g2 = evolving_graph(Int, Char, is_directed = true)
+add_edge!(g2, 1, 2, 'a')
+add_edge!(g2, 2, 3, 'b')
+@test num_nodes(g2) == 3
+@test num_edges(g2) == 2
+@test num_timestamps(g2) == 2

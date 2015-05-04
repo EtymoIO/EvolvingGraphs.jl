@@ -1,19 +1,3 @@
-function build_tree(;is_directed = true)
-    g = AdjacencyList(is_directed = is_directed)
-    for element in ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
-        add_node!(g, Node(element))
-    end
-    add_edge!(g, Edge('a', 'b'))
-    add_edge!(g, Edge('b', 'd'))
-    add_edge!(g, Edge('b', 'e'))
-    add_edge!(g, Edge('b', 'f'))
-    add_edge!(g, Edge('a', 'c'))
-    add_edge!(g, Edge('c', 'g'))
-    add_edge!(g, Edge('g', 'h'))
-     
-    return g
-end
-
 
 function build_evolving_graph(;is_directed = true)
     a = [1, 2, 3, 3, 4, 2, 6]
@@ -22,16 +6,6 @@ function build_evolving_graph(;is_directed = true)
     return evolving_graph(a, b, times, is_directed = is_directed)
 end
 
-function build_sparse_tensor(;is_directed = true)
-    v = [1,2,3]
-    As = SparseMatrixCSC[]
-    A1 = speye(4)
-    A2 = speye(5)
-    push!(As, A1)
-    push!(As, A2)
-    push!(As, A2)
-    return sparse_time_tensor(v, As, is_directed = is_directed)
-end
 
 function build_evolving_graph2(;is_directed = true)
     g = TimeEdgeList(is_directed = is_directed)

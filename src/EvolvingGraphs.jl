@@ -24,7 +24,7 @@ matrix, spmatrix,
 random_time_graph,
  
 # examples
-build_tree, build_evolving_graph, build_evolving_graph2, 
+build_evolving_graph, build_evolving_graph2, 
 
 # io
 egreader,
