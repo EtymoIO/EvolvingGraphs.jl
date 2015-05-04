@@ -8,7 +8,7 @@ export
 
 # common
 Node, Edge, TimeNode, IndexNode, TimeEdge, WeightedTimeEdge, 
-AbstractEvolvingGraph, key, make_node, index, time, rev,
+AbstractEvolvingGraph, key, make_node, index, rev,
 
 # graphs
 TimeGraph, EvolvingGraph, WeightedEvolvingGraph,
@@ -21,7 +21,7 @@ timestamps, num_timestamps, reduce_timestamps!,
 has_node, out_neighbors, is_directed,
 time_graph, evolving_graph, weighted_evolving_graph,
 matrix, spmatrix, 
-random_time_graph,
+random_time_graph, random_evolving_graph,
  
 # examples
 build_evolving_graph, build_evolving_graph2, 

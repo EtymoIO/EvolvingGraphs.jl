@@ -48,3 +48,35 @@ Examples::
     ('b',0.9999999999999999)
     ('c',0.5002275748460789)
 
+
+Random Evolving Graphs
+----------------------
+
+We generate a random time graph and random evolving graph according to 
+the Erdős–Rényi model, i.e, set an edge between each pair of nodes with 
+equal probability, independently of the other edges.
+
+.. function:: random_time_graph(t, n [,p = 0.5, is_directed = true, has_self_loops = false)
+
+    generate a random time graph with ``Integer`` nodes and time. 
+
+    :param t: the time of the time graph.
+    :param n: the number of nodes.
+    :param p: the probability with which to add each edge.
+    :param is_directed: whether to generate directed time graph.
+    :param has_self_loops: whether to include edges ``v -> v``.
+
+    :returns: the time graph ``g``.
+
+
+.. function:: random_evolving_graph(nv, nt [, p = 0.5, is_directed = true, has_self_loops = false) 
+  
+    generate a random evolving graph with ``Integer`` nodes and timestamps.
+
+    :param nv: the number of nodes.
+    :param nt: the number of timestamps.
+    :param p: the probability with which to add each edge.
+    :param is_directed: whether to generate directed time graph.
+    :param has_self_loops: whether to include edges ``v -> v``.
+
+    :returns: the evolving graph ``g``.
