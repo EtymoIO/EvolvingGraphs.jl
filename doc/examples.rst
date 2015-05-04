@@ -11,7 +11,7 @@ Suppose we have an evolving network with 2 timestamps
 
 .. image:: eg1.png
 
-To represent this evolving network, we first build two graphs at
+To represent this evolving graph, we first build two graphs at
 time :math:`t_1` and :math:`t_2` with the function ``time_graph``::
 
   g1 = time_graph(Char, "t1")
@@ -26,7 +26,6 @@ and then build an evolving graph ``eg`` by adding ``g1`` and ``g2``::
   eg = evolving_graph(Char, String)
   add_graph!(eg, g1)
   add_graph!(eg, g2)
-
 
 Now ``eg`` is a directed evolving graph with 3 nodes, 3 edges and 2 
 timestamps. We can retrieve information from ``eg``::
@@ -49,7 +48,16 @@ timestamps. We can retrieve information from ``eg``::
   "t2"
 
 
-We can also generate an evolving graph by 3 vectors: ``i``, ``j`` and ``t`` 
+Another way to generate the same evolving graph is to use the function 
+``add_edge!``::
+
+  eg2 = evolving_graph(Char, String)
+  add_edge!(eg2, 'a', 'c', "t1")
+  add_edge!(eg2, 'a', 'b', "t1")
+  add_edge!(eg2, 'b', 'c', "t2")
+
+
+In addition, we can generate an evolving graph by 3 vectors: ``i``, ``j`` and ``t`` 
 such that ``i[k], j[k], t[k]`` represent an edge from ``i[k]`` to ``j[k]``
 at time ``t[k]``. For example, the evolving graph in the following figure
 can be generated as::
