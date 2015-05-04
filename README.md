@@ -33,7 +33,7 @@ Here are the main features:
 
 * All data structures and algorithms are implemented in *pure Julia*.
 
-## Simple Example
+## Examples
 
 Generate a random evolving graph with 4 nodes and 3 timestamps:
 
