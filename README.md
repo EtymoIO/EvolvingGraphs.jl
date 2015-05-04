@@ -5,9 +5,10 @@
 *EvolvingGraph.jl* is a Julia package that provides data types and 
 algorithms for working with evolving graphs.
 
-**Installation:**  `Pkg.clone("https://github.com/weijianzhang/EvolvingGraphs.jl.git")`
+**Installation** ``Pkg.add("EvolvingGraphs")``
 
 **Documentation:** [Read the Docs](http://evolvinggraphsjl.readthedocs.org/en/latest/)
+
 
 Here are the main features:
 
