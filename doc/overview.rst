@@ -7,8 +7,6 @@ Here are the main features:
 * A variety of data types for working with evolving graphs.
 
   - [x] TimeEdge
-  - [x] TimeNode
-  - [x] TimeTensor
   - [x] EvolvingGraph     
   - [ ] WeightedEvolvingGraph
 

@@ -50,7 +50,7 @@ timestamps. We can retrieve information from ``eg``::
 
 
 We can also generate an evolving graph by 3 vectors: ``i``, ``j`` and ``t`` 
-such that ``i[k], j[k], t[k]`` represent a edge from ``i[k]`` to ``j[k]``
+such that ``i[k], j[k], t[k]`` represent an edge from ``i[k]`` to ``j[k]``
 at time ``t[k]``. For example, the evolving graph in the following figure
 can be generated as::
   
