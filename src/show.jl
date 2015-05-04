@@ -10,16 +10,6 @@ function show(io::IO, g::IntEvolvingGraph)
     print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) edges, $(num_timestamps(g)) timestamps)")
 end
 
-function show(io::IO, g::TimeTensor)
-    title = is_directed(g) ? "Directed TimeTensor" : "Undirected TimeTensor"
-    print(io, "$(title) ($(num_matrices(g)) matrices, $(num_timestamps(g)) timestamps)")
-end
-
-function show(io::IO, g::SparseTimeTensor)
-    title = is_directed(g) ? "Directed SparseTimeTensor" : "Undirected SparseTimeTensor"
-    print(io, "$(title) ($(num_matrices(g)) matrices, $(num_timestamps(g)) timestamps)")
-end
-
 function show(io::IO, g::TimeGraph)
     title = is_directed(g) ? "Directed TimeGraph" : "Undirected TimeGraph"
     print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) edges)")

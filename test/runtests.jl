@@ -1,14 +1,12 @@
 using EvolvingGraphs
 using Base.Test
 
-tests = ["show",    
+tests = [
          "io",
          "nodes",
          "edges",
          "time_graph",
          "evolving_graph",
-         "time_tensor",
-         "sparse_time_tensor",
          "centrality",
          "random_graph"
          ]
