@@ -4,7 +4,7 @@
 #
 ##################################
 
-type TimeGraph{V, T} <: AbstractEvolvingGraph
+type TimeGraph{V, T} <: AbstractEvolvingGraph{V, T}
     is_directed::Bool
     time::T
     nodes::Vector{V}

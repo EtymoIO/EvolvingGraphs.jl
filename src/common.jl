@@ -80,5 +80,16 @@ time(e::TimeEdge, g::AbstractEvolvingGraph) = e.time
                                   e1.target == e2.target &&
                                   e1.time == e2.time)
 
+immutable WeightedTimeEdge{V, T, W<:Real}
+    source::V
+    target::V
+    weight::W
+    time::T
+end
+
+source(e::WeightedTimeEdge) = e.source
+target(e::WeightedTimeEdge) = e.target
+time(e::WeightedTimeEdge) = e.time
+weight(e::WeightedTimeEdge) = e.weight
 
 
