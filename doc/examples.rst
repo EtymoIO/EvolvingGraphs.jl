@@ -65,7 +65,7 @@ can be generated as::
   i = ['a', 'd', 'b', 'b', 'c', 'd', 'a'];
   j = ['b', 'b', 'c', 'a', 'd', 'a', 'b'];
   t = ["t1", "t1", "t1", "t2", "t2", "t3", "t3"];
-  eg2 = evolving_graph(i, j, t)
+  eg = evolving_graph(i, j, t)
 
 .. image:: eg2.png
 

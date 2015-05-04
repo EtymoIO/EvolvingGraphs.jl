@@ -4,8 +4,7 @@ Algorithms
 Katz Centrality
 ----------------
 
-This is the generalization of the Katz centrality on static network on
-a dynamic setting.
+This is the generalization of the static graph case Katz centrality.
 
 
 .. function:: katz_centrality(g [, alpha = 0.3])

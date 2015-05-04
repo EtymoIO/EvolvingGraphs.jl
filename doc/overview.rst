@@ -6,20 +6,21 @@ Here are the main features:
 
 * A variety of data types for working with evolving graphs.
 
-  - [x] TimeEdge
-  - [x] EvolvingGraph     
-  - [ ] WeightedEvolvingGraph
+  - TimeEdge
+  - WeightedTimeEdge
+  - TimeGraph
+  - EvolvingGraph     
+  - WeightedEvolvingGraph
 
-* State of the art algorithms for computing centrality on evolving graphs. 
+* a collection of evolving graph algorithms.
 
-  - [ ] metric
-  - [x] Katz centrality
-  - [ ] betweenness centrality
+  - Katz centrality
+  - random evolving graph
+  - more algorithms are being implemented
 
 * io 
 
-  - [x] read in Evolving Graph Exchange Format file
-  - [ ] write a graph in Evolving Graph Exchange Format. 
+  - read data from Evolving Graph Exchange Format file.
 
 * All data structures and algorithms are implemented in *pure Julia*.
 

@@ -17,15 +17,16 @@ Here are the main features:
   - [x] EvolvingGraph     
   - [x] WeightedEvolvingGraph
 
-* State of the art algorithms for computing centrality on evolving graphs. 
+* A collection of evolving graph algorithms.
 
   - [ ] metric
   - [x] Katz centrality
   - [ ] betweenness centrality
+  - [x] random evolving graph
 
 * io 
 
-  - [x] read in Evolving Graph Exchange Format file
+  - [x] read data in Evolving Graph Exchange Format. (see the one in `data/`)
   - [ ] write a graph in Evolving Graph Exchange Format. 
 
 * All data structures and algorithms are implemented in *pure Julia*.
