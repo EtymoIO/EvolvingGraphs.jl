@@ -51,7 +51,7 @@ timestamps. We can retrieve information from ``eg``::
 Another way to generate the same evolving graph is to use the function 
 ``add_edge!``::
 
-  eg2 = evolving_graph(Char, String)
+  eg = evolving_graph(Char, String)
   add_edge!(eg2, 'a', 'c', "t1")
   add_edge!(eg2, 'a', 'b', "t1")
   add_edge!(eg2, 'b', 'c', "t2")
@@ -65,7 +65,7 @@ can be generated as::
   i = ['a', 'd', 'b', 'b', 'c', 'd', 'a'];
   j = ['b', 'b', 'c', 'a', 'd', 'a', 'b'];
   t = ["t1", "t1", "t1", "t2", "t2", "t3", "t3"];
-  eg = evolving_graph(i, j, t)
+  eg2 = evolving_graph(i, j, t)
 
 .. image:: eg2.png
 
