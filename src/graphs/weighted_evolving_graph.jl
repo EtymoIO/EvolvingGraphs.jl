@@ -51,13 +51,13 @@ function edges(g::WeightedEvolvingGraph)
 
     if g.is_directed
        for i = 1:n
-           e = WeightedTimeEdge(g.ilist[i], g.jlist[i], g.weight[i], g.timestamps[i])
+           e = WeightedTimeEdge(g.ilist[i], g.jlist[i], g.weights[i], g.timestamps[i])
            push!(edgelists, e)
        end
     else
         for i = 1:n
-            e1 = WeightedTimeEdge(g.ilist[i], g.jlist[i], g.weight[i], g.timestamps[i])
-            e2 = WeightedTimeEdge(g.jlist[i], g.ilist[i], g.weight[i], g.timestamps[i])
+            e1 = WeightedTimeEdge(g.ilist[i], g.jlist[i], g.weights[i], g.timestamps[i])
+            e2 = WeightedTimeEdge(g.jlist[i], g.ilist[i], g.weights[i], g.timestamps[i])
             push!(edgelists, e1)
             push!(edgelists, e2)
         end
@@ -67,3 +67,18 @@ end
 
 num_edges(g::WeightedEvolvingGraph) = g.is_directed ? length(g.ilist) : length(g.ilist)*2
 
+# add a TimeEdge to an EvolvingGraph
+function add_edge!(g::WeightedEvolvingGraph, te::WeightedTimeEdge)
+    if !(te in edges(g))
+        push!(g.ilist, te.source)
+        push!(g.jlist, te.target)
+        push!(g.weights, te.weight)
+        push!(g.timestamps, te.time)
+    end
+    g
+end
+
+function add_edge!{V, W<:Real, T}(g::WeightedEvolvingGraph, v1::V, v2::V, 
+                                  w::W, t::T)
+    add_edge!(g, WeightedTimeEdge(v1, v2, w, t))
+end
