@@ -7,7 +7,7 @@ TimeGraph
 The ``TimeGraph`` type represent a graph at given a time. The data is
 stored as an adjacency list. Here is the definition::
   
-  type TimeGraph{V, T} <: AbstractEvolvingGraph
+  type TimeGraph{V, T} <: AbstractEvolvingGraph{V, T}
     is_directed::Bool
     time::T
     nodes::Vector{V}
@@ -22,6 +22,7 @@ The following functions are defined on ``TimeGraph``.
    initialize a ``TimeGraph`` at time ``t``, where ``type`` is the node type.
 
 .. function:: time(g)
+   :noindex:
 	      
    return the time of the graph ``g``.	
 
@@ -49,7 +50,7 @@ EvolvingGraph
 The most important graph type is ``EvolvingGraph``. Here is the
 definition::
 
-  type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V, TimeEdge, T}
+  type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V, T}
     is_directed::Bool
     ilist::Vector{V}
     jlist::Vector{V}
@@ -117,6 +118,10 @@ definition::
 	      
    add a TimeEdge ``te`` to EvolvingGraph ``g``.
 
+.. function:: add_edge!(g, v1, v2, t)
+
+   add an edge (from ``v1`` to ``v2`` at time ``t``) to EvolvingGraph ``g``.
+
 .. function:: add_graph!(g, tg)
 	      
    add a TimeGraph ``tg`` to EvolvingGraph ``g``.
@@ -131,3 +136,73 @@ definition::
    return a sparse adjacency matrix representation of the
    EvolvingGraph ``g`` at time ``t``.
 
+
+WeightedEvolvingGraph
+---------------------
+
+A ``WeightedEvolvingGraph`` is an ``EvolvingGraph`` with a weighted edge.
+Here is the definition::
+
+  type WeightedEvolvingGraph{V,T,W<:Real} <: AbstractEvolvingGraph{V,T,W}
+     is_directed::Bool
+     ilist::Vector{V}
+     jlist::Vector{V}
+     weights::Vector{W}
+     timestamps::Vector{T} 
+  end
+
+The following functions are defined for ``WeightedEvolvingGraph``.
+
+.. function:: weighted_evolving_graph(ils, jls, ws, timestamps [, is_directed = true])
+
+   generate an ``WeightedEvolvingGraph`` from 4 vectors of same length:
+   ``ils``, ``jls``, ``ws`` and ``timestamps`` such that 
+   ``ils[i] jls[i] ws[i] timestamps[i]`` is an edge of weight ``ws[i]`` 
+   from ``ils[i]`` to ``jls[i]`` at time ``timestamps[i]``. 
+
+.. function:: weighted_evolving_graph(node_type, weight_type, time_type [, is_directed = true])
+
+   initialize an evolving graph with ``node_type`` node, ``weight_type`` edge weight and 
+   ``time_type`` timestamps.
+
+.. function:: weighted_evolving_graph(;is_directed = true)
+
+   initialize an evolving graph with ``Integer`` node and timestamps and 
+   ``FloatingPoint`` edge weight.
+
+
+.. function:: is_directed(g)
+
+   return ``true`` if graph ``g`` is directed and ``false`` otherwise.
+
+.. function:: nodes(g)
+
+   return a list of nodes of graph ``g``.
+
+.. function:: num_nodes(g)
+
+   return the number of nodes of graph ``g``.
+
+.. function:: edges(g)
+
+   return a list of edges of graph ``g``.
+
+.. function:: num_edges(g)    	      
+
+   return the number of edges of graph ``g``.
+
+.. function:: timestamps(g)
+
+   return the timestamps of graph ``g``.
+
+.. function:: num_timestamps(g)
+
+   return the number of timestamps of graph ``g``.
+
+.. function:: add_edge!(g, te)
+
+   add a ``WeightedTimeEdge`` to graph ``g``.
+
+.. function:: add_edge!(g, v1, v2, w, t)
+
+   add an edge (of weight ``w`` from ``v1`` to ``v2`` at time ``t``) to graph ``g``.
