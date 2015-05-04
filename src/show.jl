@@ -1,4 +1,23 @@
 # the show function 
+function show(io::IO, v::Node)
+    print(io, "Node($(v.key))")
+end
+
+function show(io::IO, v::IndexNode)
+    print(io, "IndexNode($(v.key))")
+end
+
+function show(io::IO, v::TimeNode)
+    print(io, "TimeNode($(v.key), $(v.time))")
+end
+
+function show(io::IO, e::Edge)
+    print(io, "Edge $(e.source)->$(e.target)")
+end
+ 
+function show(io::IO, e::TimeEdge)
+    print(io, "TimeEdge($(e.source)->$(e.target)) at time $(e.time)")
+end
 
 function show(io::IO, g::EvolvingGraph)
     title = is_directed(g) ? "Directed EvolvingGraph" : "Undirected EvolvingGraph"

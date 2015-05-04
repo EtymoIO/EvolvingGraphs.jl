@@ -5,7 +5,7 @@
 #
 #####################################################
 
-type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V, TimeEdge, T}
+type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V,T}
     is_directed::Bool
     ilist::Vector{V}
     jlist::Vector{V}
@@ -179,16 +179,3 @@ function spmatrix(g::EvolvingGraph, t)
     return sparse(is, js, vs, n, n)    
 end
 
-####################################################
-#
-# Weighted EvolvingGraph type
-#
-#####################################################
-
-type WeightedEvolvingGraph{V,W,T} <: AbstractEvolvingGraph{V, TimeEdge, T}
-    is_directed::Bool
-    ilist::Vector{V}
-    jlist::Vector{V}
-    weights::Vector{W}
-    timestamps::Vector{T} 
-end

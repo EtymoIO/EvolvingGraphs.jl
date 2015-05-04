@@ -11,7 +11,7 @@ Node, Edge, TimeNode, IndexNode, TimeEdge, AbstractEvolvingGraph,
 key, make_node, index, time, rev,
 
 # graphs
-TimeGraph, EvolvingGraph,
+TimeGraph, EvolvingGraph, WeightedEvolvingGraph,
 
 # graph functions
 add_node!, add_edge!, add_graph!,
