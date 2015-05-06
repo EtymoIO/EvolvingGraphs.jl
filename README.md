@@ -1,13 +1,16 @@
 # EvolvingGraphs
 
 [![Build Status](https://travis-ci.org/weijianzhang/EvolvingGraphs.jl.svg?branch=master)](https://travis-ci.org/weijianzhang/EvolvingGraphs.jl)
+| Julia 0.3 [![EvolvingGraphs](http://pkg.julialang.org/badges/EvolvingGraphs_release.svg)](http://pkg.julialang.org/?pkg=EvolvingGraphs&ver=release)
+| Julia 0.4 [![EvolvingGraphs](http://pkg.julialang.org/badges/EvolvingGraphs_nightly.svg)](http://pkg.julialang.org/?pkg=EvolvingGraphs&ver=nightly)
 
-*EvolvingGraph.jl* is a Julia package that provides data types and 
-algorithms for working with evolving graphs.
+Dynamic Graph Analysis Framework in Julia.
 
-**Installation:** ``Pkg.add("EvolvingGraphs")``
+* Installation: ``Pkg.add("EvolvingGraphs")``
 
-**Documentation:** [Read the Docs](http://evolvinggraphsjl.readthedocs.org/en/latest/)
+* [Documentation](http://evolvinggraphsjl.readthedocs.org/en/latest/)
+
+* [Release Notes](https://github.com/weijianzhang/EvolvingGraphs.jl/blob/master/NEWS.md)
 
 ## Features
 
