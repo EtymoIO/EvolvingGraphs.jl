@@ -13,7 +13,7 @@ type TimeGraph{V, T} <: AbstractEvolvingGraph{V, T}
 end
 
 @doc doc"""
-time_graph(type, time [, is_directed])
+`time_graph(type, time [, is_directed])`
 generates a time graph 
 
 Input: 
@@ -32,15 +32,30 @@ time_graph{V,T}(::Type{V}, time::T; is_directed::Bool = true) =
 
 is_directed(g::TimeGraph) = g.is_directed
 
+@doc doc"""
+`nodes(g)` returns the nodes of a time graph `g`.
+"""->
 nodes(g::TimeGraph) = g.nodes
+
+@doc doc"""
+`num_nodes(g)` returns the number of nodes of a time graph `g`.
+"""->
 num_nodes(g::TimeGraph) = length(g.nodes)
 
+@doc doc"""
+`num_edges(g)` returns the number of edges of a time graph `g`.
+"""->
 num_edges(g::TimeGraph) = g.nedges
 
+@doc doc"""
+`time(g)` returns the time of a time graph `g`.
+"""->
 time(g::TimeGraph) = g.time
 
 
-
+@doc doc"""
+`add_node!(g, v)` add a node `v` to a time graph `g`.
+"""->
 function add_node!{V}(g::TimeGraph, v::V)
     if !(v in g.nodes)
         push!(g.nodes, v)
@@ -49,6 +64,10 @@ function add_node!{V}(g::TimeGraph, v::V)
     return v
 end
 
+
+@doc doc"""
+`add_edge!(g, e)` adds an edge `e` to a time graph `g`. 
+"""->
 function add_edge!(g::TimeGraph, e::Edge)
     src = e.source
     dest = e.target
@@ -69,11 +88,26 @@ function add_edge!(g::TimeGraph, e::Edge)
     return g
 end
 
+@doc doc"""
+`add_edge!(g, i, j)` adds an edge from node `i` to node `j` to a time graph
+`g`.
+"""->
 function add_edge!{V}(g::TimeGraph, i::V, j::V)
     add_edge!(g, Edge(i,j))
 end 
- 
+
+
+@doc doc"""
+`out_neighbors(g, v)` returns a list of nodes that `v` points to on the
+time graph `g`.
+"""-> 
 out_neighbors{V}(g::TimeGraph, v::V) = g.adjlist[v]
+
+
+@doc doc"""
+`has_node(g, v)` returns `true` if `v` is a node of the time graph `g` 
+and `false` otherwise.  
+"""->
 has_node{V}(g::TimeGraph, v::V) = (v in g.nodes)
 
 

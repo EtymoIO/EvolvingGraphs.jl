@@ -15,7 +15,7 @@ end
 typealias IntEvolvingGraph EvolvingGraph{Int, Int}
 
 @doc doc"""
-evolving_graph(ils, jls, timestamps [, is_directed]) 
+`evolving_graph(ils, jls, timestamps [, is_directed])` 
 generates an evolving graph 
 
 Input:
@@ -35,7 +35,7 @@ function evolving_graph{V,T}(ils::Vector{V},
 end
 
 @doc doc"""
-evolving_graph([node_type, time_type, is_directed])
+`evolving_graph([node_type, time_type, is_directed])`
 generates an evolving graph 
 
 Input:
@@ -48,12 +48,13 @@ evolving_graph{V,T}(::Type{V}, ::Type{T} ;is_directed::Bool = true) = EvolvingGr
 evolving_graph(;is_directed::Bool = true) = evolving_graph(Int, Int, is_directed = is_directed)
 
 @doc doc"""
-is_directed(g) returns `true` if g is directed and `false` otherwise.
+`is_directed(g)` returns `true` if `g` is directed and `false` otherwise.
 """->
 is_directed(g::EvolvingGraph) = g.is_directed
 
+
 @doc doc"""
-timestamps(g) returns the timestamps of an evolving graph g.
+`timestamps(g)` returns the timestamps of an evolving graph `g`.
 """->
 function timestamps(g::EvolvingGraph)
     ts = unique(g.timestamps)
@@ -63,19 +64,24 @@ function timestamps(g::EvolvingGraph)
     return ts
 end
 
+
 @doc doc"""
-num_timestamps(g) returns the number of timestamps of g, 
-where g is an evolving graph.
+`num_timestamps(g)` returns the number of timestamps of `g`, 
+where `g` is an evolving graph.
 """->
 num_timestamps(g::EvolvingGraph) = length(timestamps(g))
 
+
 @doc doc"""
-nodes(g) return the nodes of an evolving graph g. 
+`nodes(g)` return the nodes of an evolving graph `g`. 
 """->
 nodes(g::EvolvingGraph) = union(g.ilist, g.jlist)
 num_nodes(g::EvolvingGraph) = length(nodes(g))
 
 
+@doc doc"""
+`edges(g)` return the edges of an evolving graph `g`.
+"""->
 function edges(g::EvolvingGraph)
     n = length(g.ilist)
 
@@ -97,7 +103,10 @@ function edges(g::EvolvingGraph)
     return edgelists
 end
 
-# edge of an evolving graph at a given time
+
+@doc doc"""
+`edges(g, t)` return the edges of an evolving graph `g` at a given timestamp `t`.
+"""->
 function edges{T}(g::EvolvingGraph, t::T)
     t in g.timestamps || error("unknown time stamp $(t)")
 
@@ -126,6 +135,10 @@ function edges{T}(g::EvolvingGraph, t::T)
     return edgelists
 end
 
+
+@doc doc"""
+`num_edges(g)` returns the number of edges of an evolving graph `g`.
+"""->
 num_edges(g::EvolvingGraph) = g.is_directed ? length(g.ilist) : length(g.ilist)*2
 
 # reduce the number of timestamps by emerging the graph with less
@@ -146,7 +159,10 @@ function reduce_timestamps!(g::EvolvingGraph, n::Int = 2)
     g
 end 
 
-# add a TimeEdge to an EvolvingGraph
+
+@doc doc"""
+`add_edge!(g, te)` adds a time edge `te` to an evolving graph `g`.
+"""->
 function add_edge!(g::EvolvingGraph, te::TimeEdge)
     if !(te in edges(g))
         push!(g.ilist, te.source)
@@ -156,11 +172,19 @@ function add_edge!(g::EvolvingGraph, te::TimeEdge)
     g
 end
 
+
+@doc doc"""
+`add_edge!(g, v1, v2, t)` adds an edge from `v1` to `v2` at time `t` 
+to an evolving graph `g`.
+"""->
 function add_edge!{V, T}(g::EvolvingGraph, v1::V, v2::V, t::T)
     add_edge!(g, TimeEdge(v1, v2, t))
 end
 
-# add a TimeGraph to an EvolvingGraph
+
+@doc doc"""
+`add_graph!(g, tg)` adds a time graph `tg` to an evolving graph `g`.
+"""->
 function add_graph!(g::EvolvingGraph, tg::TimeGraph)
     t = time(tg)
     for v1 in nodes(tg)
@@ -175,8 +199,10 @@ function add_graph!(g::EvolvingGraph, tg::TimeGraph)
 end
 
 
-# get the adjacency matrix representation of an EvolvingGraph at a 
-# specific time
+@doc doc"""
+`matrix(g, t)` returns an adjacency matrix representation of
+ an evolving graph `g` at time `t`.
+"""->
 function matrix(g::EvolvingGraph, t)
     ns = nodes(g)
     n = num_nodes(g)
@@ -190,6 +216,11 @@ function matrix(g::EvolvingGraph, t)
     return A
 end
 
+
+@doc doc"""
+`spmatrix(g, t)` returns a sparse adjacency matrix representation of 
+an evolving graph `g` at time `t`.
+"""->
 function spmatrix(g::EvolvingGraph, t)
     ns = nodes(g)
     n = num_nodes(g)
