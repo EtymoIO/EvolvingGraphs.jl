@@ -2,6 +2,10 @@ module EvolvingGraphs
 
 using Compat
 
+if VERSION < v"0.4-"
+    using Docile
+end
+
 import Base: ==, show, time
 
 export 
@@ -10,7 +14,7 @@ export
 Node, Edge, TimeNode, IndexNode, TimeEdge, WeightedTimeEdge, 
 AbstractEvolvingGraph, key, make_node, index, rev,
 
-# graphs
+# graph types
 TimeGraph, EvolvingGraph, WeightedEvolvingGraph,
 
 # graph functions
@@ -29,7 +33,7 @@ build_evolving_graph, build_evolving_graph2,
 # io
 egreader,
 
-# algorithm
+# algorithms
 katz_centrality
 
 include("common.jl")

@@ -12,6 +12,16 @@ type TimeGraph{V, T} <: AbstractEvolvingGraph{V, T}
     adjlist::Dict{V, Vector{V}}
 end
 
+@doc doc"""
+time_graph(type, time [, is_directed])
+generate a graph of type TimeGraph 
+
+Input: 
+
+    `type`: type of the nodes
+    `time`: time of the graph
+    `is_directed`: (optional) the graph is directed or not
+"""->
 time_graph{V,T}(::Type{V}, time::T; is_directed::Bool = true) =
     TimeGraph{V,T}(is_directed, 
                    time::T,
