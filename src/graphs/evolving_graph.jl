@@ -14,6 +14,17 @@ end
 
 typealias IntEvolvingGraph EvolvingGraph{Int, Int}
 
+@doc doc"""
+evolving_graph(ils, jls, timestamps [, is_directed]) 
+generates an evolving graph 
+
+Input:
+
+    `ils`: a vector of nodes
+    `jls`: a vector of nodes 
+    `timestamps`: a vector of timestamps
+    `is_directed`: (optional) whether the graph is directed or not
+"""->
 function evolving_graph{V,T}(ils::Vector{V}, 
                              jls::Vector{V}, 
                              timestamps::Vector{T}; 
@@ -23,11 +34,27 @@ function evolving_graph{V,T}(ils::Vector{V},
     return EvolvingGraph{V,T}(is_directed, ils, jls, timestamps)    
 end
 
+@doc doc"""
+evolving_graph([node_type, time_type, is_directed])
+generates an evolving graph 
+
+Input:
+
+     `node_type`: type of the nodes
+     `time_type`: type of the timestamps
+     `is_directed`: whehter the graph is directed or not
+"""->
 evolving_graph{V,T}(::Type{V}, ::Type{T} ;is_directed::Bool = true) = EvolvingGraph(is_directed, V[], V[], T[])
 evolving_graph(;is_directed::Bool = true) = evolving_graph(Int, Int, is_directed = is_directed)
 
+@doc doc"""
+is_directed(g) returns `true` if g is directed and `false` otherwise.
+"""->
 is_directed(g::EvolvingGraph) = g.is_directed
 
+@doc doc"""
+timestamps(g) returns the timestamps of an evolving graph g.
+"""->
 function timestamps(g::EvolvingGraph)
     ts = unique(g.timestamps)
     if eltype(ts) <: Real
@@ -36,8 +63,15 @@ function timestamps(g::EvolvingGraph)
     return ts
 end
 
+@doc doc"""
+num_timestamps(g) returns the number of timestamps of g, 
+where g is an evolving graph.
+"""->
 num_timestamps(g::EvolvingGraph) = length(timestamps(g))
 
+@doc doc"""
+nodes(g) return the nodes of an evolving graph g. 
+"""->
 nodes(g::EvolvingGraph) = union(g.ilist, g.jlist)
 num_nodes(g::EvolvingGraph) = length(nodes(g))
 

@@ -14,13 +14,13 @@ end
 
 @doc doc"""
 time_graph(type, time [, is_directed])
-generate a graph of type TimeGraph 
+generates a time graph 
 
 Input: 
 
     `type`: type of the nodes
     `time`: time of the graph
-    `is_directed`: (optional) the graph is directed or not
+    `is_directed`: (optional) whether the graph is directed or not
 """->
 time_graph{V,T}(::Type{V}, time::T; is_directed::Bool = true) =
     TimeGraph{V,T}(is_directed, 
@@ -38,6 +38,7 @@ num_nodes(g::TimeGraph) = length(g.nodes)
 num_edges(g::TimeGraph) = g.nedges
 
 time(g::TimeGraph) = g.time
+
 
 
 function add_node!{V}(g::TimeGraph, v::V)
