@@ -1,5 +1,12 @@
-# compute the Katz centrality broadcast vector of a given
-# evolving graph. 
+@doc doc"""
+`katz_centrality(g [, α = 0.3])` computes the broadcast 
+centrality vector of an evolving graph `g`. 
+
+Input: 
+
+     `g`: an evolving graph
+     `α`: (= 0.3 default) a scalar the controls the influence of long walks. 
+"""->
 function katz_centrality(g::EvolvingGraph, α::Real = 0.3)
     n = num_nodes(g)
     ns = nodes(g)
@@ -15,12 +22,20 @@ function katz_centrality(g::EvolvingGraph, α::Real = 0.3)
     return collect(zip(ns, v))
 end
 
-# compute the Katz centrality of a given evolving graph
-# α and β are parameters that controls the influence of 
-# long walks and walks happened long time ago.
-# mode = :broadcast (broadcast centrality vector)
-#      = :receive (receive centrality vector)
-#      = :matrix (the communicability matrix)
+
+@doc doc"""
+`katz_centrality(g, α, β [, mode = :broadcast])` 
+computes the Katz centrality of an evolving graph `g`. 
+
+Input:
+
+     `g`: an evolving graph
+     `α`: a scalar that controls the influence of long walks
+     `β`: a scalar that controls the influence of walks happened long time ago.
+          `mode`: `mode = :broadcast` (default) generates the broadcast centrality 
+          vector; `mode = :receive` generates the receving centrality vector; 
+          `mode = :matrix` generates the communicability matrix.
+"""->
 function katz_centrality(g::EvolvingGraph, 
                          α::Real, 
                          β::Real;
