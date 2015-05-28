@@ -11,8 +11,8 @@ import Base: ==, show, time
 export 
 
 # common
-Node, Edge, TimeNode, IndexNode, TimeEdge, WeightedTimeEdge, 
-AbstractEvolvingGraph, key, make_node, index, rev,
+Node, Edge, TimeNode, IndexNode, TimeEdge, WeightedTimeEdge, ExTimeEdge,
+AbstractEvolvingGraph, key, make_node, index, rev, AttributeDict,
 
 # graph types
 TimeGraph, EvolvingGraph, WeightedEvolvingGraph,

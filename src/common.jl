@@ -92,4 +92,18 @@ target(e::WeightedTimeEdge) = e.target
 time(e::WeightedTimeEdge) = e.time
 weight(e::WeightedTimeEdge) = e.weight
 
+typealias AttributeDict Dict{UTF8String, Any}
 
+type ExTimeEdge{V, T}
+    source::V
+    target::V
+    time::T
+    attributes::AttributeDict
+end
+
+ExTimeEdge{V, T}(v1::V, v2::V, t::T) = ExTimeEdge(v1, v2, t, AttributeDict())
+
+source(e::ExTimeEdge) = e.source
+target(e::ExTimeEdge) = e.target
+time(e::ExTimeEdge) = e.time
+attributes(e::ExTimeEdge) = e.attributes
