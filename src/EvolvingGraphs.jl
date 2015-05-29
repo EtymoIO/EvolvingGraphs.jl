@@ -15,7 +15,7 @@ Node, Edge, TimeNode, IndexNode, TimeEdge, WeightedTimeEdge, ExTimeEdge,
 AbstractEvolvingGraph, key, make_node, index, rev, AttributeDict,
 
 # graph types
-TimeGraph, EvolvingGraph, WeightedEvolvingGraph,
+TimeGraph, EvolvingGraph, WeightedEvolvingGraph, AttributeEvolvingGraph,
 
 # graph functions
 add_node!, add_edge!, add_graph!,
@@ -41,6 +41,7 @@ include("common.jl")
 include("graphs/time_graph.jl") 
 include("graphs/evolving_graph.jl")
 include("graphs/weighted_evolving_graph.jl")
+include("graphs/attribute_evolving_graph.jl")
 
 include("io.jl")
 include("show.jl")
