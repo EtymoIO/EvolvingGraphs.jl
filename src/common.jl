@@ -101,7 +101,7 @@ type AttributeTimeEdge{V, T}
     attributes::AttributeDict
 end
 
-AttributeTimeEdge{V, T}(v1::V, v2::V, t::T) = AttributeEdge(v1, v2, t, AttributeDict())
+AttributeTimeEdge{V, T}(v1::V, v2::V, t::T) = AttributeTimeEdge(v1, v2, t, AttributeDict())
 
 source(e::AttributeTimeEdge) = e.source
 target(e::AttributeTimeEdge) = e.target

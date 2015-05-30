@@ -8,6 +8,7 @@ tests = [
          "time_graph",
          "evolving_graph",
          "weighted_evolving_graph",
+         "attribute_evolving_graph",
          "centrality",
          "random_graph"
          ]
