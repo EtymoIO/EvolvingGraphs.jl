@@ -11,7 +11,7 @@ import Base: ==, show, time
 export 
 
 # common
-Node, Edge, TimeNode, IndexNode, TimeEdge, WeightedTimeEdge, ExTimeEdge,
+Node, Edge, TimeNode, IndexNode, TimeEdge, WeightedTimeEdge, AttributeTimeEdge,
 AbstractEvolvingGraph, key, make_node, index, rev, AttributeDict,
 
 # graph types
@@ -24,6 +24,7 @@ source, target, matrices, num_matrices,
 timestamps, num_timestamps, reduce_timestamps!,
 has_node, out_neighbors, is_directed,
 time_graph, evolving_graph, weighted_evolving_graph,
+attribute_evolving_graph,
 matrix, spmatrix, 
 random_time_graph, random_evolving_graph,
  
