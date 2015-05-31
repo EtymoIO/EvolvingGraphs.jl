@@ -32,7 +32,7 @@ random_time_graph, random_evolving_graph,
 build_evolving_graph, build_evolving_graph2, 
 
 # io
-egreader,
+egreader, egread,
 
 # algorithms
 katz_centrality

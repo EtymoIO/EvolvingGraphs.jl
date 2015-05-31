@@ -5,12 +5,12 @@
 #
 ########################################
 
-type AttributeEvolvingGraph{V,T} <: AbstractEvolvingGraph{V,T}
+type AttributeEvolvingGraph{V,T,W} <: AbstractEvolvingGraph{V,T,W}
     is_directed::Bool
     ilist::Vector{V}
     jlist::Vector{V}
     timestamps::Vector{T}
-    attributesvec::Vector{AttributeDict}
+    attributesvec::Vector{W}
 end
 
 attribute_evolving_graph{V,T}(::Type{V}, 
