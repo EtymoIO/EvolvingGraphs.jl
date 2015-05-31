@@ -50,3 +50,28 @@ function egreader(filename, info::Bool = false)
     end
     
 end
+
+function egread(filename, info::Bool =false)
+    file = open(filename, "r")
+    firstline = chomp(readline(file))
+    tokens = split(firstline)
+    if tokens[1] != "%%EvolvingGraph"
+        throw(ParseError("Not a valid EvolvingGraph header"))
+    end
+    is_directed = tokens[2] == "directed" ? true : false
+    
+    # skip all comments and empty lines
+    ll = readline(file)
+    while length(chomp(ll)) == 0 || (length(ll) > 0 && ll[1] == '%')
+        ll = readline(file)
+    end
+    
+    header = split(chomp(readline(file)))
+    length(header) < 3 || error("The length of header must be >= 3") :
+                  
+    evolving_graph = length(header) == 3 ? true : false
+
+    
+    
+
+end

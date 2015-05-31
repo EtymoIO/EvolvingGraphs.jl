@@ -29,6 +29,8 @@ end
 
 num_timestamps(g::AttributeEvolvingGraph) = length(timestamps(g))
 
+attributesvec(g::AttributeEvolvingGraph) = g.attributesvec
+
 nodes(g::AttributeEvolvingGraph) = union(g.ilist, g.jlist)
 num_nodes(g::AttributeEvolvingGraph) = length(nodes(g))
 
