@@ -31,12 +31,6 @@ num_timestamps(g::AttributeEvolvingGraph) = length(timestamps(g))
 
 attributesvec(g::AttributeEvolvingGraph) = g.attributesvec
 
-function attributes(g::AttributeEvolvingGraph, v1, v2, t)
-    index1 = find(x -> x == v1, g.ilist)
-    index2 = find(x -> x == v2, g.jlist[index1])
-    index3 = find(x -> x == t, g.timestamps[index2])
-    return g.attributesvec[index3]
-end
 
 attributes(g::AttributeEvolvingGraph, e::AttributeTimeEdge) = e.attributes
 
@@ -64,6 +58,35 @@ function edges(g::AttributeEvolvingGraph)
     return edgelist            
 end
 
+function edges(g::AttributeEvolvingGraph, t)
+    t in g.timestamps || error("unknown timestamp $(t)")
+
+    n = length(g.ilist)
+    
+    edgelist = AttributeTimeEdge[]
+
+    if g.is_directed
+        for i = 1:n
+            if t == g.timestamps[i]
+                e = AttributeTimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i], g.attributesvec[i])
+                push!(edgelist, e)
+            end
+        end
+    else
+        for i = 1:n
+            if t == g.timestamps[i]
+                e1 = AttributeTimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i], g.attributesvec[i])
+                e2 = AttributeTimeEdge(g.jlist[i], g.ilist[i], g.timestamps[i], g.attributesvec[i])
+                push!(edgelist, e1)
+                push!(edgelist, e2)
+            end
+        end
+    end
+          
+    edgelist
+
+end
+
 num_edges(g::AttributeEvolvingGraph) = g.is_directed ? length(g.ilist) : length(g.ilist)*2
 
 function add_edge!(g::AttributeEvolvingGraph, te::AttributeTimeEdge)
@@ -74,5 +97,32 @@ function add_edge!(g::AttributeEvolvingGraph, te::AttributeTimeEdge)
         push!(g.attributesvec, te.attributes)
     end
     g
+end
+
+@doc doc"""
+`matrix(g, t, attr = None)` returns an adjacency matrix representation
+of an evolving graph `g` at time `t` with attribute `attr`.
+"""->
+function matrix(g::AttributeEvolvingGraph, t, attr = None)
+    ns = nodes(g)
+    n = num_nodes(g)
+    es = edges(g, t)
+ 
+    if attr == None
+        A = zeros(Bool, n, n)
+        for e in es
+            i = find(x -> x == e.source, ns)
+            j = find(x -> x == e.target, ns)
+            A[(j-1)*n + i] = true
+        end
+    else
+        A = zeros(Float64, n, n)
+        for e in es
+            i = find(x -> x == e.source, ns)
+            j = find(x -> x == e.target, ns)
+            A[(j-1)*n + i] = e.attributes[attr]
+        end
+    end
+    A
 end
 

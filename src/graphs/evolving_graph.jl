@@ -108,7 +108,7 @@ end
 `edges(g, t)` return the edges of an evolving graph `g` at a given timestamp `t`.
 """->
 function edges{T}(g::EvolvingGraph, t::T)
-    t in g.timestamps || error("unknown time stamp $(t)")
+    t in g.timestamps || error("unknown timestamp $(t)")
 
     n = length(g.ilist)
     
