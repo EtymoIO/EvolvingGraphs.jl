@@ -126,3 +126,35 @@ function matrix(g::AttributeEvolvingGraph, t, attr = None)
     A
 end
 
+@doc doc"""
+`spmatrix(g, t, attr)` returns a sparse adjacency matrix representation 
+of an evolving graph `g` at time `t` with attribute `attr`. 
+"""
+function spmatrix(g::AttributeEvolvingGraph, t, attr = None)
+    ns = nodes(g)
+    n = num_nodes(g)
+    is = Int[]
+    js = Int[]
+    es = edges(g, t)
+    if attr == None
+        for e in es
+            i = find(x -> x == e.source, ns)
+            j = find(x -> x == e.target, ns)
+            append!(is, i)
+            append!(js, j)
+        end
+        vs = ones(Bool, length(is))
+        A = sparse(is, js, vs, n, n)
+    else
+        attrs = Float64[]
+        for e in es
+            i = find(x -> x == e.source, ns)
+            j = find(x -> x == e.target, ns)
+            append!(is, i)
+            append!(js, j)
+            push!(attrs, e.attributes[attr])
+        end
+        A = sparse(is, js, attrs, n, n)
+    end
+    A
+end

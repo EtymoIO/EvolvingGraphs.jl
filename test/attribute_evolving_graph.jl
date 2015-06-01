@@ -24,3 +24,7 @@ A = matrix(g, 1)
 B = matrix(g, 1, "a")
 
 @test sum(B - A) == 0.7
+
+@test full(spmatrix(g, 1, "a")) == matrix(g, 1, "a")
+
+@test full(spmatrix(g, 1)) == matrix(g, 1)
