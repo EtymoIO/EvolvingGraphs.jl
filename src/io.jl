@@ -62,12 +62,15 @@ function egread(filename, info::Bool =false)
     
     # skip all comments and empty lines
     ll = readline(file)
-    while length(chomp(ll)) == 0 || (length(ll) > 0 && ll[1] == '%')
+
+    while (length(ll) > 0 && ll[1] == '%')
         ll = readline(file)
     end
     
-    header = split(chomp(readline(file)), ',')
-    length(header) < 3 || error("The length of header must be >= 3") 
+    header = split(chomp(ll), ',')
+  
+    length(header) >= 3 || error("The length of header must be >= 3") 
+    
                   
     evolving_graph = length(header) == 3 ? true : false
 
@@ -76,23 +79,23 @@ function egread(filename, info::Bool =false)
     timestamps = []
 
     if evolving_graph
-        while true
-            entries = split(chomp(readline(file)), ',')
-            length(entries) != 0 || break
+        entries = split(chomp(readline(file)), ',')
+        while length(entries) == 3
             push!(ilist, entries[1])
             push!(jlist, entries[2])
             push!(timestamps, entries[3])
+            entries = split(chomp(readline(file)), ',')
         end            
         g = EvolvingGraph(is_directed, ilist, jlist, timestamps)
     else
         attributesvec = Dict[]
-        while true
-            entries = split(chomp(readline(file)), ',')
-            length(entries) != 0 || break
+        entries = split(chomp(readline(file)), ',')
+        while length(entries) >= 4           
             push!(ilist, entries[1])
             push!(jlist, entries[2])
             push!(timestamps, entries[3])
-            push!(attributesvec, Dict(zip(head[4:end], entries[4:end])))
+            push!(attributesvec, Dict(zip(header[4:end], entries[4:end])))
+            entries = split(chomp(readline(file)), ',')
         end 
         g = AttributeEvolvingGraph(is_directed, ilist, jlist, timestamps, attributesvec)
     end
