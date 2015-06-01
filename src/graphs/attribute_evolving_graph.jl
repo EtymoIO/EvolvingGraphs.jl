@@ -129,7 +129,7 @@ end
 @doc doc"""
 `spmatrix(g, t, attr)` returns a sparse adjacency matrix representation 
 of an evolving graph `g` at time `t` with attribute `attr`. 
-"""
+"""->
 function spmatrix(g::AttributeEvolvingGraph, t, attr = None)
     ns = nodes(g)
     n = num_nodes(g)
