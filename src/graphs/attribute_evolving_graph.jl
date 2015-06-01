@@ -31,6 +31,15 @@ num_timestamps(g::AttributeEvolvingGraph) = length(timestamps(g))
 
 attributesvec(g::AttributeEvolvingGraph) = g.attributesvec
 
+function attributes(g::AttributeEvolvingGraph, v1, v2, t)
+    index1 = find(x -> x == v1, g.ilist)
+    index2 = find(x -> x == v2, g.jlist[index1])
+    index3 = find(x -> x == t, g.timestamps[index2])
+    return g.attributesvec[index3]
+end
+
+attributes(g::AttributeEvolvingGraph, e::AttributeTimeEdge) = e.attributes
+
 nodes(g::AttributeEvolvingGraph) = union(g.ilist, g.jlist)
 num_nodes(g::AttributeEvolvingGraph) = length(nodes(g))
 

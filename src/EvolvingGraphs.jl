@@ -24,7 +24,7 @@ source, target, matrices, num_matrices,
 timestamps, num_timestamps, reduce_timestamps!,
 has_node, out_neighbors, is_directed,
 time_graph, evolving_graph, weighted_evolving_graph,
-attribute_evolving_graph,
+attribute_evolving_graph, attributesvec, attributes,
 matrix, spmatrix, 
 random_time_graph, random_evolving_graph,
  

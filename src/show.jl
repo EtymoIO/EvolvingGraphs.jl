@@ -23,6 +23,10 @@ function show(io::IO, e::WeightedTimeEdge)
     print(io, "WeightedTimeEdge($(e.source)-$(e.weight)->$(e.target)) at time $(e.time)")
 end
 
+function show(io::IO, e::AttributeTimeEdge)
+    print(io, "AttributeTimeEdge($(e.source)->$(e.target)) at time $(e.time)")
+end
+
 function show(io::IO, g::EvolvingGraph)
     title = is_directed(g) ? "Directed EvolvingGraph" : "Undirected EvolvingGraph"
     print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) edges, $(num_timestamps(g)) timestamps)")
@@ -47,4 +51,6 @@ function show(io::IO, g::TimeGraph)
     title = is_directed(g) ? "Directed TimeGraph" : "Undirected TimeGraph"
     print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) edges)")
 end
+
+
 
