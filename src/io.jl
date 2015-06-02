@@ -74,9 +74,9 @@ function egread(filename, info::Bool =false)
                   
     evolving_graph = length(header) == 3 ? true : false
 
-    ilist = []
-    jlist = []
-    timestamps = []
+    ilist = Any[]
+    jlist = Any[]
+    timestamps = Any[]
 
     if evolving_graph
         entries = split(chomp(readline(file)), ',')
