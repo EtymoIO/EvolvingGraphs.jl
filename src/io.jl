@@ -90,14 +90,27 @@ function egread(filename, info::Bool =false)
     else
         attributesvec = Dict[]
         entries = split(chomp(readline(file)), ',')
+
         while length(entries) >= 4           
             push!(ilist, entries[1])
             push!(jlist, entries[2])
             push!(timestamps, entries[3])
             push!(attributesvec, Dict(zip(header[4:end], entries[4:end])))
             entries = split(chomp(readline(file)), ',')
-        end 
+        end
+        
+        # try parse nodes and timestamps as Integer.
+        try 
+            ilist = [parse(Int64, s) for s in ilist]
+            jlist = [parse(Int64, s) for s in jlist]
+        end
+
+        try 
+            timestamps = [parse(Int64, s) for s in timestamps]
+        end
+        
         g = AttributeEvolvingGraph(is_directed, ilist, jlist, timestamps, attributesvec)
     end
     g
 end
+
