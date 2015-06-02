@@ -121,10 +121,8 @@ function matrix(g::AttributeEvolvingGraph, t, attr = None)
         for e in es
             i = find(x -> x == e.source, ns)
             j = find(x -> x == e.target, ns)
-            
-            attrval = parse(Float64, e.attributes[attr])
-       
-            A[(j-1)*n + i] = attrval
+      
+            A[(j-1)*n + i] = float(e.attributes[attr])
         end
     end
     A
@@ -156,10 +154,8 @@ function spmatrix(g::AttributeEvolvingGraph, t, attr = None)
             j = find(x -> x == e.target, ns)
             append!(is, i)
             append!(js, j)
-            
-            attrval = parse(Float64, e.attributes[attr])
-         
-            push!(attrs, attrval)
+ 
+            push!(attrs, float(e.attributes[attr]))
         end
         A = sparse(is, js, attrs, n, n)
     end
