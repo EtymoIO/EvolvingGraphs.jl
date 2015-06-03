@@ -184,9 +184,22 @@ The following functions are defined for ``AttributeEvolvingGraph``.
 
    return the number of timestamps of graph ``g``.
 
+.. function:: attributes(g, te)
+
+   return the attributes of edge ``te`` on graph ``g``. 
+
+.. function:: attributesvec(g)
+
+   return all the attributes of graph ``g``.
+	      
 .. function:: add_edge!(g, te)
 
-   add a AttributeTimeEdge ``te`` to AttributeEvolvingGraph ``g``.
+   add an AttributeTimeEdge ``te`` to AttributeEvolvingGraph ``g``.
+
+.. function:: add_edge!(g, v1, v2, t, a)
+
+   add an edge from ``v1`` to ``v2`` at time ``t`` with attribute ``a`` 
+   to the graph ``g``, where attribute is a dictionary.
 
 .. function:: matrix(g, t [, attr = None])
 

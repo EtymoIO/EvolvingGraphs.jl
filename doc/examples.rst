@@ -1,98 +1,148 @@
-Getting Started
-===============
+Examples
+========
 
-To start using EvolvingGraphs, it should be imported into the local scope::
- 
-  julia> using EvolvingGraphs
+Working with Evolving Graphs
+----------------------------
 
+We can initialize a simple evolving graph with integer nodes and edges by::
 
-Suppose we have an evolving network with 2 timestamps 
-:math:`t_1, t_2` as shown in the figure below.
+  julia> g = evolving_graph()
+  Directed IntEvolvingGraph (0 nodes, 0 edges, 0 timestamps)
 
-.. image:: eg1.png
+There is nothing in the graph ``g`` at the moment. To make it a little 
+more interesting, we can add some edges to ``g``. We need to note that
+edges have a time dimension in an evolving graph::
 
-To represent this evolving graph, we first build two graphs at
-time :math:`t_1` and :math:`t_2` with the function ``time_graph``::
+  julia> add_edge!(g, 1, 2, 1) 
+  Directed IntEvolvingGraph (2 nodes, 1 edges, 1 timestamps)
 
-  g1 = time_graph(Char, "t1")
-  add_edge!(g1, 'a', 'b')
-  add_edge!(g1, 'a', 'c')
+This will add an edge from node ``1`` to node ``2`` at time ``1``. 
+Let's add more edges to ``g``::
 
-  g2 = time_graph(Char, "t2")
-  add_edge!(g2, 'b', 'c')
+  julia> add_edge!(g, 2, 3, 1)
+  Directed IntEvolvingGraph (3 nodes, 2 edges, 1 timestamps)
 
-and then build an evolving graph ``eg`` by adding ``g1`` and ``g2``::
+  julia> add_edge!(g, 2, 3, 2)
+  Directed IntEvolvingGraph (3 nodes, 3 edges, 2 timestamps)
 
-  eg = evolving_graph(Char, String)
-  add_graph!(eg, g1)
-  add_graph!(eg, g2)
+  julia> add_edge!(g, 2, 4, 2)
+  Directed IntEvolvingGraph (4 nodes, 4 edges, 2 timestamps)
 
-Now ``eg`` is a directed evolving graph with 3 nodes, 3 edges and 2 
-timestamps. We can retrieve information from ``eg``::
+Now ``g`` has 4 nodes, 4 edges and 2 timestamps. Here are the edges we have::
 
-  julia> nodes(eg)
-  3-element Array{Char,1}:
-  'a'
-  'b'
-  'c'
+  julia> edges(g)
+  4-element Array{EvolvingGraphs.TimeEdge{V,T},1}:
+  TimeEdge(1->2) at time 1
+  TimeEdge(2->3) at time 1
+  TimeEdge(2->3) at time 2
+  TimeEdge(2->4) at time 2
 
-  julia> edges(eg)
-  3-element Array{EvolvingGraphs.TimeEdge{V,T},1}:
-  TimeEdge(a->b) at time t1
-  TimeEdge(a->c) at time t1
-  TimeEdge(b->c) at time t2
+We can also check the edges at a specific timestamp::
 
-  julia> timestamps(eg)
-  2-element Array{AbstractString,1}:
-  "t1"
-  "t2"
+  julia> edges(g, 2)
+  2-element Array{EvolvingGraphs.TimeEdge{V,T},1}:
+  TimeEdge(2->3) at time 2
+  TimeEdge(2->4) at time 2
 
+We can think of an evolving graph as a list of adjacency matrices. 
+In particular, at each timestamp ``g`` can be represented as an adjacency 
+matrix::
 
-Another way to generate the same evolving graph is to use the function 
-``add_edge!``::
-
-  eg = evolving_graph(Char, String)
-  add_edge!(eg2, 'a', 'c', "t1")
-  add_edge!(eg2, 'a', 'b', "t1")
-  add_edge!(eg2, 'b', 'c', "t2")
-
-
-In addition, we can generate an evolving graph by 3 vectors: ``i``, ``j`` and ``t`` 
-such that ``i[k], j[k], t[k]`` represent an edge from ``i[k]`` to ``j[k]``
-at time ``t[k]``. For example, the evolving graph in the following figure
-can be generated as::
-  
-  i = ['a', 'd', 'b', 'b', 'c', 'd', 'a'];
-  j = ['b', 'b', 'c', 'a', 'd', 'a', 'b'];
-  t = ["t1", "t1", "t1", "t2", "t2", "t3", "t3"];
-  eg2 = evolving_graph(i, j, t)
-
-.. image:: eg2.png
-
-
-At each timestamp, ``eg`` can be represented as an adjacency matrix::
-  
-  julia> matrix(eg2, "t1")
+  julia> matrix(g, 1)
   4x4 Array{Bool,2}:
+  false   true  false  false
   false  false   true  false
-  false  false   true  false
-  false  false  false   true
+  false  false  false  false
   false  false  false  false
 
-where the :math:`(i,j)` entry is ``true`` if there is an edge from 
-``nodes(eg2)[i]`` to ``nodes(eg2)[j]`` and ``false`` otherwise. Note::
+  julia> matrix(g, 2)
+  4x4 Array{Bool,2}:
+  false  false  false  false
+  false  false   true   true
+  false  false  false  false
+  false  false  false  false
 
-  julia> nodes(eg2)
-  4-element Array{Char,1}:
-  'a'
-  'd'
-  'b'
-  'c'
+where the ``(i,j)`` entry is ``true`` if there is an edge from
+``nodes(g)[i]`` to ``nodes(g)[j]`` and ``false`` otherwise.  An
+interesting fact is a degree 2 dynamic walk can be found by multiplying 
+the two adjacency matrices::
+
+  julia> matrix(g, 1) * matrix(g,2)
+  4x4 Array{Int64,2}:
+  0  0  1  1
+  0  0  0  0
+  0  0  0  0
+  0  0  0  0
+
+This shows there are two degree 2 dynamic walks: from node ``1`` to node ``3`` 
+(via node ``2``) and from node ``1`` to node ``4`` (via node ``2``). 
+   
+Working with Attribute Evolving Graphs
+--------------------------------------
+
+Sometimes, we want not only to record the connectivity of nodes in an 
+evolving graph but also to record **the degree of connectivity**. This can be 
+achieved with attribute evolving graphs. Here is an example. Suppose 
+we want to record the closeness between 3 people ``a``, ``b`` and ``c``
+at different time, say ``January`` and ``February``::
+    
+  julia> g = attribute_evolving_graph(String, String, is_directed = false)
+  Undirected AttributeEvolvingGraph (0 nodes, 0 edges, 0 timestamps)
+
+  julia> add_edge!(g, "a", "b", "January", Dict("closeness" => 0.2))
+  Undirected AttributeEvolvingGraph (2 nodes, 2 edges, 1 timestamps)
+
+  julia> add_edge!(g, "a", "b", "February", Dict("closeness" => 0.8))
+  Undirected AttributeEvolvingGraph (2 nodes, 4 edges, 2 timestamps)
+
+  julia> add_edge!(g, "a", "c", "January", Dict("closeness" => 0.7))
+  Undirected AttributeEvolvingGraph (3 nodes, 6 edges, 2 timestamps)
+
+  julia> add_edge!(g, "a", "c", "February", Dict("closeness" => 0.2))
+  Undirected AttributeEvolvingGraph (3 nodes, 8 edges, 2 timestamps)
+
+  julia> add_edge!(g, "b", "c", "January", Dict("closeness" => 0.5))
+  Undirected AttributeEvolvingGraph (3 nodes, 10 edges, 2 timestamps)
+
+  julia> add_edge!(g, "b", "c", "February", Dict("closeness" => 0.5))
+  Undirected AttributeEvolvingGraph (3 nodes, 12 edges, 2 timestamps)
+
+Now the closeness of the 3 people at ``January`` and ``February`` can 
+be represented as two weighted adjacency matrix::
+
+  julia> matrix(g, "January", "closeness")
+  3x3 Array{Float64,2}:
+  0.0  0.2  0.7
+  0.2  0.0  0.5
+  0.7  0.5  0.0
+
+  julia> matrix(g, "February", "closeness")
+  3x3 Array{Float64,2}:
+  0.0  0.8  0.2
+  0.8  0.0  0.5
+  0.2  0.5  0.0
 
 
-A sparse representation is also available::
+Inputting Data 
+--------------
 
-  julia> spmatrix(eg2, "t2")
-  4x4 sparse matrix with 2 Bool entries:
-        [3, 1]  =  true
-	[4, 2]  =  true
+There are two sample datasets at the directory ``data/``: 
+
+* ``traffic20141201.csv`` is the Highways Agency network
+  journey time and traffic flow data. 
+
+* ``manunited_cont.csv`` is the Strathclyde MUFC Twitter Data Set.
+
+More details of the datasets can be found at: https://github.com/weijianzhang/EvolvingGraphDatasets
+
+We can input them with the function ``egread``::
+
+  julia> twitterdata = joinpath(Pkg.dir("EvolvingGraphs"), "data", "manunited_cont.csv");
+  julia> twitter = egread(twitterdata)
+  Directed EvolvingGraph (148918 nodes, 298335 edges, 37581 timestamps)
+
+
+Analyzing Evolving Graphs
+-------------------------
+
+Coming soon!

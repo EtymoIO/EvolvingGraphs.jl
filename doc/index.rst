@@ -19,6 +19,7 @@ algorithms for working with evolving graphs.
    :maxdepth: 2
   
    overview.rst
+   start.rst
    examples.rst
    node_edge.rst
    graph.rst

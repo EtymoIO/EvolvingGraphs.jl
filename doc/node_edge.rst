@@ -26,6 +26,7 @@ The definition of ``TimeNode`` is::
     time::T
   end
 
+
 .. function:: key(v)
 
    return the key of a node ``v``, where ``v`` could be ``Node``,
@@ -94,10 +95,6 @@ The definition of ``WeightedTimeEdge`` is ::
    return the time of an edge ``e`` if ``e`` is of type ``TimeEdge`` or 
    ``WeightedTimeEdge``.
 
-
-.. function:: attributes(e)
- 
-   return the attributes of an AttributeTimeEdge ``e``.
 
 .. function:: weight(e)
 	      
