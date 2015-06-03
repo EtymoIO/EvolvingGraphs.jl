@@ -45,7 +45,7 @@ The definition of ``TimeNode`` is::
 Edge Types
 ----------
 
-There are three edge types in the collection. The definition of ``Edge``
+There are four edge types in the collection. The definition of ``Edge``
 is::
 
   immutable Edge{V}
@@ -60,6 +60,16 @@ The definition of ``TimeEdge`` is::
     target::K
     time::T
   end
+
+The definition of ``AttributeTimeEdge`` is ::
+
+  type AttributeTimeEdge{V, T, W}
+    source::V
+    target::V
+    time::T
+    attributes::W
+  end
+
 
 The definition of ``WeightedTimeEdge`` is ::
 
@@ -84,6 +94,12 @@ The definition of ``WeightedTimeEdge`` is ::
    return the time of an edge ``e`` if ``e`` is of type ``TimeEdge`` or 
    ``WeightedTimeEdge``.
 
+
+.. function:: attributes(e)
+ 
+   return the attributes of an AttributeTimeEdge ``e``.
+
 .. function:: weight(e)
 	      
    return the weight of an edge ``e`` if ``e`` is of type ``WeightedTimeEdge``.
+

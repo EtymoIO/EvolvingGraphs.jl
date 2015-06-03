@@ -70,7 +70,7 @@ definition::
      tt = ["t1", "t2", "t3", "t4", "t5"]
      gg = evolving_graph(aa, bb, tt, is_directed = false)
 
-.. function:: evolving_graph(node_type, time_type, [, is_directed = true])
+.. function:: evolving_graph(node_type, time_type [, is_directed = true])
 
    initialize an evolving graph with 0 nodes, 0 edges and 0 timestamps, 
    ``node_type`` is the type of nodes and ``time_type`` is the type of timestamps.
@@ -95,7 +95,7 @@ definition::
 .. function:: edges(g [, time])
 
    return a list of edges of graph ``g``. If ``time`` is present,
-   return edge list at given ``time``. 
+   return the edge list at given ``time``. 
 
 .. function:: num_edges(g)
 
@@ -103,11 +103,11 @@ definition::
 
 .. function:: timestamps(g)
 
-   return the time stamps of graph ``g``.
+   return the timestamps of graph ``g``.
 
 .. function:: num_timestamps(g)
  
-   return the number of time stamps of graph ``g``.
+   return the number of timestamps of graph ``g``.
 
 .. function:: add_edge!(g, te)
 	      
@@ -132,10 +132,79 @@ definition::
    EvolvingGraph ``g`` at time ``t``.
 
 
+AttributeEvolvingGraph
+----------------------
+
+An ``AttributeEvolvingGraph`` is an evolving graph with attribute edges.
+Here is the definition::
+
+  type AttributeEvolvingGraph{V,T,W} <: AbstractEvolvingGraph{V,T,W}
+    is_directed::Bool
+    ilist::Vector{V}
+    jlist::Vector{V}
+    timestamps::Vector{T}
+    attributesvec::Vector{W}
+  end
+
+The following functions are defined for ``AttributeEvolvingGraph``. 
+
+.. function:: attribute_evolving_graph(node_type, time_type [, is_directed = true])
+
+   initialize an evolving graph with 0 nodes, 0 edges and 0 timestamps, 
+   where ``node_type`` is the type of nodes and ``time_type`` is the type
+   of timestamps.
+
+.. function:: attribute_evolving_graph([is_directed = true])
+
+   initialize an evolving graph with ``Integer`` nodes and timestamps.
+
+.. function:: is_directed(g)
+
+   return ``true`` if graph ``g`` is a directed graph and ``false`` 
+   otherwise.
+
+.. function:: nodes(g)
+
+   return a list of nodes of graph ``g``.
+
+.. function:: num_nodes(g)
+
+   return the number of nodes of graph ``g``.
+
+.. function:: edges(g [, time])
+
+   return a list of edges of graph ``g``. If ``time`` is present, 
+   return the edge list at given ``time``.
+
+.. function:: timestamps(g)
+
+   return the timestamps of graph ``g``.
+
+.. function:: num_timestamps(g)
+
+   return the number of timestamps of graph ``g``.
+
+.. function:: add_edge!(g, te)
+
+   add a AttributeTimeEdge ``te`` to AttributeEvolvingGraph ``g``.
+
+.. function:: matrix(g, t [, attr = None])
+
+   return an adjacency matrix representation of graph ``g`` at time ``t``. 
+   If ``attr`` is present, return a weighted adjacency matrix where 
+   the edge weight is given by the attribute ``attr``.
+
+.. function:: spmatrix(g, t [, attr = None])
+
+   return a sparse adjacency matrix representation of graph ``g`` at time ``t``. 
+   If ``attr`` is present, return a weighted adjacency matrix where 
+   the edge weight is given by the attribute ``attr``.
+
+
 WeightedEvolvingGraph
 ---------------------
 
-A ``WeightedEvolvingGraph`` is an ``EvolvingGraph`` with a weighted edge.
+A ``WeightedEvolvingGraph`` is an evolving graph with weighted edges.
 Here is the definition::
 
   type WeightedEvolvingGraph{V,T,W<:Real} <: AbstractEvolvingGraph{V,T,W}

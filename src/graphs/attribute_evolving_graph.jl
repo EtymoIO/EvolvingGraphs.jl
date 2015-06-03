@@ -17,6 +17,8 @@ attribute_evolving_graph{V,T}(::Type{V},
                               ::Type{T}; 
                               is_directed::Bool = true) = AttributeEvolvingGraph(is_directed, V[], V[], T[], AttributeDict[])
 
+attribute_evolving_graph(;is_directed::Bool = true) = attribute_evolving_graph(Int, Int, is_directed = is_directed)
+
 is_directed(g::AttributeEvolvingGraph) = g.is_directed
 
 function timestamps(g::AttributeEvolvingGraph)
@@ -101,7 +103,9 @@ end
 
 @doc doc"""
 `matrix(g, t, attr = None)` returns an adjacency matrix representation
-of an evolving graph `g` at time `t` with attribute `attr`.
+of an evolving graph `g` at time `t`. If `attr` is present, return a 
+weighted adjacency matrix where the edge weight is given by the attribute
+`attr`.
 """->
 function matrix(g::AttributeEvolvingGraph, t, attr = None)
     ns = nodes(g)
@@ -130,7 +134,9 @@ end
 
 @doc doc"""
 `spmatrix(g, t, attr)` returns a sparse adjacency matrix representation 
-of an evolving graph `g` at time `t` with attribute `attr`. 
+of an evolving graph `g` at time `t`. If `attr` is present, return a 
+weighted adjacency matrix where the edge weight is given by the attribute
+`attr`. 
 """->
 function spmatrix(g::AttributeEvolvingGraph, t, attr = None)
     ns = nodes(g)

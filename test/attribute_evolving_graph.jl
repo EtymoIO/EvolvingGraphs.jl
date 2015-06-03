@@ -9,6 +9,8 @@ e3.attributes["b"] = 2
 
 g = attribute_evolving_graph(Int, Int)
 
+g2 = attribute_evolving_graph(is_directed = false)
+
 add_edge!(g, e1)
 add_edge!(g, e2)
 add_edge!(g, e3)
