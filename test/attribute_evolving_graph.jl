@@ -14,8 +14,9 @@ g2 = attribute_evolving_graph(is_directed = false)
 add_edge!(g, e1)
 add_edge!(g, e2)
 add_edge!(g, e3)
+add_edge!(g, 1, 3, 2, Dict("b" => 1.3))
 
-@test length(edges(g)) == 3
+@test length(edges(g)) == 4
 
 @test length(edges(g, 1)) == 2
 

@@ -15,7 +15,7 @@ end
 
 attribute_evolving_graph{V,T}(::Type{V}, 
                               ::Type{T}; 
-                              is_directed::Bool = true) = AttributeEvolvingGraph(is_directed, V[], V[], T[], AttributeDict[])
+                              is_directed::Bool = true) = AttributeEvolvingGraph(is_directed, V[], V[], T[], Dict[])
 
 attribute_evolving_graph(;is_directed::Bool = true) = attribute_evolving_graph(Int, Int, is_directed = is_directed)
 
@@ -91,6 +91,10 @@ end
 
 num_edges(g::AttributeEvolvingGraph) = g.is_directed ? length(g.ilist) : length(g.ilist)*2
 
+
+@doc doc"""
+`add_edge!(g, te) add an AttributeTimeEdge `te` to the graph `g`.
+"""->
 function add_edge!(g::AttributeEvolvingGraph, te::AttributeTimeEdge)
     if !(te in edges(g))
         push!(g.ilist, te.source)
@@ -98,6 +102,17 @@ function add_edge!(g::AttributeEvolvingGraph, te::AttributeTimeEdge)
         push!(g.timestamps, te.time)
         push!(g.attributesvec, te.attributes)
     end
+    g
+end
+
+@doc doc"""
+`add_edge!(g, v1, v2, t, a)` add an edge from `v1` to `v2` at time `t` 
+with attribute `a` to the graph `g`, where attribute is a dictionary. 
+For example, add_edge!(g, \"a\", \"b\", \"t\", Dict(\"friendship\" => 2.0))
+"""->
+function add_edge!(g::AttributeEvolvingGraph, v1, v2, t, a)
+    te = AttributeTimeEdge(v1, v2, t, a)
+    add_edge!(g, te)
     g
 end
 
