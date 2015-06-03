@@ -21,6 +21,11 @@ v0.0.3
   - `AttributeTimeEdge`
   - `AttributeEvolvingGraph`
 
+* add usage examples:
+
+  - Working with Evolving Graphs
+  - Working with Attribute Evolving Graphs
+  - Inputting Data
 
 TODO
 ----
