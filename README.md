@@ -19,7 +19,8 @@ Here are the main features:
 * A variety of data types for working with evolving graphs.
 
   - [x] TimeEdge
-  - [x] EvolvingGraph     
+  - [x] EvolvingGraph
+  - [X] AttributeEvolvingGraph
   - [x] WeightedEvolvingGraph
 
 * A collection of evolving graph algorithms.

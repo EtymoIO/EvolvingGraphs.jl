@@ -11,6 +11,17 @@ v0.0.2
 
 Use Docile.jl for documentation.
 
+v0.0.3
+------
+
+* add `egread` for inputting data
+
+* define new types:
+
+  - `AttributeTimeEdge`
+  - `AttributeEvolvingGraph`
+
+
 TODO
 ----
 
@@ -20,5 +31,4 @@ TODO
 
 * temporal efficiency
 
-* improve IO, add traffic and email datasets
 
