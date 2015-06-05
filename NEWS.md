@@ -27,13 +27,19 @@ v0.0.3
   - Working with Attribute Evolving Graphs
   - Inputting Data
 
+v0.0.4 (Coming Soon)
+--------------------
+
+* metrics for analyzing evolving graphs.
+
+	- shortest temporal distance
+	- temporal efficiency
+
+
 TODO
 ----
 
-* function `info`: return some basic information about the data.
+* plotting evolving graphs
 
-* shortest temporal distance
-
-* temporal efficiency
 
 
