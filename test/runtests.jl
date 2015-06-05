@@ -1,5 +1,6 @@
 using EvolvingGraphs
 using Base.Test
+using Compat
 
 tests = [
          "data",
