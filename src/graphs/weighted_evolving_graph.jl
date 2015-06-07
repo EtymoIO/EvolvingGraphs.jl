@@ -29,11 +29,6 @@ weighted_evolving_graph{V, T, W}(::Type{V},
 
 weighted_evolving_graph(;is_directed::Bool = true) = weighted_evolving_graph(Int, FloatingPoint, Int, is_directed = is_directed)
 
-@deprecate weighted_evolving_graph{V,T,W}(::Type{V}, 
-                                          ::Type{W}, 
-                                          ::Type{T}; 
-                                          is_directed::Bool = true) attribute_evolving_graph(V, T, is_directed = is_directed)
-
 is_directed(g::WeightedEvolvingGraph) = g.is_directed
 
 function timestamps(g::WeightedEvolvingGraph)
