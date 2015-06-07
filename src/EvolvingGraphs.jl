@@ -26,16 +26,15 @@ has_node, out_neighbors, is_directed,
 time_graph, evolving_graph, weighted_evolving_graph,
 attribute_evolving_graph, attributesvec, attributes,
 matrix, spmatrix, 
-random_time_graph, random_evolving_graph,
  
 # examples
 build_evolving_graph, build_evolving_graph2, 
 
 # io
-egreader, egread,
+egread,
 
 # algorithms
-katz_centrality
+katz_centrality, random_time_graph, random_evolving_graph
 
 include("common.jl")
  
