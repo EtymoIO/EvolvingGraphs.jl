@@ -37,6 +37,9 @@ v0.0.4 (Coming Soon)
 
 * new functions:
 
+	- `issorted(g)` return `true` if the timestamps of the evolving graph
+	  `g` is sorted and `false` otherwise.
+
 	- `slice(g, t_min, t_max)` and `slice!(g, t_min, t_max)` slice the
 	  evolving graph `g` between timestamp `t_min` and `t_max`.
 	  

@@ -11,7 +11,8 @@ tests = [
          "weighted_evolving_graph",
          "attribute_evolving_graph",
          "centrality",
-         "random_graph"
+         "random_graph",
+         "sort_slice"
          ]
 
 for t in tests

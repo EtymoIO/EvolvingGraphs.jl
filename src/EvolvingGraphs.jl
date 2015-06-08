@@ -6,7 +6,7 @@ if VERSION < v"0.4-"
     using Docile
 end
 
-import Base: ==, show, time, slice, issorted
+import Base: ==, show, time, slice, issorted, copy
 
 export 
 
@@ -40,7 +40,7 @@ katz_centrality, random_time_graph, random_evolving_graph,
 temporal_path, 
 
 # util
-issorted, sorttime!, slice!
+issorted, sorttime!, sorttime, slice!, slice
 
 
 
