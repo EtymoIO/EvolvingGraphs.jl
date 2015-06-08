@@ -32,7 +32,7 @@ function temporal_path(g::AbstractEvolvingGraph, v1, v2, t_min,
     end
     for node in out_neighbors(g, v1)
         if !(node.key in p.path && node.time in p.path)
-            if shortest = None || length(p.path) < length(shortest.path)
+            if shortest == None || length(p.path) < length(shortest.path)
                 newPath = temporal_path(g, node, v2, t_min, t_max, h, p, shortest)
                 if newPath != None
                     shortest = newPath
