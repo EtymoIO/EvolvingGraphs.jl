@@ -37,10 +37,11 @@ egread,
 katz_centrality, random_time_graph, random_evolving_graph,
 
 # metric
-temporal_path, 
+TemporalPath, temporal_path, 
 
 # util
 issorted, sorttime!, sorttime, slice!, slice
+
 
 
 
