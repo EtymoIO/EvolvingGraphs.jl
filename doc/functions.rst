@@ -25,7 +25,7 @@ Slicing
 
 .. function:: slice!(g, t_min, t_max)
 
-   slices the evolving graph ``g`` between the timestamp ``t_min` and
+   slices the evolving graph ``g`` between the timestamp ``t_min`` and
    ``t_max`` (not includes ``t_max``).
 
 Examples::
