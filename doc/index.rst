@@ -16,13 +16,20 @@ through a network.
 
 
 Installation
-------------
-
+^^^^^^^^^^^^
 In a Julia REPL, run::
   
   Pkg.add("EvolvingGraphs")
 
+Source and Release Notes
+^^^^^^^^^^^^^^^^^^^^^^^^
 
+* `GitHub <https://github.com/weijianzhang/EvolvingGraphs.jl>`_
+
+* `EvolvingGraphs Release Notes <https://github.com/weijianzhang/EvolvingGraphs.jl/blob/master/NEWS.md>`_
+
+Table of Contents
+^^^^^^^^^^^^^^^^^
 .. toctree::
    :maxdepth: 2
   
