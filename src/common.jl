@@ -99,11 +99,11 @@ weight(e::WeightedTimeEdge) = e.weight
 
 typealias AttributeDict Dict{UTF8String, Any}
 
-type AttributeTimeEdge{V, T, W}
+type AttributeTimeEdge{V, T}
     source::V
     target::V
     time::T
-    attributes::W
+    attributes::Dict
 end
 
 AttributeTimeEdge{V, T}(v1::V, v2::V, t::T) = AttributeTimeEdge(v1, v2, t, AttributeDict())

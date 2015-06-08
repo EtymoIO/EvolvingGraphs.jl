@@ -110,7 +110,7 @@ end
 with attribute `a` to the graph `g`, where attribute is a dictionary. 
 For example, add_edge!(g, \"a\", \"b\", \"t\", Dict(\"friendship\" => 2.0))
 """->
-function add_edge!(g::AttributeEvolvingGraph, v1, v2, t, a)
+function add_edge!(g::AttributeEvolvingGraph, v1, v2, t, a::Dict)
     te = AttributeTimeEdge(v1, v2, t, a)
     add_edge!(g, te)
     g

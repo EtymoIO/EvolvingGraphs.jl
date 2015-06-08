@@ -24,6 +24,7 @@ algorithms for working with evolving graphs.
    node_edge.rst
    graph.rst
    algorithms.rst
+   functions.rst
    io.rst
 
 
