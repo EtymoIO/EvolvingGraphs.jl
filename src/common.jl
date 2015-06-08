@@ -1,7 +1,12 @@
-# root type
+#####################################
+#
+# root graph type
+#
+#####################################
+
 # V: node type
 # T: time type
-# W: weight type
+# W: weight or attribute type
 abstract AbstractEvolvingGraph{V, T, W}
 
 
@@ -107,3 +112,6 @@ source(e::AttributeTimeEdge) = e.source
 target(e::AttributeTimeEdge) = e.target
 time(e::AttributeTimeEdge) = e.time
 attributes(e::AttributeTimeEdge) = e.attributes
+
+
+

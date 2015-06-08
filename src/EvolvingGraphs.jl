@@ -6,7 +6,7 @@ if VERSION < v"0.4-"
     using Docile
 end
 
-import Base: ==, show, time
+import Base: ==, show, time, slice, issorted
 
 export 
 
@@ -34,7 +34,15 @@ build_evolving_graph, build_evolving_graph2,
 egread,
 
 # algorithms
-katz_centrality, random_time_graph, random_evolving_graph
+katz_centrality, random_time_graph, random_evolving_graph,
+
+# metric
+temporal_path, 
+
+# util
+issorted, sorttime!, slice!
+
+
 
 include("common.jl")
  
@@ -42,12 +50,15 @@ include("graphs/time_graph.jl")
 include("graphs/evolving_graph.jl")
 include("graphs/weighted_evolving_graph.jl")
 include("graphs/attribute_evolving_graph.jl")
+include("util.jl")
 
 include("io.jl")
 include("show.jl")
 
 include("algorithms/katz_centrality.jl")
 include("algorithms/random.jl")
+
+include("metric/temporal_distance.jl")
 
 # examples
 include("graphs/examples.jl")

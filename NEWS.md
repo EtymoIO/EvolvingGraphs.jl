@@ -30,11 +30,18 @@ v0.0.3
 v0.0.4 (Coming Soon)
 --------------------
 
-* metrics for analyzing evolving graphs.
+* metrics for analyzing evolving graphs:
 
 	- shortest temporal distance
 	- temporal efficiency
 
+* new functions:
+
+	- `slice(g, t_min, t_max)` and `slice!(g, t_min, t_max)` slice the
+	  evolving graph `g` between timestamp `t_min` and `t_max`.
+	  
+	- `sorttime(g)` and `sorttime!(g)` sort the evolving graph `g`
+	  according to the order of timestamps.
 
 TODO
 ----

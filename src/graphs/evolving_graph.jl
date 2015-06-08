@@ -209,8 +209,8 @@ function matrix(g::EvolvingGraph, t)
     es = edges(g, t)
     A = zeros(Bool, n, n)
     for e in es
-        i = find(x -> x == e.source, ns)
-        j = find(x -> x == e.target, ns)
+        i = findin(ns, e.source)
+        j = findin(ns, e.target)
         A[(j-1)*n + i] = true
     end
     return A
@@ -228,8 +228,8 @@ function spmatrix(g::EvolvingGraph, t)
     js = Int[]
     es = edges(g, t)
     for e in es
-        i = find(x -> x == e.source, ns)
-        j = find(x -> x == e.target, ns)
+        i = findin(ns, e.source)
+        j = findin(ns, e.target)
         append!(is, i)
         append!(js, j)
     end

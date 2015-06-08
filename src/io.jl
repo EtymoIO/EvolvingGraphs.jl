@@ -36,7 +36,18 @@ function egread(filename)
             push!(jlist, entries[2])
             push!(timestamps, entries[3])
             entries = split(chomp(readline(file)), ',')
-        end            
+        end       
+        
+        # try parse nodes and timestamps as Integer.
+        try 
+            ilist = [parse(Int64, s) for s in ilist]
+            jlist = [parse(Int64, s) for s in jlist]
+        end
+
+        try 
+            timestamps = [parse(Int64, s) for s in timestamps]
+        end
+     
         g = EvolvingGraph(is_directed, ilist, jlist, timestamps)
     else
         attributesvec = Dict[]
