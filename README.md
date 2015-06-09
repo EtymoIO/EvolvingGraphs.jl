@@ -33,9 +33,9 @@ Here are the main features:
 * io 
 
   - [x] read data in Evolving Graph Exchange Format. (see the one in `data/`)
-  - [ ] write a graph in Evolving Graph Exchange Format. 
 
-* All data structures and algorithms are implemented in *pure Julia*.
+
+* All data structures and algorithms are implemented in the Julia language.
 
 ## Examples
 

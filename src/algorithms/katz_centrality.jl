@@ -45,13 +45,13 @@ function katz_centrality(g::EvolvingGraph,
     ts = timestamps(g) 
     S = spzeros(Float64, n, n)
     A = spzeros(Float64, n, n)
-    I = speye(Float64, n)
+    spI = speye(Float64, n)
     v = Array(Float64, n) 
     Δt = 1.
     for t in ts
         Δt += 0.01
         A =  spmatrix(g,t)
-        S =  (I + e^(-β*Δt)*S)*(I + α*A + α^2*A^2) - I
+        S =  (spI + e^(-β*Δt)*S)*(spI + α*A) - spI
         S =  S/norm(S,1)
     end
 
