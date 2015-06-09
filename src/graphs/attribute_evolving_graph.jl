@@ -127,16 +127,16 @@ function matrix(g::AttributeEvolvingGraph, t, attr = None)
     if attr == None
         A = zeros(Bool, n, n)
         for e in es
-            i = findin(ns, e.source)
-            j = findin(ns, e.target)
+            i = findfirst(ns, e.source)
+            j = findfirst(ns, e.target)
             A[(j-1)*n + i] = true
         end
     else
         A = zeros(Float64, n, n)
 
         for e in es
-            i = findin(ns, e.source)
-            j = findin(ns, e.target)
+            i = findfirst(ns, e.source)
+            j = findfirst(ns, e.target)
       
             A[(j-1)*n + i] = float(e.attributes[attr])
         end
@@ -158,20 +158,20 @@ function spmatrix(g::AttributeEvolvingGraph, t, attr = None)
     es = edges(g, t)
     if attr == None
         for e in es
-            i = findin(ns, e.source)
-            j = findin(ns, e.target)
-            append!(is, i)
-            append!(js, j)
+            i = findfirst(ns, e.source)
+            j = findfirst(ns, e.target)
+            push!(is, i)
+            push!(js, j)
         end
         vs = ones(Bool, length(is))
         A = sparse(is, js, vs, n, n)
     else
         attrs = Float64[]
         for e in es
-            i = findin(ns, e.source)
-            j = findin(ns, e.target)
-            append!(is, i)
-            append!(js, j)
+            i = findfirst(ns, e.source)
+            j = findfirst(ns, e.target)
+            push!(is, i)
+            push!(js, j)
  
             push!(attrs, float(e.attributes[attr]))
         end

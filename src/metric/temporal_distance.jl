@@ -1,12 +1,14 @@
 # Reference: Temporal Distance Metrics for Social Network Analysis,
 #  John Tang, Mirco Musolesi, Cecilia Mascolo and Vito Latora,
 # 2009.  
-type TemporalPath{T, P}
-    timestamps::Vector{T}
-    path::Vector{P}
-    TemporalPath() = new(Vector(), Vector())
+type TemporalPath
+    timestamps::Vector
+    path::Vector
+    TemporalPath(timestamps, path) = length(timestamps) != length(path) ? 
+          error("timestamps and path must have the same length") : new(timestamps, path)
 end
 
+TemporalPath() = TemporalPath(Vector(), Vector())
 
 function show(io::IO, p::TemporalPath)
     result = ""

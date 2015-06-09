@@ -17,6 +17,9 @@ bb = ['b', 'a', 'a', 'b', 'b']
 tt = ["t1", "t2", "t3", "t4", "t5"]
 gg = evolving_graph(aa, bb, tt, is_directed = false)
 nodes(gg)
+
+@test out_neighbors(gg, 'c', "t4") == [('b', "t4")]
+
 @test num_nodes(gg) == 3
 edges(gg)
 edges(gg, "t1")
@@ -25,6 +28,8 @@ timestamps(gg)
 @test num_timestamps(gg) == 5
 reduce_timestamps!(gg)
 @test num_timestamps(gg) == 3 
+
+
 
 # convert to matrix
 @test matrix(gg, "t2") == full(spmatrix(gg, "t2"))

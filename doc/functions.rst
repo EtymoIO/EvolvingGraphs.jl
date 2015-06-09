@@ -26,7 +26,7 @@ Slicing
 .. function:: slice!(g, t_min, t_max)
 
    slices the evolving graph ``g`` between the timestamp ``t_min`` and
-   ``t_max`` (not includes ``t_max``).
+   ``t_max``.
 
 Examples::
 
@@ -41,4 +41,4 @@ Examples::
 .. function:: slice(g, t_min, t_max)
 
    slices the evolving graph ``g`` between the timestamp ``t_min`` and 
-   ``t_max`` (not includes  ``t_max``), leaving ``g`` unmodified.
+   ``t_max``, leaving ``g`` unmodified.

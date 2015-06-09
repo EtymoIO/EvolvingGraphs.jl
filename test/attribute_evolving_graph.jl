@@ -31,3 +31,8 @@ B = matrix(g, 1, "a")
 @test full(spmatrix(g, 1, "a")) == matrix(g, 1, "a")
 
 @test full(spmatrix(g, 1)) == matrix(g, 1)
+
+b = [(2,1), (3,2)]
+
+@test out_neighbors(g, 1, 1) == b
+@test out_neighbors(g, 1, 2) == [(3,2)]

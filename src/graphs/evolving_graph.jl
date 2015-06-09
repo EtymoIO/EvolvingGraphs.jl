@@ -80,7 +80,7 @@ num_nodes(g::EvolvingGraph) = length(nodes(g))
 evolving graph `g` and `false` otherwise. 
 """->
 function has_node(g::AbstractEvolvingGraph, v, t)
-    p = findin(g.timestamps , t)
+    p = findin(g.timestamps , [t])
     return (v in g.ilist[p]) || (v in g.jlist[p]) 
 end
 
@@ -215,8 +215,8 @@ function matrix(g::EvolvingGraph, t)
     es = edges(g, t)
     A = zeros(Bool, n, n)
     for e in es
-        i = findin(ns, e.source)
-        j = findin(ns, e.target)
+        i = findfirst(ns, e.source)
+        j = findfirst(ns, e.target)
         A[(j-1)*n + i] = true
     end
     return A
@@ -234,10 +234,10 @@ function spmatrix(g::EvolvingGraph, t)
     js = Int[]
     es = edges(g, t)
     for e in es
-        i = findin(ns, e.source)
-        j = findin(ns, e.target)
-        append!(is, i)
-        append!(js, j)
+        i = findfirst(ns, e.source)
+        j = findfirst(ns, e.target)
+        push!(is, i)
+        push!(js, j)
     end
     vs = ones(Bool, length(is))
     return sparse(is, js, vs, n, n)    
@@ -249,9 +249,17 @@ timestamp `t`, preseving the order of time.
 """->
 function out_neighbors(g::AbstractEvolvingGraph, v, t)
     has_node(g, v, t) || error("can not find node $(v) at time $(t) on the graph.")
-    g = sorttime(g)    
+    g = sorttime(g)  
     indxt = findfirst(g.timestamps, t)
-    indxv = findin(g.ilist[indxt:end], v) + indxt
-    collect(zip(g.jlist[indxv], g.timestamps[indxv])) 
+    if is_directed(g)        
+        indxv = findin(g.ilist[indxt:end], [v]) + indxt - 1            
+        neighbors =  collect(zip(g.jlist[indxv], g.timestamps[indxv]))
+    else
+        indxv1 = findin(g.ilist[indxt:end], [v]) + indxt - 1 
+        indxv2 = findin(g.jlist[indxt:end], [v]) + indxt - 1
+        neighbors = collect(zip([g.jlist[indxv1]; g.ilist[indxv2]],
+                                [g.timestamps[indxv1]; g.timestamps[indxv2]]))
+    end
+    neighbors
 end
 
