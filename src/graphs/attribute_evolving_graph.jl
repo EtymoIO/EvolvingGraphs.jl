@@ -179,5 +179,3 @@ function spmatrix(g::AttributeEvolvingGraph, t, attr = None)
     end
     A
 end
-
-

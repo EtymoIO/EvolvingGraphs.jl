@@ -42,3 +42,21 @@ Examples::
 
    slices the evolving graph ``g`` between the timestamp ``t_min`` and 
    ``t_max``, leaving ``g`` unmodified.
+
+
+Linear Algebra
+--------------
+
+.. function:: matrix(g, t [, attr])
+	      
+   generates an adjacency matrix representation of the evolving graph ``g``
+   at timestamp ``t``. If ``g`` has attributes, then ``matrix(g, t, attr)``
+   generates a weighted adjacency matrix where the weight is determined 
+   by the attribute ``attr``. 
+
+
+.. function:: spmatrix(g, t [, attr])
+
+   generates a sparse adjacency matrix representation of the evolving graph
+   ``g`` at timestamp ``t``. 
+
