@@ -43,12 +43,12 @@ sorttime(g::AbstractEvolvingGraph) = sorttime!(copy(g))
 
 @doc """
 `slice!(g, t_min, t_max)` slice the evolving graph `g` between the timestamp
-`t_min` and `t_max` (not include `t_max`).
+`t_min` and `t_max`.
 """->
 function slice!(g::EvolvingGraph, t_min, t_max)
     issorted(g) || sorttime!(g)
     a = findfirst(g.timestamps, t_min)
-    b = findfirst(g.timestamps, t_max) - 1
+    b = findlast(g.timestamps, t_max) 
     g.ilist =  g.ilist[a:b]
     g.jlist =  g.jlist[a:b]
     g.timestamps =  g.timestamps[a:b]
@@ -58,7 +58,7 @@ end
 function slice!(g::AttributeEvolvingGraph, t_min, t_max)
     issorted(g) || sorttime!(g)
     a = findfirst(g.timestamps, t_min)
-    b = findfirst(g.timestamps, t_max) - 1
+    b = findlast(g.timestamps, t_max)
     g.ilist = g.ilist[a:b]
     g.jlist = g.jlist[a:b]
     g.timestamps = g.timestamps[a:b]
@@ -68,8 +68,6 @@ end
 
 @doc """
 `slice(g, t_min, t_max)` slice the evolving graph `g` between timestamp
-`t_min` and `t_max` (not include `t_max`), leaving `g` unmodified.
+`t_min` and `t_max`, leaving `g` unmodified.
 """->
 slice(g::AbstractEvolvingGraph, t_min, t_max) = slice!(copy(g), t_min, t_max)
-
-

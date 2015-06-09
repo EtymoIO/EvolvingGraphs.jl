@@ -13,7 +13,7 @@ g1 = sorttime(g)
 @test issorted(g1) == true
 @test num_timestamps(g1) == 3
 
-slice!(g1, "t1", "t3")
+slice!(g1, "t1", "t2")
 
 @test num_timestamps(g1) == 2
 
@@ -32,9 +32,8 @@ add_edge!(ag, 3, 2, 1, @compat Dict("a" => 2.5))
 ag1 = sorttime(ag)
 
 
-ag2 = slice(ag, 1, 3)
+ag2 = slice(ag, 1, 1)
 
 @test num_timestamps(ag2) == 1
 @test ag2.timestamps[1] == 1 
 @test ag2.timestamps[2] == 1
-

@@ -58,10 +58,7 @@ is_directed(g::EvolvingGraph) = g.is_directed
 """->
 function timestamps(g::EvolvingGraph)
     ts = unique(g.timestamps)
-    if eltype(ts) <: Real
-        ts = sort(ts)
-    end
-    return ts
+    return sort(ts)
 end
 
 
@@ -73,10 +70,19 @@ num_timestamps(g::EvolvingGraph) = length(timestamps(g))
 
 
 @doc doc"""
-`nodes(g)` return the nodes of an evolving graph `g`. 
+`nodes(g)` returns the nodes of an evolving graph `g`. 
 """->
 nodes(g::EvolvingGraph) = union(g.ilist, g.jlist)
 num_nodes(g::EvolvingGraph) = length(nodes(g))
+
+@doc doc"""
+`has_node(g, v, t)` returns `true` if the node `v` at time `t` is in the 
+evolving graph `g` and `false` otherwise. 
+"""->
+function has_node(g::AbstractEvolvingGraph, v, t)
+    p = findin(g.timestamps , t)
+    return (v in g.ilist[p]) || (v in g.jlist[p]) 
+end
 
 
 @doc doc"""
@@ -235,5 +241,17 @@ function spmatrix(g::EvolvingGraph, t)
     end
     vs = ones(Bool, length(is))
     return sparse(is, js, vs, n, n)    
+end
+
+@doc doc"""
+`out_neighbors(g, v, t)` returns the outwards links of node `v` at 
+timestamp `t`, preseving the order of time. 
+"""->
+function out_neighbors(g::AbstractEvolvingGraph, v, t)
+    has_node(g, v, t) || error("can not find node $(v) at time $(t) on the graph.")
+    g = sorttime(g)    
+    indxt = findfirst(g.timestamps, t)
+    indxv = findin(g.ilist[indxt:end], v) + indxt
+    collect(zip(g.jlist[indxv], g.timestamps[indxv])) 
 end
 

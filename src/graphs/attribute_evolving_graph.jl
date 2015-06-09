@@ -23,10 +23,7 @@ is_directed(g::AttributeEvolvingGraph) = g.is_directed
 
 function timestamps(g::AttributeEvolvingGraph)
     ts = unique(g.timestamps)
-    if eltype(ts) <: Real
-        ts = sort(ts)
-    end
-    return ts
+    return sort(ts)
 end
 
 num_timestamps(g::AttributeEvolvingGraph) = length(timestamps(g))
