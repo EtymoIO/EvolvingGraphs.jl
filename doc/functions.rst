@@ -4,6 +4,7 @@ Functions
 The following functions are defined for ``EvolvingGraph`` and 
 ``AttributeEvolvingGraph``.
 
+
 Sorting
 -------
 
@@ -48,6 +49,7 @@ Linear Algebra
 --------------
 
 .. function:: matrix(g, t [, attr])
+   :noindex:
 	      
    generates an adjacency matrix representation of the evolving graph ``g``
    at timestamp ``t``. If ``g`` has attributes, then ``matrix(g, t, attr)``
@@ -56,6 +58,7 @@ Linear Algebra
 
 
 .. function:: spmatrix(g, t [, attr])
+   :noindex:   
 
    generates a sparse adjacency matrix representation of the evolving graph
    ``g`` at timestamp ``t``. 

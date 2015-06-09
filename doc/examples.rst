@@ -1,4 +1,4 @@
-Examples
+Tutorial
 ========
 
 Working with Evolving Graphs

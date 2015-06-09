@@ -37,14 +37,14 @@ v0.0.4 (Coming Soon)
 
 * new functions:
 
-	- `issorted(g)` return `true` if the timestamps of the evolving graph
-	  `g` is sorted and `false` otherwise.
+    - `has_node(g, v, t)`
 
-	- `slice(g, t_min, t_max)` and `slice!(g, t_min, t_max)` slice the
-	  evolving graph `g` between timestamp `t_min` and `t_max`.
-	  
-	- `sorttime(g)` and `sorttime!(g)` sort the evolving graph `g`
-	  according to the order of timestamps.
+	- `out_neighbors(g, v, t)`
+
+	- slicing: `slice(g, t_min, t_max)` and `slice!(g, t_min, t_max)`
+
+	- sorting: `issorted(g)`, `sorttime(g)` and `sorttime!(g)`
+
 
 TODO
 ----

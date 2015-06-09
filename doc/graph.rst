@@ -92,6 +92,11 @@ definition::
 
    return the number of nodes of graph ``g``.
 
+.. function:: has_node(g, v, t)
+
+   returns ``true`` of the node ``v`` at the timestamp ``t`` is in the 
+   evolving graph ``g`` and ``false`` otherwise.
+
 .. function:: edges(g [, time])
 
    return a list of edges of graph ``g``. If ``time`` is present,
@@ -120,6 +125,11 @@ definition::
 .. function:: add_graph!(g, tg)
 	      
    add a TimeGraph ``tg`` to EvolvingGraph ``g``.
+
+.. function:: out_neighbors(g, v, t)
+
+   returns all the outward neighbors of the node ``v`` at timestamp ``t`` in 
+   the evolving graph ``g``. 
 
 .. function:: matrix(g, t)
 	      
@@ -167,6 +177,11 @@ The following functions are defined for ``AttributeEvolvingGraph``.
 
    return a list of nodes of graph ``g``.
 
+.. function:: has_node(g, v, t)
+
+   returns ``true`` of the node ``v`` at the timestamp ``t`` is in the 
+   evolving graph ``g`` and ``false`` otherwise.
+
 .. function:: num_nodes(g)
 
    return the number of nodes of graph ``g``.
@@ -201,6 +216,11 @@ The following functions are defined for ``AttributeEvolvingGraph``.
    add an edge from ``v1`` to ``v2`` at time ``t`` with attribute ``a`` 
    to the graph ``g``, where attribute is a dictionary.
 
+.. function:: out_neighbors(g, v, t)
+
+   returns all the outward neighbors of the node ``v`` at timestamp ``t`` in 
+   the evolving graph ``g``. 
+
 .. function:: matrix(g, t [, attr = None])
 
    return an adjacency matrix representation of graph ``g`` at time ``t``. 
@@ -216,6 +236,11 @@ The following functions are defined for ``AttributeEvolvingGraph``.
 
 WeightedEvolvingGraph
 ---------------------
+
+.. note:: 
+  
+   ``WeightedEvolvingGraph`` is subject to change in the future version. 
+   Please use ``AttributeEvolvingGraph`` instead. 
 
 A ``WeightedEvolvingGraph`` is an evolving graph with weighted edges.
 Here is the definition::

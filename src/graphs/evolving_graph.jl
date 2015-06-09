@@ -76,8 +76,8 @@ nodes(g::EvolvingGraph) = union(g.ilist, g.jlist)
 num_nodes(g::EvolvingGraph) = length(nodes(g))
 
 @doc doc"""
-`has_node(g, v, t)` returns `true` if the node `v` at time `t` is in the 
-evolving graph `g` and `false` otherwise. 
+`has_node(g, v, t)` returns `true` if the node `v` at the timestamp `t` is 
+in the evolving graph `g` and `false` otherwise. 
 """->
 function has_node(g::AbstractEvolvingGraph, v, t)
     p = findin(g.timestamps , [t])
@@ -244,8 +244,8 @@ function spmatrix(g::EvolvingGraph, t)
 end
 
 @doc doc"""
-`out_neighbors(g, v, t)` returns the outwards links of node `v` at 
-timestamp `t`, preseving the order of time. 
+`out_neighbors(g, v, t)` returns all the outward neightbors of the 
+node `v` at timestamp `t` in the evolving graph `g`.
 """->
 function out_neighbors(g::AbstractEvolvingGraph, v, t)
     has_node(g, v, t) || error("can not find node $(v) at time $(t) on the graph.")
