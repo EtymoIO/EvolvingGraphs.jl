@@ -7,7 +7,7 @@ Input:
      `g`: an evolving graph
      `α`: (= 0.3 default) a scalar the controls the influence of long walks. 
 """->
-function katz_centrality(g::EvolvingGraph, α::Real = 0.3)
+function katz_centrality(g::AbstractEvolvingGraph, α::Real = 0.3)
     n = num_nodes(g)
     ns = nodes(g)
     ts = timestamps(g)
@@ -36,7 +36,7 @@ Input:
           vector; `mode = :receive` generates the receving centrality vector; 
           `mode = :matrix` generates the communicability matrix.
 """->
-function katz_centrality(g::EvolvingGraph, 
+function katz_centrality(g::AbstractEvolvingGraph, 
                          α::Real, 
                          β::Real;
                          mode::Symbol = :broadcast)

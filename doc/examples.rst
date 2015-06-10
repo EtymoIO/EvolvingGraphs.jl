@@ -145,4 +145,48 @@ We can input them with the function ``egread``::
 Analyzing Evolving Graphs
 -------------------------
 
-Coming soon!
+The evolving graph shown below comes from the paper by Grindrod et
+al. [grindrod11]_. 
+
+.. image:: eg3.png
+
+It can be created in EvolvingGraphs as::
+  
+  g = evolving_graph(Char, Int, is_directed = false)
+  add_edge!(g, 'a', 'b', 1)
+  add_edge!(g, 'b', 'g', 1)
+  add_edge!(g, 'b', 'f', 1)
+  add_edge!(g, 'c', 'e', 2)
+  add_edge!(g, 'e', 'g', 2)
+  add_edge!(g, 'a', 'b', 2)
+  add_edge!(g, 'b', 'f', 2)
+  add_edge!(g, 'f', 'd', 2)
+  add_edge!(g, 'a', 'b', 3)
+  add_edge!(g, 'c', 'f', 3)
+  add_edge!(g, 'e', 'g', 3)
+  add_edge!(g, 'g', 'f', 3)
+  
+Now ``g`` is an evolving graph with 7 nodes, 24 edges and 3 timestamps::
+
+  julia> g
+  Undirected EvolvingGraph (7 nodes, 24 edges, 3 timestamps)
+
+We may choose to represent the nodes of this graph as people and the edges
+as phone calls. Then for example, we notice ``a`` talked to ``b`` at
+timestamp ``1`` and ``g`` talked to ``f`` at timestamp ``3``.  One
+interesting question is: can ``a`` pass a message to ``e``?
+The answer is yes, since ``a`` can talk to ``b`` and ``b`` can talk to
+``g`` in day ``1`` and ``g`` can talk to ``e`` on day ``2``. This can
+be computed using ``shortest_temporal_path`` ::
+
+  julia> shortest_temporal_path(g, ('a', 1), ('e', 2))
+  Temporal Path (3 walks) ('a',1)->('b',1)->('g',1)->('e',2)
+
+and the shortest distance of passing this message is ``3``::
+
+  julia> shortest_temporal_distance(g, ('a', 1), ('e', 2))
+  3
+
+.. [grindrod11] P. Grindrod, M, Parsons, D.J. Higham, and E. Estradam, 
+	      "Communicability across evolving networks", *Physcial Review E*,
+	      83(4). 046120 (2011).

@@ -30,10 +30,15 @@ v0.0.3
 v0.0.4 (Coming Soon)
 --------------------
 
-* metrics for analyzing evolving graphs:
+* new metrics:
 
-	- shortest temporal distance
-	- temporal efficiency
+	- `shortest_path(g, v1, v2)`
+	
+	- `shortest_distance(g, v1, v2)`
+
+	- `shortest_temporal_path(g, (v1, t1), (v2, t2))`
+
+	- `shortest_temporal_distance(g, (v1, t1), (v2, t2))`
 
 * new functions:
 
@@ -45,6 +50,7 @@ v0.0.4 (Coming Soon)
 
 	- sorting: `issorted(g)`, `sorttime(g)` and `sorttime!(g)`
 
+* tutorial for analyzing evolving graphs
 
 TODO
 ----
