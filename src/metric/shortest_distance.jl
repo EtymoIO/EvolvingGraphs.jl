@@ -44,8 +44,8 @@ function _DFS_shortest_path(g::TimeGraph,
 end
 
 @doc doc"""
-`shortest_path(g, v1, v2)` finds the shortest path from `v1` to `v2` on
-the time graph `g`.
+`shortest_path(g, v1, v2 [, verbose = false])` finds the shortest path from `v1` to `v2` on
+the time graph `g`. if `verbose = true`, prints the current path at each search step. 
 """->
 shortest_path(g::TimeGraph, v1, v2; verbose = false) = _DFS_shortest_path(g, v1, v2, verbose = verbose)
 

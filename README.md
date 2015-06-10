@@ -25,7 +25,7 @@ Here are the main features:
 
 * A collection of evolving graph algorithms.
 
-  - [ ] metric
+  - [x] metric
   - [x] Katz centrality
   - [ ] betweenness centrality
   - [x] random evolving graph

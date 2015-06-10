@@ -48,7 +48,8 @@ end
 @doc doc"""
 `shortest_temporal_path(g, (v1, t1), (v2, t2) [, verbose = false])` finds the shortest 
 temporal path from node `v1` at timestamp `t1` to node `v2` at timestamp 
-`t2` on the evolving graph `g`. If `verbose = true`, the 
+`t2` on the evolving graph `g`. If `verbose = true`, prints the current path 
+at each search step. 
 """->
 shortest_temporal_path(g::AbstractEvolvingGraph, v1::Tuple, v2::Tuple; verbose = false) = _DFS_shortest_temporal_path(g, v1, v2, verbose = verbose)   
 

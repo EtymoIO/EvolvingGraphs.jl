@@ -1,10 +1,6 @@
 Functions
 =========
 
-The following functions are defined for ``EvolvingGraph`` and 
-``AttributeEvolvingGraph``.
-
-
 Sorting
 -------
 
@@ -63,3 +59,26 @@ Linear Algebra
    generates a sparse adjacency matrix representation of the evolving graph
    ``g`` at timestamp ``t``. 
 
+Metrics
+-------
+
+.. function:: shortest_path(g, v1, v2 [, verbose = false)
+
+   finds the shortest path from ``v1`` to ``v2`` on the time graph ``g``. 
+   If ``verbose = true``, prints the current path at each search step. 
+
+.. function:: shortest_distance(g, v1, v2)
+
+   finds the shortest distance from ``v1`` to ``v2`` on the time graph ``g``. 
+   returns ``Inf`` if there is no path from ``v1`` to ``v2``.
+
+.. function:: shortest_temporal_path(g, (v1, t1), (v2, t2) [, verbose = false])
+
+   finds the shortest temporal path from node ``v1`` at timestamp ``t1``
+   to node ``v2`` at timestamp ``t2`` on the evolving graph ``g``. If ``verbose = true``,
+   prints the current path at each search step.
+
+.. function:: shortest_temporal_distance(g, (v1, t1), (v2, t2))
+
+   finds the shortest temporal distance from node ``v1`` at timestamp ``t1`` 
+   to node ``v2`` at timestamp ``t2`` on the evolving graph ``g``.
