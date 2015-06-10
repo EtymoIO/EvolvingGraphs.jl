@@ -27,9 +27,6 @@ time_graph, evolving_graph, weighted_evolving_graph,
 attribute_evolving_graph, attributesvec, attributes,
 matrix, spmatrix, 
  
-# examples
-build_evolving_graph, build_evolving_graph2, 
-
 # io
 egread,
 
@@ -37,12 +34,11 @@ egread,
 katz_centrality, random_time_graph, random_evolving_graph,
 
 # metric
-TemporalPath, temporal_path, 
+Path, TemporalPath, shortest_temporal_path, shortest_temporal_distance,
+shortest_path, shortest_distance,
 
 # util
 issorted, sorttime!, sorttime, slice!, slice
-
-
 
 
 include("common.jl")
@@ -59,7 +55,8 @@ include("show.jl")
 include("algorithms/katz_centrality.jl")
 include("algorithms/random.jl")
 
-include("metric/temporal_distance.jl")
+include("metric/shortest_distance.jl")
+include("metric/shortest_temporal_distance.jl")
 
 # examples
 include("graphs/examples.jl")

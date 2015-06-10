@@ -9,6 +9,13 @@
 # W: weight or attribute type
 abstract AbstractEvolvingGraph{V, T, W}
 
+######################################
+#
+# root path type
+#
+#######################################
+
+abstract AbstractPath
 
 ##############################################
 #

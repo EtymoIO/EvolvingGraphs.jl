@@ -53,4 +53,15 @@ function show(io::IO, g::TimeGraph)
 end
 
 
-
+function show(io::IO, p::AbstractPath)
+    title = typeof(p) == Path ? "Path" : "Temporal Path"
+    result = ""
+    for i in 1:length(p)
+        if i == length(p) 
+            result = string(result, p.walks[i])
+        else
+            result = string(result, p.walks[i], "->")
+        end
+    end   
+    print(io, "$(title) ($(max(length(p) - 1, 0)) walks) $(result)")
+end

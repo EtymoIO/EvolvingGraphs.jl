@@ -12,7 +12,8 @@ tests = [
          "attribute_evolving_graph",
          "centrality",
          "random_graph",
-         "sort_slice"
+         "sort_slice",
+         "shortest_distance"
          ]
 
 for t in tests

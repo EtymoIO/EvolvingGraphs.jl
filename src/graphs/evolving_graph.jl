@@ -263,3 +263,4 @@ function out_neighbors(g::AbstractEvolvingGraph, v, t)
     neighbors
 end
 
+out_neighbors(g::AbstractEvolvingGraph, n::Tuple) = out_neighbors(g, n[1], n[2])
