@@ -27,8 +27,8 @@ v0.0.3
   - Working with Attribute Evolving Graphs
   - Inputting Data
 
-v0.0.4 (Coming Soon)
---------------------
+v0.0.4 
+-------
 
 * new metrics:
 
