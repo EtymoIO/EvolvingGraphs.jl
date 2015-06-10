@@ -45,13 +45,14 @@ end
 
 @doc doc"""
 `shortest_path(g, v1, v2)` finds the shortest path from `v1` to `v2` on
-a time graph `g`.
+the time graph `g`.
 """->
 shortest_path(g::TimeGraph, v1, v2; verbose = false) = _DFS_shortest_path(g, v1, v2, verbose = verbose)
 
 @doc doc"""
 `shortest_distance(g, v1, v2)` finds the shortest distance from `v1` to `v2` 
-on a time graph `g`.
+on the time graph `g`.
 """->
-shortest_distance(g::TimeGraph, v1, v2) = length(shortest_path(g, v1, v2)) - 1
+shortest_distance(g::TimeGraph, v1, v2) = 
+            shortest_path(g, v1, v2) == None ? Inf : length(shortest_path(g, v1, v2)) - 1
 

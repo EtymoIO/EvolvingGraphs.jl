@@ -38,8 +38,10 @@ Path, TemporalPath, shortest_temporal_path, shortest_temporal_distance,
 shortest_path, shortest_distance,
 
 # util
-issorted, sorttime!, sorttime, slice!, slice
+issorted, sorttime!, sorttime, slice!, slice,
 
+# example
+build_evolving_graph
 
 include("common.jl")
  

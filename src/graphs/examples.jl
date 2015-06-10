@@ -3,11 +3,13 @@ function build_evolving_graph(;is_directed = true)
     a = [1, 2, 3, 3, 4, 2, 6, 3]
     b = [2, 3, 2, 5, 3, 5, 1, 5]
     times = [1, 2, 2, 2, 3, 3, 3, 3]
-    return evolving_graph(a, b, times, is_directed = is_directed)
+    g = evolving_graph(a, b, times, is_directed = is_directed)
+    add_graph!(g, build_time_graph(4))
+    g
 end
 
-function build_time_graph()
-    g = time_graph(Int, 1)
+function build_time_graph(time)
+    g = time_graph(Int, time)
     add_edge!(g, 0, 1)
     add_edge!(g, 1, 2)
     add_edge!(g, 2, 3)

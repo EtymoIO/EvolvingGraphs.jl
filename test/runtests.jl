@@ -13,7 +13,8 @@ tests = [
          "centrality",
          "random_graph",
          "sort_slice",
-         "shortest_distance"
+         "shortest_distance",
+         "shortest_temporal_distance"
          ]
 
 for t in tests
