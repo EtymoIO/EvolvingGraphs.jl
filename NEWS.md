@@ -75,6 +75,10 @@ v0.0.5 (Working in Progress)
 
 	- `has_edge(g, v1, v2, t)` if graph `g` has edge `v1`.
 
+	- `temporal_efficiency(g, (v1, t1), (v2, t2))`
+
+	- `global_temporal_efficiency(g, t1, t2)`
+
 * update examples at README
 
 * add examples: building and analyzing citation networks

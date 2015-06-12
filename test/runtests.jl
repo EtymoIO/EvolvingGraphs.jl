@@ -15,7 +15,8 @@ tests = [
          "sort_slice",
          "shortest_distance",
          "shortest_temporal_distance",
-         "io"
+         "io",
+         "temporal_efficiency"
          ]
 
 for t in tests

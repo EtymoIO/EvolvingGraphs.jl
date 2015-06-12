@@ -35,7 +35,7 @@ katz_centrality, random_time_graph, random_evolving_graph,
 
 # metric
 Path, TemporalPath, shortest_temporal_path, shortest_temporal_distance,
-shortest_path, shortest_distance,
+shortest_path, shortest_distance, temporal_efficiency, global_temporal_efficiency,
 
 # sort slice
 issorted, sorttime!, sorttime, slice!, slice,
@@ -61,6 +61,7 @@ include("algorithms/random.jl")
 
 include("metric/shortest_distance.jl")
 include("metric/shortest_temporal_distance.jl")
+include("metric/temporal_efficiency.jl")
 
 # examples
 include("graphs/examples.jl")
