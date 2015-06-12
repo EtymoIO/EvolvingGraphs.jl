@@ -1,6 +1,79 @@
 Functions
 =========
 
+Basic
+-----
+
+.. function:: is_directed(g)
+   :noindex:
+	      
+   returns ``true`` if graph ``g`` is a directed graph and ``false``
+   otherwise.
+
+.. function:: nodes(g) 
+   :noindex:	      
+
+   returns a list of nodes of graph ``g``.
+
+.. function:: num_nodes(g)
+   :noindex:
+
+   returns the number of nodes of graph ``g``.
+
+.. function:: has_node(g, v, t)
+   :noindex:
+
+   returns ``true`` of the node ``v`` at the timestamp ``t`` is in the 
+   evolving graph ``g`` and ``false`` otherwise.
+
+.. function:: edges(g [, time])
+   :noindex:
+
+   returns a list of edges of graph ``g``. If ``time`` is present,
+   return the edge list at given ``time``. 
+
+.. function:: num_edges(g)
+   :noindex:
+
+   returns the number of edges of graph ``g``.
+
+.. function:: timestamps(g)
+   :noindex:	      
+
+   returns the timestamps of graph ``g``.
+
+.. function:: num_timestamps(g)
+   :noindex: 
+
+   returns the number of timestamps of graph ``g``.
+
+.. function:: add_edge!(g, te)
+   :noindex:
+	      
+   adds a TimeEdge ``te`` to EvolvingGraph ``g``.
+
+.. function:: add_edge!(g, v1, v2, t)
+   :noindex:
+
+   adds an edge (from ``v1`` to ``v2`` at time ``t``) to an evolving graph ``g``.
+
+.. function:: rm_edge!(g, v1, v2, t)
+   :noindex:
+
+   removes an edge from ``v1`` to ``v2`` at time ``t`` from an evolving graph ``g``.
+
+.. function:: add_graph!(g, tg)
+   :noindex:
+	      
+   adds a TimeGraph ``tg`` to EvolvingGraph ``g``.
+
+.. function:: out_neighbors(g, v, t)
+   :noindex:
+
+   returns all the outward neighbors of the node ``v`` at timestamp ``t`` in 
+   the evolving graph ``g``. 
+
+
 Sorting
 -------
 

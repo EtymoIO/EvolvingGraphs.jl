@@ -36,8 +36,7 @@ Table of Contents
    overview.rst
    start.rst
    examples.rst
-   node_edge.rst
-   graph.rst
+   type.rst
    algorithms.rst
    functions.rst
    io.rst
