@@ -28,7 +28,7 @@ attribute_evolving_graph, attributesvec, attributes,
 matrix, spmatrix, 
  
 # io
-egread,
+egread, egwrite,
 
 # algorithms
 katz_centrality, random_time_graph, random_evolving_graph,
@@ -45,7 +45,8 @@ build_evolving_graph
 
 include("common.jl")
 include("util.jl")
- 
+
+include("graphs/auxiliary.jl")
 include("graphs/time_graph.jl") 
 include("graphs/evolving_graph.jl")
 include("graphs/weighted_evolving_graph.jl")

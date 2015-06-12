@@ -76,3 +76,39 @@ function egread(filename)
     g
 end
 
+function _egwrite(io::IO, g::AbstractEvolvingGraph)
+    header = is_directed(g) ? "%%EvolvingGraph directed" : "%%EvolvingGraph undirected"
+    write(io, "$(header)\n")
+    firstline = "i,j,timestamps"
+
+    n = length(g.ilist)
+
+    if _has_attribute(g)
+        names = keys(g.attributesvec[1])
+
+        # assuming all edges have the same number of attributes
+        write(io, "$(firstline),")
+        write(io, "$(join(names, ','))\n")
+        for i in 1:n
+            edges = join([g.ilist[i], g.jlist[i], g.timestamps[i]], ',')
+            write(io, "$(edges),")
+            for key in names
+                write(io, "$(g.attributesvec[i][key]),")
+            end
+            write(io,"\n")
+        end     
+    else
+        write(io, "$(firstline)\n")
+        for i in 1:n
+            edges = join([g.ilist[i], g.jlist[i], g.timestamps[i]], ',')
+            write(io, "$(edges)\n")
+        end
+    end
+        
+end
+
+function egwrite(g::AbstractEvolvingGraph, fn::AbstractString)
+    f = open(fn, "w")
+    _egwrite(f, g)
+    close(f)
+end

@@ -14,7 +14,8 @@ tests = [
          "random_graph",
          "sort_slice",
          "shortest_distance",
-         "shortest_temporal_distance"
+         "shortest_temporal_distance",
+         "io"
          ]
 
 for t in tests
