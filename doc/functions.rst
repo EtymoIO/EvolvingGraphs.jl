@@ -1,8 +1,8 @@
 Functions
 =========
 
-Basic
------
+Basics
+------
 
 .. function:: is_directed(g)
    :noindex:

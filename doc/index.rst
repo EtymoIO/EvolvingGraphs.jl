@@ -35,7 +35,7 @@ Table of Contents
   
    overview.rst
    start.rst
-   examples.rst
+   tutorial.rst
    type.rst
    algorithms.rst
    functions.rst

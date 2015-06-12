@@ -187,6 +187,6 @@ and the shortest distance of passing this message is ``3``::
   julia> shortest_temporal_distance(g, ('a', 1), ('e', 2))
   3
 
-.. [grindrod11] P. Grindrod, M, Parsons, D.J. Higham, and E. Estradam, 
+.. [grindrod11] P. Grindrod, M, Parsons, D.J. Higham, and E. Estrada, 
 	      "Communicability across evolving networks", *Physcial Review E*,
 	      83(4). 046120 (2011).
