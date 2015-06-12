@@ -113,6 +113,17 @@ function add_edge!(g::AttributeEvolvingGraph, v1, v2, t, a::Dict)
     g
 end
 
+
+function add_edge!(g::AttributeEvolvingGraph, v1::Array, v2::Array, t, a::Dict)
+    for j in v2
+        for i in v1
+            te = AttributeTimeEdge(i, j, t, a)
+            add_edge!(g, te)
+        end
+    end
+    g            
+end
+
 # to be documentated
 function add_edge!(g::AttributeEvolvingGraph, v1, v2, t)
     te = AttributeTimeEdge(v1, v2, t)

@@ -185,7 +185,20 @@ to an evolving graph `g`.
 """->
 function add_edge!(g::EvolvingGraph, v1, v2, t)
     add_edge!(g, TimeEdge(v1, v2, t))
+    g
 end
+
+function add_edge!(g::EvolvingGraph, v1::Array, v2::Array, t)
+    for j in v2
+        for i in v1
+            te = TimeEdge(i, j, t)
+            add_edge!(g, te)
+        end
+    end
+    g
+end
+
+
 
 has_edge(g::EvolvingGraph, te::TimeEdge) = te in edges(g)
 

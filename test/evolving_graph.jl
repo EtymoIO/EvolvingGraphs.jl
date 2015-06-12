@@ -56,3 +56,5 @@ rm_edge!(g, 1, 2, "t1")
 
 @test !has_edge(g, 1, 2, "t1")
 @test num_edges(g) == 4
+
+add_edge!(g, [1,2,4], [3,4], "t1")

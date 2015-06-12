@@ -52,3 +52,6 @@ rm_edge!(ag , 1, 2, 4)
 @test num_edges(ag) == 8
 @test !has_edge(ag, 1, 2, 4)
 @test !has_edge(ag, 2, 1, 4)
+
+dict = @compat Dict("hello" => 3)
+add_edge!(ag, [1,2,3], [4,5], 1, dict)
