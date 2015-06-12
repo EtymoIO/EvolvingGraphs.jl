@@ -1,8 +1,11 @@
 # find the list index of an evolving graph g
-function _find_edge_index(g::AbstractEvolvingGraph, te::TimeEdge)
+# naive implementation
+function _find_edge_index(g::AbstractEvolvingGraph, te::AbstractEdge)
     tindx = findin(g.timestamps, [time(te)])
-    iindx = findin(g.ilist[tindx], [source(te)])
-    return findfirst(g.jlist[iindx], target(te))
+    iindx = findin(g.ilist, [source(te)])
+    jindx = findin(g.jlist, [target(te)])
+
+    return intersect(tindx, iindx, jindx)[1]
 end
 
 

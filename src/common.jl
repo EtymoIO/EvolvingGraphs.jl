@@ -63,8 +63,10 @@ index(v::TimeNode) = v.index
 #  edge types
 #
 ##########################################
+abstract AbstractEdge{V,T}
 
-immutable Edge{V}
+
+immutable Edge{V} <: AbstractEdge{V}
     source::V
     target::V       
 end
@@ -76,7 +78,7 @@ target(e::Edge) = e.target
 rev(e::Edge) = Edge(e.target, e.source)
  
 
-immutable TimeEdge{V,T}
+immutable TimeEdge{V,T} <:AbstractEdge{V,T}
     source::V
     target::V
     time::T
@@ -95,7 +97,7 @@ time(e::TimeEdge, g::AbstractEvolvingGraph) = e.time
 rev(e::TimeEdge) = TimeEdge(e.target, e.source, e.time)
 
 
-immutable WeightedTimeEdge{V, T, W<:Real}
+immutable WeightedTimeEdge{V, T, W<:Real} <: AbstractEdge{V, T}
     source::V
     target::V
     weight::W
@@ -109,7 +111,7 @@ weight(e::WeightedTimeEdge) = e.weight
 
 typealias AttributeDict Dict{UTF8String, Any}
 
-type AttributeTimeEdge{V, T}
+type AttributeTimeEdge{V, T} <: AbstractEdge{V, T}
     source::V
     target::V
     time::T
@@ -123,5 +125,9 @@ target(e::AttributeTimeEdge) = e.target
 time(e::AttributeTimeEdge) = e.time
 attributes(e::AttributeTimeEdge) = e.attributes
 
+==(e1::AttributeTimeEdge, e2::AttributeTimeEdge) = (e1.source == e2.source && 
+                                                    e1.target == e2.target &&
+                                                    e1.time == e2.time)
 
+rev(e::AttributeTimeEdge) = AttributeTimeEdge(e.target, e.source, e.time, e.attributes)
 

@@ -113,6 +113,36 @@ function add_edge!(g::AttributeEvolvingGraph, v1, v2, t, a::Dict)
     g
 end
 
+# to be documentated
+function add_edge!(g::AttributeEvolvingGraph, v1, v2, t)
+    te = AttributeTimeEdge(v1, v2, t)
+    add_edge!(g, te)
+    g
+end
+
+has_edge(g::AttributeEvolvingGraph, te::AttributeTimeEdge) = te in edges(g)
+has_edge(g::AttributeEvolvingGraph, v1, v2, t) = has_edge(g, AttributeTimeEdge(v1, v2, t))
+
+function rm_edge!(g::AttributeEvolvingGraph, te::AttributeTimeEdge)
+    has_edge(g, te) || error("$(te) is not in the graph.")
+
+    i = 0
+    try 
+        i = _find_edge_index(g, te)
+    catch
+        i = _find_edge_index(g, rev(te))
+    end
+
+    splice!(g.ilist, i)
+    splice!(g.jlist, i)
+    splice!(g.timestamps, i)
+    splice!(g.attributesvec, i)
+    g
+end
+
+rm_edge!(g::AttributeEvolvingGraph, v1, v2, t) = rm_edge!(g, AttributeTimeEdge(v1, v2, t))
+
+
 @doc doc"""
 `matrix(g, t, attr = None)` returns an adjacency matrix representation
 of an evolving graph `g` at time `t`. If `attr` is present, return a 

@@ -36,3 +36,19 @@ b = [(2,1), (3,2)]
 
 @test out_neighbors(g, 1, 1) == b
 @test out_neighbors(g, 1, 2) == [(3,2)]
+
+# remove edge
+ag = attribute_evolving_graph(Int, Int, is_directed = false)
+add_edge!(ag, 1, 2, 1, @compat Dict("a" => 1.2))
+add_edge!(ag, 2, 1, 4, @compat Dict("b" => 1.2, "a" => 0))
+add_edge!(ag, 2, 3, 3, @compat Dict("a" => 3.4))
+add_edge!(ag, 3, 2, 1, @compat Dict("a" => 2.5))
+add_edge!(ag, 4, 2, 2)
+
+@test num_edges(ag) == 10
+
+rm_edge!(ag , 1, 2, 4)
+
+@test num_edges(ag) == 8
+@test !has_edge(ag, 1, 2, 4)
+@test !has_edge(ag, 2, 1, 4)
