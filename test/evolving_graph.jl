@@ -40,3 +40,19 @@ add_edge!(g2, 2, 3, 'b')
 @test num_nodes(g2) == 3
 @test num_edges(g2) == 2
 @test num_timestamps(g2) == 2
+
+# remove edge
+g = evolving_graph(Int, String)
+add_edge!(g, 1, 2, "t1")
+add_edge!(g, 2, 3, "t2")
+add_edge!(g, 4, 2, "t2")
+add_edge!(g, 4, 2, "t1")
+add_edge!(g, 2, 1, "t3")
+
+@test num_edges(g) == 5
+@test has_edge(g, 1, 2, "t1")
+
+rm_edge!(g, 1, 2, "t1")
+
+@test !has_edge(g, 1, 2, "t1")
+@test num_edges(g) == 4

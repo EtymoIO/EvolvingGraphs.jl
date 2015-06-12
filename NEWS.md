@@ -52,6 +52,33 @@ v0.0.4
 
 * tutorial for analyzing evolving graphs
 
+
+v0.0.5 (Working in Progress)
+-----------------------------
+
+* new methods:
+
+	- `add_edge!(g, [v1,...], [v2,...], t)` add multiple edges
+
+	- `attributes(g, attr_key)`
+
+	- `slice(g, f)`, where `f` returns true,
+		for example `slice(g, attr_key in attributes)`
+
+* new functions:
+	
+	- `set_attribute!(g, v1, v2, t)`
+
+	- `egwrite(g)` : write an evolving graph to file
+
+	- `rm_edge!(g, v1, v2, t)` remove an edge from the graph `g`.
+
+	- `has_edge(g, v1, v2, t)` if graph `g` has edge `v1`.
+
+* update examples at README
+
+* add examples: building and analyzing citation networks
+
 TODO
 ----
 

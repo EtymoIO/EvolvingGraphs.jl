@@ -183,10 +183,37 @@ end
 `add_edge!(g, v1, v2, t)` adds an edge from `v1` to `v2` at time `t` 
 to an evolving graph `g`.
 """->
-function add_edge!{V, T}(g::EvolvingGraph, v1::V, v2::V, t::T)
+function add_edge!(g::EvolvingGraph, v1, v2, t)
     add_edge!(g, TimeEdge(v1, v2, t))
 end
 
+has_edge(g::EvolvingGraph, te::TimeEdge) = te in edges(g)
+
+@doc doc"""
+`has_edge(g, v1, v2, t)` returns `true` if the edge from `v1` to `v2` 
+at time `t` is in graph `g` and false otherwise. 
+"""->
+has_edge(g::EvolvingGraph, v1, v2, t) = has_edge(g, TimeEdge(v1, v2, t))
+
+function rm_edge!(g::EvolvingGraph, te::TimeEdge)
+    has_edge(g, te) || error("$(te) is not in the graph.")
+    
+    i = _find_edge_index(g, te)
+    if i == 0  # handle undirected graph case
+        i = _find_edge_index(g, rev(te))        
+    end
+    
+    splice!(g.ilist, i)
+    splice!(g.jlist, i)
+    splice!(g.timestamps, i)
+    g
+end
+
+@doc doc"""
+`rm_edge!(g, v1, v2, t)` removes an edge from `v1` to `v2` at time `t`
+from an evolving graph `g`. 
+"""->
+rm_edge!(g::EvolvingGraph, v1, v2, t) = rm_edge!(g::EvolvingGraph, TimeEdge(v1, v2, t))
 
 @doc doc"""
 `add_graph!(g, tg)` adds a time graph `tg` to an evolving graph `g`.

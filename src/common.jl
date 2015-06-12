@@ -73,7 +73,7 @@ source(e::Edge) = e.source
 target(e::Edge) = e.target
 ==(e1::Edge, e2::Edge) = (e1.source == e2.source && e1.target == e2.target)
  
-rev(e::Edge) = Edge(e.source, e.target)
+rev(e::Edge) = Edge(e.target, e.source)
  
 
 immutable TimeEdge{V,T}
@@ -91,6 +91,9 @@ time(e::TimeEdge, g::AbstractEvolvingGraph) = e.time
 ==(e1::TimeEdge, e2::TimeEdge) = (e1.source == e2.source && 
                                   e1.target == e2.target &&
                                   e1.time == e2.time)
+
+rev(e::TimeEdge) = TimeEdge(e.target, e.source, e.time)
+
 
 immutable WeightedTimeEdge{V, T, W<:Real}
     source::V
