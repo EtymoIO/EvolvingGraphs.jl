@@ -107,6 +107,11 @@ function _egwrite(io::IO, g::AbstractEvolvingGraph)
         
 end
 
+
+@doc doc"""
+`egwrite(g, fn)` writes an evolving graph `g` to file `fn`. For example,
+`egwrite(g, ""example.csv"")`. 
+"""->
 function egwrite(g::AbstractEvolvingGraph, fn::AbstractString)
     f = open(fn, "w")
     _egwrite(f, g)
