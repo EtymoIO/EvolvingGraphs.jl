@@ -4,7 +4,7 @@
 #
 ##################################
 
-type TimeGraph{V, T} 
+type TimeGraph{V, T} <: AbstractStaticGraph
     is_directed::Bool
     time::T
     nodes::Vector{V}

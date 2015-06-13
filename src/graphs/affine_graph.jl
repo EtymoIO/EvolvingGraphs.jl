@@ -1,0 +1,3 @@
+type AffineGraph <: AbstractStaticGraph
+
+end

@@ -8,6 +8,8 @@
 # T: time type
 # W: weight or attribute type
 abstract AbstractEvolvingGraph{V, T, W}
+abstract AbstractStaticGraph{V, E}
+
 
 ######################################
 #
