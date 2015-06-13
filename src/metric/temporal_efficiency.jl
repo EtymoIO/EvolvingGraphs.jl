@@ -11,7 +11,7 @@ temporal_efficiency(g::AbstractEvolvingGraph, v1::Tuple, v2::Tuple) =
 `global_temporal_efficiency(g, t1, t2)` returns the global temporal 
 efficiency of the evolving graph `g` between timestamp `t1` and `t2`.
 The global temporal efficiency is a measure of how well information flow
-between two given timstamps. 
+between two given timestamps. 
 """->
 function global_temporal_efficiency(g::AbstractEvolvingGraph, t1, t2) 
     g = slice(g, t1, t2)

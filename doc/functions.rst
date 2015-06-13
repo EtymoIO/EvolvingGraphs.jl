@@ -155,3 +155,17 @@ Metrics
 
    finds the shortest temporal distance from node ``v1`` at timestamp ``t1`` 
    to node ``v2`` at timestamp ``t2`` on the evolving graph ``g``.
+
+.. function:: temporal_efficiency(g, (v1, t1), (v2, t2))
+  
+   returns the temporal efficiency from node ``v1`` at timestamp ``t1``
+   to node ``v2`` at timestamp ``t2`` on the evolving graph ``g``. Temporal
+   efficiency is a measure how efficient information can pass from node
+   ``v1`` to node ``v2``, ranging from 0 to 1.
+
+.. function:: global_temporal_efficiency(g, t1, t2)
+
+   returns the global temporal efficiency of the evolving graph ``g`` between 
+   timestamp ``t1`` and ``t2``. The global temporal efficiency is a measure
+   of how well information flow between two given timestamps.
+

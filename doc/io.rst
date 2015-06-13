@@ -30,9 +30,9 @@ Functions
 
 .. function:: egread(filename)
 
-   reads the Evolving Graph Format file `filename`. 
+   reads the Evolving Graph Format file ``filename``. 
 
 .. function:: egwrite(g, filename)
 
-   writes an evolving graph graph `g` to file `filename`. For example, 
-   `egwrite(g, example.csv)`.
+   writes an evolving graph graph ``g`` to file ``filename``. For example, 
+   ``egwrite(g, example.csv)``.
