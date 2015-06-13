@@ -64,6 +64,8 @@ v0.0.5 (Working in Progress)
 
 	- `slice(g, f)`, where `f` returns true,
 		for example `slice(g, attr_key in attributes)`
+			
+	- `sorted` option for `katz_centrality` 
 
 * new functions:
 	

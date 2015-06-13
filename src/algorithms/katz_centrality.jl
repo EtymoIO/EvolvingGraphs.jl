@@ -1,5 +1,5 @@
 @doc doc"""
-`katz_centrality(g [, α = 0.3])` computes the broadcast 
+`katz_centrality(g [, α = 0.3, sorted = true])` computes the broadcast 
 centrality vector of an evolving graph `g`. 
 
 Input: 
@@ -7,7 +7,7 @@ Input:
      `g`: an evolving graph
      `α`: (= 0.3 default) a scalar the controls the influence of long walks. 
 """->
-function katz_centrality(g::AbstractEvolvingGraph, α::Real = 0.3)
+function katz_centrality(g::AbstractEvolvingGraph, α::Real = 0.3; sorted::Bool = true)
     n = num_nodes(g)
     ns = nodes(g)
     ts = timestamps(g)
@@ -19,7 +19,12 @@ function katz_centrality(g::AbstractEvolvingGraph, α::Real = 0.3)
         v = (spI - α*A)\v
         v =  v/norm(v)
     end
-    return collect(zip(ns, v))
+    rate = collect(zip(ns, v))
+    if sorted
+        return sort(rate, by = x-> x[2])
+    else
+        return rate
+    end
 end
 
 
@@ -58,7 +63,7 @@ function katz_centrality(g::AbstractEvolvingGraph,
     if mode == :matrix
         return S
     elseif mode == :broadcast
-        A_mul_B!(v, S, ones(n))
+        A_mul_B!(v, S, ones(n))        
         return collect(zip(ns, v))
     elseif mode == :receive
         At_mul_B!(v, S, ones(n))
