@@ -52,6 +52,10 @@ evolving_graph(;is_directed::Bool = true) = evolving_graph(Int, Int, is_directed
 """->
 is_directed(g::EvolvingGraph) = g.is_directed
 
+@doc doc"""
+`undirected!(g)` turns a directed graph to a undirected graph. 
+"""->
+undirected!(g::AbstractEvolvingGraph) = (g.is_directed = false) 
 
 @doc doc"""
 `timestamps(g)` returns the timestamps of an evolving graph `g`.
