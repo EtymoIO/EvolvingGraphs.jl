@@ -220,3 +220,19 @@ function spmatrix(g::AttributeEvolvingGraph, t, attr = None)
     end
     A
 end
+
+@doc doc"""
+`attributes_values(g, key1 [, key2, ...])` returns the values of 
+the given keys of the graph attributes.
+"""->
+function attributes_values(g::AttributeEvolvingGraph, keys...)
+    values = Any[]
+    for att in attributesvec(g)
+        for key in keys
+            try 
+                push!(values, att[key])
+            end
+        end
+    end
+    return values
+end

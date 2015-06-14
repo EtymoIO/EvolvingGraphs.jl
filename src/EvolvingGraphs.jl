@@ -25,7 +25,7 @@ timestamps, num_timestamps, reduce_timestamps!,
 out_neighbors, is_directed,
 time_graph, evolving_graph, weighted_evolving_graph,
 attribute_evolving_graph, attributesvec, attributes,
-matrix, spmatrix, 
+matrix, spmatrix, attributes_values,
  
 # io
 egread, egwrite,
