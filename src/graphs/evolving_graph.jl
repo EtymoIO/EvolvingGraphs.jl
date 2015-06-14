@@ -289,7 +289,7 @@ end
 node `v` at timestamp `t` in the evolving graph `g`.
 """->
 function out_neighbors(g::AbstractEvolvingGraph, v, t)
-    has_node(g, v, t) || error("can not find node $(v) at time $(t) on the graph.")
+    has_node(g, v, t) || return collect(zip([], []))
     g = sorttime(g)  
     indxt = findfirst(g.timestamps, t)
     if is_directed(g)        
@@ -301,7 +301,7 @@ function out_neighbors(g::AbstractEvolvingGraph, v, t)
         neighbors = collect(zip([g.jlist[indxv1]; g.ilist[indxv2]],
                                 [g.timestamps[indxv1]; g.timestamps[indxv2]]))
     end
-    neighbors
+    sort(neighbors, by = x-> x[2])
 end
 
 out_neighbors(g::AbstractEvolvingGraph, n::Tuple) = out_neighbors(g, n[1], n[2])

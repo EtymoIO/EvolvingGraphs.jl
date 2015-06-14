@@ -37,6 +37,9 @@ katz_centrality, random_time_graph, random_evolving_graph,
 Path, TemporalPath, shortest_temporal_path, shortest_temporal_distance,
 shortest_path, shortest_distance, temporal_efficiency, global_temporal_efficiency,
 
+# components
+temporal_connected, weak_connected, weak_connected_components,
+
 # sort slice
 issorted, sorttime!, sorttime, slice!, slice,
 
@@ -51,8 +54,9 @@ include("graphs/time_graph.jl")
 include("graphs/evolving_graph.jl")
 include("graphs/weighted_evolving_graph.jl")
 include("graphs/attribute_evolving_graph.jl")
-include("sort_slice.jl")
 
+include("sort_slice.jl")
+include("components.jl")
 include("io.jl")
 include("show.jl")
 
