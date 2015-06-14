@@ -58,3 +58,13 @@ rm_edge!(g, 1, 2, "t1")
 @test num_edges(g) == 4
 
 add_edge!(g, [1,2,4], [3,4], "t1")
+
+n = num_edges(g)
+
+@test is_directed(g)
+
+undirected!(g)
+
+@test !is_directed(g)
+
+@test num_edges(g) ==  n*2
