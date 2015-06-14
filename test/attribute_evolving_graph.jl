@@ -45,6 +45,9 @@ add_edge!(ag, 2, 3, 3, @compat Dict("a" => 3.4))
 add_edge!(ag, 3, 2, 1, @compat Dict("a" => 2.5))
 add_edge!(ag, 4, 2, 2)
 
+values = attributes_values(ag, "a")
+@test length(values) == 4
+
 @test num_edges(ag) == 10
 
 rm_edge!(ag , 1, 2, 4)
@@ -56,5 +59,4 @@ rm_edge!(ag , 1, 2, 4)
 dict = @compat Dict("hello" => 3)
 add_edge!(ag, [1,2,3], [4,5], 1, dict)
 
-values = attributes_values(ag)
-@test length(values) == 4
+
