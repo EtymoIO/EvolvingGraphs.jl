@@ -60,16 +60,16 @@ v0.0.5 (Working in Progress)
 
 	- `add_edge!(g, [v1,...], [v2,...], t)` add multiple edges
 
-	- `attributes(g, attr_key)`
-
-	- `slice(g, f)`, where `f` returns true,
-		for example `slice(g, attr_key in attributes)`
+	- `slice(g, [node1, node2,...])` slice the evolving graph
+      according the given nodes.
 			
 	- `sorted` option for `katz_centrality` 
 
 * new functions:
 	
 	- `set_attribute!(g, v1, v2, t)`
+
+	- `attributes_values(g, attrbute_key)`
 
 	- `egwrite(g)` : write an evolving graph to file
 
