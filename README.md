@@ -66,7 +66,7 @@ We can also convert ``g`` to a list of adjacency matrices
 ```
 
 where the `(i,j)` entry is `true` if there is an edge from
-`node(g)[i]` to `node(g)[j]` and `false` otherwise. Here we have
+`nodes(g)[i]` to `nodes(g)[j]` and `false` otherwise. Here we have
 
 ```julia
 	julia> nodes(g)[2]
