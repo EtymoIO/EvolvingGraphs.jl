@@ -54,10 +54,6 @@ Basics
 
    returns the number of timestamps of graph ``g``.
 
-.. function:: add_edge!(g, te)
-   :noindex:
-	      
-   adds a TimeEdge ``te`` to EvolvingGraph ``g``.
 
 .. function:: add_edge!(g, v1, v2, t)
    :noindex:
@@ -66,7 +62,7 @@ Basics
 
 .. function:: add_edge!(g, [v1,...], [v2,...], t [, attr])
 
-   add all the edges from the first set ``[v1,...]`` to second set ``[v2...]``	  
+   adds all the edges from the first set ``[v1,...]`` to second set ``[v2...]``	  
    at timestamp ``t`. The dictionary ``attr`` is used to specify the graph
    attributes, if ``g`` is an attribute evolving graph.
 
@@ -80,7 +76,7 @@ Basics
 	      
    adds a time graph ``tg`` to an evolving graph ``g``.
 
-.. function:: out_neighbors(g, v, t)
+.. function:: out_neighbors(g, (v, t))
    :noindex:
 
    returns all the outward neighbors of the node ``v`` at timestamp ``t`` in 
