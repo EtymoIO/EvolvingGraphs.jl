@@ -7,7 +7,7 @@ Katz Centrality
 This is the generalization of the static graph case Katz centrality.
 
 
-.. function:: katz_centrality(g [, alpha = 0.3])
+.. function:: katz_centrality(g [, alpha = 0.3, sorted = true])
  
    compute the broadcast vector of a given evolving graph ``g``.
 

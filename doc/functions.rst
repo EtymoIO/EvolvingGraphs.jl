@@ -23,8 +23,15 @@ Basics
 .. function:: has_node(g, v, t)
    :noindex:
 
-   returns ``true`` of the node ``v`` at the timestamp ``t`` is in the 
+   returns ``true`` if the node ``v`` at the timestamp ``t`` is in the 
    evolving graph ``g`` and ``false`` otherwise.
+
+
+.. function:: has_edge(g, v1, v2, t) 
+
+   returns ``true`` if there is an edge from ``v1`` to ``v2`` at time ``t``
+   in the evolving graph ``g`` and ``false`` otherwise.
+
 
 .. function:: edges(g [, time])
    :noindex:
@@ -57,6 +64,12 @@ Basics
 
    adds an edge (from ``v1`` to ``v2`` at time ``t``) to an evolving graph ``g``.
 
+.. function:: add_edge!(g, [v1,...], [v2,...], t [, attr])
+
+   add all the edges from the first set ``[v1,...]`` to second set ``[v2...]``	  
+   at timestamp ``t`. The dictionary ``attr`` is used to specify the graph
+   attributes, if ``g`` is an attribute evolving graph.
+
 .. function:: rm_edge!(g, v1, v2, t)
    :noindex:
 
@@ -65,7 +78,7 @@ Basics
 .. function:: add_graph!(g, tg)
    :noindex:
 	      
-   adds a TimeGraph ``tg`` to EvolvingGraph ``g``.
+   adds a time graph ``tg`` to an evolving graph ``g``.
 
 .. function:: out_neighbors(g, v, t)
    :noindex:
@@ -73,6 +86,10 @@ Basics
    returns all the outward neighbors of the node ``v`` at timestamp ``t`` in 
    the evolving graph ``g``. 
 
+.. function:: attributes_values(g, attributeskey1, attributeskey2,...)
+
+   returns the values of the given keys of the graph attributes.
+   
 
 Sorting
 -------
@@ -113,6 +130,17 @@ Examples::
    slices the evolving graph ``g`` between the timestamp ``t_min`` and 
    ``t_max``, leaving ``g`` unmodified.
 
+
+.. function:: slice!(g, [node1, node2, ...])
+
+   slices the evolving graph ``g`` according to the given nodes, so that 
+   the modified ``g`` is constructed by the given nodes only.
+
+.. function:: slice(g, [node1, node2, ...])
+
+   slices the evolving graph ``g`` according to the given nodes, leaving 
+   ``g`` unmodified.
+	 
 
 Linear Algebra
 --------------
@@ -188,5 +216,5 @@ Connected Components
 
 	      finds the weakly connected components of an evolving
 	      graph ``g``, i.e, each node in the set is weakly connected to all the
-	      other nodes. If valuesonly = false, returns a dictionary with the
-	      starting the search as dictionary key.
+	      other nodes. If ``valuesonly = false``, returns a dictionary with the
+	      starting of the search as dictionary key.

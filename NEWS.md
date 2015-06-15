@@ -19,12 +19,15 @@ v0.0.3
 * define new types:
 
   - `AttributeTimeEdge`
+  
   - `AttributeEvolvingGraph`
 
 * add usage examples:
 
   - Working with Evolving Graphs
+  
   - Working with Attribute Evolving Graphs
+  
   - Inputting Data
 
 v0.0.4 
@@ -53,8 +56,8 @@ v0.0.4
 * tutorial for analyzing evolving graphs
 
 
-v0.0.5 (Working in Progress)
------------------------------
+v0.0.5 (Coming Soon)
+--------------------
 
 * new methods:
 
@@ -67,26 +70,39 @@ v0.0.5 (Working in Progress)
 
 * new functions:
 	
-	- `set_attribute!(g, v1, v2, t)`
-
-	- `attributes_values(g, attrbute_key)`
+	- `attributes_values(g, attrbute_key)` returns the values of
+	  the given keys of the graph attributes.
 
 	- `egwrite(g)` : write an evolving graph to file
 
-	- `rm_edge!(g, v1, v2, t)` remove an edge from the graph `g`.
+	- `rm_edge!(g, v1, v2, t)` remove an edge from the evolving graph `g`.
 
-	- `has_edge(g, v1, v2, t)` if graph `g` has edge `v1`.
+	- `has_edge(g, v1, v2, t)` if graph `g` has an edge from `v1` to
+      `v2` at time `t`.
 
 	- `temporal_efficiency(g, (v1, t1), (v2, t2))`
 
 	- `global_temporal_efficiency(g, t1, t2)`
 
+* graph components
+
+	- `temporal_connected(g, (v1, t1), (v2, t2))`
+
+	- `weak_connected(g, v1, v2)`
+
+	- `weak_connected_components(g, valuesonly = true)`
+
 * update examples at README
 
-* add examples: building and analyzing citation networks
 
 TODO
 ----
+
+* add examples: building and analyzing citation networks
+
+* functions
+
+	- `set_attributes!(g, v1, v2, t)`
 
 * plotting evolving graphs
 
