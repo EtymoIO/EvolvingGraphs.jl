@@ -18,9 +18,7 @@ function global_temporal_efficiency(g::AbstractEvolvingGraph, t1, t2)
     result = zero(Float64)
     for j in nodes(g)
         for i in nodes(g)
-            try 
-                result += temporal_efficiency(g, (i,t1), (j,t2))
-            end
+            result += temporal_efficiency(g, (i,t1), (j,t2))           
         end
     end
     result
