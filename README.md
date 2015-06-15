@@ -65,6 +65,23 @@ We can also convert ``g`` to a list of adjacency matrices
 	[1, 5]  =  true
 ```
 
+where the `(i,j)` entry is `true` if there is an edge from
+`node(g)[i]` to `node(g)[j]` and `false` otherwise. Here we have
+
+```julia
+	julia> nodes(g)[2]
+	4
+	
+	julia> nodes(g)[4]
+	5
+	
+	julia> nodes(g)[1]
+	1
+	
+	julia> nodes(g)[5]
+	3
+```
+
 and many [more things](http://evolvinggraphsjl.readthedocs.org/en/latest/tutorial.html).
 
 
