@@ -169,3 +169,24 @@ Metrics
    timestamp ``t1`` and ``t2``. The global temporal efficiency is a measure
    of how well information flow between two given timestamps.
 
+
+Connected Components 
+--------------------
+
+.. function:: temporal_connected(g, (v1, t1), (v2, t2))
+
+	      returns ``true`` if there is temporal path from ``v1`` at
+	      timestamp ``t1`` to ``v2`` at timestamp ``t2`` and ``false``
+	      otherwise.
+
+.. function:: weak_connected(g, v1, v2)
+
+	      returns ``true`` if there is a temporal path from ``v1``
+	      to ``v2`` at any timestamps.
+
+.. function:: weak_connected_components(g [, valuesonly = true])
+
+	      finds the weakly connected components of an evolving
+	      graph ``g``, i.e, each node in the set is weakly connected to all the
+	      other nodes. If valuesonly = false, returns a dictionary with the
+	      starting the search as dictionary key.
