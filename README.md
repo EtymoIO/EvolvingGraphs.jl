@@ -34,7 +34,7 @@ Now ``g`` is a directed evolving graph with
 	Directed EvolvingGraph (6 nodes, 5 edges, 3 timestamps)
 ```
 
-We can find the weak connected components and the shortest
+We can find the weakly connected components and the shortest
 temporal path of ``g``
 
 ```julia
@@ -47,7 +47,7 @@ temporal path of ``g``
 	Temporal Path (2 walks) (1,"t1")->(2,"t1")->(3,"t3")
 ```
 
-We can also convert ``g`` as a list of adjacency matrices
+We can also convert ``g`` to a list of adjacency matrices
 
 ```julia
 	julia> matrix(g, "t2")
