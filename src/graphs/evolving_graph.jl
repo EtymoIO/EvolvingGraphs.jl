@@ -294,17 +294,12 @@ node `v` at timestamp `t` in the evolving graph `g`.
 """->
 function out_neighbors(g::AbstractEvolvingGraph, v::Tuple)
     g = sorttime(g)
-  
-    if !is_directed(g)
-        g = EvolvingGraph([g.ilist; g.jlist], [g.jlist; g.ilist], [g.timestamps; g.timestamps])
-        g = sorttime(g)
-    end
-    
+      
     starttime = findfirst(g.timestamps, v[2])
     endtime = findlast(g.timestamps, v[2])
 
-    nodei = findin(g.ilist[starttime:end], v[1]) + starttime - 1
-    nodej = findin(g.jlist[starttime:end], v[1]) + starttime - 1
+    nodei = findin(g.ilist[starttime:end], [v[1]]) + starttime - 1
+    nodej = findin(g.jlist[starttime:end], [v[1]]) + starttime - 1
     
     neighbors = sizehint!(Tuple[], length(nodei) + length(nodej))
     
@@ -320,5 +315,14 @@ function out_neighbors(g::AbstractEvolvingGraph, v::Tuple)
             push!(neighbors, (g.jlist[i], g.timestamps[i]))
         end
     end
-    neighbors
+    
+    if !is_directed(g)
+        for i in nodej
+            if i <= endtime
+                push!(neighbors, (g.ilist[i], g.timestamps[i]))
+            end
+        end
+    end
+            
+    unique(neighbors)
 end
