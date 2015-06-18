@@ -9,6 +9,9 @@ TemporalPath() = TemporalPath([])
 
 length(p::TemporalPath) = length(p.walks)
 
+# spatical length disregard time 
+spatial_length(p::TemporalPath) = length(unique(map(x -> x[1], p.walks)))
+
 has_node(p::TemporalPath, v::Tuple) = v in p.walks
 
 ==(p1::TemporalPath, p2::TemporalPath) = (p1.walks == p2.walks)
@@ -19,7 +22,7 @@ function _DFS_shortest_temporal_path(g::AbstractEvolvingGraph,
                                      v2::Tuple,
                                      path = TemporalPath(),
                                      shortest = None;
-                                     verbose = false)
+                                     verbose::Bool = false)
     path = deepcopy(path)
     path.walks = [path.walks; v1]
 
@@ -33,7 +36,7 @@ function _DFS_shortest_temporal_path(g::AbstractEvolvingGraph,
     for node in out_neighbors(g, v1)
         if !(has_node(path, node)) # avoid cycles
             if node[2] <= v2[2] # avoid searching nodes at timestamps > v2[2]
-                if (shortest == None) || (length(path) < length(shortest))
+                if (shortest == None) || (spatial_length(path) < spatial_length(shortest))
                     newPath = _DFS_shortest_temporal_path(g, node, v2, path, shortest, verbose = verbose)
                     if newPath != None
                     shortest = newPath
