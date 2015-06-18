@@ -69,14 +69,6 @@ function weak_connected_components{V}(g::AbstractEvolvingGraph{V}, valuesonly::B
         if ! ( node  in nodelist)
    
             reachable = _breath_first_visit(g, (node, t[i]))
-            while length(reachable) == 1
-                if i < n
-                    i += 1
-                else
-                    break
-                end
-                reachable = _breath_first_visit(g, (node, t[i]))
-            end
             
             append!(nodelist, map(x -> x[1], reachable))
            
@@ -85,10 +77,10 @@ function weak_connected_components{V}(g::AbstractEvolvingGraph{V}, valuesonly::B
             #println("components:", components)
             for node2 in keys(components)
     
-                    if temporal_connected(g, (node, t[i]), node2)
-                        delete!(components, (node, t[i]))
-                        components[node2] = reachable
-                    end
+                if temporal_connected(g, (node, t[i]), node2)
+                    delete!(components, (node, t[i]))
+                    components[node2] = reachable
+                end
             
             end
         end
