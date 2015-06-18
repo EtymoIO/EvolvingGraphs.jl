@@ -40,11 +40,11 @@ temporal path of ``g``
 ```julia
 	julia> weak_connected_components(g)
 	2-element Array{Array{Tuple,1},1}:
-	Tuple[(1,"t1"),(2,"t1"),(3,"t2"),(3,"t3")]
-	Tuple[(4,"t2"),(5,"t2"),(6,"t3")]
+	Tuple[(1,"t1"),(2,"t1"),(1,"t2"),(2,"t3"),(3,"t2"),(3,"t3")]
+	Tuple[(4,"t2"),(5,"t2"),(5,"t3"),(6,"t3")]
 
 	julia> shortest_temporal_path(g, (1, "t1"), (3, "t3"))
-	Temporal Path (2 walks) (1,"t1")->(2,"t1")->(3,"t3")
+	Temporal Path (3 walks) (1,"t1")->(1,"t2")->(3,"t2")->(3,"t3")
 ```
 
 We can also convert ``g`` to a list of adjacency matrices

@@ -180,12 +180,12 @@ The answer is yes, since ``a`` can talk to ``b`` and ``b`` can talk to
 be computed using ``shortest_temporal_path`` ::
 
   julia> shortest_temporal_path(g, ('a', 1), ('e', 2))
-  Temporal Path (3 walks) ('a',1)->('b',1)->('g',1)->('e',2)
+  Temporal Path (4 walks) ('a',1)->('b',1)->('g',1)->('g',2)->('e',2)
 
 and the shortest distance of passing this message is ``3``::
 
   julia> shortest_temporal_distance(g, ('a', 1), ('e', 2))
-  3
+  4
 
 .. [grindrod11] P. Grindrod, M, Parsons, D.J. Higham, and E. Estrada, 
 	      "Communicability across evolving networks", *Physcial Review E*,
