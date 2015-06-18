@@ -289,23 +289,36 @@ function spmatrix(g::EvolvingGraph, t)
 end
 
 @doc doc"""
-`out_neighbors(g, v, t)` returns all the outward neightbors of the 
+`out_neighbors(g, (v, t))` returns all the outward neightbors of the 
 node `v` at timestamp `t` in the evolving graph `g`.
 """->
-function out_neighbors(g::AbstractEvolvingGraph, v, t)
-    has_node(g, v, t) || return collect(zip([], []))
-    g = sorttime(g)  
-    indxt = findfirst(g.timestamps, t)
-    if is_directed(g)        
-        indxv = findin(g.ilist[indxt:end], [v]) + indxt - 1            
-        neighbors =  collect(zip(g.jlist[indxv], g.timestamps[indxv]))
-    else
-        indxv1 = findin(g.ilist[indxt:end], [v]) + indxt - 1 
-        indxv2 = findin(g.jlist[indxt:end], [v]) + indxt - 1
-        neighbors = collect(zip([g.jlist[indxv1]; g.ilist[indxv2]],
-                                [g.timestamps[indxv1]; g.timestamps[indxv2]]))
+function out_neighbors(g::AbstractEvolvingGraph, v::Tuple)
+    g = sorttime(g)
+  
+    if !is_directed(g)
+        g = EvolvingGraph([g.ilist; g.jlist], [g.jlist; g.ilist], [g.timestamps; g.timestamps])
+        g = sorttime(g)
     end
-    sort(neighbors, by = x-> x[2])
-end
+    
+    starttime = findfirst(g.timestamps, v[2])
+    endtime = findlast(g.timestamps, v[2])
 
-out_neighbors(g::AbstractEvolvingGraph, n::Tuple) = out_neighbors(g, n[1], n[2])
+    nodei = findin(g.ilist[starttime:end], v[1]) + starttime - 1
+    nodej = findin(g.jlist[starttime:end], v[1]) + starttime - 1
+    
+    neighbors = sizehint!(Tuple[], length(nodei) + length(nodej))
+    
+    for i in nodei
+        if i > endtime
+            push!(neighbors, (g.ilist[i], g.timestamps[i]))
+        else
+            push!(neighbors, (g.jlist[i], g.timestamps[i]))
+        end
+    end
+    for i in nodej
+        if i > endtime
+            push!(neighbors, (g.jlist[i], g.timestamps[i]))
+        end
+    end
+    neighbors
+end
