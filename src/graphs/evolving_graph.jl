@@ -293,6 +293,7 @@ end
 node `v` at timestamp `t` in the evolving graph `g`.
 """->
 function out_neighbors(g::AbstractEvolvingGraph, v::Tuple)
+    has_node(g, v[1], v[2]) || return collect(zip([], []))
     g = sorttime(g)
       
     starttime = findfirst(g.timestamps, v[2])
@@ -326,3 +327,5 @@ function out_neighbors(g::AbstractEvolvingGraph, v::Tuple)
             
     unique(neighbors)
 end
+
+out_neighbors(g::AbstractEvolvingGraph, v, t) = out_neighbors(g, (v,t))

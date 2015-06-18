@@ -13,6 +13,6 @@ add_edge!(g, 'e', 'g', 3)
 add_edge!(g, 'g', 'f', 3)
 
 p = shortest_temporal_path(g, ('a', 1), ('e', 3))
-@test p == TemporalPath([('a', 1), ('b', 1), ('g', 1), ('e', 3)])
+@test p == TemporalPath([('a', 1), ('b', 1), ('g', 1), ('g', 3), ('e', 3)])
 
 @test shortest_temporal_distance(g, ('c', 2), ('a', 2)) == Inf
