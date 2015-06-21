@@ -1,16 +1,20 @@
 EvolvingGraphs Release Notes
-============================
+======================
 
 v0.0.6 (Working in Progress)
------------------------------
+---------------------------------------
 
 * redefine `out_neighbors` to fix the shortest temporal path
   mistake. This change will affect the results of
   `shortest_temporal_path` and `weak_connected_components`.
 
+* new functions:
+
+	- `undirected` and `undirected!` turns a directed evolving graph to an undirected
+		evolving graph.
 
 v0.0.5 
--------
+----------
 
 * new methods:
 
