@@ -53,14 +53,19 @@ evolving_graph(;is_directed::Bool = true) = evolving_graph(Int, Int, is_directed
 is_directed(g::EvolvingGraph) = g.is_directed
 
 @doc doc"""
-`undirected!(g)` turns a directed graph to a undirected graph. 
+`undirected!(g)` turns a directed graph to an undirected graph. 
 """->
-undirected!(g::AbstractEvolvingGraph) = (g.is_directed = false) 
+undirected!(g::AbstractEvolvingGraph) = ( g.is_directed = false ; g)
+
+@doc doc"""
+`undirected(g)` turns a directed graph `g` to an undirected graph, leaving `g` unchanged.
+"""->
+undirected(g::AbstractEvolvingGraph) = undirected!(copy(g))
 
 @doc doc"""
 `timestamps(g)` returns the timestamps of an evolving graph `g`.
 """->
-function timestamps(g::EvolvingGraph)
+function timestamps(g::EvolvingGraph) 
     ts = unique(g.timestamps)
     return sort(ts)
 end
