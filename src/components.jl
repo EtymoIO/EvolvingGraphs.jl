@@ -61,6 +61,7 @@ function weak_connected_components{V}(g::AbstractEvolvingGraph{V}, valuesonly::B
     nodelist = V[]
     reachable = Tuple[]
     
+    g = undirected(g)
     t = timestamps(g)
     n = length(t)
 

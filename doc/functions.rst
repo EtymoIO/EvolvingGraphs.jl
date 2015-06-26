@@ -10,6 +10,15 @@ Basics
    returns ``true`` if graph ``g`` is a directed graph and ``false``
    otherwise.
 
+.. function:: undirected!(g)
+
+   turns a directed evolving graph to an undirected evolving graph.
+
+.. function:: undirected(g)
+
+   turns a directed evolving graph ``g`` to an undirected evolving graph and 
+   leaving ``g`` unmodified. 
+
 .. function:: nodes(g) 
    :noindex:	      
 

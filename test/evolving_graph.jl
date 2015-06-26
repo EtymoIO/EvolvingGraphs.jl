@@ -7,9 +7,13 @@ is_directed(g)
 nodes(g)
 num_nodes(g)
 edges(g)
-num_edges(g)
+n = num_edges(g)
 timestamps(g)
 num_timestamps(g)
+
+ug = undirected(g)
+
+@test num_edges(ug) == n*2
 
 # EvolvingGraph
 aa = ['a', 'b', 'c', 'c', 'a']
