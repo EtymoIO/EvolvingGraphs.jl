@@ -10,9 +10,11 @@ import Base: ==, show, time, slice, issorted, copy, length
 
 export 
 
-# common
-Node, Edge, TimeNode, IndexNode, TimeEdge, WeightedTimeEdge, AttributeTimeEdge,
-AbstractEvolvingGraph, key, make_node, index, rev, AttributeDict,
+# core
+AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
+Node, Edge, TimeNode, AttributeNode, TimeEdge, WeightedTimeEdge, AttributeTimeEdge,
+key, make_node, index, rev, AttributeDict, 
+
 
 # graph types
 TimeGraph, EvolvingGraph, WeightedEvolvingGraph, AttributeEvolvingGraph,
@@ -25,7 +27,7 @@ timestamps, num_timestamps, reduce_timestamps!,
 out_neighbors, is_directed, undirected!, undirected, 
 time_graph, evolving_graph, weighted_evolving_graph,
 attribute_evolving_graph, attributesvec, attributes,
-matrix, spmatrix, attributes_values,
+matrix, spmatrix, attributes_values, 
  
 # io
 egread, egwrite,
@@ -46,7 +48,7 @@ issorted, sorttime!, sorttime, slice!, slice,
 # example
 build_evolving_graph
 
-include("common.jl")
+include("core.jl")
 include("util.jl")
 
 include("graphs/auxiliary.jl")

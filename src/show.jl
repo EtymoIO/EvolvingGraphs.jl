@@ -3,8 +3,8 @@ function show(io::IO, v::Node)
     print(io, "Node($(v.key))")
 end
 
-function show(io::IO, v::IndexNode)
-    print(io, "IndexNode($(v.key))")
+function show(io::IO, v::AttributeNode)
+    print(io, "AttributeNode($(v.key))")
 end
 
 function show(io::IO, v::TimeNode)

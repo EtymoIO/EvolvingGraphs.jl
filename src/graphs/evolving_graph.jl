@@ -31,7 +31,7 @@ function evolving_graph{V,T}(ils::Vector{V},
                              is_directed::Bool = true)
     length(ils) == length(jls) == length(timestamps)|| 
             error("3 input vectors must have the same length.")
-    return EvolvingGraph{V,T}(is_directed, ils, jls, timestamps)    
+    return EvolvingGraph(is_directed, ils, jls, timestamps)    
 end
 
 @doc doc"""

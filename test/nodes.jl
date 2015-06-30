@@ -1,17 +1,15 @@
-a = Node("a")
+a = Node(1, "a")
 k = key(a)
-a1 = Node("a")
+a1 = Node(1, "a")
 
 @test a == a1
 
 
-b = IndexNode(2, "b")
-index(b)
-key(b)
+b = AttributeNode(1, "a", @compat Dict())
+b1 = AttributeNode(1, "a")
 
-c = IndexNode(2, "b")
+@test b == b1
 
-@test b == c
 
 d = TimeNode(2, 'd', "t1")
 key(d)

@@ -29,22 +29,21 @@ end
  
 index(v::Node) = v.index
 key(v::Node) = v.key
-==(v1::Node, v2::Node) = (v1.key == v2.key && v1.index == v2.index)
-make_node(g::AbstractGraph, key) 
+==(v1::Node, v2::Node) = (v1.key == v2.key)
+make_node{V}(g::AbstractGraph{Node{V}}, key::V) = Node(num_nodes(g) + 1, key)
 
-immutable AttributeNode{V}
+type AttributeNode{V}
     index::Int
     key::V
     attributes::Dict
-    
-    AttributeNode{V}(i::Int, key::V) = new(i, key, Dict())
 end
+AttributeNode{V}(index::Int, key::V) = AttributeNode(index, key, Dict())
 
-make_vertex{T}(g::AbstractGraph{AttributeNode{T}}, key::T) = AttributeNode(num_nodes(g) + 1, key) 
+make_node{V}(g::AbstractGraph{AttributeNode{V}}, key::V) = AttributeNode(num_nodes(g) + 1, key) 
 index(v::AttributeNode) = v.index
 attributes(v::AttributeNode) = v.attributes
 attributes(v::AttributeNode, g::AbstractGraph) = v.attributes
-
+==(v1::AttributeNode, v2::AttributeNode) = (v1.key == v2.key && v1.attributes == v2.attributes)
 
 immutable TimeNode{K,T}
     index::Int
@@ -57,16 +56,18 @@ time(v::TimeNode) = v.time
 index(v::TimeNode) = v.index
 ==(v1::TimeNode, v2::TimeNode) = (v1.key == v2.key && v1.time == v2.time)
 
+typealias NodeType Union(Node, AttributeNode, TimeNode)
+
+index(v::NodeType, g::AbstractGraph) = index(v)
 
 ##########################################
 #
 #  edge types
 #
 ##########################################
-abstract AbstractEdge{V,T}
 
 
-immutable Edge{V} <: AbstractEdge{V}
+immutable Edge{V}
     source::V
     target::V       
 end
@@ -78,7 +79,7 @@ target(e::Edge) = e.target
 rev(e::Edge) = Edge(e.target, e.source)
  
 
-immutable TimeEdge{V,T} <:AbstractEdge{V,T}
+immutable TimeEdge{V,T}
     source::V
     target::V
     time::T
@@ -93,11 +94,10 @@ time(e::TimeEdge, g::AbstractEvolvingGraph) = e.time
 ==(e1::TimeEdge, e2::TimeEdge) = (e1.source == e2.source && 
                                   e1.target == e2.target &&
                                   e1.time == e2.time)
-
 rev(e::TimeEdge) = TimeEdge(e.target, e.source, e.time)
 
 
-immutable WeightedTimeEdge{V, T, W<:Real} <: AbstractEdge{V, T}
+immutable WeightedTimeEdge{V, T, W<:Real} 
     source::V
     target::V
     weight::W
@@ -111,7 +111,7 @@ weight(e::WeightedTimeEdge) = e.weight
 
 typealias AttributeDict Dict{UTF8String, Any}
 
-type AttributeTimeEdge{V, T} <: AbstractEdge{V, T}
+type AttributeTimeEdge{V, T} 
     source::V
     target::V
     time::T
