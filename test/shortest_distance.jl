@@ -17,8 +17,8 @@ g = build_time_graph()
 
 p = shortest_path(g, 0, 5)
 
-p2 = Path([0, 2, 3, 5])
+p2 = Path([make_node(g,0), make_node(g,2), make_node(g,3), make_node(g,5)])
 
 @test p == p2
 
-@test shortest_distance(g, 0, 5) == 3
+@test shortest_distance(g,  0,  5) == 3

@@ -245,7 +245,7 @@ function add_graph!(g::EvolvingGraph, tg::TimeGraph)
     t = time(tg)
     for v1 in nodes(tg)
         for v2 in out_neighbors(tg, v1)
-            te = TimeEdge(v1, v2, t)
+            te = TimeEdge(v1.key, v2.key, t)
             if !(te in edges(g))
                 add_edge!(g, te)
             end

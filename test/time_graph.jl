@@ -12,7 +12,7 @@ has_node(g, a)
 @test num_nodes(g) == 3
 
 g2 = time_graph(Int, 2)
-add_edge!(g, 1, 2)
-add_edge!(g, 2, 1)
+add_edge!(g2, 1, 2)
+add_edge!(g2, 2, 1)
 eg = evolving_graph(Int, Int)
 add_graph!(eg, g2)
