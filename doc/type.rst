@@ -1,25 +1,32 @@
 Type System
 ===========
 
+``AbstractGraph`` is at the apex of EvolvingGraphs' type hierarchy. 
+It has two children: ``AbstractEvolvingGraph`` and ``AbstractStaticGraph``::
+
+  abstract AbstractGraph{V, E, T}
+  abstract AbstractEvolvingGraph{V, E, T} <: AbstractGraph{V, E, T}
+  abstract AbstractStaticGraph{V, E} <: AbstractGraph{V, E}
+
+``AbstractEvolvingGraph`` has three children: ``EvolvingGraph``,
+``AttributeEvolvingGraph`` and ``WeightedEvolvingGraph``.
+
+``AbstractStaticGraph`` has two children: ``TimeGraph`` and ``AffineGraph``. 
+
 Nodes and Edges
 ^^^^^^^^^^^^^^^
 
 Node Types
 ----------
 
-There are three node types: ``Node``, ``IndexNode`` and
+There are three node types: ``Node``, ``AttributeNode`` and
 ``TimeNode``. The definition of ``Node`` is::
 
-  immutable Node{T}
+  immutable Node{V}
+    index::Int
     Key::T
   end
  
-The definition of ``IndexNode`` is::
-
-  immutable IndexNode{T}
-    index::Int
-    key::T
-  end
 
 The definition of ``TimeNode`` is::
 

@@ -8,10 +8,15 @@ v0.0.6 (Working in Progress)
   mistake. This change will affect the results of
   `shortest_temporal_path` and `weak_connected_components`.
 
+* redefine type hierarchy, introduce `AbstractStaticGraph`. 
+
+* rename `IndexNode` as `Node`, introduce `AttributeNode`.
+
 * new functions:
 
 	- `undirected` and `undirected!` turns a directed evolving graph to an undirected
 		evolving graph.
+
 
 v0.0.5 
 ----------
