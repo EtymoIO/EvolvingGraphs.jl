@@ -4,7 +4,7 @@
 #
 ######################################
 
-type AggregatedGraph{V} <: AbstractStaticGraph{V}
+type AggregatedGraph{V} <: AbstractStaticGraph{V, Edge{V}}
     is_directed::Bool
     nodes::Vector{V}
     nedges::Int
@@ -29,7 +29,7 @@ the corresponding aggregated static graph.
 function aggregated_graph{V}(g::AbstractEvolvingGraph{V})
     ag = aggregated_graph(V, is_directed = is_directed(g))
     for e in edges(g)
-        add_edge!(g, e)
+        add_edge!(ag, e.source, e.target)
     end
     ag
 end

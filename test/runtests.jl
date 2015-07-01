@@ -17,7 +17,8 @@ tests = [
          "shortest_temporal_distance",
          "io",
          "temporal_efficiency",
-         "components"
+         "components",
+         "aggregated_graph"
          ]
 
 for t in tests

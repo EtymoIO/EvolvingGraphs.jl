@@ -53,6 +53,11 @@ function show(io::IO, g::TimeGraph)
 end
 
 
+function show(io::IO, g::AggregatedGraph)
+    title = is_directed(g)? "Directed AggregatedGraph" : "Undirected AggregatedGraph"
+    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) edges)")
+end
+
 function show(io::IO, p::AbstractPath)
     title = typeof(p) == Path ? "Path" : "Temporal Path"
     result = ""

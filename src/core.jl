@@ -42,8 +42,6 @@ function make_node{V}(g::AbstractGraph{Node{V}}, key::V)
     end        
 end
 
-
-
 type AttributeNode{V} 
     index::Int
     key::V
@@ -194,10 +192,14 @@ end
 
 add_node!(g::AbstractStaticGraph, v) = add_node!(g, make_node(g, v))
     
+
+typealias EdgeType{V} Union(Edge{V}, TimeEdge{V}, WeightedTimeEdge{V},
+                            AttributeTimeEdge{V})
+
 @doc doc"""
 `add_edge!(g, e)` adds an edge `e` to a static graph `g`. 
 """->
-function add_edge!{V}(g::AbstractStaticGraph{V}, e::Edge{V})
+function add_edge!{V}(g::AbstractStaticGraph{V}, e::EdgeType{V})
     src = e.source
     dest = e.target
     if !(src in g.nodes)
