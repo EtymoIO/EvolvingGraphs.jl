@@ -63,10 +63,10 @@ function katz_centrality(g::AbstractEvolvingGraph,
     if mode == :matrix
         return S
     elseif mode == :broadcast
-        A_mul_B!(v, S, ones(n))        
+        v = S* ones(n)   
         return collect(zip(ns, v))
     elseif mode == :receive
-        At_mul_B!(v, S, ones(n))
+        v = S'*ones(n)
         return collect(zip(ns, v))
     else
         error("unknown mode $(mode)")
