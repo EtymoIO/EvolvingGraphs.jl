@@ -19,22 +19,10 @@ attribute_evolving_graph{V,T}(::Type{V},
 
 attribute_evolving_graph(;is_directed::Bool = true) = attribute_evolving_graph(Int, Int, is_directed = is_directed)
 
-is_directed(g::AttributeEvolvingGraph) = g.is_directed
-
-function timestamps(g::AttributeEvolvingGraph)
-    ts = unique(g.timestamps)
-    return sort(ts)
-end
-
-num_timestamps(g::AttributeEvolvingGraph) = length(timestamps(g))
 
 attributesvec(g::AttributeEvolvingGraph) = g.attributesvec
-
-
 attributes(g::AttributeEvolvingGraph, e::AttributeTimeEdge) = e.attributes
 
-nodes(g::AttributeEvolvingGraph) = union(g.ilist, g.jlist)
-num_nodes(g::AttributeEvolvingGraph) = length(nodes(g))
 
 function edges(g::AttributeEvolvingGraph)
     n = length(g.ilist)

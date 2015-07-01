@@ -47,51 +47,6 @@ Input:
 evolving_graph{V,T}(::Type{V}, ::Type{T} ;is_directed::Bool = true) = EvolvingGraph(is_directed, V[], V[], T[])
 evolving_graph(;is_directed::Bool = true) = evolving_graph(Int, Int, is_directed = is_directed)
 
-@doc doc"""
-`is_directed(g)` returns `true` if `g` is directed and `false` otherwise.
-"""->
-is_directed(g::EvolvingGraph) = g.is_directed
-
-@doc doc"""
-`undirected!(g)` turns a directed graph to an undirected graph. 
-"""->
-undirected!(g::AbstractEvolvingGraph) = ( g.is_directed = false ; g)
-
-@doc doc"""
-`undirected(g)` turns a directed graph `g` to an undirected graph, leaving `g` unchanged.
-"""->
-undirected(g::AbstractEvolvingGraph) = undirected!(copy(g))
-
-@doc doc"""
-`timestamps(g)` returns the timestamps of an evolving graph `g`.
-"""->
-function timestamps(g::EvolvingGraph) 
-    ts = unique(g.timestamps)
-    return sort(ts)
-end
-
-
-@doc doc"""
-`num_timestamps(g)` returns the number of timestamps of `g`, 
-where `g` is an evolving graph.
-"""->
-num_timestamps(g::EvolvingGraph) = length(timestamps(g))
-
-
-@doc doc"""
-`nodes(g)` returns the nodes of an evolving graph `g`. 
-"""->
-nodes(g::EvolvingGraph) = union(g.ilist, g.jlist)
-num_nodes(g::EvolvingGraph) = length(nodes(g))
-
-@doc doc"""
-`has_node(g, v, t)` returns `true` if the node `v` at the timestamp `t` is 
-in the evolving graph `g` and `false` otherwise. 
-"""->
-function has_node(g::AbstractEvolvingGraph, v, t)
-    p = findin(g.timestamps , [t])
-    return (v in g.ilist[p]) || (v in g.jlist[p]) 
-end
 
 
 @doc doc"""
@@ -292,45 +247,3 @@ function spmatrix(g::EvolvingGraph, t)
     vs = ones(Bool, length(is))
     return sparse(is, js, vs, n, n)    
 end
-
-@doc doc"""
-`out_neighbors(g, (v, t))` returns all the outward neightbors of the 
-node `v` at timestamp `t` in the evolving graph `g`.
-"""->
-function out_neighbors(g::AbstractEvolvingGraph, v::Tuple)
-    has_node(g, v[1], v[2]) || return collect(zip([], []))
-    g = sorttime(g)
-      
-    starttime = findfirst(g.timestamps, v[2])
-    endtime = findlast(g.timestamps, v[2])
-
-    nodei = findin(g.ilist[starttime:end], [v[1]]) + starttime - 1
-    nodej = findin(g.jlist[starttime:end], [v[1]]) + starttime - 1
-    
-    neighbors = sizehint!(Tuple[], length(nodei) + length(nodej))
-    
-    for i in nodei
-        if i > endtime
-            push!(neighbors, (g.ilist[i], g.timestamps[i]))
-        else
-            push!(neighbors, (g.jlist[i], g.timestamps[i]))
-        end
-    end
-    for i in nodej
-        if i > endtime
-            push!(neighbors, (g.jlist[i], g.timestamps[i]))
-        end
-    end
-    
-    if !is_directed(g)
-        for i in nodej
-            if i <= endtime
-                push!(neighbors, (g.ilist[i], g.timestamps[i]))
-            end
-        end
-    end
-            
-    unique(neighbors)
-end
-
-out_neighbors(g::AbstractEvolvingGraph, v, t) = out_neighbors(g, (v,t))
