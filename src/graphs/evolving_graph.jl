@@ -5,7 +5,7 @@
 #
 #####################################################
 
-type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V,T}
+type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V, Edge{V}, T}
     is_directed::Bool
     ilist::Vector{V}
     jlist::Vector{V}

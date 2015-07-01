@@ -17,7 +17,8 @@ key, make_node, index, rev, AttributeDict,
 
 
 # graph types
-TimeGraph, EvolvingGraph, WeightedEvolvingGraph, AttributeEvolvingGraph,
+TimeGraph, AggregatedGraph, EvolvingGraph, WeightedEvolvingGraph, 
+AttributeEvolvingGraph,
 
 # graph functions
 add_node!, add_edge!, add_graph!, rm_edge!, has_edge, has_node,
@@ -27,7 +28,7 @@ timestamps, num_timestamps, reduce_timestamps!,
 out_neighbors, is_directed, undirected!, undirected, 
 time_graph, evolving_graph, weighted_evolving_graph,
 attribute_evolving_graph, attributesvec, attributes,
-matrix, spmatrix, attributes_values, 
+matrix, spmatrix, attributes_values, aggregated_graph, 
  
 # io
 egread, egwrite,
@@ -53,6 +54,7 @@ include("util.jl")
 
 include("graphs/auxiliary.jl")
 include("graphs/time_graph.jl") 
+include("graphs/aggregated_graph.jl")
 include("graphs/evolving_graph.jl")
 include("graphs/weighted_evolving_graph.jl")
 include("graphs/attribute_evolving_graph.jl")

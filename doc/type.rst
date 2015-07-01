@@ -11,7 +11,7 @@ It has two children: ``AbstractEvolvingGraph`` and ``AbstractStaticGraph``::
 ``AbstractEvolvingGraph`` has three children: ``EvolvingGraph``,
 ``AttributeEvolvingGraph`` and ``WeightedEvolvingGraph``.
 
-``AbstractStaticGraph`` has two children: ``TimeGraph`` and ``AffineGraph``. 
+``AbstractStaticGraph`` has two children: ``TimeGraph`` and ``AggregatedGraph``. 
 
 Nodes and Edges
 ^^^^^^^^^^^^^^^

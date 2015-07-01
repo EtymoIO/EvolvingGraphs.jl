@@ -182,7 +182,7 @@ be computed using ``shortest_temporal_path`` ::
   julia> shortest_temporal_path(g, ('a', 1), ('e', 2))
   Temporal Path (4 walks) ('a',1)->('b',1)->('g',1)->('g',2)->('e',2)
 
-and the shortest distance of passing this message is ``3``::
+and the shortest distance of passing this message is ``4``::
 
   julia> shortest_temporal_distance(g, ('a', 1), ('e', 2))
   4
