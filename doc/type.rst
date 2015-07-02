@@ -8,10 +8,16 @@ It has two children: ``AbstractEvolvingGraph`` and ``AbstractStaticGraph``::
   abstract AbstractEvolvingGraph{V, E, T} <: AbstractGraph{V, E, T}
   abstract AbstractStaticGraph{V, E} <: AbstractGraph{V, E}
 
-``AbstractEvolvingGraph`` has three children: ``EvolvingGraph``,
-``AttributeEvolvingGraph`` and ``WeightedEvolvingGraph``.
 
-``AbstractStaticGraph`` has two children: ``TimeGraph`` and ``AggregatedGraph``. 
+``AbstractEvolvingGraph`` and ``AbstractStaticGraph`` are abstractions
+of evolving graphs and static graphs
+respectively. ``AbstractEvolvingGraph`` has three children:
+``EvolvingGraph``, ``AttributeEvolvingGraph`` and
+``WeightedEvolvingGraph`` and ``AbstractStaticGraph`` has two
+children: ``TimeGraph`` and ``AggregatedGraph``.
+
+Before discussing the graph types, let us first look at the building
+blocks of graphs: nodes and edges. 
 
 Nodes and Edges
 ^^^^^^^^^^^^^^^
@@ -19,13 +25,17 @@ Nodes and Edges
 Node Types
 ----------
 
-There are three node types: ``Node``, ``AttributeNode`` and
-``TimeNode``. The definition of ``Node`` is::
+``Node``, ``AttributeNode`` and ``TimeNode`` are designed for
+different purposes. ``Node`` is constructed as::
 
   immutable Node{V}
     index::Int
-    Key::T
+    key::T
   end
+
+Each node on a graph has a unique index and a key representation of
+any Julia type. For example, it can be an integer, a character or a
+string.
  
 
 The definition of ``TimeNode`` is::
