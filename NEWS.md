@@ -1,18 +1,21 @@
 EvolvingGraphs Release Notes
 ======================
 
-v0.0.6 (Working in Progress)
+v0.0.6 (Coming Soon)
 ---------------------------------------
+
+* new data type
+
+	- `AggregatedGraph`
+	- `AttributeNode`
 
 * redefine `out_neighbors` to fix the shortest temporal path
   mistake. This change will affect the results of
   `shortest_temporal_path` and `weak_connected_components`.
 
-* redefine type hierarchy, introduce `AbstractStaticGraph`. 
+* redefine type hierarchy, introduce abstraction `AbstractStaticGraph`. 
 
-* rename `IndexNode` as `Node`, introduce `AttributeNode`.
-
-* define `eltype` on node types. 
+* define function `eltype` on node types. 
 
 * new functions:
 

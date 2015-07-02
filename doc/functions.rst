@@ -1,7 +1,47 @@
 Functions
 =========
 
-Basics
+Nodes and Edges
+----------------
+
+.. function:: key(v)
+   :noindex:
+
+   returns the key of a node ``v``. 
+
+.. function:: index(v)
+   :noindex:
+ 
+   returns the index of a node ``v``.
+
+.. function:: time(v)
+   :noindex:
+
+   returns the time of an instance of ``TimeNode``. 
+
+.. function:: source(e [, g])
+   :noindex:
+	    
+   returns the source of the edge ``e``, where ``g`` is a graph.
+
+.. function:: target(e [, g])
+   :noindex:	      
+
+   returns the target of the edge ``e``, where ``g`` is a graph.
+
+.. function:: time(e)
+   :noindex:	      
+
+   returns the time of an edge ``e`` if ``e`` is of type ``TimeEdge`` or 
+   ``WeightedTimeEdge``.
+
+.. function:: weight(e)
+   :noindex:
+	      
+   returns the weight of an edge ``e`` if ``e`` is of type ``WeightedTimeEdge``.
+
+
+Graphs
 ------
 
 .. function:: is_directed(g)
@@ -94,7 +134,15 @@ Basics
 .. function:: attributes_values(g, attributeskey1, attributeskey2,...)
 
    returns the values of the given keys of the graph attributes.
-   
+
+.. function:: aggregated_graph(type [, is_directed = true])
+
+   initializes an aggregated graph, where ``type`` is the node type. 
+
+.. function:: aggregated_graph(g)
+
+   converts an evolving graph or time graph to an aggregated graph.
+
 
 Sorting
 -------

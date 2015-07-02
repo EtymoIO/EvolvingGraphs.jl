@@ -13,7 +13,7 @@ It has two children: ``AbstractEvolvingGraph`` and ``AbstractStaticGraph``::
 of evolving graphs and static graphs
 respectively. ``AbstractEvolvingGraph`` has three children:
 ``EvolvingGraph``, ``AttributeEvolvingGraph`` and
-``WeightedEvolvingGraph`` and ``AbstractStaticGraph`` has two
+``WeightedEvolvingGraph``. ``AbstractStaticGraph`` has two
 children: ``TimeGraph`` and ``AggregatedGraph``.
 
 Before discussing the graph types, let us first look at the building
@@ -33,11 +33,44 @@ different purposes. ``Node`` is constructed as::
     key::T
   end
 
-Each node on a graph has a unique index and a key representation of
+Each node on a graph has an unique index and a key representation of
 any Julia type. For example, it can be an integer, a character or a
-string.
+string::
+
+  julia> a = Node(1, "a")
+  Node(a)
+
+  julia> a = Node(1, 'a')
+  Node(a)
+
+  julia> a = Node(1, 3)
+  Node(3)
+
+  julia> index(a)
+  1
+
+
+``AttributeNode`` is a node with attributes. Here is the definition of 
+``AttributeNode``::
+
+  type AttributeNode{V} 
+    index::Int
+    key::V
+    attributes::Dict
+  end
+ 
+We can initialize an instance of ``AttributeNode`` with just 
+``index`` and ``key`` and modify the values of ``attributes`` later::
+
+  a = AttributeNode(1, 'a')
+  attributes(a) = Dict('a' => "red")
+  index(a)       # 1
+  key(a)         # 'a'
+  attributes(a)  #  Dict{Char,ASCIIString} with 1 entry: 'a' => "red"
  
 
+``TimeNode`` is used to represent a node at a specific timestamp. 
+(We will embed ``TimeNode`` to evolving graphs in the future.)
 The definition of ``TimeNode`` is::
 
   immutable TimeNode{K,T}
@@ -45,29 +78,16 @@ The definition of ``TimeNode`` is::
     key::K
     time::T
   end
-
-
-.. function:: key(v)
-
-   return the key of a node ``v``, where ``v`` could be ``Node``,
-   ``IndexNode`` or ``TimeNode``. 
-
-.. function:: index(v)
-	   
-   return the index of a node ``v``. ``index`` is defined for 
-   ``IndexNode`` and ``TimeNode``.
-
-
-.. function:: time(v)
-
-   return the time of node ``v``.	 
-
+	 
 
 Edge Types
 ----------
 
-There are four edge types in the collection. The definition of ``Edge``
-is::
+An edge is made of two nodes: a source node and a target node. In
+EvolvingGraphs, there are four types of edges: ``Edge``, ``TimeEdge``, 
+``WeightedTimeEdge`` and ``AttributeTimeEdge``. 
+
+The definition of ``Edge`` is::
 
   immutable Edge{V}
     source::V
@@ -101,24 +121,6 @@ The definition of ``WeightedTimeEdge`` is ::
     time::T
   end
 
-.. function:: source(e [, g])
-	    
-   return the source of the edge ``e``, where ``g`` is a graph.
-
-
-.. function:: target(e [, g])
-
-   return the target of the edge ``e``, where ``g`` is a graph.
-
-.. function:: time(e)
-
-   return the time of an edge ``e`` if ``e`` is of type ``TimeEdge`` or 
-   ``WeightedTimeEdge``.
-
-
-.. function:: weight(e)
-	      
-   return the weight of an edge ``e`` if ``e`` is of type ``WeightedTimeEdge``.
 
 Graph Types
 ^^^^^^^^^^^
@@ -126,7 +128,7 @@ Graph Types
 TimeGraph
 ---------
 
-The ``TimeGraph`` type represent a graph at given a time. The data is
+``TimeGraph`` represents a graph at given a time. The data is
 stored as an adjacency list. Here is the definition::
   
   type TimeGraph{V, T} <: AbstractEvolvingGraph{V, T}
@@ -164,6 +166,36 @@ The following functions are defined on ``TimeGraph``.
 
     return ``true`` if graph ``g`` has node ``v`` and ``false``
     otherwise.
+
+AggregatedGraph
+---------------
+
+``AggregatedGraph`` is a static graph ``g`` constructed by aggregating 
+an evolving graph, i.e., all the links between each pair of nodes are 
+flattened in a single edge. The definition of ``AggregatedGraph`` is::
+
+  type AggregatedGraph{V} <: AbstractStaticGraph{V, Edge{V}}
+    is_directed::Bool
+    nodes::Vector{V}
+    nedges::Int
+    adjlist::Dict{V, Vector{V}}
+  end
+
+We can convert an evolving graph to an aggregated graph::
+
+  julia> g = random_evolving_graph(4, 3)
+  Directed IntEvolvingGraph (4 nodes, 19 edges, 3 timestamps)
+
+  julia> aggregated_graph(g)
+  Directed AggregatedGraph (4 nodes, 11 edges)
+
+An aggregated graph can be initialized as ::
+  
+  julia> a = aggregated_graph(Int)
+  Directed AggregatedGraph (0 nodes, 0 edges)
+
+  julia> add_edge!(a, 1, 2)
+  Directed AggregatedGraph (2 nodes, 1 edges)
 
 
 EvolvingGraph

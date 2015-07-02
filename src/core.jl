@@ -41,6 +41,7 @@ end
 AttributeNode{V}(index::Int, key::V) = AttributeNode(index, key, Dict())
 
 index(v::AttributeNode) = v.index
+key(v::AttributeNode) = v.key
 attributes(v::AttributeNode) = v.attributes
 attributes(v::AttributeNode, g::AbstractGraph) = v.attributes
 eltype{T}(::Type{AttributeNode{T}}) = T
@@ -263,7 +264,6 @@ function timestamps(g::AbstractEvolvingGraph)
     ts = unique(g.timestamps)
     return sort(ts)
 end
-
 
 @doc doc"""
 `num_timestamps(g)` returns the number of timestamps of `g`, 
