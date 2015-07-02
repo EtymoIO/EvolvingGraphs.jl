@@ -29,6 +29,8 @@ time_graph{V,T}(::Type{V}, time::T; is_directed::Bool = true) =
               0,
               Dict{Node{V}, NodeVector{V}}())
 
+time_graph{T}(::Type{String}, time::T; is_directed::Bool = true) = time_graph(ASCIIString, time, is_directed = is_directed)
+
 
 @doc doc"""
 `time(g)` returns the time of a time graph `g`.

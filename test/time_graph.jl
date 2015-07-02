@@ -1,4 +1,4 @@
-g = time_graph(ASCIIString, 1)
+g = time_graph(String, 1)
 @test time(g) == 1
 a = Node(1, "a")
 b = Node(2, "b")

@@ -12,6 +12,8 @@ v0.0.6 (Working in Progress)
 
 * rename `IndexNode` as `Node`, introduce `AttributeNode`.
 
+* define `eltype` on node types. 
+
 * new functions:
 
 	- `undirected` and `undirected!` turns a directed evolving graph to an undirected

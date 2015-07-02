@@ -6,7 +6,7 @@ if VERSION < v"0.4-"
     using Docile
 end
 
-import Base: ==, show, time, slice, issorted, copy, length
+import Base: ==, show, time, slice, issorted, copy, length, eltype
 
 export 
 

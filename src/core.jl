@@ -30,17 +30,8 @@ end
 index(v::Node) = v.index
 key(v::Node) = v.key
 ==(v1::Node, v2::Node) = (v1.key == v2.key && v1.index == v2.index)
+eltype{T}(::Type{Node{T}}) = T
 
-function make_node{V}(g::AbstractGraph{Node{V}}, key::V) 
-    ns = nodes(g)
-    keys = map(x -> x.key, ns)
-    index = findfirst(keys, key)
-    if index == 0 
-        return Node(num_nodes(g)+1, key)
-    else
-        return ns[index]
-    end        
-end
 
 type AttributeNode{V} 
     index::Int
@@ -52,21 +43,10 @@ AttributeNode{V}(index::Int, key::V) = AttributeNode(index, key, Dict())
 index(v::AttributeNode) = v.index
 attributes(v::AttributeNode) = v.attributes
 attributes(v::AttributeNode, g::AbstractGraph) = v.attributes
-
+eltype{T}(::Type{AttributeNode{T}}) = T
 
 ==(v1::AttributeNode, v2::AttributeNode) = (v1.key == v2.key &&
                                             v1.attributes == v2.attributes && v1.index == v2.index)
-
-function make_node{V}(g::AbstractGraph{AttributeNode{V}}, key::V) 
-    ns = nodes(g)
-    keys = map(x -> x.key, ns)
-    index = findfirst(keys, key)
-    if index == 0 
-        return AttributeNode(num_nodes(g)+1, key)
-    else
-        return ns[index]
-    end        
-end
 
 
 immutable TimeNode{V,T} 
@@ -78,15 +58,29 @@ end
 key(v::TimeNode) = v.key
 time(v::TimeNode) = v.time
 index(v::TimeNode) = v.index
+eltype{V,T}(::Type{TimeNode{V,T}}) = (V, T)
+
 ==(v1::TimeNode, v2::TimeNode) = (v1.key == v2.key && v1.time == v2.time 
                                   && v1.index == v2.index )
 
-typealias NodeType Union(Node, AttributeNode, TimeNode)
+typealias NodeType{V} Union(Node{V}, AttributeNode{V}, TimeNode{V})
 index(v::NodeType, g::AbstractGraph) = index(v)
+
+function make_node(g::AbstractStaticGraph, key)
+    ns = nodes(g)
+    keys = map(x -> x.key, ns)
+    index = findfirst(keys, key)
+    if index == 0 
+        return Node(num_nodes(g)+1, key)
+    else
+        return ns[index]
+    end        
+end
+
 
 ##########################################
 #
-#  edge types
+#  Edge types
 #
 ##########################################
 
@@ -158,7 +152,7 @@ rev(e::AttributeTimeEdge) = AttributeTimeEdge(e.target, e.source, e.time, e.attr
 
 #####################################
 #
-# graph functions
+# Graph functions
 #
 ######################################
 
@@ -182,16 +176,14 @@ num_edges(g::AbstractStaticGraph) = g.nedges
 @doc doc"""
 `add_node!(g, v)` add a node `v` to a static graph `g`.
 """->
-function add_node!{V}(g::AbstractStaticGraph{V}, v::V)
+function add_node!{V<:NodeType}(g::AbstractStaticGraph{V}, v::V)
     if !(v in g.nodes)
         push!(g.nodes, v)
         g.adjlist[v] = V[]
     end
     v
 end
-
 add_node!(g::AbstractStaticGraph, v) = add_node!(g, make_node(g, v))
-    
 
 typealias EdgeType{V} Union(Edge{V}, TimeEdge{V}, WeightedTimeEdge{V},
                             AttributeTimeEdge{V})
