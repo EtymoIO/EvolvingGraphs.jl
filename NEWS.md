@@ -1,8 +1,9 @@
 EvolvingGraphs Release Notes
 ======================
 
-v0.0.6 (Coming Soon)
----------------------------------------
+
+v0.0.6 
+-----------
 
 * new data type
 
