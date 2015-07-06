@@ -12,7 +12,6 @@ type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V, Edge{V}, T}
     timestamps::Vector{T} 
 end
 
-typealias IntEvolvingGraph EvolvingGraph{Int, Int}
 
 @doc doc"""
 `evolving_graph(ils, jls, timestamps [, is_directed])` 
@@ -45,7 +44,6 @@ Input:
      `is_directed`: whehter the graph is directed or not
 """->
 evolving_graph{V,T}(::Type{V}, ::Type{T} ;is_directed::Bool = true) = EvolvingGraph(is_directed, V[], V[], T[])
-evolving_graph(;is_directed::Bool = true) = evolving_graph(Int, Int, is_directed = is_directed)
 
 
 
