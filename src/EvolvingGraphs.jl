@@ -58,6 +58,7 @@ include("graphs/aggregated_graph.jl")
 include("graphs/evolving_graph.jl")
 include("graphs/weighted_evolving_graph.jl")
 include("graphs/attribute_evolving_graph.jl")
+include("graphs/int_evolving_graph.jl")
 
 include("sort_slice.jl")
 include("components.jl")

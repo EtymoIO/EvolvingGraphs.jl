@@ -1,6 +1,10 @@
 EvolvingGraphs Release Notes
 ======================
 
+v0.0.7
+----------
+
+* redefine `IntEvolvingGraph` to improve performance
 
 v0.0.6 
 -----------
