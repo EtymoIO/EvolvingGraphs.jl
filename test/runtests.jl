@@ -18,7 +18,8 @@ tests = [
          "io",
          "temporal_efficiency",
          "components",
-         "aggregated_graph"
+         "aggregated_graph",
+         "int_evolving_graph"
          ]
 
 for t in tests

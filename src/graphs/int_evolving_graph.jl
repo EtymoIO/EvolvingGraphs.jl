@@ -1,12 +1,19 @@
 
-typealias IntTuple2 (Int, Int) 
+if VERSION < v"0.4-"
+    typealias IntTuple2(Int, Int)
+else
+    typealias IntTuple2 Tuple{Int, Int}
+end
+
+typealias IntTimeEdge TimeEdge{Int, Int}
+
 
 type IntEvolvingGraph <: AbstractEvolvingGraph{Int}
     is_directed::Bool
     nodes::Vector{IntTuple2}
     timestamps::Vector{Int}
     nedges::Int
-    edges::Vector{TimeEdge{Int, Int}}
+    edges::Dict{Int, Vector{IntTimeEdge}}
     adjlist::Dict{IntTuple2, Vector{IntTuple2}}
 end
 
@@ -15,27 +22,39 @@ IntEvolvingGraph(is_directed,
                  IntTuple2[],
                  Int[],
                  0,
-                 TimeEdge{Int, Int}[],
+                 Dict{Int, Vector{IntTimeEdge}}(),
                  Dict{IntTuple2, Vector{IntTuple2}}())
 
-nodes(g::IntEvolvingGraph) = g.nodes
-num_nodes(g::IntEvolvingGraph) = length(g.nodes)
+nodes(g::IntEvolvingGraph) = unique(map(x -> x[1], g.nodes))
+num_nodes(g::IntEvolvingGraph) = length(nodes(g))
 
 num_edges(g::IntEvolvingGraph) = g.nedges
-edges(g::IntEvolvingGraph) = g.edges
 
-out_neighbors(g::IntEvolvingGraph, v::Tuple) = g.adjlist[v]
+edges(g::IntEvolvingGraph, t::Int) = g.edges[t]
+num_edges(g::IntEvolvingGraph, t::Int) = length(edges(g, t))
+
+function out_neighbors(g::IntEvolvingGraph, v::Tuple)
+    try 
+        return g.adjlist[v]
+    catch KeyError
+        return collect(zip([], []))
+    end
+end
 out_neighbors(g::IntEvolvingGraph, v, t) = out_neighbors(g, (int(v), int(t)))
 
 has_node(g::IntEvolvingGraph, v::IntTuple2) = (v in g.nodes)
 
 timestamps(g::IntEvolvingGraph) = g.timestamps
 
-
 function add_node!(g::IntEvolvingGraph, v::IntTuple2)
     if !(v in g.nodes)
         push!(g.nodes, v)
+        if !(v[2] in keys(g.edges))
+             g.edges[v[2]] = IntTimeEdge[]
+        end
+             
         g.adjlist[v] = IntTuple2[]
+   
         if !(v[2] in g.timestamps)
             push!(g.timestamps, v[2])
             sort!(g.timestamps)
@@ -57,10 +76,10 @@ function add_edge!(g::IntEvolvingGraph, v1::IntTuple2, v2::IntTuple2)
 
     if !(v2 in g.adjlist[v1]) 
         push!(g.adjlist[v1], v2)
-        push!(g.edges, TimeEdge(v1[1], v2[1], v1[2]))
+        push!(g.edges[v1[2]], TimeEdge(v1[1], v2[1], v1[2]))
         if !(g.is_directed)
             push!(g.adjlist[v2], v1)
-            push!(g.edges, TimeEdge(v2[1], v1[1], v1[2]))
+            push!(g.edges[v1[2]], TimeEdge(v2[1], v1[1], v1[2]))
         end
         g.nedges += 1
     end
@@ -71,21 +90,22 @@ add_edge!(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int) = add_edge!(g, (v1, t),
 add_edge!(g::IntEvolvingGraph, te::TimeEdge{Int, Int}) = add_edge!(g, source(te), target(te), time(te))
 
 
-function undirected!(g::IntEvolvingGraph) 
-    es = edges(g)
-    for e in es
-        add_edge!(g, source(e), target(e), time(e))
+function undirected!(g::IntEvolvingGraph)
+    for t in timestamps(g)
+        for e in edges(g, t)
+            add_edge!(g, target(e), source(e), time(e))
+        end
     end
     g.is_directed = false
     g
 end
 
-copy(g::IntEvolvingGraph) = IntEvolvingGraph(g.is_directed, 
-                                             g.nodes, 
-                                             g.timestamps, 
-                                             g.nedges, 
-                                             g.edges, 
-                                             g.adjlist)
+copy(g::IntEvolvingGraph) = IntEvolvingGraph(is_directed(g), 
+                                             deepcopy(g.nodes), 
+                                             deepcopy(g.timestamps), 
+                                             deepcopy(g.nedges), 
+                                             deepcopy(g.edges), 
+                                             deepcopy(g.adjlist))
             
 
 

@@ -18,7 +18,7 @@ key, make_node, index, rev, AttributeDict,
 
 # graph types
 TimeGraph, AggregatedGraph, EvolvingGraph, WeightedEvolvingGraph, 
-AttributeEvolvingGraph,
+AttributeEvolvingGraph, IntEvolvingGraph, IntTuple2, IntTimeEdge, 
 
 # graph functions
 add_node!, add_edge!, add_graph!, rm_edge!, has_edge, has_node,
