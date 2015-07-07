@@ -6,27 +6,27 @@ Working with Evolving Graphs
 
 We can initialize a simple evolving graph with integer nodes and edges by::
 
-  julia> g = evolving_graph()
-  Directed IntEvolvingGraph (0 nodes, 0 edges, 0 timestamps)
+  julia> g = evolving_graph(Int, Int)
+  Directed EvolvingGraph (0 nodes, 0 edges, 0 timestamps)
 
 There is nothing in the graph ``g`` at the moment. To make it a little 
 more interesting, we can add some edges to ``g``. We need to note that
 edges have a time dimension in an evolving graph::
 
   julia> add_edge!(g, 1, 2, 1) 
-  Directed IntEvolvingGraph (2 nodes, 1 edges, 1 timestamps)
+  Directed EvolvingGraph (2 nodes, 1 edges, 1 timestamps)
 
 This will add an edge from node ``1`` to node ``2`` at time ``1``. 
 Let's add more edges to ``g``::
 
   julia> add_edge!(g, 2, 3, 1)
-  Directed IntEvolvingGraph (3 nodes, 2 edges, 1 timestamps)
+  Directed EvolvingGraph (3 nodes, 2 edges, 1 timestamps)
 
   julia> add_edge!(g, 2, 3, 2)
-  Directed IntEvolvingGraph (3 nodes, 3 edges, 2 timestamps)
+  Directed EvolvingGraph (3 nodes, 3 edges, 2 timestamps)
 
   julia> add_edge!(g, 2, 4, 2)
-  Directed IntEvolvingGraph (4 nodes, 4 edges, 2 timestamps)
+  Directed EvolvingGraph (4 nodes, 4 edges, 2 timestamps)
 
 Now ``g`` has 4 nodes, 4 edges and 2 timestamps. Here are the edges we have::
 

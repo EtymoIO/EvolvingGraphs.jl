@@ -1,10 +1,11 @@
 EvolvingGraphs Release Notes
 ======================
 
-v0.0.7
-----------
+v0.0.7 (WIP)
+-------------
 
-* redefine `IntEvolvingGraph` to improve performance
+* Introduce `IntEvolvingGraph` (an evolving graph with integer nodes
+  and timestamps) for high performance computing.
 
 v0.0.6 
 -----------
