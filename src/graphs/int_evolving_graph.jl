@@ -31,6 +31,7 @@ has_node(g::IntEvolvingGraph, v::IntTuple2) = (v in g.nodes)
 
 timestamps(g::IntEvolvingGraph) = g.timestamps
 
+
 function add_node!(g::IntEvolvingGraph, v::IntTuple2)
     if !(v in g.nodes)
         push!(g.nodes, v)
@@ -86,3 +87,5 @@ copy(g::IntEvolvingGraph) = IntEvolvingGraph(g.is_directed,
                                              g.edges, 
                                              g.adjlist)
             
+
+
