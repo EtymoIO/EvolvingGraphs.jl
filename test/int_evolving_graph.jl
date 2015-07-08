@@ -15,3 +15,5 @@ g1 = undirected(g)
 @test num_edges(g1) == 8
 
 @test length(edges(g)) == 4
+
+@test full(spmatrix(g, 1)) == matrix(g, 1)

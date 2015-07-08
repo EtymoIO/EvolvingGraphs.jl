@@ -131,3 +131,26 @@ function slice(g::IntEvolvingGraph, t1::Int, t2::Int)
     g1
 end
 
+function spmatrix(g::IntEvolvingGraph, t::Int)
+    es = edges(g, t)
+    n = length(es)
+    dim = maximum(nodes(g))
+    is = Array(Int, n)
+    js = Array(Int, n)
+    vs = ones(Bool, n)
+    for (i,e) in enumerate(es)
+        is[i] = source(e)
+        js[i] = target(e)
+    end
+    return sparse(is, js, vs, dim, dim)
+end
+
+function matrix(g::IntEvolvingGraph, t::Int)
+    es = edges(g, t)
+    dim = maximum(nodes(g))
+    A = zeros(Bool, dim, dim)
+    for e in es
+        A[source(e), target(e)] = true
+    end
+    A
+end
