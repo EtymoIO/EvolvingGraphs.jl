@@ -118,5 +118,16 @@ function undirected!(g::IntEvolvingGraph)
     g
 end
             
-
+function slice(g::IntEvolvingGraph, t1::Int, t2::Int)
+    ts = timestamps(g)
+    st = findfirst(ts, t1) 
+    ed = findfirst(ts, t2)
+    g1 = evolving_graph()
+    for t in ts[st:ed]
+        for te in edges(g, t)
+            add_edge!(g1, te)
+        end
+    end
+    g1
+end
 
