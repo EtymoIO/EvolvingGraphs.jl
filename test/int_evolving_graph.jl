@@ -13,3 +13,5 @@ add_edge!(g, 1, 3, 2)
 g1 = undirected(g)
 @test !is_directed(g1)
 @test num_edges(g1) == 8
+
+@test length(edges(g)) == 4

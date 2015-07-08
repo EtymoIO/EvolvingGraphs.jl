@@ -33,6 +33,24 @@ num_edges(g::IntEvolvingGraph) = g.nedges
 edges(g::IntEvolvingGraph, t::Int) = g.edges[t]
 num_edges(g::IntEvolvingGraph, t::Int) = length(edges(g, t))
 
+copy(g::IntEvolvingGraph) = IntEvolvingGraph(is_directed(g), 
+                                             deepcopy(g.nodes), 
+                                             deepcopy(g.timestamps), 
+                                             deepcopy(g.nedges), 
+                                             deepcopy(g.edges), 
+                                             deepcopy(g.adjlist))
+
+
+function edges(g::IntEvolvingGraph)
+    elist = IntTimeEdge[]
+    for t in timestamps(g)
+        append!(elist, edges(g, t))
+    end
+    elist
+end
+
+
+
 function out_neighbors(g::IntEvolvingGraph, v::Tuple)
     try 
         return g.adjlist[v]
@@ -99,13 +117,6 @@ function undirected!(g::IntEvolvingGraph)
     g.is_directed = false
     g
 end
-
-copy(g::IntEvolvingGraph) = IntEvolvingGraph(is_directed(g), 
-                                             deepcopy(g.nodes), 
-                                             deepcopy(g.timestamps), 
-                                             deepcopy(g.nedges), 
-                                             deepcopy(g.edges), 
-                                             deepcopy(g.adjlist))
             
 
 

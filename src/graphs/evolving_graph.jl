@@ -45,6 +45,11 @@ Input:
 """->
 evolving_graph{V,T}(::Type{V}, ::Type{T} ;is_directed::Bool = true) = EvolvingGraph(is_directed, V[], V[], T[])
 
+copy(g::EvolvingGraph) = EvolvingGraph(is_directed(g), 
+                                       deepcopy(g.ilist),
+                                       deepcopy(g.jlist), 
+                                       deepcopy(g.timestamps))
+
 
 
 @doc doc"""

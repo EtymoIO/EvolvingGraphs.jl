@@ -1,11 +1,4 @@
 
-copy(g::EvolvingGraph) = EvolvingGraph(is_directed(g), g.ilist, g.jlist, g.timestamps)
-copy(g::AttributeEvolvingGraph) = AttributeEvolvingGraph(is_directed(g), 
-                                                         g.ilist, 
-                                                         g.jlist,
-                                                         g.timestamps,
-                                                         g.attributesvec)
-
 @doc doc"""
 `issorted(g)` returns `true` if the timestamps of the evolving 
 graph `g` is sorted and `false` otherwise.
