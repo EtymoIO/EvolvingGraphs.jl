@@ -7,6 +7,8 @@ v0.0.7 (WIP)
 * Introduce `IntEvolvingGraph` (an evolving graph with integer nodes
   and timestamps) for high performance computing.
 
+* Introduce `MatrixList`, which represents a list of adjacency matrices
+
 v0.0.6 
 -----------
 

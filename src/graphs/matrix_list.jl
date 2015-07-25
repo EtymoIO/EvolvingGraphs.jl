@@ -20,6 +20,9 @@ nodes(g::MatrixList) = g.nodes
 num_nodes(g::MatrixList) = length(g.nodes)
 
 matrices(g::MatrixList) = g.matrices
+matrix(g::MatrixList, i::Int) = g.matrices[i]
+matrix(g::MatrixList, ij::UnitRange{Int}) = g.matrices[ij]
+
 num_matrices(g::MatrixList) = length(g.matrices)
 
 timestamps(g::MatrixList) = g.timestamps
@@ -41,3 +44,4 @@ function matrix_list(g::AbstractEvolvingGraph)
     append!(ml.timestamps, ts)
     ml
 end
+
