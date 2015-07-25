@@ -34,7 +34,7 @@ copy(g::MatrixList) = MatrixList(is_directed(g),
 
 # convert an evolving graph to MatrixList type
 function matrix_list(g::AbstractEvolvingGraph)
-    ns = timestamps(g)
+    ns = nodes(g)
     ts = timestamps(g)
     ml = matrix_list(eltype(ns), eltype(ts), is_directed = is_directed(g))
     for i in ts
