@@ -74,6 +74,6 @@ include("metric/shortest_temporal_distance.jl")
 include("metric/temporal_efficiency.jl")
 
 # examples
-include("graphs/examples.jl")
+include("examples.jl")
 
 end # module
