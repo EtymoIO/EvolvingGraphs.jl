@@ -19,7 +19,8 @@ tests = [
          "temporal_efficiency",
          "components",
          "aggregated_graph",
-         "int_evolving_graph"
+         "int_evolving_graph",
+         "matrix_list"
          ]
 
 for t in tests
