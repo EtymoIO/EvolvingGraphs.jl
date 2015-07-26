@@ -9,14 +9,19 @@ a1 = Node(1, "a")
 
 b = AttributeNode(1, "a", @compat Dict())
 b1 = AttributeNode(1, "a")
-
+attributes(b) = @compat Dict("a" => 2)
+@test index(b) == 1
+@test key(b) == "a"
+@test attributes(b) == @compat Dict("a" => 2)
+@test eltype(b) <: String
 @test b == b1
 
 d = TimeNode(2, 'd', "t1")
 @test key(d) == 'd'
 @test timestamp(d) == "t1"
 @test index(d) == 2
-@test eltype(d) <: (Char, String)
+@test eltype(d)[1] <: Char
+@test eltype(d)[2] <: String
 
 # test edges
 e1 = Edge('a', 'b')
