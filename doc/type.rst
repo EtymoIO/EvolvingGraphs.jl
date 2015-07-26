@@ -11,8 +11,8 @@ It has two children: ``AbstractEvolvingGraph`` and ``AbstractStaticGraph``::
 
 ``AbstractEvolvingGraph`` and ``AbstractStaticGraph`` are abstractions
 of evolving graphs and static graphs
-respectively. ``AbstractEvolvingGraph`` has three children:
-``EvolvingGraph``, ``AttributeEvolvingGraph`` and
+respectively. ``AbstractEvolvingGraph`` has four children:
+``EvolvingGraph``, ``AttributeEvolvingGraph``, ``MatrixList`` and
 ``WeightedEvolvingGraph``. ``AbstractStaticGraph`` has two
 children: ``TimeGraph`` and ``AggregatedGraph``.
 

@@ -1,6 +1,8 @@
+Overview
+========
 
 Main Features
-=============
+------------------
 
 Here are the main features:
 
@@ -11,6 +13,8 @@ Here are the main features:
   - TimeGraph
   - EvolvingGraph     
   - WeightedEvolvingGraph
+  - MatrixList
+  - AttributeEvolvingGraph
 
 * a collection of evolving graph algorithms.
 
@@ -20,7 +24,7 @@ Here are the main features:
 
 * io 
 
-  - read data from Evolving Graph Exchange Format file.
+  - read/write the Evolving Graph Exchange Format file.
 
-* All data structures and algorithms are implemented in *pure Julia*.
+* All data structures and algorithms are implemented in *Julia*.
 

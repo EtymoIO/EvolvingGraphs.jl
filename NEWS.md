@@ -1,15 +1,15 @@
 EvolvingGraphs Release Notes
 ======================
 
-v0.0.7 (WIP)
--------------
+v0.0.7 (coming soon)
+------------------------------
 
 * Introduce two graph types:
 
 	- `IntEvolvingGraph`: an evolving graph with integer nodes and edges.
 	- `MatrixList`: a list of adjacency matrices
 
-* rename function `time` to `timestamp` for TimeNode, TimeEdge, TimeGraph. 
+* rename the function `time` (defined for TimeNode, TimeEdge, TimeGraph) to `timestamp`.
 
 v0.0.6 
 -----------
