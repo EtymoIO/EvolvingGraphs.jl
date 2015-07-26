@@ -76,7 +76,7 @@ The definition of ``TimeNode`` is::
   immutable TimeNode{K,T}
     index::Int
     key::K
-    time::T
+    timestamp::T
   end
 	 
 
@@ -99,7 +99,7 @@ The definition of ``TimeEdge`` is::
   immutable TimeEdge{K,T}
     source::K
     target::K
-    time::T
+    timestamp::T
   end
 
 The definition of ``AttributeTimeEdge`` is ::
@@ -107,7 +107,7 @@ The definition of ``AttributeTimeEdge`` is ::
   type AttributeTimeEdge{V, T, W}
     source::V
     target::V
-    time::T
+    timestamp::T
     attributes::W
   end
 
@@ -118,7 +118,7 @@ The definition of ``WeightedTimeEdge`` is ::
     source::V
     target::V
     weight::W
-    time::T
+    timestamp::T
   end
 
 
@@ -128,12 +128,12 @@ Graph Types
 TimeGraph
 ---------
 
-``TimeGraph`` represents a graph at given a time. The data is
+``TimeGraph`` represents a graph at given a timestamp. The data is
 stored as an adjacency list. Here is the definition::
   
   type TimeGraph{V, T} <: AbstractEvolvingGraph{V, T}
     is_directed::Bool
-    time::T
+    timestamp::T
     nodes::Vector{V}
     nedges::Int
     adjlist::Dict{V, Vector{V}}
@@ -143,12 +143,12 @@ The following functions are defined on ``TimeGraph``.
 
 .. function:: time_graph(type, t [, is_directed = true])
 
-   initialize a ``TimeGraph`` at time ``t``, where ``type`` is the node type.
+   initialize a ``TimeGraph`` at timestamp ``t``, where ``type`` is the node type.
 
-.. function:: time(g)
+.. function:: timestamp(g)
    :noindex:
 	      
-   return the time of the graph ``g``.	
+   return the timestamp of the graph ``g``.	
 
 .. function:: add_node!(g, v)
 	      
@@ -251,10 +251,10 @@ definition::
    returns ``true`` of the node ``v`` at the timestamp ``t`` is in the 
    evolving graph ``g`` and ``false`` otherwise.
 
-.. function:: edges(g [, time])
+.. function:: edges(g [, timestamp])
 
-   return a list of edges of graph ``g``. If ``time`` is present,
-   return the edge list at given ``time``. 
+   return a list of edges of graph ``g``. If ``timestamp`` is present,
+   return the edge list at given ``timestamp``. 
 
 .. function:: num_edges(g)
 
@@ -274,7 +274,7 @@ definition::
 
 .. function:: add_edge!(g, v1, v2, t)
 
-   add an edge (from ``v1`` to ``v2`` at time ``t``) to EvolvingGraph ``g``.
+   add an edge (from ``v1`` to ``v2`` at timestamp ``t``) to EvolvingGraph ``g``.
 
 .. function:: add_graph!(g, tg)
 	      
@@ -288,12 +288,12 @@ definition::
 .. function:: matrix(g, t)
 	      
    return an adjacency matrix representation of the EvolvingGraph
-   ``g`` at time ``t``.
+   ``g`` at timestamp ``t``.
 
 .. function:: spmatrix(g, t)
 
    return a sparse adjacency matrix representation of the
-   EvolvingGraph ``g`` at time ``t``.
+   EvolvingGraph ``g`` at timestamp ``t``.
 
 
 AttributeEvolvingGraph
@@ -340,10 +340,10 @@ The following functions are defined for ``AttributeEvolvingGraph``.
 
    return the number of nodes of graph ``g``.
 
-.. function:: edges(g [, time])
+.. function:: edges(g [, timestamp])
 
-   return a list of edges of graph ``g``. If ``time`` is present, 
-   return the edge list at given ``time``.
+   return a list of edges of graph ``g``. If ``timestamp`` is present, 
+   return the edge list at given ``timestamp``.
 
 .. function:: timestamps(g)
 
@@ -367,7 +367,7 @@ The following functions are defined for ``AttributeEvolvingGraph``.
 
 .. function:: add_edge!(g, v1, v2, t, a)
 
-   add an edge from ``v1`` to ``v2`` at time ``t`` with attribute ``a`` 
+   add an edge from ``v1`` to ``v2`` at timestamp ``t`` with attribute ``a`` 
    to the graph ``g``, where attribute is a dictionary.
 
 .. function:: out_neighbors(g, v, t)
@@ -377,15 +377,53 @@ The following functions are defined for ``AttributeEvolvingGraph``.
 
 .. function:: matrix(g, t [, attr = None])
 
-   return an adjacency matrix representation of graph ``g`` at time ``t``. 
+   return an adjacency matrix representation of graph ``g`` at timestamp ``t``. 
    If ``attr`` is present, return a weighted adjacency matrix where 
    the edge weight is given by the attribute ``attr``.
 
 .. function:: spmatrix(g, t [, attr = None])
 
-   return a sparse adjacency matrix representation of graph ``g`` at time ``t``. 
+   return a sparse adjacency matrix representation of graph ``g`` at timestamp ``t``. 
    If ``attr`` is present, return a weighted adjacency matrix where 
    the edge weight is given by the attribute ``attr``.
+
+
+MatrixList
+-------------
+
+A ``MatrixList`` represents an evolving graph as a list of adjacency matrices. 
+It is defined as::
+
+  type MatrixList{V,T} <: AbstractEvolvingGraph{V, Edge{V}, T}
+    is_directed::Bool
+    nodes::Vector{V}
+    timestamps::Vector{T}
+    matrices::Vector{Matrix{Bool}}
+  end
+
+The following functions are defined for ``MatrixList``.
+
+.. function:: matrix_list(node_type, timestamp_type[, is_directed = true])
+
+   initializes a ``MatrixList`` with ``node_type`` nodes and
+   ``timestamp_type`` timestamps.
+
+.. function:: matrix_list([is_directed = true])
+
+   initializes a ``MatrixList`` with integer nodes and timestamps.
+
+.. function:: matrices(g)
+
+   generates a list of adjacency matrices from ``MatrixList g``.
+
+.. function:: matrix(g, t)
+
+   generates an adjacency matrix from the ``t`` -th timestamp of ``g``
+
+.. function:: matrix(g, i:j)
+
+   generates a list of adjacency matrices from ``g`` ranging from the
+   ``i`` -th timestamp to the ``j`` -th timestamp.
 
 
 WeightedEvolvingGraph
@@ -461,4 +499,4 @@ The following functions are defined for ``WeightedEvolvingGraph``.
 
 .. function:: add_edge!(g, v1, v2, w, t)
 
-   add an edge (of weight ``w`` from ``v1`` to ``v2`` at time ``t``) to graph ``g``.
+   add an edge (of weight ``w`` from ``v1`` to ``v2`` at timestamp ``t``) to graph ``g``.

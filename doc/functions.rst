@@ -14,10 +14,10 @@ Nodes and Edges
  
    returns the index of a node ``v``.
 
-.. function:: time(v)
+.. function:: timestamp(v)
    :noindex:
 
-   returns the time of an instance of ``TimeNode``. 
+   returns the timestamp of an instance of ``TimeNode``. 
 
 .. function:: source(e [, g])
    :noindex:
@@ -29,10 +29,10 @@ Nodes and Edges
 
    returns the target of the edge ``e``, where ``g`` is a graph.
 
-.. function:: time(e)
+.. function:: timestamp(e)
    :noindex:	      
 
-   returns the time of an edge ``e`` if ``e`` is of type ``TimeEdge`` or 
+   returns the timestamp of an edge ``e`` if ``e`` is of type ``TimeEdge`` or 
    ``WeightedTimeEdge``.
 
 .. function:: weight(e)
@@ -212,6 +212,16 @@ Linear Algebra
 
    generates a sparse adjacency matrix representation of the evolving graph
    ``g`` at timestamp ``t``. 
+
+.. function:: matrix_list(g)
+   :noindex:
+   
+   converts an evolving graph ``g`` to a list of adjacency matrices represented by 
+   ``MatrixList``. Use ``matrices(g)`` to generate the matrix list. For example::
+
+     g = random_evolving_graph(4,3)
+     g2 = matrix_list(g)
+     matrices(g2)
 
 Metrics
 -------

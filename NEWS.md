@@ -4,10 +4,12 @@ EvolvingGraphs Release Notes
 v0.0.7 (WIP)
 -------------
 
-* Introduce `IntEvolvingGraph` (an evolving graph with integer nodes
-  and timestamps) for high performance computing.
+* Introduce two graph types:
 
-* Introduce `MatrixList`, which represents a list of adjacency matrices
+	- `IntEvolvingGraph`: an evolving graph with integer nodes and edges.
+	- `MatrixList`: a list of adjacency matrices
+
+* rename function `time` to `timestamp` for TimeNode, TimeEdge, TimeGraph. 
 
 v0.0.6 
 -----------
