@@ -4,8 +4,7 @@ using Compat
 
 tests = [
          "data",
-         "nodes",
-         "edges",
+         "core",
          "time_graph",
          "evolving_graph",
          "weighted_evolving_graph",

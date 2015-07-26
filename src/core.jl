@@ -30,7 +30,7 @@ end
 index(v::Node) = v.index
 key(v::Node) = v.key
 ==(v1::Node, v2::Node) = (v1.key == v2.key && v1.index == v2.index)
-eltype{T}(::Type{Node{T}}) = T
+eltype{T}(::Node{T}) = T
 
 
 type AttributeNode{V} 
@@ -44,7 +44,7 @@ index(v::AttributeNode) = v.index
 key(v::AttributeNode) = v.key
 attributes(v::AttributeNode) = v.attributes
 attributes(v::AttributeNode, g::AbstractGraph) = v.attributes
-eltype{T}(::Type{AttributeNode{T}}) = T
+eltype{T}(::AttributeNode{T}) = T
 
 ==(v1::AttributeNode, v2::AttributeNode) = (v1.key == v2.key &&
                                             v1.attributes == v2.attributes && v1.index == v2.index)
@@ -53,15 +53,15 @@ eltype{T}(::Type{AttributeNode{T}}) = T
 immutable TimeNode{V,T} 
     index::Int
     key::V
-    time::T
+    timestamp::T
 end
 
 key(v::TimeNode) = v.key
-time(v::TimeNode) = v.time
+timestamp(v::TimeNode) = v.timestamp
 index(v::TimeNode) = v.index
-eltype{V,T}(::Type{TimeNode{V,T}}) = (V, T)
+eltype{V,T}(::TimeNode{V,T}) = (V, T)
 
-==(v1::TimeNode, v2::TimeNode) = (v1.key == v2.key && v1.time == v2.time 
+==(v1::TimeNode, v2::TimeNode) = (v1.key == v2.key && v1.timestamp== v2.timestamp
                                   && v1.index == v2.index )
 
 typealias NodeType{V} Union(Node{V}, AttributeNode{V}, TimeNode{V})
@@ -101,31 +101,31 @@ rev(e::Edge) = Edge(e.target, e.source)
 immutable TimeEdge{V,T}
     source::V
     target::V
-    time::T
+    timestamp::T
 end
 
 source(e::TimeEdge) = e.source
 target(e::TimeEdge) = e.target
-time(e::TimeEdge) = e.time
+timestamp(e::TimeEdge) = e.timestamp
 source(e::TimeEdge, g::AbstractEvolvingGraph) = e.source
 target(e::TimeEdge, g::AbstractEvolvingGraph) = e.target
-time(e::TimeEdge, g::AbstractEvolvingGraph) = e.time
+timestamp(e::TimeEdge, g::AbstractEvolvingGraph) = e.timestamp
 ==(e1::TimeEdge, e2::TimeEdge) = (e1.source == e2.source && 
                                   e1.target == e2.target &&
-                                  e1.time == e2.time)
-rev(e::TimeEdge) = TimeEdge(e.target, e.source, e.time)
+                                  e1.timestamp == e2.timestamp)
+rev(e::TimeEdge) = TimeEdge(e.target, e.source, e.timestamp)
 
 
 immutable WeightedTimeEdge{V, T, W<:Real} 
     source::V
     target::V
     weight::W
-    time::T
+    timestamp::T
 end
 
 source(e::WeightedTimeEdge) = e.source
 target(e::WeightedTimeEdge) = e.target
-time(e::WeightedTimeEdge) = e.time
+timestamp(e::WeightedTimeEdge) = e.timestamp
 weight(e::WeightedTimeEdge) = e.weight
 
 typealias AttributeDict Dict{UTF8String, Any}
@@ -133,7 +133,7 @@ typealias AttributeDict Dict{UTF8String, Any}
 type AttributeTimeEdge{V, T} 
     source::V
     target::V
-    time::T
+    timestamp::T
     attributes::Dict
 end
 
@@ -141,14 +141,14 @@ AttributeTimeEdge{V, T}(v1::V, v2::V, t::T) = AttributeTimeEdge(v1, v2, t, Attri
 
 source(e::AttributeTimeEdge) = e.source
 target(e::AttributeTimeEdge) = e.target
-time(e::AttributeTimeEdge) = e.time
+timestamp(e::AttributeTimeEdge) = e.timestamp
 attributes(e::AttributeTimeEdge) = e.attributes
 
 ==(e1::AttributeTimeEdge, e2::AttributeTimeEdge) = (e1.source == e2.source && 
                                                     e1.target == e2.target &&
-                                                    e1.time == e2.time)
+                                                    e1.timestamp== e2.timestamp)
 
-rev(e::AttributeTimeEdge) = AttributeTimeEdge(e.target, e.source, e.time, e.attributes)
+rev(e::AttributeTimeEdge) = AttributeTimeEdge(e.target, e.source, e.timestamp, e.attributes)
 
 
 #####################################
@@ -321,7 +321,7 @@ end
 out_neighbors(g::AbstractEvolvingGraph, v, t) = out_neighbors(g, (v,t))
 
 function _find_edge_index(g::AbstractEvolvingGraph, te::EdgeType)
-    tindx = findin(g.timestamps, [time(te)])
+    tindx = findin(g.timestamps, [timestamp(te)])
     iindx = findin(g.ilist, [source(te)])
     jindx = findin(g.jlist, [target(te)])
     return intersect(tindx, iindx, jindx)[1]

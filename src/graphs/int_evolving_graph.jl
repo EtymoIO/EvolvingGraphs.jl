@@ -105,13 +105,13 @@ function add_edge!(g::IntEvolvingGraph, v1::IntTuple2, v2::IntTuple2)
 end
 
 add_edge!(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int) = add_edge!(g, (v1, t), (v2, t))
-add_edge!(g::IntEvolvingGraph, te::TimeEdge{Int, Int}) = add_edge!(g, source(te), target(te), time(te))
+add_edge!(g::IntEvolvingGraph, te::TimeEdge{Int, Int}) = add_edge!(g, source(te), target(te), timestamp(te))
 
 
 function undirected!(g::IntEvolvingGraph)
     for t in timestamps(g)
         for e in edges(g, t)
-            add_edge!(g, target(e), source(e), time(e))
+            add_edge!(g, target(e), source(e), timestamp(e))
         end
     end
     g.is_directed = false

@@ -6,7 +6,7 @@
 
 type TimeGraph{V, T} <: AbstractStaticGraph{V, Edge{V}}
     is_directed::Bool
-    time::T
+    timestamp::T
     nodes::Vector{V}
     nedges::Int
     adjlist::Dict{V, Vector{V}}
@@ -19,20 +19,20 @@ generates a time graph
 Input: 
 
     `type`: type of the nodes
-    `time`: time of the graph
+    `timestamp`: timestamp of the graph
     `is_directed`: (optional) whether the graph is directed or not
 """->
-time_graph{V,T}(::Type{V}, time::T; is_directed::Bool = true) =
+time_graph{V,T}(::Type{V}, timestamp::T; is_directed::Bool = true) =
     TimeGraph(is_directed, 
-              time::T,
+              timestamp::T,
               Node{V}[],
               0,
               Dict{Node{V}, NodeVector{V}}())
 
-time_graph{T}(::Type{String}, time::T; is_directed::Bool = true) = time_graph(ASCIIString, time, is_directed = is_directed)
+time_graph{T}(::Type{String}, timestamp::T; is_directed::Bool = true) = time_graph(ASCIIString, timestamp, is_directed = is_directed)
 
 
 @doc doc"""
 `time(g)` returns the time of a time graph `g`.
 """->
-time(g::TimeGraph) = g.time
+timestamp(g::TimeGraph) = g.timestamp

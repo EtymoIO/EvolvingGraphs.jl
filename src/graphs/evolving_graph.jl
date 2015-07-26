@@ -140,7 +140,7 @@ function add_edge!(g::EvolvingGraph, te::TimeEdge)
     if !(te in edges(g))
         push!(g.ilist, te.source)
         push!(g.jlist, te.target)
-        push!(g.timestamps, te.time)
+        push!(g.timestamps, te.timestamp)
     end
     g
 end
@@ -200,7 +200,7 @@ rm_edge!(g::EvolvingGraph, v1, v2, t) = rm_edge!(g, TimeEdge(v1, v2, t))
 `add_graph!(g, tg)` adds a time graph `tg` to an evolving graph `g`.
 """->
 function add_graph!(g::EvolvingGraph, tg::TimeGraph)
-    t = time(tg)
+    t = timestamp(tg)
     for v1 in nodes(tg)
         for v2 in out_neighbors(tg, v1)
             te = TimeEdge(v1.key, v2.key, t)
@@ -215,7 +215,7 @@ end
 
 @doc doc"""
 `matrix(g, t)` returns an adjacency matrix representation of
- an evolving graph `g` at time `t`.
+ an evolving graph `g` at timestamp `t`.
 """->
 function matrix(g::EvolvingGraph, t)
     ns = nodes(g)
@@ -233,7 +233,7 @@ end
 
 @doc doc"""
 `spmatrix(g, t)` returns a sparse adjacency matrix representation of 
-an evolving graph `g` at time `t`.
+an evolving graph `g` at timestamp `t`.
 """->
 function spmatrix(g::EvolvingGraph, t)
     ns = nodes(g)

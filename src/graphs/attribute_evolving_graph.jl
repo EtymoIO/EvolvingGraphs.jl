@@ -89,7 +89,7 @@ function add_edge!(g::AttributeEvolvingGraph, te::AttributeTimeEdge)
     if !(te in edges(g))
         push!(g.ilist, te.source)
         push!(g.jlist, te.target)
-        push!(g.timestamps, te.time)
+        push!(g.timestamps, te.timestamp)
         push!(g.attributesvec, te.attributes)
     end
     g

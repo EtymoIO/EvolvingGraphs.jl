@@ -8,7 +8,7 @@ function show(io::IO, v::AttributeNode)
 end
 
 function show(io::IO, v::TimeNode)
-    print(io, "TimeNode($(v.key), $(v.time))")
+    print(io, "TimeNode($(v.key), $(v.timestamp))")
 end
 
 function show(io::IO, e::Edge)
@@ -16,15 +16,15 @@ function show(io::IO, e::Edge)
 end
  
 function show(io::IO, e::TimeEdge)
-    print(io, "TimeEdge($(e.source)->$(e.target)) at time $(e.time)")
+    print(io, "TimeEdge($(e.source)->$(e.target)) at time $(e.timestamp)")
 end
 
 function show(io::IO, e::WeightedTimeEdge)
-    print(io, "WeightedTimeEdge($(e.source)-$(e.weight)->$(e.target)) at time $(e.time)")
+    print(io, "WeightedTimeEdge($(e.source)-$(e.weight)->$(e.target)) at time $(e.timestamp)")
 end
 
 function show(io::IO, e::AttributeTimeEdge)
-    print(io, "AttributeTimeEdge($(e.source)->$(e.target)) at time $(e.time)")
+    print(io, "AttributeTimeEdge($(e.source)->$(e.target)) at time $(e.timestamp)")
 end
 
 function show(io::IO, g::EvolvingGraph)

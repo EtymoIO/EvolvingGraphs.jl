@@ -73,7 +73,7 @@ function add_edge!(g::WeightedEvolvingGraph, te::WeightedTimeEdge)
         push!(g.ilist, te.source)
         push!(g.jlist, te.target)
         push!(g.weights, te.weight)
-        push!(g.timestamps, te.time)
+        push!(g.timestamps, te.timestamp)
     end
     g
 end

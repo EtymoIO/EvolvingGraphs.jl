@@ -6,14 +6,14 @@ if VERSION < v"0.4-"
     using Docile
 end
 
-import Base: ==, show, time, slice, issorted, copy, length, eltype
+import Base: ==, show,  slice, issorted, copy, length, eltype
 
 export 
 
 # core
 AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
 Node, Edge, TimeNode, AttributeNode, TimeEdge, WeightedTimeEdge, AttributeTimeEdge,
-key, make_node, index, rev, AttributeDict, 
+key, make_node, index, rev, AttributeDict, timestamp,
 
 
 # graph types
