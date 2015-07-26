@@ -52,9 +52,7 @@ issorted, sorttime!, sorttime, slice!, slice,
 build_evolving_graph
 
 include("core.jl")
-include("util.jl")
 
-include("graphs/auxiliary.jl")
 include("graphs/time_graph.jl") 
 include("graphs/aggregated_graph.jl")
 include("graphs/evolving_graph.jl")
