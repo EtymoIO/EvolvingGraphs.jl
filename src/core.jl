@@ -319,3 +319,15 @@ function out_neighbors(g::AbstractEvolvingGraph, v::Tuple)
 end
 
 out_neighbors(g::AbstractEvolvingGraph, v, t) = out_neighbors(g, (v,t))
+
+function _find_edge_index(g::AbstractEvolvingGraph, te::EdgeType)
+    tindx = findin(g.timestamps, [time(te)])
+    iindx = findin(g.ilist, [source(te)])
+    jindx = findin(g.jlist, [target(te)])
+    return intersect(tindx, iindx, jindx)[1]
+end
+
+_has_attribute(g::AbstractEvolvingGraph) = typeof(g) <: AttributeEvolvingGraph ? 
+        true : false
+
+typealias NodeVector{V} Vector{Node{V}}
