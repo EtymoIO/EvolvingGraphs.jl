@@ -82,9 +82,7 @@ function weak_connected_components{V}(g::AbstractEvolvingGraph{V}, valuesonly::B
             
             #println("components:", components)
             components[(node, t[i])] = reachable
-            
             ks = keys(components)
-          
             for node2 in ks
                 if !(node2 == (node, t[i])) && (temporal_connected(g, (node, t[i]), node2))
                     components[node2] = reachable
