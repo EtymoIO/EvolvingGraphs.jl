@@ -61,7 +61,6 @@ function weak_connected_components{V}(g::AbstractEvolvingGraph{V}, valuesonly::B
     nodelist = V[]
     reachable = Tuple[]
     
-    #g = undirected(g)
     t = timestamps(g)
     n = length(t)
 
@@ -80,17 +79,17 @@ function weak_connected_components{V}(g::AbstractEvolvingGraph{V}, valuesonly::B
             end
 
             append!(nodelist, map(x -> x[1], reachable))
-           
-            components[(node, t[i])] = reachable
             
             #println("components:", components)
-            for node2 in keys(components)
-    
-                if !(node2 == (node, t[i])) && (temporal_connected(g, (node, t[i]), node2))
-                    delete!(components, (node, t[i]))
-                    components[node2] = reachable
-                end
+            components[(node, t[i])] = reachable
             
+            ks = keys(components)
+          
+            for node2 in ks
+                if !(node2 == (node, t[i])) && (temporal_connected(g, (node, t[i]), node2))
+                    components[node2] = reachable
+                    delete!(components, (node, t[i]))
+                end
             end
         end
     end

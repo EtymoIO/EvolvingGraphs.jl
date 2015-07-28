@@ -11,10 +11,10 @@ It has two children: ``AbstractEvolvingGraph`` and ``AbstractStaticGraph``::
 
 ``AbstractEvolvingGraph`` and ``AbstractStaticGraph`` are abstractions
 of evolving graphs and static graphs
-respectively. ``AbstractEvolvingGraph`` has four children:
-``EvolvingGraph``, ``AttributeEvolvingGraph``, ``MatrixList`` and
-``WeightedEvolvingGraph``. ``AbstractStaticGraph`` has two
-children: ``TimeGraph`` and ``AggregatedGraph``.
+respectively. ``AbstractEvolvingGraph`` has five children:
+``EvolvingGraph``, ``AttributeEvolvingGraph``, ``IntEvolvingGraph``,
+``MatrixList`` and ``WeightedEvolvingGraph``. ``AbstractStaticGraph``
+has two children: ``TimeGraph`` and ``AggregatedGraph``.
 
 Before discussing the graph types, let us first look at the building
 blocks of graphs: nodes and edges. 
@@ -424,6 +424,39 @@ The following functions are defined for ``MatrixList``.
 
    generates a list of adjacency matrices from ``g`` ranging from the
    ``i`` -th timestamp to the ``j`` -th timestamp.
+
+IntEvolvingGraph
+----------------
+
+An ``IntEvolvingGraph`` is an evolving graph with integer nodes and
+timestamps. It is implemented as a mixture of adjacency lists and edge
+lists::
+
+  type IntEvolvingGraph <: AbstractEvolvingGraph{Int}
+    is_directed::Bool
+    nodes::Vector{IntTuple2}
+    timestamps::Vector{Int}
+    nedges::Int
+    edges::Dict{Int, Vector{IntTimeEdge}}
+    adjlist::Dict{IntTuple2, Vector{IntTuple2}}
+  end
+
+``IntEvolvingGraph`` can be initialized using the function ``evolving_graph``. 
+For example::
+
+  julia> g = evolving_graph()
+  Directed IntEvolvingGraph (0 nodes, 0 edges, 0 timestamps)
+
+  julia> add_edge!(g, 1, 2, 1)
+  Directed IntEvolvingGraph (2 nodes, 1 edges, 1 timestamps)
+
+  julia> add_edge!(g, 2, 3, 1)
+  Directed IntEvolvingGraph (3 nodes, 2 edges, 1 timestamps)
+
+  julia> edges(g)
+  2-element Array{EvolvingGraphs.TimeEdge{Int64,Int64},1}:
+  TimeEdge(1->2) at time 1
+  TimeEdge(2->3) at time 1
 
 
 WeightedEvolvingGraph
