@@ -150,11 +150,12 @@ Sorting
 .. function:: issorted(g)
 
    returns ``true`` if the timestamps of the evolving graph ``g``
-   is sorted and ``false`` otherwise.
+   are sorted and ``false`` otherwise.
 
 .. function:: sorttime!(g) 
 
-   sorts the evolving graph ``g`` according to the order of timestamps.
+   sorts the evolving graph ``g`` so that the timestamps of ``g`` are 
+   in ascending order.
 
 .. function:: sorttime(g)
 
