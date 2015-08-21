@@ -1,6 +1,7 @@
 module EvolvingGraphs
 
 using Compat
+using Requires # for plotting features
 
 if VERSION < v"0.4-"
     using Docile
@@ -72,6 +73,8 @@ include("algorithms/random.jl")
 include("metric/shortest_distance.jl")
 include("metric/shortest_temporal_distance.jl")
 include("metric/temporal_efficiency.jl")
+
+@require Compose include(joinpath(Pkg.dir("EvolvingGraphs", "src", "plot.jl")))
 
 # examples
 include("examples.jl")
