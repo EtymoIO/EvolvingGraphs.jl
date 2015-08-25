@@ -74,7 +74,7 @@ include("metric/shortest_distance.jl")
 include("metric/shortest_temporal_distance.jl")
 include("metric/temporal_efficiency.jl")
 
-@require Compose include(joinpath(Pkg.dir("EvolvingGraphs", "src", "plot.jl")))
+@require Compose include(joinpath(Pkg.dir("EvolvingGraphs", "src", "plot", "draw.jl")))
 
 # examples
 include("examples.jl")
