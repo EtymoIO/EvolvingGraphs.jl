@@ -1,3 +1,5 @@
+using Compose
+
 function compose_layout(g::AbstractGraph)
 
 end
