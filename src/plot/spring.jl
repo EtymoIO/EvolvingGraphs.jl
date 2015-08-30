@@ -110,6 +110,11 @@ function layout_spring_adj{T}(adj_matrix::Array{T,2}; C=2.0, MAXITER=100, INITTE
     return locs_x,locs_y
 end
 
+function layout_spring(g::AbstractStaticGraph; C=2.0, MAXITER=100, INITTEMP=2.0)
+    A = matrix(g)
+    return layout_sprint_adj(A, C = C, MAXITER = MAXITER, INITTMP = INITTEMP)
+end
+
 function layout_spring(g::AbstractEvolvingGraph)
     ts = timestamps(g)
     

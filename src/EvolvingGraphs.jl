@@ -54,6 +54,7 @@ build_evolving_graph
 
 include("core.jl")
 
+include("graphs/generic_graph_functions.jl")
 include("graphs/time_graph.jl") 
 include("graphs/aggregated_graph.jl")
 include("graphs/evolving_graph.jl")
@@ -62,11 +63,11 @@ include("graphs/attribute_evolving_graph.jl")
 include("graphs/int_evolving_graph.jl")
 include("graphs/matrix_list.jl")
 
-include("sort_slice.jl")
-include("components.jl")
 include("io.jl")
 include("show.jl")
 
+include("algorithms/sort_slice.jl")
+include("algorithms/components.jl")
 include("algorithms/katz_centrality.jl")
 include("algorithms/random.jl")
 

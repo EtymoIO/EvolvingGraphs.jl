@@ -10,7 +10,8 @@ add_edge!(g, e1)
 out_neighbors(g, a)
 has_node(g, a)
 @test num_nodes(g) == 3
-
+A = matrix(g, Int)
+@test A[1,2] == 1
 g2 = time_graph(Int, 2)
 add_edge!(g2, 1, 2)
 add_edge!(g2, 2, 1)

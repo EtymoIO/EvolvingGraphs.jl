@@ -42,3 +42,4 @@ corresponding aggregated static graph.
 """->
 aggregated_graph{V}(g::TimeGraph{V}) =  AggregatedGraph(is_directed(g),  
                                                         g.nodes, g.nedges, g.adjlist)
+
