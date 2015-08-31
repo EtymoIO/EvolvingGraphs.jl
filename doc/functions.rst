@@ -199,6 +199,13 @@ Examples::
 Linear Algebra
 --------------
 
+.. function:: matrix(g [,T])
+   :noindex:
+
+   generates an adjacency matrix representation of the static graph ``g``,
+   where ``T = Bool`` (by default) determine the eltype of the matrix.
+   
+
 .. function:: matrix(g, t [, attr])
    :noindex:
 	      
