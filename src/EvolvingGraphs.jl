@@ -49,6 +49,9 @@ temporal_connected, weak_connected, weak_connected_components,
 # sort slice
 issorted, sorttime!, sorttime, slice!, slice,
 
+# plotting
+layout_spring, draw_layout,
+
 # example
 build_evolving_graph
 
@@ -74,6 +77,8 @@ include("algorithms/random.jl")
 include("metric/shortest_distance.jl")
 include("metric/shortest_temporal_distance.jl")
 include("metric/temporal_efficiency.jl")
+
+include("plot/spring.jl")
 
 @require Compose include(joinpath(Pkg.dir("EvolvingGraphs", "src", "plot", "draw.jl")))
 

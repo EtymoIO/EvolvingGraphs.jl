@@ -112,7 +112,7 @@ end
 
 function layout_spring(g::AbstractStaticGraph; C=2.0, MAXITER=100, INITTEMP=2.0)
     A = matrix(g)
-    return layout_sprint_adj(A, C = C, MAXITER = MAXITER, INITTMP = INITTEMP)
+    return layout_spring_adj(A, C = C, MAXITER = MAXITER, INITTEMP = INITTEMP)
 end
 
 function layout_spring(g::AbstractEvolvingGraph)
