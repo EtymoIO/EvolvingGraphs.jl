@@ -1,8 +1,13 @@
 EvolvingGraphs Release Notes
 ======================
 
-v0.0.7 (coming soon)
-------------------------------
+v0.0.8 (coming soon)
+---------------------
+
+* define function `matrix` for static graphs
+
+v0.0.7 
+-------
 
 * Introduce two graph types:
 

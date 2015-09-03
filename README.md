@@ -85,3 +85,10 @@ where the `(i,j)` entry is `true` if there is an edge from
 and many [more things](http://evolvinggraphsjl.readthedocs.org/en/latest/tutorial.html).
 
 
+## References
+
+- Weijian Zhang,
+  "Dynamic Network Analysis in Julia",
+  *MIMS EPrints*, 2015.83, (2015).
+  [[pdf]](http://eprints.ma.man.ac.uk/2376/)
+  
