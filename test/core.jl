@@ -2,7 +2,7 @@
 a = Node(1, "a")
 @test  key(a) == "a"
 @test index(a) == 1
-@test eltype(a) <: String
+@test eltype(a) <: AbstractString
 
 a1 = Node(1, "a")
 @test a == a1
@@ -13,7 +13,7 @@ attributes(b) = @compat Dict("a" => 2)
 @test index(b) == 1
 @test key(b) == "a"
 @test attributes(b) == @compat Dict("a" => 2)
-@test eltype(b) <: String
+@test eltype(b) <: AbstractString
 @test b == b1
 
 d = TimeNode(2, 'd', "t1")
@@ -21,7 +21,7 @@ d = TimeNode(2, 'd', "t1")
 @test timestamp(d) == "t1"
 @test index(d) == 2
 @test eltype(d)[1] <: Char
-@test eltype(d)[2] <: String
+@test eltype(d)[2] <: AbstractString
 
 # test edges
 e1 = Edge('a', 'b')

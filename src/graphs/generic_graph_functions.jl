@@ -37,8 +37,8 @@ function add_node!{V<:NodeType}(g::AbstractStaticGraph{V}, v::V)
 end
 add_node!(g::AbstractStaticGraph, v) = add_node!(g, make_node(g, v))
 
-typealias EdgeType{V} Union(Edge{V}, TimeEdge{V}, WeightedTimeEdge{V},
-                            AttributeTimeEdge{V})
+typealias EdgeType{V} Union{Edge{V}, TimeEdge{V}, WeightedTimeEdge{V},
+                            AttributeTimeEdge{V}}
 
 @doc doc"""
 `add_edge!(g, e)` adds an edge `e` to a static graph `g`. 
