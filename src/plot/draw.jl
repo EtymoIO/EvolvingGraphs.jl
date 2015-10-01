@@ -25,7 +25,7 @@
 
 using Compose
 import Color
-typealias ComposeColor Union(Color.ColorValue, Color.AlphaColorValue, Color.String)
+typealias ComposeColor @compat Union{Color.ColorValue, Color.AlphaColorValue, Color.String}
 
 @doc """
 Given an adjacency matrix and two vectors of X and Y coordinates, returns

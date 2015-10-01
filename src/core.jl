@@ -64,7 +64,7 @@ eltype{V,T}(::TimeNode{V,T}) = (V, T)
 ==(v1::TimeNode, v2::TimeNode) = (v1.key == v2.key && v1.timestamp== v2.timestamp
                                   && v1.index == v2.index )
 
-typealias NodeType{V} Union{Node{V}, AttributeNode{V}, TimeNode{V}}
+typealias NodeType{V} @compat Union{Node{V}, AttributeNode{V}, TimeNode{V}}
 index(v::NodeType, g::AbstractGraph) = index(v)
 
 function make_node(g::AbstractStaticGraph, key)
