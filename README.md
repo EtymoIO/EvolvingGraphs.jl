@@ -1,8 +1,6 @@
 # EvolvingGraphs
 
 [![Build Status](https://travis-ci.org/weijianzhang/EvolvingGraphs.jl.svg?branch=master)](https://travis-ci.org/weijianzhang/EvolvingGraphs.jl)
-| [![EvolvingGraphs](http://pkg.julialang.org/badges/EvolvingGraphs_release.svg)](http://pkg.julialang.org/?pkg=EvolvingGraphs&ver=release)
-| [![EvolvingGraphs](http://pkg.julialang.org/badges/EvolvingGraphs_nightly.svg)](http://pkg.julialang.org/?pkg=EvolvingGraphs&ver=nightly)
 
 Dynamic Graph Analysis Framework in Julia.
 
@@ -14,7 +12,7 @@ Dynamic Graph Analysis Framework in Julia.
 
 ## Examples
 
-![simple evolving graph](doc/example.png)
+![simple evolving graph](doc/example1.png)
 
 We can generate the above evolving graph as
 
