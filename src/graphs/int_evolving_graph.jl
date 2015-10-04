@@ -13,7 +13,9 @@ type IntEvolvingGraph <: AbstractEvolvingGraph{Int}
     nodes::Vector{IntTuple2}
     timestamps::Vector{Int}
     nedges::Int
-    edges::Dict{Int, Vector{IntTimeEdge}}
+    # edges: timestamp -> [(source, target, timestamp),...]
+    edges::Dict{Int, Vector{IntTimeEdge}} 
+    # adjlist: (node, timestamp) -> [(node, timestamp),...]
     adjlist::Dict{IntTuple2, Vector{IntTuple2}}
 end
 
@@ -70,7 +72,7 @@ function add_node!(g::IntEvolvingGraph, v::IntTuple2)
         if !(v[2] in keys(g.edges))
              g.edges[v[2]] = IntTimeEdge[]
         end
-             
+
         g.adjlist[v] = IntTuple2[]
    
         if !(v[2] in g.timestamps)
@@ -85,10 +87,17 @@ function add_edge!(g::IntEvolvingGraph, v1::IntTuple2, v2::IntTuple2)
     v1[2] == v2[2] || error("Input nodes $(v1[1]) and $(v2[1]) must at the same timestamps")
     v1 in g.nodes || add_node!(g, v1)
     v2 in g.nodes || add_node!(g, v2)
-    index = findin(map(x -> x[1], g.nodes), v1[1])
-    for node in g.nodes[index]
+
+    index1 = findin((map(x -> x[1], g.nodes)), v1[1])
+    for node in g.nodes[index1]
         if node < v1
             v1 in g.adjlist[node] || push!(g.adjlist[node], v1)
+        end
+    end
+    index2 = findin((map(x -> x[1], g.nodes)), v2[1])
+    for node in g.nodes[index2]
+        if node < v2
+            v2 in g.adjlist[node] || push!(g.adjlist[node], v2)
         end
     end
 

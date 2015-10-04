@@ -6,6 +6,8 @@ v0.0.8 (coming soon)
 
 * define function `matrix` for static graphs
 
+* fix `add_edge!` error for `IntEvolvingGraph`.
+
 v0.0.7 
 -------
 
