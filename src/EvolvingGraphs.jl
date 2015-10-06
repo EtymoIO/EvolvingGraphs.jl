@@ -69,6 +69,7 @@ include("graphs/matrix_list.jl")
 include("io.jl")
 include("show.jl")
 
+include("algorithms/bfs.jl")
 include("algorithms/sort_slice.jl")
 include("algorithms/components.jl")
 include("algorithms/katz_centrality.jl")
