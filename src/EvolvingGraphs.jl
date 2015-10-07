@@ -75,9 +75,10 @@ include("algorithms/components.jl")
 include("algorithms/katz_centrality.jl")
 include("algorithms/random.jl")
 
-include("metric/shortest_distance.jl")
-include("metric/shortest_temporal_distance.jl")
-include("metric/temporal_efficiency.jl")
+# metric
+include("algorithms/shortest_distance.jl")
+include("algorithms/shortest_temporal_distance.jl")
+include("algorithms/temporal_efficiency.jl")
 
 include("plot/spring.jl")
 
