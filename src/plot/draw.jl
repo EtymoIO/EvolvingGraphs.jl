@@ -184,3 +184,9 @@ function draw_layout(g::AbstractStaticGraph)
     locs_x, locs_y = layout_spring(g)
     draw_layout_adj(A, locs_x, locs_y)
 end
+
+function draw_layout(g::AbstractEvolvingGraph, t)
+    A = matrix(g, t)
+    locs_x, locs_y = layout_spring(g)
+    draw_layout_adj(A, locs_x, locs_y)
+end
