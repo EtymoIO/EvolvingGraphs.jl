@@ -1,3 +1,13 @@
+using Compose
+using Color
+
+module Draw
+
+typealias ComposeColor @compat Union{Color.ColorValue, Color.AlphaColorValue, Color.String}
+
+include("draw/arrow.jl")
+include("draw/line.jl")
+
 # The function compose_layout_adj,  draw_layout_adj and auxiliary functions 
 # are from GraphLayout.jl which is distributed under the MIT License.
 
@@ -22,10 +32,6 @@
 # LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
-
-using Compose
-import Color
-typealias ComposeColor @compat Union{Color.ColorValue, Color.AlphaColorValue, Color.String}
 
 @doc """
 Given an adjacency matrix and two vectors of X and Y coordinates, returns
@@ -104,37 +110,7 @@ function compose_layout_adj{S, T<:Real}(
     )
 end
 
-function arrowcoords(θ, endx, endy, arrowlength, angleoffset=20.0/180.0*π)
-    arr1x = endx - arrowlength*cos(θ+angleoffset)
-    arr1y = endy - arrowlength*sin(θ+angleoffset)
-    arr2x = endx - arrowlength*cos(θ-angleoffset)
-    arr2y = endy - arrowlength*sin(θ-angleoffset)
-    return (arr1x, arr1y), (arr2x, arr2y)
-end
 
-function lineij(locs_x, locs_y, i, j, NODESIZE, ARROWLENGTH, angleoffset)
-    Δx = locs_x[j] - locs_x[i]
-    Δy = locs_y[j] - locs_y[i]
-    d  = sqrt(Δx^2 + Δy^2)
-    θ  = atan2(Δy,Δx)
-    endx  = locs_x[i] + (d-NODESIZE)*1.00*cos(θ)
-    endy  = locs_y[i] + (d-NODESIZE)*1.00*sin(θ)
-    if ARROWLENGTH > 0.0
-        arr1, arr2 = arrowcoords(θ, endx, endy, ARROWLENGTH, angleoffset)
-        composenode = compose(
-                context(),
-                line([(locs_x[i], locs_y[i]), (endx, endy)]),
-                line([arr1, (endx, endy)]),
-                line([arr2, (endx, endy)])
-            )
-    else
-        composenode = compose(
-                context(),
-                line([(locs_x[i], locs_y[i]), (endx, endy)])
-            )
-    end
-    return composenode
-end
 
 @doc """
 Given an adjacency matrix and two vectors of X and Y coordinates, returns
@@ -190,3 +166,5 @@ function draw_layout(g::AbstractEvolvingGraph, t)
     locs_x, locs_y = layout_spring(g)
     draw_layout_adj(A, locs_x, locs_y)
 end
+
+end # end module
