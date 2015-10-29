@@ -80,7 +80,7 @@ include("algorithms/shortest_distance.jl")
 include("algorithms/shortest_temporal_distance.jl")
 include("algorithms/temporal_efficiency.jl")
 
-include("plot/spring.jl")
+include("plot/layout.jl")
 
 @require Compose include(joinpath(Pkg.dir("EvolvingGraphs", "src", "plot", "draw.jl")))
 
