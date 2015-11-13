@@ -184,7 +184,7 @@ function save_svg(g::AbstractEvolvingGraph, t;
                   angleoffset=20.0/180.0*π)
     A = matrix(g, t)
     locs_x, locs_y = eval(layout)(A)
-    draw(filename="" ? SVG(8inch, 8inch) :SVG(filename, 8inch, 8inch),
+    draw(filename == "" ? SVG(8inch, 8inch) :SVG(filename, 8inch, 8inch),
     compose_layout_adj(A, locs_x, locs_y, labelc=labelc,
                        nodefillc=nodefillc, nodestrokec=nodestrokec,
                        edgestrokec=edgestrokec, labelsize=labelsize,
