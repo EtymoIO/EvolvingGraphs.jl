@@ -80,9 +80,14 @@ include("algorithms/shortest_distance.jl")
 include("algorithms/shortest_temporal_distance.jl")
 include("algorithms/temporal_efficiency.jl")
 
-include("plot/layout.jl")
-
-@require Compose include(joinpath(Pkg.dir("EvolvingGraphs", "src", "plot", "draw.jl")))
+@require Compose begin
+    layoutfiles(fname::AbstractString) = 
+         joinpath(dirname(@__FILE__), "plot", "layout", fname)
+    include(layoutfiles("random.jl"))
+    include(layoutfiles("spring.jl"))
+    include(layoutfiles("circular.jl"))
+    @require Colors include(joinpath(dirname(@__FILE__),"plot","draw.jl"))
+end
 
 # examples
 include("examples.jl")

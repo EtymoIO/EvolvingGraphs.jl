@@ -1,14 +1,9 @@
 using Compose
-using Color
+using Colors
 
-module Draw
+export plot, save_svg
 
-typealias ComposeColor @compat Union{Color.ColorValue, Color.AlphaColorValue, Color.String}
-
-include("draw/arrow.jl")
-include("draw/line.jl")
-
-# The function compose_layout_adj,  draw_layout_adj and auxiliary functions 
+# The function compose_layout_adj and auxiliary functions 
 # are from GraphLayout.jl which is distributed under the MIT License.
 
 # The MIT License (MIT)
@@ -33,7 +28,7 @@ include("draw/line.jl")
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-@doc """
+"""
 Given an adjacency matrix and two vectors of X and Y coordinates, returns
 a Compose tree of the graph layout
 
@@ -51,20 +46,18 @@ Arguments:
                      Set to 0 for no arrows. Default: 0.1
     angleoffset      angular width in radians for the arrows. Default: π/9 (20 degrees).
 
-""" ->
-function compose_layout_adj{S, T<:Real}(
-    adj_matrix::Array{S,2},
-    locs_x::Vector{T}, locs_y::Vector{T};
-    labels::Vector=Any[],
-    filename::String="",
-    labelc::ComposeColor="#000000",
-    nodefillc::ComposeColor="#AAAAFF",
-    nodestrokec::ComposeColor="#BBBBBB",
-    edgestrokec::ComposeColor="#BBBBBB",
-    labelsize::Real=4.0,
-    arrowlengthfrac::Real=0.1,
-    angleoffset=20.0/180.0*π)
-
+"""
+function compose_layout_adj{S, T<:Real}(adj_matrix::Array{S,2},
+                                        locs_x::Vector{T}, locs_y::Vector{T};
+                                        labels::Vector=Any[],
+                                        filename::String="",
+                                        labelc::ColorTypes.Color = colorant"black",
+                                        nodefillc::ColorTypes.Color= colorant"turquoise",
+                                        nodestrokec::ColorTypes.Color= colorant"lightgray",
+                                        edgestrokec::ColorTypes.Color= colorant"lightgray",
+                                        labelsize::Real=4.0,
+                                        arrowlengthfrac::Real=0.1,
+                                        angleoffset=20.0/180.0*π)
     length(locs_x) != length(locs_y) && error("Vectors must be same length")
     const N = length(locs_x)
     if length(labels) != N && length(labels) != 0
@@ -111,60 +104,90 @@ function compose_layout_adj{S, T<:Real}(
 end
 
 
-
-@doc """
-Given an adjacency matrix and two vectors of X and Y coordinates, returns
-an SVG of the graph layout.
-
-Requires Compose.jl
-
-Arguments:
-    adj_matrix       Adjacency matrix of some type. Non-zero of the eltype
-                     of the matrix is used to determine if a link exists,
-                     but currently no sense of magnitude
-    locs_x, locs_y   Locations of the nodes. Can be any units you want,
-                     but will be normalized and centered anyway
-    labels           Optional. Labels for the vertices. Default: Any[]
-    filename         Optional. Output filename for SVG. If blank, just
-                     tries to draw it anyway, which will display in IJulia
-    nodefillc        Color to fill the nodes with. Default: #AAAAFF
-    nodestrokec      Color for the nodes stroke. Default: #BBBBBB
-    edgestrokec      Color for the edge strokes. Default: #BBBBBB
-    arrowlengthfrac  Fraction of line length to use for arrows.
-                     Set to 0 for no arrows. Default: 0.1
-    angleoffset      angular width in radians for the arrows. Default: π/9 (20 degrees).
-""" ->
-function draw_layout_adj{S, T<:Real}(
-    adj_matrix::Array{S,2},
-    locs_x::Vector{T}, locs_y::Vector{T};
-    labels::Vector=Any[],
-    filename::String="",
-    labelc::ComposeColor="#000000",
-    nodefillc::ComposeColor="#AAAAFF",
-    nodestrokec::ComposeColor="#BBBBBB",
-    edgestrokec::ComposeColor="#BBBBBB",
-    labelsize::Real=4.0,
-    arrowlengthfrac::Real=0.1,
-    angleoffset=20.0/180.0*π)
-
-    draw(filename == "" ? SVG(8inch, 8inch) : SVG(filename, 8inch, 8inch),
-        compose_layout_adj(adj_matrix, locs_x, locs_y, labels=labels,
-            labelc=labelc, nodefillc=nodefillc, nodestrokec=nodestrokec,
-            edgestrokec=edgestrokec, labelsize=labelsize,
-            arrowlengthfrac=arrowlengthfrac, angleoffset=angleoffset)
-    )
+function arrowcoords(θ, endx, endy, arrowlength, angleoffset=20.0/180.0*π)
+    arr1x = endx - arrowlength*cos(θ+angleoffset)
+    arr1y = endy - arrowlength*sin(θ+angleoffset)
+    arr2x = endx - arrowlength*cos(θ-angleoffset)
+    arr2y = endy - arrowlength*sin(θ-angleoffset)
+    return (arr1x, arr1y), (arr2x, arr2y)
 end
 
-function draw_layout(g::AbstractStaticGraph)
-    A = matrix(g)
-    locs_x, locs_y = layout_spring(g)
-    draw_layout_adj(A, locs_x, locs_y)
+
+function lineij(locs_x, locs_y, i, j, NODESIZE, ARROWLENGTH, angleoffset)
+    Δx = locs_x[j] - locs_x[i]
+    Δy = locs_y[j] - locs_y[i]
+    d  = sqrt(Δx^2 + Δy^2)
+    θ  = atan2(Δy,Δx)
+    endx  = locs_x[i] + (d-NODESIZE)*1.00*cos(θ)
+    endy  = locs_y[i] + (d-NODESIZE)*1.00*sin(θ)
+    if ARROWLENGTH > 0.0
+        arr1, arr2 = arrowcoords(θ, endx, endy, ARROWLENGTH, angleoffset)
+        composenode = compose(
+                context(),
+                line([(locs_x[i], locs_y[i]), (endx, endy)]),
+                line([arr1, (endx, endy)]),
+                line([arr2, (endx, endy)])
+            )
+    else
+        composenode = compose(
+                context(),
+                line([(locs_x[i], locs_y[i]), (endx, endy)])
+            )
+    end
+    return composenode
 end
 
-function draw_layout(g::AbstractEvolvingGraph, t)
+
+"""
+`plot(g, t; layout, labels, filename, labelc, nodefillc, nodestrokec,
+        edgestrokec, labelsize, arrowlengthfrac, angleoffset)`
+
+Plot the evolving graph `g` at timestamp `t` using layout function `layout`.
+"""
+function plot(g::AbstractEvolvingGraph, t;
+              layout::Symbol=:spring, 
+              labels::Vector=Any[],
+              filename::String="",
+              labelc::ColorTypes.Color = colorant"black",
+              nodefillc::ColorTypes.Color= colorant"turquoise",
+              nodestrokec::ColorTypes.Color= colorant"lightgray",
+              edgestrokec::ColorTypes.Color= colorant"lightgray",
+              labelsize::Real=4.0,
+              arrowlengthfrac::Real=0.1,
+              angleoffset=20.0/180.0*π)
     A = matrix(g, t)
-    locs_x, locs_y = layout_spring(g)
-    draw_layout_adj(A, locs_x, locs_y)
+    locs_x, locs_y = eval(layout)(A) 
+    return compose_layout_adj(A, locs_x, locs_y, labelc=labelc,
+                              nodefillc=nodefillc, nodestrokec=nodestrokec,
+                              edgestrokec=edgestrokec, labelsize=labelsize,
+                              arrowlengthfrac=arrowlengthfrac, 
+                              angleoffset=angleoffset)
 end
 
-end # end module
+
+"""
+`save_svg(g, t; layout, labels, filename, labels, nodefillc, nodestrokec,
+        edgestrokec, labelsize, arrowlengthfrac, angleoffset)`
+        
+Generate a SVG file from the evolving graph `g` at timestamp `t`.
+"""
+function save_svg(g::AbstractEvolvingGraph, t;
+                  layout::Symbol=:spring, 
+                  labels::Vector=Any[],
+                  filename::String="",
+                  labelc::ColorTypes.Color = colorant"black",
+                  nodefillc::ColorTypes.Color= colorant"turquoise",
+                  nodestrokec::ColorTypes.Color= colorant"lightgray",
+                  edgestrokec::ColorTypes.Color= colorant"lightgray",
+                  labelsize::Real=4.0,
+                  arrowlengthfrac::Real=0.1,
+                  angleoffset=20.0/180.0*π)
+    A = matrix(g, t)
+    locs_x, locs_y = eval(layout)(A)
+    draw(filename="" ? SVG(8inch, 8inch) :SVG(filename, 8inch, 8inch),
+    compose_layout_adj(A, locs_x, locs_y, labelc=labelc,
+                       nodefillc=nodefillc, nodestrokec=nodestrokec,
+                       edgestrokec=edgestrokec, labelsize=labelsize,
+                       arrowlengthfrac=arrowlengthfrac, 
+                       angleoffset=angleoffset))
+end

@@ -23,7 +23,7 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-@doc """
+ """
     Use the spring/repulsion model of Fruchterman and Reingold (1991):
         Attractive force:  f_a(d) =  d^2 / k
         Repulsive force:  f_r(d) = -k^2 / d
@@ -38,8 +38,8 @@
     C          Constant to fiddle with density of resulting layout
     MAXITER    Number of iterations we apply the forces
     INITTEMP   Initial "temperature", controls movement per iteration
-""" ->
-function layout_spring_adj{T}(adj_matrix::Array{T,2}; C=2.0, MAXITER=100, INITTEMP=2.0)
+"""
+function spring{T}(adj_matrix::Array{T,2}; C=2.0, MAXITER=100, INITTEMP=2.0)
 
     size(adj_matrix, 1) != size(adj_matrix, 2) && error("Adj. matrix must be square.")
     const N = size(adj_matrix, 1)
