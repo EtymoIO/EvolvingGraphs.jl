@@ -1,4 +1,4 @@
-if VERSION < v"0.5.0"
+if VERSION < v"0.5-"
     using Colors
     using Compose
 
