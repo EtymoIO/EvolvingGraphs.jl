@@ -8,7 +8,7 @@ g = egread("test1.csv")
 attribut1 = @compat Dict("a" => 3)
 attribut2 = @compat Dict("a" => 4)
 
-g2 = attribute_evolving_graph(String, String)
+g2 = attribute_evolving_graph(AbstractString, AbstractString)
 
 add_edge!(g2, ["a", "b", "c"], ["e", "f"], "t1", attribut1)
 add_edge!(g2, ["d", "f"], ["d", "e", "a"], "t2", attribut2)

@@ -23,7 +23,7 @@ time :math:`t_1` and :math:`t_2` with the function ``time_graph``::
 
 and then build an evolving graph ``eg`` by adding ``g1`` and ``g2``::
 
-  eg = evolving_graph(Char, String)
+  eg = evolving_graph(Char, AbstractString)
   add_graph!(eg, g1)
   add_graph!(eg, g2)
 

@@ -148,17 +148,17 @@ rm_edge!(g::AttributeEvolvingGraph, v1, v2, t) = rm_edge!(g, AttributeTimeEdge(v
 
 
 @doc doc"""
-`matrix(g, t, attr = None)` returns an adjacency matrix representation
+`matrix(g, t, attr = Union{})` returns an adjacency matrix representation
 of an evolving graph `g` at time `t`. If `attr` is present, return a 
 weighted adjacency matrix where the edge weight is given by the attribute
 `attr`.
 """->
-function matrix(g::AttributeEvolvingGraph, t, attr = None)
+function matrix(g::AttributeEvolvingGraph, t, attr = Union{})
     ns = nodes(g)
     n = num_nodes(g)
     es = edges(g, t)
  
-    if attr == None
+    if attr == Union{}
         A = zeros(Bool, n, n)
         for e in es
             i = findfirst(ns, e.source)
@@ -184,13 +184,13 @@ of an evolving graph `g` at time `t`. If `attr` is present, return a
 weighted adjacency matrix where the edge weight is given by the attribute
 `attr`. 
 """->
-function spmatrix(g::AttributeEvolvingGraph, t, attr = None)
+function spmatrix(g::AttributeEvolvingGraph, t, attr = Union{})
     ns = nodes(g)
     n = num_nodes(g)
     is = Int[]
     js = Int[]
     es = edges(g, t)
-    if attr == None
+    if attr == Union{}
         for e in es
             i = findfirst(ns, e.source)
             j = findfirst(ns, e.target)

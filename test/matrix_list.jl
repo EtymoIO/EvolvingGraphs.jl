@@ -3,7 +3,7 @@ g2 = matrix_list(g)
 @test num_matrices(g2) == num_timestamps(g)
 @test num_nodes(g2) == num_nodes(g)
 
-g = evolving_graph(Int, String) 
+g = evolving_graph(Int, AbstractString) 
 add_edge!(g, 1, 2, "t1") 
 add_edge!(g,  1, 3, "t2") 
 add_edge!(g, 4, 5, "t2") 

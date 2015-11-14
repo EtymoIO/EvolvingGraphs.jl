@@ -375,13 +375,13 @@ The following functions are defined for ``AttributeEvolvingGraph``.
    returns all the outward neighbors of the node ``v`` at timestamp ``t`` in 
    the evolving graph ``g``. 
 
-.. function:: matrix(g, t [, attr = None])
+.. function:: matrix(g, t [, attr = Union{}])
 
    return an adjacency matrix representation of graph ``g`` at timestamp ``t``. 
    If ``attr`` is present, return a weighted adjacency matrix where 
    the edge weight is given by the attribute ``attr``.
 
-.. function:: spmatrix(g, t [, attr = None])
+.. function:: spmatrix(g, t [, attr = Union{}])
 
    return a sparse adjacency matrix representation of graph ``g`` at timestamp ``t``. 
    If ``attr`` is present, return a weighted adjacency matrix where 
@@ -495,7 +495,7 @@ The following functions are defined for ``WeightedEvolvingGraph``.
 .. function:: weighted_evolving_graph(;is_directed = true)
 
    initialize an evolving graph with ``Integer`` node and timestamps and 
-   ``FloatingPoint`` edge weight.
+   ``AbstractFloat`` edge weight.
 
 
 .. function:: is_directed(g)

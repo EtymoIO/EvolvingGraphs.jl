@@ -1,4 +1,4 @@
-g = evolving_graph(Int, String, is_directed = false)
+g = evolving_graph(Int, AbstractString, is_directed = false)
 add_edge!(g, 2, 4, "t1")
 add_edge!(g, 2, 5, "t1")
 add_edge!(g, 2, 3, "t2")

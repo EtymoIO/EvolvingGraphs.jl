@@ -86,7 +86,7 @@ achieved with attribute evolving graphs. Here is an example. Suppose
 we want to record the closeness between 3 people ``a``, ``b`` and ``c``
 at different time, say ``January`` and ``February``::
     
-  julia> g = attribute_evolving_graph(String, String, is_directed = false)
+  julia> g = attribute_evolving_graph(AbstractString, AbstractString, is_directed = false)
   Undirected AttributeEvolvingGraph (0 nodes, 0 edges, 0 timestamps)
 
   julia> add_edge!(g, "a", "b", "January", Dict("closeness" => 0.2))

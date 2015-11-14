@@ -50,7 +50,7 @@ Arguments:
 function compose_layout_adj{S, T<:Real}(adj_matrix::Array{S,2},
                                         locs_x::Vector{T}, locs_y::Vector{T};
                                         labels::Vector=Any[],
-                                        filename::String="",
+                                        filename::AbstractString="",
                                         labelc::ColorTypes.Color = colorant"black",
                                         nodefillc::ColorTypes.Color= colorant"turquoise",
                                         nodestrokec::ColorTypes.Color= colorant"lightgray",
@@ -147,7 +147,7 @@ Plot the evolving graph `g` at timestamp `t` using layout function `layout`.
 function plot(g::AbstractEvolvingGraph, t;
               layout::Symbol=:spring, 
               labels::Vector=Any[],
-              filename::String="",
+              filename::AbstractString="",
               labelc::ColorTypes.Color = colorant"black",
               nodefillc::ColorTypes.Color= colorant"turquoise",
               nodestrokec::ColorTypes.Color= colorant"lightgray",
@@ -174,7 +174,7 @@ Generate a SVG file from the evolving graph `g` at timestamp `t`.
 function save_svg(g::AbstractEvolvingGraph, t;
                   layout::Symbol=:spring, 
                   labels::Vector=Any[],
-                  filename::String="",
+                  filename::AbstractString="",
                   labelc::ColorTypes.Color = colorant"black",
                   nodefillc::ColorTypes.Color= colorant"turquoise",
                   nodestrokec::ColorTypes.Color= colorant"lightgray",

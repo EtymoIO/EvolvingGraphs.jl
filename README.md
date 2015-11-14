@@ -18,7 +18,7 @@ Dynamic Graph Analysis Framework in Julia.
 We can generate the above evolving graph as
 
 ```julia
-    g = evolving_graph(Int, String)
+    g = evolving_graph(Int, AbstractString)
 	add_edge!(g, 1, 2, "t1")
 	add_edge!(g, 1, 3, "t2")
 	add_edge!(g, 4, 5, "t2")

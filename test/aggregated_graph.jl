@@ -2,7 +2,7 @@ g = random_evolving_graph(3, 4)
 g1 = aggregated_graph(g)
 @test num_nodes(g1) == 3
 
-g2 = evolving_graph(String, String)
+g2 = evolving_graph(AbstractString, AbstractString)
 add_edge!(g2, "a", "b", "t1")
 add_edge!(g2, "b", "c", "t1")
 add_edge!(g2, "c", "d", "t2")

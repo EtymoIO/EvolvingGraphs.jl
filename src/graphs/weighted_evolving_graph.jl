@@ -27,7 +27,7 @@ weighted_evolving_graph{V, T, W}(::Type{V},
                                  ::Type{T}; 
                                  is_directed::Bool = true) = WeightedEvolvingGraph(is_directed, V[], V[], W[], T[])
 
-weighted_evolving_graph(;is_directed::Bool = true) = weighted_evolving_graph(Int, FloatingPoint, Int, is_directed = is_directed)
+weighted_evolving_graph(;is_directed::Bool = true) = weighted_evolving_graph(Int, AbstractFloat, Int, is_directed = is_directed)
 
 is_directed(g::WeightedEvolvingGraph) = g.is_directed
 

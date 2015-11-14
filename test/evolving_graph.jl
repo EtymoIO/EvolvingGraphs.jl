@@ -46,7 +46,7 @@ add_edge!(g2, 2, 3, 'b')
 @test num_timestamps(g2) == 2
 
 # remove edge
-g = evolving_graph(Int, String)
+g = evolving_graph(Int, AbstractString)
 add_edge!(g, 1, 2, "t1")
 add_edge!(g, 2, 3, "t2")
 add_edge!(g, 4, 2, "t2")
