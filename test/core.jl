@@ -3,6 +3,7 @@ a = Node(1, "a")
 @test  key(a) == "a"
 @test index(a) == 1
 @test eltype(a) <: AbstractString
+print(a)
 
 a1 = Node(1, "a")
 @test a == a1
@@ -15,6 +16,7 @@ attributes(b) = @compat Dict("a" => 2)
 @test attributes(b) == @compat Dict("a" => 2)
 @test eltype(b) <: AbstractString
 @test b == b1
+print(b)
 
 d = TimeNode(2, 'd', "t1")
 @test key(d) == 'd'
@@ -22,6 +24,7 @@ d = TimeNode(2, 'd', "t1")
 @test index(d) == 2
 @test eltype(d)[1] <: Char
 @test eltype(d)[2] <: AbstractString
+print(d)
 
 # test edges
 e1 = Edge('a', 'b')
@@ -29,14 +32,17 @@ e1 = Edge('a', 'b')
 @test target(e1) == 'b'
 e3 = Edge('b', 'a')
 @test rev(e3) == e1
+print(e1)
 
 e2 = TimeEdge('a', 'b', 3)
 @test source(e2) == 'a'
 @test target(e2) == 'b'
 @test timestamp(e2) == 3
+print(e2)
 
 e = WeightedTimeEdge(1, 2, 2.3, 2)
 @test source(e) == 1
 @test target(e) == 2
 @test timestamp(e) == 2
 @test weight(e) == 2.3
+print(e)

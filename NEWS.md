@@ -8,6 +8,10 @@ v0.0.8 (coming soon)
 
 * fix `add_edge!` error for `IntEvolvingGraph`.
 
+* add functions for plotting: `plot` and `save_svg`
+
+* fix Julia v0.4 deprecation
+
 v0.0.7 
 -------
 
