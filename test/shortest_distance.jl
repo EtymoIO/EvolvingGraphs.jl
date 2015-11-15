@@ -15,7 +15,7 @@ end
 
 g = build_time_graph()
 
-p = shortest_path(g, 0, 5)
+p = shortest_path(g, 0, 5, verbose = true)
 
 p2 = Path([make_node(g,0), make_node(g,2), make_node(g,3), make_node(g,5)])
 

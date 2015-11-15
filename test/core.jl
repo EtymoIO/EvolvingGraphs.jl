@@ -34,3 +34,9 @@ e2 = TimeEdge('a', 'b', 3)
 @test source(e2) == 'a'
 @test target(e2) == 'b'
 @test timestamp(e2) == 3
+
+e = WeightedTimeEdge(1, 2, 2.3, 2)
+@test source(e) == 1
+@test target(e) == 2
+@test timestamp(e) == 2
+@test weight(e) == 2.3

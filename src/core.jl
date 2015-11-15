@@ -71,7 +71,7 @@ function make_node(g::AbstractStaticGraph, key)
     ns = nodes(g)
     keys = map(x -> x.key, ns)
     index = findfirst(keys, key)
-    if index == 0 
+    if index == 0        
         return Node(num_nodes(g)+1, key)
     else
         return ns[index]

@@ -8,6 +8,7 @@ add_edge!(g, 1, 4, "t3")
 add_edge!(g, 2, 3, "t4")
 
 components = weak_connected_components(g)
+comps = weak_connected_components(g, false)
 
 @test length(components) == 1
 @test weak_connected(g, 5, 1)

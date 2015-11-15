@@ -69,7 +69,7 @@ function katz_centrality(g::AbstractEvolvingGraph,
         v = S'*ones(Float64, n)
         return sort(collect(zip(ns, v)), by = x -> x[2])
     else
-        error("unknown mode $(mode)")
+        throw(ArgumentError("unknown mode $(mode)"))
     end
 
 end
