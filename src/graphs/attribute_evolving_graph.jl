@@ -153,12 +153,12 @@ of an evolving graph `g` at time `t`. If `attr` is present, return a
 weighted adjacency matrix where the edge weight is given by the attribute
 `attr`.
 """->
-function matrix(g::AttributeEvolvingGraph, t, attr = Union{})
+function matrix(g::AttributeEvolvingGraph, t, attr = @compat Union{})
     ns = nodes(g)
     n = num_nodes(g)
     es = edges(g, t)
  
-    if attr == Union{}
+    if attr == @compat Union{}
         A = zeros(Bool, n, n)
         for e in es
             i = findfirst(ns, e.source)
@@ -184,13 +184,13 @@ of an evolving graph `g` at time `t`. If `attr` is present, return a
 weighted adjacency matrix where the edge weight is given by the attribute
 `attr`. 
 """->
-function spmatrix(g::AttributeEvolvingGraph, t, attr = Union{})
+function spmatrix(g::AttributeEvolvingGraph, t, attr = @compat Union{})
     ns = nodes(g)
     n = num_nodes(g)
     is = Int[]
     js = Int[]
     es = edges(g, t)
-    if attr == Union{}
+    if attr == @compat Union{}
         for e in es
             i = findfirst(ns, e.source)
             j = findfirst(ns, e.target)
