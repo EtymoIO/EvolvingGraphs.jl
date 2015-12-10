@@ -62,5 +62,5 @@ temporal distance from node `v1` at timestamp `t1` to node `v2` at timestamp
 `t2` on the evolving graph `g`.
 """->
 shortest_temporal_distance(g::AbstractEvolvingGraph, v1::Tuple, v2::Tuple) =
-        shortest_temporal_path(g, v1, v2) == @compat Union{} ? Inf : length(shortest_temporal_path(g, v1, v2)) - 1
+        shortest_temporal_path(g, v1, v2) == (@compat Union{}) ? Inf : length(shortest_temporal_path(g, v1, v2)) - 1
 

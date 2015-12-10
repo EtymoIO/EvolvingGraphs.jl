@@ -59,7 +59,7 @@ _DFS_shortest_path(g, make_node(g,v1), make_node(g,v2), verbose = verbose)
 on the time graph `g`.
 """->
 shortest_distance{V}(g::TimeGraph{Node{V}}, v1::V, v2::V) = 
-            shortest_path(g, v1, v2) == @compat Union{} ? Inf : length(shortest_path(g, v1, v2)) - 1
+          shortest_path(g, v1, v2) == (@compat Union{}) ? Inf : length(shortest_path(g, v1, v2)) - 1
 
 #shortest_distance{V}(g::TimeGraph{AttributeNode{V}}, v1::V, v2::V) = 
 #            shortest_path(g, v1, v2) == @compat Union{} ? Inf : length(shortest_path(g, v1, v2)) - 1
