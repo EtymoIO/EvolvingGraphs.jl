@@ -4,6 +4,10 @@ EvolvingGraphs Release Notes
 v0.1.0 (Coming soon)
 --------------------
 
+v0.0.9
+------
+
+* Fix test failing on Julia v0.3
 
 
 v0.0.8 
