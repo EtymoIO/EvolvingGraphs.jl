@@ -1,11 +1,6 @@
 module EvolvingGraphs
 
-using Compat
 using Requires # for plotting features
-
-if VERSION < v"0.4-"
-    using Docile
-end
 
 import Base: ==, show,  slice, issorted, copy, length, eltype
 

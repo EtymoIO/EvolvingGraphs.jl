@@ -37,7 +37,7 @@ function add_node!{V<:NodeType}(g::AbstractStaticGraph{V}, v::V)
 end
 add_node!(g::AbstractStaticGraph, v) = add_node!(g, make_node(g, v))
 
-typealias EdgeType{V} @compat Union{Edge{V}, TimeEdge{V}, WeightedTimeEdge{V},
+typealias EdgeType{V}  Union{Edge{V}, TimeEdge{V}, WeightedTimeEdge{V},
                                     AttributeTimeEdge{V}}
 
 @doc doc"""

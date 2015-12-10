@@ -15,7 +15,7 @@ function _DFS_shortest_path{V}(g::TimeGraph{V},
                                v1::V, 
                                v2::V, 
                                path = Path(), 
-                               shortest = @compat Union{};
+                               shortest =  Union{};
                                verbose = false)
    
     path = deepcopy(path)
@@ -31,9 +31,9 @@ function _DFS_shortest_path{V}(g::TimeGraph{V},
    
     for node in out_neighbors(g, v1)
         if !has_node(path, node)
-            if (shortest == @compat Union{}) || length(path) < length(shortest) 
+            if (shortest ==  Union{}) || length(path) < length(shortest) 
                 newPath = _DFS_shortest_path(g, node, v2, path, shortest, verbose = verbose)
-                if !(newPath == @compat Union{})
+                if !(newPath ==  Union{})
                     shortest = newPath
                 end
             end
@@ -59,8 +59,8 @@ _DFS_shortest_path(g, make_node(g,v1), make_node(g,v2), verbose = verbose)
 on the time graph `g`.
 """->
 shortest_distance{V}(g::TimeGraph{Node{V}}, v1::V, v2::V) = 
-          shortest_path(g, v1, v2) == (@compat Union{}) ? Inf : length(shortest_path(g, v1, v2)) - 1
+          shortest_path(g, v1, v2) == Union{} ? Inf : length(shortest_path(g, v1, v2)) - 1
 
 #shortest_distance{V}(g::TimeGraph{AttributeNode{V}}, v1::V, v2::V) = 
-#            shortest_path(g, v1, v2) == @compat Union{} ? Inf : length(shortest_path(g, v1, v2)) - 1
+#            shortest_path(g, v1, v2) ==  Union{} ? Inf : length(shortest_path(g, v1, v2)) - 1
 

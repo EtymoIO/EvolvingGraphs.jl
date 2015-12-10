@@ -8,12 +8,12 @@ print(a)
 a1 = Node(1, "a")
 @test a == a1
 
-b = AttributeNode(1, "a", @compat Dict())
+b = AttributeNode(1, "a",  Dict())
 b1 = AttributeNode(1, "a")
-attributes(b) = @compat Dict("a" => 2)
+attributes(b) =  Dict("a" => 2)
 @test index(b) == 1
 @test key(b) == "a"
-@test attributes(b) == @compat Dict("a" => 2)
+@test attributes(b) ==  Dict("a" => 2)
 @test eltype(b) <: AbstractString
 @test b == b1
 print(b)

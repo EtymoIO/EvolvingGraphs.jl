@@ -5,8 +5,8 @@ g = egread("test1.csv")
 @test num_nodes(g) == 5
 @test num_timestamps(g) == 4
 
-attribut1 = @compat Dict("a" => 3)
-attribut2 = @compat Dict("a" => 4)
+attribut1 =  Dict("a" => 3)
+attribut2 =  Dict("a" => 4)
 
 g2 = attribute_evolving_graph(AbstractString, AbstractString)
 

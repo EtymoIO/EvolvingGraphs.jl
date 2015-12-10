@@ -27,10 +27,10 @@ g2 = slice(g, [2,3])
 # test attribute evolving graph
 
 ag = attribute_evolving_graph(Int, Int)
-add_edge!(ag, 1, 2, 1, @compat Dict("a" => 1.2))
-add_edge!(ag, 2, 1, 4, @compat Dict("b" => 1.2, "a" => 0))
-add_edge!(ag, 2, 3, 3, @compat Dict("a" => 3.4))
-add_edge!(ag, 3, 2, 1, @compat Dict("a" => 2.5))
+add_edge!(ag, 1, 2, 1,  Dict("a" => 1.2))
+add_edge!(ag, 2, 1, 4,  Dict("b" => 1.2, "a" => 0))
+add_edge!(ag, 2, 3, 3,  Dict("a" => 3.4))
+add_edge!(ag, 3, 2, 1,  Dict("a" => 2.5))
 
 ag1 = sorttime(ag)
 

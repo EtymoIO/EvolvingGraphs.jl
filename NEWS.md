@@ -4,6 +4,8 @@ EvolvingGraphs Release Notes
 v0.1.0 (Coming soon)
 --------------------
 
+* Drop support for Julia v0.3
+
 v0.0.9
 ------
 

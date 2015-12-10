@@ -1,7 +1,7 @@
 # _breath_first_visit(g, (v1, t1))
 # find all reachable nodes from (v1, t1)
 function _breath_first_visit(g::AbstractEvolvingGraph, s::Tuple)
-    level = @compat Dict(s => 0)
+    level =  Dict(s => 0)
     i = 1
     fronter = [s]
     reachable = [s]
