@@ -11,10 +11,10 @@ end
 # simple matrix list
 typealias SimpleMatrixList MatrixList{Int, Int, Bool}
 
-function MatrixList{V,T,Tv}(nodes::Vector{V}, 
-                            timestamps::Vector{T},
-                            matrices::Vector{SparseMatrixCSC{Tv}};
-                            is_directed::Bool=true)
+function MatrixList{V,T, Tv}(nodes::Vector{V}, 
+                             timestamps::Vector{T},
+                             matrices::Vector{SparseMatrixCSC{Tv}};
+                             is_directed::Bool=true)
     length(timestamps) == length(matrices) || throw(DimensionMismatch(""))
     MatrixList(is_directed, nodes, timestamps, matrices)
 end
@@ -44,9 +44,9 @@ function MatrixList(g::AbstractEvolvingGraph)
     ns = nodes(g)
     ts = timestamps(g)
     n = length(ts)
-    matrices = Array(SparseMatrixCSC, n)
-    for i = 1:n
-        matrices[i] = sparse(matrix(g, i))
+    matrices = Array(SparseMatrixCSC{Float64}, n)
+    for (i,t) = enumerate(ts)
+        matrices[i] = sparse(matrix(g, t))
     end
     MatrixList(ns, ts, matrices, is_directed = is_directed(g))
 end
