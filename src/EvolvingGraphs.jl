@@ -6,12 +6,6 @@ import Base: ==, show,  slice, issorted, copy, length, eltype
 
 export 
 
-# core
-AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
-Node, Edge, TimeNode, AttributeNode, TimeEdge, WeightedTimeEdge, AttributeTimeEdge,
-key, make_node, index, rev, AttributeDict, timestamp,
-
-
 # graph types
 TimeGraph, AggregatedGraph, EvolvingGraph, WeightedEvolvingGraph, 
 AttributeEvolvingGraph, IntEvolvingGraph, IntTuple2, IntTimeEdge, 
@@ -50,9 +44,7 @@ layout_spring, draw_layout,
 # example
 build_evolving_graph
 
-include("core.jl")
-
-include("graphs/generic_graph_functions.jl")
+include("graphs/base.jl")
 include("graphs/time_graph.jl") 
 include("graphs/aggregated_graph.jl")
 include("graphs/evolving_graph.jl")
