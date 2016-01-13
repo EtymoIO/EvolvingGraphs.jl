@@ -41,7 +41,7 @@ matrix(g::MatrixList, i::Int) = g.matrices[i]
 matrix(g::MatrixList, ur::UnitRange{Int}) = g.matrices[ur]
 
 timestamps(g::MatrixList) = g.timestamps
-num_timestamps(g) = length(timestamps(g))
+num_timestamps(g::MatrixList) = length(timestamps(g))
 
 copy(g::MatrixList) = MatrixList(is_directed(g), 
                                  deepcopy(g.nodes),
@@ -59,7 +59,7 @@ function MatrixList(g::AbstractEvolvingGraph)
     n = length(ts)
     matrices = Array(SparseMatrixCSC{Float64}, n)
     for (i,t) = enumerate(ts)
-        matrices[i] = sparse(matrix(g, t))
+        matrices[i] = spmatrix(g,t)
     end
     MatrixList(ns, ts, matrices, is_directed = is_directed(g))
 end
