@@ -8,8 +8,7 @@ export
 
 # graph types
 TimeGraph, AggregatedGraph, EvolvingGraph, WeightedEvolvingGraph, 
-AttributeEvolvingGraph, IntEvolvingGraph, IntTuple2, IntTimeEdge, 
-MatrixList,
+AttributeEvolvingGraph, IntEvolvingGraph, IntTuple2, IntTimeEdge,
 
 # graph functions
 add_node!, add_edge!, add_graph!, rm_edge!, has_edge, has_node,
@@ -19,8 +18,7 @@ timestamps, num_timestamps, reduce_timestamps!,
 out_neighbors, is_directed, undirected!, undirected, 
 time_graph, evolving_graph, weighted_evolving_graph, weight,
 attribute_evolving_graph, attributesvec, attributes,
-matrix, spmatrix, attributes_values, aggregated_graph, 
-matrix_list,
+matrix, spmatrix, attributes_values, aggregated_graph,
  
 # io
 egread, egwrite,
