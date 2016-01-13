@@ -6,6 +6,13 @@ v0.1.0 (Coming soon)
 
 * Drop support for Julia v0.3
 
+* Store matrices in `MatrixList` as sparse matrices
+
+* New functions:
+
+  - `add_matrix!(ms::SimpleMatrixList, A::SparseMatrixCSC)`
+  - `isempty(g::MatrixList)`
+
 v0.0.9
 ------
 

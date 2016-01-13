@@ -58,10 +58,17 @@ function show(io::IO, g::AggregatedGraph)
     print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) edges)")
 end
 
+
 function show(io::IO, g::MatrixList)
     title = is_directed(g)? "Directed MatrixList" : "Undirected MatrixList"
     print(io, "$(title) ($(num_nodes(g)) nodes, $(num_matrices(g)) matrices)")
-end   
+end
+
+function show(io::IO, g::SimpleMatrixList)
+    title = is_directed(g)? "Directed SimpleMatrixList" : 
+                            "Undirected SimpleMatrixList"
+    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_matrices(g)) matrices)")
+end
 
 function show(io::IO, p::AbstractPath)
     title = typeof(p) == Path ? "Path" : "Temporal Path"

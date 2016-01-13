@@ -1,4 +1,5 @@
-export MatrixList, SimpleMatrixList
+import Base: isempty
+export MatrixList, SimpleMatrixList, add_matrix!
 
 # matrix list
 type MatrixList{V,T,Tv<:Number} <: AbstractEvolvingGraph
@@ -18,10 +19,17 @@ function MatrixList{V,T, Tv}(nodes::Vector{V},
     length(timestamps) == length(matrices) || throw(DimensionMismatch(""))
     MatrixList(is_directed, nodes, timestamps, matrices)
 end
+
+"""
+ `MatrixList(;is_directed=true)`
+  
+initializes a simple matrix list. 
+"""
 MatrixList(;is_directed::Bool=true) = MatrixList(Int[], Int[], 
                                                  SparseMatrixCSC{Bool}[],
                                                  is_directed = is_directed)
 
+isempty(g::MatrixList) = isempty(g.nodes)
 is_directed(g::MatrixList) = g.is_directed
 nodes(g::MatrixList) = g.nodes
 num_nodes(g::MatrixList) = length(g.nodes)
@@ -33,13 +41,18 @@ matrix(g::MatrixList, i::Int) = g.matrices[i]
 matrix(g::MatrixList, ur::UnitRange{Int}) = g.matrices[ur]
 
 timestamps(g::MatrixList) = g.timestamps
+num_timestamps(g) = length(timestamps(g))
 
 copy(g::MatrixList) = MatrixList(is_directed(g), 
                                  deepcopy(g.nodes),
                                  deepcopy(g.timestamps),
                                  deepcopy(g.matrices))
 
-# convert an evolving graph to MatrixList type
+"""
+ `MatrixList(g)`
+
+converts an evolving graph `g` to a MatrixList type object.
+"""
 function MatrixList(g::AbstractEvolvingGraph)
     ns = nodes(g)
     ts = timestamps(g)
@@ -49,4 +62,26 @@ function MatrixList(g::AbstractEvolvingGraph)
         matrices[i] = sparse(matrix(g, t))
     end
     MatrixList(ns, ts, matrices, is_directed = is_directed(g))
+end
+
+
+"""
+  `add_matrix!(ms, A)`
+
+adds a sparse matrix `A` to a SimpleMatrixList `ms`.
+"""
+function add_matrix!(ms::SimpleMatrixList, A::SparseMatrixCSC)
+    n = A.n
+    m = A.m
+    n == m || throw(DimensionMismatch("A must be a square matrix."))
+    if !isempty(ms)
+        n == ms.matrices[1].n || throw(DimensionMismatch(""))
+    end
+    if is_directed(ms) == false
+        issym(A) || error("A must be a symmetric matrix.")
+    end
+    ms.nodes = union(ms.nodes, unique(A.rowval))
+    push!(ms.timestamps, length(ms.timestamps)+1)
+    push!(ms.matrices, A)
+    ms
 end
