@@ -89,5 +89,4 @@ and many [more things](http://evolvinggraphsjl.readthedocs.org/en/latest/tutoria
 - Weijian Zhang,
   "Dynamic Network Analysis in Julia",
   *MIMS EPrint*, 2015.83, (2015).
-  [[pdf]](http://eprints.ma.man.ac.uk/2376/)
-  
+  [[pdf]](http://eprints.ma.man.ac.uk/2376/01/covered/MIMS_ep2015_83.pdf)
