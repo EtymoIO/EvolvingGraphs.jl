@@ -93,5 +93,5 @@ and many [more things](http://evolvinggraphsjl.readthedocs.org/en/latest/tutoria
 
 - Jiahao Chen and Weijian Zhang,
   "The Right Way to Search Evolving Graphs",
-  "MIMS EPrint", 2016.7, (2016)
+  *MIMS EPrint*, 2016.7, (2016)
   [[pdf]](http://eprints.ma.man.ac.uk/2435/01/covered/MIMS_ep2016_7.pdf)
