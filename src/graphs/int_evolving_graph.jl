@@ -1,10 +1,5 @@
 
-if VERSION < v"0.4-"
-    typealias IntTuple2(Int, Int)
-else
-    typealias IntTuple2 Tuple{Int, Int}
-end
-
+typealias IntTuple2 Tuple{Int, Int}
 typealias IntTimeEdge TimeEdge{Int, Int}
 
 

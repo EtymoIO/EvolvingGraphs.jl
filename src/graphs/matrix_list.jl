@@ -85,3 +85,14 @@ function add_matrix!(ms::SimpleMatrixList, A::SparseMatrixCSC)
     push!(ms.matrices, A)
     ms
 end
+
+"""
+  `add_matrix!(ms, A, nodes)`
+
+adds a sparse matrix `A` which corresponding to a graph with
+nodes `nodes` to a MatrixList `ms`.
+"""
+function add_matrix!(ms::MatrixList, A::SparseMatrixCSC, 
+                     nodes::Vector{Int})
+
+end
