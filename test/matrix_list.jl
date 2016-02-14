@@ -41,3 +41,13 @@ add_matrix!(g, A3)
 @test forward_neighbours(g, 1, 1) == [(1,1), (1,2), (2,1)]
 @test forward_neighbours(g, 2, 2) == [(0,0)]
 @test forward_neighbours(g, 3, 2) == [(3,2), (3,3)]
+
+g = evolving_graph(Int, AbstractString)
+add_edge!(g, 1, 2, "t1")
+add_edge!(g, 2, 3, "t2")
+add_edge!(g, 4, 2, "t2")
+add_edge!(g, 4, 2, "t1")
+add_edge!(g, 2, 1, "t3")
+g2 = int_matrix_list(g)
+@test spmatrix(g, "t1") == spmatrix(g2, 1)
+@test spmatrix(g, "t2") == spmatrix(g2, 2)

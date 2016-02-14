@@ -21,6 +21,21 @@ function int_matrix_list(n::Int)
     IntMatrixList(ns, Vector{SparseMatrixCSC{Int, Int}}[])
 end
 
+"""
+`int_matrix_list(g)`
+
+converts an EvolvingGraph `g` to an IntMatrixList 
+"""
+function int_matrix_list(g::EvolvingGraph)
+    ts = timestamps(g)
+    n = num_nodes(g)
+    As = int_matrix_list(n)
+    for t in ts
+        add_matrix!(As, spmatrix(g, t))
+    end
+    As
+end
+
 is_directed(g::IntMatrixList) = true
 
 """
@@ -31,6 +46,15 @@ at a given timestamp `t`.
 """
 spmatrix(g::IntMatrixList, t::Int) = g.matrices[t]
 
+
+"""
+`spmatrix(g)`
+
+converts an evolving graph `g` to an adjacency matrix of a  static graph.
+"""
+function spmatrix(g::IntMatrixList)
+    
+end
 
 """
 `nodes(g)`
