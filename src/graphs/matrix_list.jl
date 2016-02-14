@@ -1,5 +1,79 @@
 import Base: isempty
-export MatrixList, SimpleMatrixList, add_matrix!
+
+export IntMatrixList, MatrixList
+export add_matrix!, int_matrix_list
+
+type IntMatrixList <: AbstractEvolvingGraph
+    nodelists::Vector{Vector{Int}}
+    matrices::Vector{SparseMatrixCSC{Int, Int}}
+end
+
+"""
+`int_matrix_list(n)`
+
+initializes an evolving graph with `n` nodes represented by IntMatrixList.
+"""
+function int_matrix_list(n::Int)
+    ns = Vector{Int}[]
+    for i = 1:n
+        push!(ns, Int[])
+    end
+    IntMatrixList(ns, Vector{SparseMatrixCSC{Int, Int}}[])
+end
+
+is_directed(g::IntMatrixList) = true
+
+"""
+`spmatrix(g, t)`
+
+returns the sparse matrix representation of an evolving graph `g` 
+at a given timestamp `t`.
+"""
+spmatrix(g::IntMatrixList, t::Int) = g.matrices[t]
+
+"""
+`nodes(g)`
+
+returns the nodes of an evolving graph `g`.
+"""
+function nodes(g::IntMatrixList) 
+    n = length(g.nodelists)
+    collect(1:n)
+end
+
+num_timestamps(g::IntMatrixList) = length(g.matrices)
+
+"""
+`add_matrix!(g, A)`
+
+adds a new matrix to an evolving graph `g`.
+"""
+function add_matrix!(g::IntMatrixList, A::SparseMatrixCSC)
+    n = A.n
+    n == length(g.nodelists) || throw(DimensionMismatch())
+    nodes = IntSet() # sorted set of integers
+    for j = 1:n
+        cols = A.colptr[j]:A.colptr[j+1] -1
+        if length(cols) > 0
+            union!(nodes, j)
+            for k in cols
+                i = A.rowval[k]
+                union!(nodes, i)
+            end
+        end
+    end
+    val = length(g.matrices) + 1
+    for i in nodes
+        push!(g.nodelists[i], val)
+    end
+    push!(g.matrices, A)
+    g
+end
+
+forward_neighbour(g::IntMatrixList, v::Int, t::Int) = ()
+backward_neighbour(g::IntMatrixList, v::Int, t::Int) = () 
+
+
 
 # matrix list
 type MatrixList{V,T,Tv<:Number} <: AbstractEvolvingGraph
@@ -50,7 +124,6 @@ copy(g::MatrixList) = MatrixList(is_directed(g),
 
 """
  `MatrixList(g)`
-
 converts an evolving graph `g` to a MatrixList type object.
 """
 function MatrixList(g::AbstractEvolvingGraph)
@@ -67,7 +140,6 @@ end
 
 """
   `add_matrix!(ms, A)`
-
 adds a sparse matrix `A` to a SimpleMatrixList `ms`.
 """
 function add_matrix!(ms::SimpleMatrixList, A::SparseMatrixCSC)
@@ -84,15 +156,4 @@ function add_matrix!(ms::SimpleMatrixList, A::SparseMatrixCSC)
     push!(ms.timestamps, length(ms.timestamps)+1)
     push!(ms.matrices, A)
     ms
-end
-
-"""
-  `add_matrix!(ms, A, nodes)`
-
-adds a sparse matrix `A` which corresponding to a graph with
-nodes `nodes` to a MatrixList `ms`.
-"""
-function add_matrix!(ms::MatrixList, A::SparseMatrixCSC, 
-                     nodes::Vector{Int})
-
 end

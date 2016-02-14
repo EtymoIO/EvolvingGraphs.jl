@@ -26,3 +26,16 @@ A = sparse(I,J,V, 4,4)
 add_matrix!(g, A)
 @test num_nodes(g) == 4
 @test num_timestamps(g) == 2
+
+g = int_matrix_list(3)
+A1 = sparse([1], [2], [2], 3, 3)
+A2 = sparse([1], [3], [3], 3, 3)
+A3 = sparse([2], [3], [4], 3, 3)
+add_matrix!(g, A1)
+add_matrix!(g, A2)
+add_matrix!(g, A3)
+@test nodes(g) == [1,2,3]
+@test g.nodelists[1] == [1, 2]
+@test g.nodelists[2] == [1, 3]
+@test spmatrix(g, 2) == A2
+
