@@ -58,3 +58,5 @@ g2 = int_matrix_list(g)
 @test spmatrix(g, "t1") == spmatrix(g2, 1)
 @test spmatrix(g, "t2") == spmatrix(g2, 2)
 @test nodelists(g2)[1] == [1,3]
+@test spmatrix(g2)[5:8, 5:8] == spmatrix(g, "t2")
+@test spmatrix(g2)[1:4, 5:8] == sparse([2, 3], [2,3], [1,1], 4, 4)
