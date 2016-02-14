@@ -34,7 +34,6 @@ A3 = sparse([2], [3], [4], 3, 3)
 add_matrix!(g, A1)
 add_matrix!(g, A2)
 add_matrix!(g, A3)
-@test nodes(g) == [1,2,3]
 @test g.nodelists[1] == [1, 2]
 @test g.nodelists[2] == [1, 3]
 @test spmatrix(g, 2) == A2
@@ -58,3 +57,4 @@ add_edge!(g, 2, 1, "t3")
 g2 = int_matrix_list(g)
 @test spmatrix(g, "t1") == spmatrix(g2, 1)
 @test spmatrix(g, "t2") == spmatrix(g2, 2)
+@test nodelists(g2)[1] == [1,3]

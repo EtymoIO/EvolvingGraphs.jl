@@ -1,7 +1,7 @@
 import Base: isempty
 
 export IntMatrixList, MatrixList
-export add_matrix!, int_matrix_list, forward_neighbours
+export add_matrix!, int_matrix_list, forward_neighbours, nodelists
 
 type IntMatrixList <: AbstractEvolvingGraph
     nodelists::Vector{Vector{Int}}
@@ -37,6 +37,16 @@ function int_matrix_list(g::EvolvingGraph)
 end
 
 is_directed(g::IntMatrixList) = true
+nodelists(g::IntMatrixList) = g.nodelists
+
+"""
+`nodes(g)`
+returns the nodes of an evolving graph `g`.
+"""
+function nodes(g::IntMatrixList) 
+    n = length(g.nodelists)
+    collect(1:n)
+end
 
 """
 `spmatrix(g, t)`
@@ -84,15 +94,6 @@ function spmatrix(g::IntMatrixList)
     sparse(v1, v2, vals, n*num_t, n*num_t)
 end
 
-"""
-`nodes(g)`
-
-returns the nodes of an evolving graph `g`.
-"""
-function nodes(g::IntMatrixList) 
-    n = length(g.nodelists)
-    collect(1:n)
-end
 
 num_timestamps(g::IntMatrixList) = length(g.matrices)
 

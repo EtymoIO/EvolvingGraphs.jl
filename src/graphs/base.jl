@@ -365,4 +365,3 @@ _has_attribute(g::AbstractEvolvingGraph) = typeof(g) <: AttributeEvolvingGraph ?
         true : false
 
 typealias NodeVector{V} Vector{Node{V}}
-
