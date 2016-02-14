@@ -53,7 +53,33 @@ spmatrix(g::IntMatrixList, t::Int) = g.matrices[t]
 converts an evolving graph `g` to an adjacency matrix of a  static graph.
 """
 function spmatrix(g::IntMatrixList)
-    
+    n = length(g.nodelists)
+    num_t = length(g.matrices)
+    v1 = Int[]
+    v2 = Int[]
+    vals = Int[]
+    for t = 1:num_t
+        A = spmatrix(g, t)
+        block = n*(t-1)
+        for j = 1:n
+            nods = g.nodelists[j]
+            # off-diagonal blocks
+            for rowindx in 1:nods[end]
+                for colindx in rowindx+1:nods[end]
+                    push!(v1, j + (rowindx-1)*n)
+                    push!(v2, j + (colindx-1)*n)
+                    push!(vals, one(Int))
+                end
+            end
+            # diagonal blocks
+            for k = A.colptr[j]:A.colptr[j+1] -1   
+                push!(v1, A.rowval[k] + block)
+                push!(v2, j + block)
+                push!(vals, A.nzval[k])
+            end
+        end
+    end
+    sparse(v1, v2, vals, n*num_t, n*num_t)
 end
 
 """
