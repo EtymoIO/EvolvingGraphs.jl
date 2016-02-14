@@ -62,20 +62,22 @@ function spmatrix(g::IntMatrixList)
         A = spmatrix(g, t)
         block = n*(t-1)
         for j = 1:n
-            nods = g.nodelists[j]
-            # off-diagonal blocks
-            for rowindx in 1:nods[end]
-                for colindx in rowindx+1:nods[end]
-                    push!(v1, j + (rowindx-1)*n)
-                    push!(v2, j + (colindx-1)*n)
-                    push!(vals, one(Int))
-                end
-            end
             # diagonal blocks
             for k = A.colptr[j]:A.colptr[j+1] -1   
                 push!(v1, A.rowval[k] + block)
                 push!(v2, j + block)
                 push!(vals, A.nzval[k])
+            end
+        end
+    end
+    # off-diagonal blocks
+    for j = 1:n
+        nods = g.nodelists[j]
+        for (i, rowindx) in enumerate(nods)
+            for colindx in nods[i+1:end]
+                push!(v1, j + (rowindx-1)*n)
+                push!(v2, j + (colindx-1)*n)
+                push!(vals, one(Int))
             end
         end
     end
@@ -108,8 +110,7 @@ function add_matrix!(g::IntMatrixList, A::SparseMatrixCSC)
         if length(cols) > 0
             union!(nodes, j)
             for k in cols
-                i = A.rowval[k]
-                union!(nodes, i)
+                union!(nodes, A.rowval[k])
             end
         end
     end

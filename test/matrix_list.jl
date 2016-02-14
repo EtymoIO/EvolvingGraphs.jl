@@ -41,6 +41,13 @@ add_matrix!(g, A3)
 @test forward_neighbours(g, 1, 1) == [(1,1), (1,2), (2,1)]
 @test forward_neighbours(g, 2, 2) == [(0,0)]
 @test forward_neighbours(g, 3, 2) == [(3,2), (3,3)]
+A = spmatrix(g)
+@test A[1:3, 1:3] == spmatrix(g, 1)
+@test A[4:6, 4:6] == spmatrix(g, 2)
+@test A[7:9, 7:9] == spmatrix(g, 3)
+@test A[1:3, 4:6] == sparse([1], [1], [1], 3, 3)
+@test A[1:3, 7:9] == sparse([2], [2], [1], 3, 3)
+@test A[4:6, 7:9] == sparse([3], [3], [1], 3, 3)
 
 g = evolving_graph(Int, AbstractString)
 add_edge!(g, 1, 2, "t1")
