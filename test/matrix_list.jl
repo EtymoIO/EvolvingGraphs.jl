@@ -38,4 +38,6 @@ add_matrix!(g, A3)
 @test g.nodelists[1] == [1, 2]
 @test g.nodelists[2] == [1, 3]
 @test spmatrix(g, 2) == A2
-
+@test forward_neighbours(g, 1, 1) == [(1,1), (1,2), (2,1)]
+@test forward_neighbours(g, 2, 2) == [(0,0)]
+@test forward_neighbours(g, 3, 2) == [(3,2), (3,3)]

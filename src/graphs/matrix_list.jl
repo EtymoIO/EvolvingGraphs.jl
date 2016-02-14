@@ -1,7 +1,7 @@
 import Base: isempty
 
 export IntMatrixList, MatrixList
-export add_matrix!, int_matrix_list
+export add_matrix!, int_matrix_list, forward_neighbours
 
 type IntMatrixList <: AbstractEvolvingGraph
     nodelists::Vector{Vector{Int}}
@@ -30,6 +30,7 @@ returns the sparse matrix representation of an evolving graph `g`
 at a given timestamp `t`.
 """
 spmatrix(g::IntMatrixList, t::Int) = g.matrices[t]
+
 
 """
 `nodes(g)`
@@ -70,8 +71,25 @@ function add_matrix!(g::IntMatrixList, A::SparseMatrixCSC)
     g
 end
 
-forward_neighbour(g::IntMatrixList, v::Int, t::Int) = ()
-backward_neighbour(g::IntMatrixList, v::Int, t::Int) = () 
+function forward_neighbours(g::IntMatrixList, v::Int, t::Int)
+    ns = g.nodelists[v]
+    m = length(nodes(g))
+    idx = findfirst(ns, t)
+    idx != 0 || return [(0, 0)]
+    temporal_nodes = Tuple{Int, Int}[]
+    # the active node itself at later timestamp
+    for i in ns[idx:end]
+        push!(temporal_nodes, (v, i))
+    end
+    # the out neighbours at timestamp t 
+    nods = (spmatrix(g, t)'*sparsevec([v], [1], m)).rowval
+    for nod in nods
+        push!(temporal_nodes, (nod, idx))
+    end
+    temporal_nodes
+end
+forward_neighbours(g::IntMatrixList, v::Tuple{Int, Int}) = forward_neighbours(g, v[1], v[2]) 
+backward_neighbours(g::IntMatrixList, v::Int, t::Int) = () 
 
 
 
