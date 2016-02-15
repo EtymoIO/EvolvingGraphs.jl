@@ -134,7 +134,7 @@ function forward_neighbours(g::IntMatrixList, v::Int, t::Int)
         push!(temporal_nodes, (v, i))
     end
     # the out neighbours at timestamp t 
-    nods = (spmatrix(g, t)'*sparsevec([v], [1], m)).rowval
+    nods = (spmatrix(g, t)'*sparsevec([v], [1], m)).nzind
     for nod in nods
         push!(temporal_nodes, (nod, idx))
     end

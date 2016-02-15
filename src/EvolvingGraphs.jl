@@ -1,7 +1,5 @@
 module EvolvingGraphs
 
-using Requires # for plotting features
-
 import Base: ==, show,  slice, issorted, copy, length, eltype
 
 export 
@@ -64,15 +62,6 @@ include("algorithms/random.jl")
 include("algorithms/shortest_distance.jl")
 include("algorithms/shortest_temporal_distance.jl")
 include("algorithms/temporal_efficiency.jl")
-
-@require Compose begin
-    layoutfiles(fname::AbstractString) = 
-         joinpath(dirname(@__FILE__), "plot", "layout", fname)
-    include(layoutfiles("random.jl"))
-    include(layoutfiles("spring.jl"))
-    include(layoutfiles("circular.jl"))
-    @require Colors include(joinpath(dirname(@__FILE__),"plot","draw.jl"))
-end
 
 # examples
 include("examples.jl")
