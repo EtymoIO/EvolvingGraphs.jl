@@ -37,8 +37,8 @@ Table of Contents
    start.rst
    tutorial.rst
    type.rst
-   algorithms.rst
    functions.rst
+   algorithms.rst
    io.rst
 
 

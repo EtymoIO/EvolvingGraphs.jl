@@ -1,6 +1,66 @@
 Algorithms
 ==========
 
+Metrics
+-------
+
+.. function:: shortest_path(g, v1, v2 [, verbose = false)
+
+   finds the shortest path from ``v1`` to ``v2`` on the time graph ``g``. 
+   If ``verbose = true``, prints the current path at each search step. 
+
+.. function:: shortest_distance(g, v1, v2)
+
+   finds the shortest distance from ``v1`` to ``v2`` on the time graph ``g``. 
+   returns ``Inf`` if there is no path from ``v1`` to ``v2``.
+
+.. function:: shortest_temporal_path(g, (v1, t1), (v2, t2) [, verbose = false])
+
+   finds the shortest temporal path from node ``v1`` at timestamp ``t1``
+   to node ``v2`` at timestamp ``t2`` on the evolving graph ``g``. If ``verbose = true``,
+   prints the current path at each search step.
+
+.. function:: shortest_temporal_distance(g, (v1, t1), (v2, t2))
+
+   finds the shortest temporal distance from node ``v1`` at timestamp ``t1`` 
+   to node ``v2`` at timestamp ``t2`` on the evolving graph ``g``.
+
+.. function:: temporal_efficiency(g, (v1, t1), (v2, t2))
+  
+   returns the temporal efficiency from node ``v1`` at timestamp ``t1``
+   to node ``v2`` at timestamp ``t2`` on the evolving graph ``g``. Temporal
+   efficiency is a measure how efficient information can pass from node
+   ``v1`` to node ``v2``, ranging from 0 to 1.
+
+.. function:: global_temporal_efficiency(g, t1, t2)
+
+   returns the global temporal efficiency of the evolving graph ``g`` between 
+   timestamp ``t1`` and ``t2``. The global temporal efficiency is a measure
+   of how well information flow between two given timestamps.
+
+
+Connected Components 
+--------------------
+
+.. function:: temporal_connected(g, (v1, t1), (v2, t2))
+
+	      returns ``true`` if there is temporal path from ``v1`` at
+	      timestamp ``t1`` to ``v2`` at timestamp ``t2`` and ``false``
+	      otherwise.
+
+.. function:: weak_connected(g, v1, v2)
+
+	      returns ``true`` if there is a temporal path from ``v1``
+	      to ``v2`` at any timestamps.
+
+.. function:: weak_connected_components(g [, valuesonly = true])
+
+	      finds the weakly connected components of an evolving
+	      graph ``g``, i.e, each node in the set is weakly connected to all the
+	      other nodes. If ``valuesonly = false``, returns a dictionary with the
+	      starting of the search as dictionary key.
+
+
 Katz Centrality
 ----------------
 
