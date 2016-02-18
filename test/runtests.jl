@@ -19,6 +19,7 @@ tests = [
          "aggregated_graph",
          "int_evolving_graph",
          "matrix_list",
+         "incidence_matrix"
          ]
 
 for t in tests

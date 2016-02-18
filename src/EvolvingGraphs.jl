@@ -48,6 +48,7 @@ include("graphs/weighted_evolving_graph.jl")
 include("graphs/attribute_evolving_graph.jl")
 include("graphs/int_evolving_graph.jl")
 include("graphs/matrix_list.jl")
+include("graphs/incidence_matrix.jl")
 
 include("io.jl")
 include("show.jl")
