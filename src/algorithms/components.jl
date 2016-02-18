@@ -4,7 +4,7 @@
 from `v1` at timestamp `t1` to `v2` at timestamp `t2` and `false` otherwise.
 """->
 temporal_connected(g::AbstractEvolvingGraph, v1::Tuple, v2::Tuple) = 
-               v2 in _breath_first_visit(g, v1) ? true : false 
+               v2 in _breadth_first_visit(g, v1) ? true : false 
 
 # true = 1, false = 0
 
@@ -45,14 +45,14 @@ function weak_connected_components{V}(g::AbstractEvolvingGraph{V}, valuesonly::B
         i = 1
         if ! ( node  in nodelist)
    
-            reachable = _breath_first_visit(g, (node, t[i]))
+            reachable = _breadth_first_visit(g, (node, t[i]))
              while length(reachable) == 1
                 if i < n
                     i += 1
                 else
                     break
                 end
-                reachable = _breath_first_visit(g, (node, t[i]))
+                reachable = _breadth_first_visit(g, (node, t[i]))
             end
 
             append!(nodelist, map(x -> x[1], reachable))
