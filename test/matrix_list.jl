@@ -39,8 +39,13 @@ A = spmatrix(g)
 @test g.nodelists[2] == [1, 3]
 @test spmatrix(g, 2) == A2
 @test forward_neighbours(g, 1, 1) == [(1,1), (1,2), (2,1)]
-@test forward_neighbours(g, 2, 2) == [(0,0)]
+@test forward_neighbours(g, (2, 2)) == [(0,0)]
 @test forward_neighbours(g, 3, 2) == [(3,2), (3,3)]
+@test backward_neighbours(g, (1,1)) == [(1,1)]
+@test backward_neighbours(g, (2,2)) == [(0,0)]
+@test backward_neighbours(g, 3,2) == [(3,2), (1,2)]
+@test backward_neighbours(g, 2,3) == [(2,3), (2,1)]
+
 @test A[1:3, 1:3] == spmatrix(g, 1)
 @test A[4:6, 4:6] == spmatrix(g, 2)
 @test A[7:9, 7:9] == spmatrix(g, 3)

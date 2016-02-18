@@ -1,7 +1,7 @@
 import Base: isempty
 
 export IntMatrixList, MatrixList
-export add_matrix!, int_matrix_list, forward_neighbours, nodelists
+export add_matrix!, int_matrix_list, forward_neighbours, backward_neighbours, nodelists
 
 type IntMatrixList <: AbstractEvolvingGraph
     nodelists::Vector{Vector{Int}}
@@ -123,27 +123,36 @@ function add_matrix!(g::IntMatrixList, A::SparseMatrixCSC)
     g
 end
 
-function forward_neighbours(g::IntMatrixList, v::Int, t::Int)
-    ns = g.nodelists[v]
-    m = length(nodes(g))
-    idx = findfirst(ns, t)
-    idx != 0 || return [(0, 0)]
-    temporal_nodes = Tuple{Int, Int}[]
-    # the active node itself at later timestamp
-    for i in ns[idx:end]
-        push!(temporal_nodes, (v, i))
+forward_trunc(v, i) = v[i:end]
+backward_trunc(v,i) = v[i:-1:1]
+
+for (f, vf, Af) in ((:forward_neighbours, :forward_trunc, :transpose), 
+                             (:backward_neighbours, :backward_trunc, :identity))
+    @eval begin
+        function ($f)(g::IntMatrixList, v::Int, t::Int)
+            ns = g.nodelists[v]
+            m = length(nodes(g))
+            idx = findfirst(ns, t)
+            idx != 0 || return [(0, 0)]
+            temporal_nodes = Tuple{Int, Int}[]
+            ns = ($vf)(ns, idx)
+            for i in ns
+                push!(temporal_nodes, (v, i))
+            end
+            # the forward/backword neighbours at timestamp t 
+            nods = (($Af)(spmatrix(g, t))*sparsevec([v], [1], m)).nzind
+            for nod in nods
+                push!(temporal_nodes, (nod, ns[idx]))
+            end
+            temporal_nodes
+        end
     end
-    # the out neighbours at timestamp t 
-    nods = (spmatrix(g, t)'*sparsevec([v], [1], m)).nzind
-    for nod in nods
-        push!(temporal_nodes, (nod, idx))
-    end
-    temporal_nodes
 end
-forward_neighbours(g::IntMatrixList, v::Tuple{Int, Int}) = forward_neighbours(g, v[1], v[2]) 
-backward_neighbours(g::IntMatrixList, v::Int, t::Int) = () 
-
-
+for f in (:backward_neighbours, :forward_neighbours)
+    @eval begin
+        ($f)(g::IntMatrixList, v::Tuple{Int, Int}) = ($f)(g, v[1], v[2])
+    end
+end
 
 # matrix list
 type MatrixList{V,T,Tv<:Number} <: AbstractEvolvingGraph
