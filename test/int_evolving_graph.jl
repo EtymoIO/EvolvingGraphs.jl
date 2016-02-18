@@ -1,4 +1,4 @@
-g = evolving_graph()
+g = int_evolving_graph()
 add_edge!(g, 1, 2, 1)
 add_edge!(g, 2, 3, 1)
 add_edge!(g, 1, 2, 2)
@@ -17,3 +17,8 @@ g1 = undirected(g)
 @test length(edges(g)) == 4
 
 @test full(spmatrix(g, 1)) == matrix(g, 1)
+
+g = random_evolving_graph(5,4)
+g2 = int_evolving_graph(g)
+@test num_nodes(g) == num_nodes(g2)
+@test num_timestamps(g) == num_timestamps(g2)

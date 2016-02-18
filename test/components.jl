@@ -14,7 +14,7 @@ comps = weak_connected_components(g, false)
 @test weak_connected(g, 5, 1)
 @test !(weak_connected(g, 1, 5))
 
-g2 = evolving_graph()
+g2 = int_evolving_graph()
 add_edge!(g2, 1, 2, 1)
 add_edge!(g2, 1, 3, 2)
 add_edge!(g2, 4, 5, 2)

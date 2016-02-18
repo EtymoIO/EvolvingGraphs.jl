@@ -1,3 +1,4 @@
+export int_evolving_graph
 
 typealias IntTuple2 Tuple{Int, Int}
 typealias IntTimeEdge TimeEdge{Int, Int}
@@ -14,13 +15,31 @@ type IntEvolvingGraph <: AbstractEvolvingGraph{Int}
     adjlist::Dict{IntTuple2, Vector{IntTuple2}}
 end
 
-evolving_graph(;is_directed::Bool = true) = 
+"""
+   int_evolving_graph(;is_directed)
+
+Initialize an evolving graph.
+"""
+int_evolving_graph(;is_directed::Bool = true) = 
 IntEvolvingGraph(is_directed, 
                  IntTuple2[],
                  Int[],
                  0,
                  Dict{Int, Vector{IntTimeEdge}}(),
                  Dict{IntTuple2, Vector{IntTuple2}}())
+
+"""
+    int_evolving_graph(g)
+
+Convert an EvolvingGraph to an IntEvolvingGraph.
+"""
+function int_evolving_graph(g::EvolvingGraph) 
+    g1 = int_evolving_graph(is_directed = is_directed(g))
+    for e in edges(g)
+        add_edge!(g1, e)
+    end
+    g1
+end
 
 nodes(g::IntEvolvingGraph) = unique(map(x -> x[1], g.nodes))
 num_nodes(g::IntEvolvingGraph) = length(nodes(g))
