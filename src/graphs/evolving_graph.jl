@@ -201,14 +201,19 @@ rm_edge!(g::EvolvingGraph, v1, v2, t) = rm_edge!(g, TimeEdge(v1, v2, t))
 """->
 function add_graph!(g::EvolvingGraph, tg::TimeGraph)
     t = timestamp(tg)
+    is = eltype(g.ilist)[]
+    js = eltype(g.jlist)[]
+    ts = eltype(g.timestamps)[]
     for v1 in nodes(tg)
         for v2 in out_neighbors(tg, v1)
-            te = TimeEdge(v1.key, v2.key, t)
-            if !(te in edges(g))
-                add_edge!(g, te)
-            end
+            push!(is, v1.key)
+            push!(js, v2.key)
+            push!(ts, t)
         end
     end
+    append!(g.ilist, is)
+    append!(g.jlist, js)
+    append!(g.timestamps, ts)
     g
 end
 
