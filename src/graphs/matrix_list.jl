@@ -21,21 +21,20 @@ function int_matrix_list(n::Int)
     IntMatrixList(ns, Vector{SparseMatrixCSC{Int, Int}}[])
 end
 
-"""
-`int_matrix_list(g)`
 
-converts an EvolvingGraph `g` to an IntMatrixList 
-"""
-function int_matrix_list(g::EvolvingGraph)
-    ts = timestamps(g)
-    n = num_nodes(g)
-    As = int_matrix_list(n)
-    for t in ts
-        add_matrix!(As, spmatrix(g, t))
+for elty in (:EvolvingGraph, :AttributeEvolvingGraph)
+    @eval begin
+        function int_matrix_list(g::$elty)
+            ts = timestamps(g)
+            n = num_nodes(g)
+            As = int_matrix_list(n)
+            for t in ts
+                add_matrix!(As, spmatrix(g, t))
+            end
+            As
+        end
     end
-    As
 end
-
 is_directed(g::IntMatrixList) = true
 nodelists(g::IntMatrixList) = g.nodelists
 
@@ -127,7 +126,7 @@ forward_trunc(v, i) = v[i:end]
 backward_trunc(v,i) = v[i:-1:1]
 
 for (f, vf, Af) in ((:forward_neighbours, :forward_trunc, :transpose), 
-                             (:backward_neighbours, :backward_trunc, :identity))
+                        (:backward_neighbours, :backward_trunc, :identity))
     @eval begin
         function ($f)(g::IntMatrixList, v::Int, t::Int)
             ns = g.nodelists[v]
