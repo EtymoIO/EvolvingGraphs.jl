@@ -1,3 +1,5 @@
+export breadth_first_visit
+
 # _breadth_first_visit(g, (v1, t1))
 # find all reachable nodes from (v1, t1)
 function _breadth_first_visit(g::AbstractEvolvingGraph, s::Tuple)
@@ -20,4 +22,18 @@ function _breadth_first_visit(g::AbstractEvolvingGraph, s::Tuple)
         i += 1
     end
     reachable
+end
+
+"""
+`breadth_first_visit(g, (v,t))`
+
+returns all the reachable active nodes from a given temporal node
+`(v,t)`.
+"""
+function breadth_first_visit(g::AbstractEvolvingGraph, s::Tuple)
+    T = typeof(g)
+    if T <: EvolvingGraph || T <: AttributeEvolvingGraph
+        warn("breadth fist visit on $(T)  is slow, using IntEvolvingGraph instead.")
+    end
+    _breadth_first_visit(g, s)
 end
