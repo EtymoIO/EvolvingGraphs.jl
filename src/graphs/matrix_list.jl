@@ -1,7 +1,7 @@
 import Base: isempty
 
 export IntMatrixList, MatrixList
-export add_matrix!, int_matrix_list, forward_neighbours, backward_neighbours, nodelists
+export add_matrix!, int_matrix_list, forward_neighbors, backward_neighbors, nodelists
 
 type IntMatrixList <: AbstractEvolvingGraph
     nodelists::Vector{Vector{Int}}
@@ -125,8 +125,8 @@ end
 forward_trunc(v, i) = v[i:end]
 backward_trunc(v,i) = v[i:-1:1]
 
-for (f, vf, Af) in ((:forward_neighbours, :forward_trunc, :transpose), 
-                        (:backward_neighbours, :backward_trunc, :identity))
+for (f, vf, Af) in ((:forward_neighbors, :forward_trunc, :transpose), 
+                        (:backward_neighbors, :backward_trunc, :identity))
     @eval begin
         function ($f)(g::IntMatrixList, v::Int, t::Int)
             ns = g.nodelists[v]
@@ -138,7 +138,7 @@ for (f, vf, Af) in ((:forward_neighbours, :forward_trunc, :transpose),
             for i in ns
                 push!(temporal_nodes, (v, i))
             end
-            # the forward/backword neighbours at timestamp t 
+            # the forward/backword neighbors at timestamp t 
             nods = (($Af)(spmatrix(g, t))*sparsevec([v], [1], m)).nzind
             for nod in nods
                 push!(temporal_nodes, (nod, ns[idx]))
@@ -147,7 +147,7 @@ for (f, vf, Af) in ((:forward_neighbours, :forward_trunc, :transpose),
         end
     end
 end
-for f in (:backward_neighbours, :forward_neighbours)
+for f in (:backward_neighbors, :forward_neighbors)
     @eval begin
         ($f)(g::IntMatrixList, v::Tuple{Int, Int}) = ($f)(g, v[1], v[2])
     end
