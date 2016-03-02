@@ -29,33 +29,33 @@ end
 
 function show(io::IO, g::EvolvingGraph)
     title = is_directed(g) ? "Directed EvolvingGraph" : "Undirected EvolvingGraph"
-    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) edges, $(num_timestamps(g)) timestamps)")
+    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) static edges, $(num_timestamps(g)) timestamps)")
 end
 
 function show(io::IO, g::IntEvolvingGraph)
     title = is_directed(g) ? "Directed IntEvolvingGraph" : "Undirected IntEvolvingGraph"
-    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) edges, $(num_timestamps(g)) timestamps)")
+    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) static edges, $(num_timestamps(g)) timestamps)")
 end
 
 function show(io::IO, g::WeightedEvolvingGraph)
     title = is_directed(g) ? "Directed WeightedEvolvingGraph" : "Undirected WeightedEvolvingGraph"
-    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) edges, $(num_timestamps(g)) timestamps)")
+    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) static edges, $(num_timestamps(g)) timestamps)")
 end
 
 function show(io::IO, g::AttributeEvolvingGraph)
     title = is_directed(g) ? "Directed AttributeEvolvingGraph" : "Undirected AttributeEvolvingGraph"
-    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) edges, $(num_timestamps(g)) timestamps)")
+    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) static edges, $(num_timestamps(g)) timestamps)")
 end
 
 function show(io::IO, g::TimeGraph)
     title = is_directed(g) ? "Directed TimeGraph" : "Undirected TimeGraph"
-    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) edges)")
+    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) static edges)")
 end
 
 
 function show(io::IO, g::AggregatedGraph)
     title = is_directed(g)? "Directed AggregatedGraph" : "Undirected AggregatedGraph"
-    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) edges)")
+    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) static edges)")
 end
 
 
