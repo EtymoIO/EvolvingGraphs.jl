@@ -1,24 +1,7 @@
-g = int_evolving_graph()
+g = int_evolving_graph(3,3)
 add_edge!(g, 1, 2, 1)
-add_edge!(g, 2, 3, 1)
-add_edge!(g, 1, 2, 2)
 add_edge!(g, 1, 3, 2)
-@test num_edges(g) == 4
-@test num_nodes(g) == 3
-@test num_edges(g, 1) == 2
+add_edge!(g, 2, 3, 3)
+add_edge!(g, 2, 1, 2)
 
-@test length(weak_connected_components(g)) == 1
-
-@test is_directed(g)
-g1 = undirected(g)
-@test !is_directed(g1)
-@test num_edges(g1) == 8
-
-@test length(edges(g)) == 4
-
-@test full(spmatrix(g, 1)) == matrix(g, 1)
-
-g = random_evolving_graph(5,4)
-g2 = int_evolving_graph(g)
-@test num_nodes(g) == num_nodes(g2)
-@test num_timestamps(g) == num_timestamps(g2)
+@test forward_neighbors(g, (1, 1)) == [(2,1), (1,2)]
