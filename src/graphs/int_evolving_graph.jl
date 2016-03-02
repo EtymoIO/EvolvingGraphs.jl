@@ -6,7 +6,7 @@ type IntEvolvingGraph <: AbstractEvolvingGraph
     nodes::UnitRange{Int}
     timestamps::Vector{Int}
     nnodes::Int      # number of nodes
-    nedges::Int      # number of edges
+    nedges::Int      # number of static edges
     forward_adjlist::Vector{Vector{Int}}
     backward_adjlist::Vector{Vector{Int}}
 end
@@ -45,7 +45,7 @@ function int_evolving_graph(g::EvolvingGraph)
     g1
 end
 
-# all active nodes of g 
+# all temporal nodes of g 
 function temporal_nodes(g::IntEvolvingGraph)
     ns = Array(Tuple{Int, Int}, length(g.nodes))
     b = g.nnodes
@@ -84,7 +84,7 @@ function forward_neighbors(g::IntEvolvingGraph, v::Int, t::Int)
 end
 forward_neighbors(g::IntEvolvingGraph, v::Tuple) = forward_neighbors(g, v[1], v[2])
 
-
+# assuming new edges are added according to the order of time stamps
 function add_edge!(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int)
     ns = g.nnodes
     n1 = v1 + ns*(t-1)

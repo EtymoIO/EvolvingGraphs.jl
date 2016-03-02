@@ -429,34 +429,37 @@ IntEvolvingGraph
 ----------------
 
 An ``IntEvolvingGraph`` is an evolving graph with integer nodes and
-timestamps. It is implemented as a mixture of adjacency lists and edge
-lists::
+timestamps. It is implemented as adjacency lists::
 
-  type IntEvolvingGraph <: AbstractEvolvingGraph{Int}
+  type IntEvolvingGraph <: AbstractEvolvingGraph
     is_directed::Bool
-    nodes::Vector{IntTuple2}
+    nodes::UnitRange{Int}
     timestamps::Vector{Int}
-    nedges::Int
-    edges::Dict{Int, Vector{IntTimeEdge}}
-    adjlist::Dict{IntTuple2, Vector{IntTuple2}}
+    nnodes::Int      # number of nodes
+    nedges::Int      # number of static edges
+    forward_adjlist::Vector{Vector{Int}}
+    backward_adjlist::Vector{Vector{Int}}
   end
 
-``IntEvolvingGraph`` can be initialized using the function ``evolving_graph``. 
+``IntEvolvingGraph`` can be initialized using the function ``int_evolving_graph``. 
 For example::
 
-  julia> g = evolving_graph()
-  Directed IntEvolvingGraph (0 nodes, 0 edges, 0 timestamps)
+ julia> g = int_evolving_graph(3,4)
+ Directed IntEvolvingGraph (3 nodes, 0 static edges, 4 timestamps)
 
-  julia> add_edge!(g, 1, 2, 1)
-  Directed IntEvolvingGraph (2 nodes, 1 edges, 1 timestamps)
+ julia> add_edge!(g, 1, 2, 1)
+ Directed IntEvolvingGraph (3 nodes, 1 static edges, 4 timestamps)
 
-  julia> add_edge!(g, 2, 3, 1)
-  Directed IntEvolvingGraph (3 nodes, 2 edges, 1 timestamps)
+ julia> add_edge!(g, 2, 3, 2)
+ Directed IntEvolvingGraph (3 nodes, 2 static edges, 4 timestamps)
 
-  julia> edges(g)
-  2-element Array{EvolvingGraphs.TimeEdge{Int64,Int64},1}:
-  TimeEdge(1->2) at time 1
-  TimeEdge(2->3) at time 1
+ julia> add_edge!(g, 1, 3, 3)
+ Directed IntEvolvingGraph (3 nodes, 3 static edges, 4 timestamps)
+
+ julia> forward_neighbors(g, 1,1)
+ 2-element Array{Tuple{Int64,Int64},1}:
+  (2,1)
+  (1,3)
 
 
 WeightedEvolvingGraph

@@ -37,3 +37,4 @@ function breadth_first_visit(g::AbstractEvolvingGraph, s::Tuple)
     end
     _breadth_first_visit(g, s)
 end
+breadth_first_visit(g::IntEvolvingGraph, v::Int, t::Int) = breadth_first_visit(g, (v,t))
