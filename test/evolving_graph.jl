@@ -22,7 +22,7 @@ tt = ["t1", "t2", "t3", "t4", "t5"]
 gg = evolving_graph(aa, bb, tt, is_directed = false)
 nodes(gg)
 
-@test out_neighbors(gg, 'c', "t4") == [('b', "t4")]
+@test forward_neighbors(gg, 'c', "t4") == [('b', "t4")]
 
 @test num_nodes(gg) == 3
 edges(gg)

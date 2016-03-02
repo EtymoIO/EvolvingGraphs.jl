@@ -33,7 +33,7 @@ function _DFS_shortest_temporal_path(g::AbstractEvolvingGraph,
     if v1 == v2
         return path
     end
-    for node in out_neighbors(g, v1)
+    for node in forward_neighbors(g, v1)
         if !(has_node(path, node)) # avoid cycles
             if node[2] <= v2[2] # avoid searching nodes at timestamps > v2[2]
                 if (shortest ==  Union{}) || (spatial_length(path) < spatial_length(shortest))

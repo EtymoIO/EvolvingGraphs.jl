@@ -238,10 +238,10 @@ function add_edge!(g::AbstractStaticGraph, i, j)
 end
 
 @doc doc"""
-`out_neighbors(g, v)` returns a list of nodes that `v` points to on the
+`forward_neighbors(g, v)` returns a list of nodes that `v` points to on the
 static graph `g`.
 """-> 
-out_neighbors{V}(g::AbstractStaticGraph{V}, v::V) = g.adjlist[v]
+forward_neighbors{V}(g::AbstractStaticGraph{V}, v::V) = g.adjlist[v]
 
 @doc doc"""
 `has_node(g, v)` returns `true` if `v` is a node of the static graph `g` 
@@ -259,7 +259,7 @@ function matrix{T<:Number}(g::AbstractStaticGraph, ::Type{T})
     n = num_nodes(g)
     A = zeros(T, n, n)
     for (i,u) in enumerate(ns)
-        for e in out_neighbors(g, u)
+        for e in forward_neighbors(g, u)
             j = findfirst(ns, e)
             A[(j-1)*n + i] = one(T)
         end
@@ -313,10 +313,10 @@ nodes(g::AbstractEvolvingGraph) = union(g.ilist, g.jlist)
 num_nodes(g::AbstractEvolvingGraph) = length(nodes(g))
 
 @doc doc"""
-`out_neighbors(g, (v, t))` returns all the outward neightbors of the 
+`forward_neighbors(g, (v, t))` returns all the outward neightbors of the 
 node `v` at timestamp `t` in the evolving graph `g`.
 """->
-function out_neighbors(g::AbstractEvolvingGraph, v::Tuple)
+function forward_neighbors(g::AbstractEvolvingGraph, v::Tuple)
     has_node(g, v[1], v[2]) || return collect(zip([], []))
     g = sorttime(g)
       
@@ -352,7 +352,7 @@ function out_neighbors(g::AbstractEvolvingGraph, v::Tuple)
     unique(neighbors)
 end
 
-out_neighbors(g::AbstractEvolvingGraph, v, t) = out_neighbors(g, (v,t))
+forward_neighbors(g::AbstractEvolvingGraph, v, t) = forward_neighbors(g, (v,t))
 
 function _find_edge_index(g::AbstractEvolvingGraph, te::EdgeType)
     tindx = findin(g.timestamps, [timestamp(te)])

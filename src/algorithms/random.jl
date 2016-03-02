@@ -46,13 +46,12 @@ function random_evolving_graph(nv::Int,
                                p::Real = 0.5; 
                                is_directed = true,
                                has_self_loops  = false)
-    g = int_evolving_graph(is_directed = is_directed)
+    g = int_evolving_graph(nv, nt, is_directed = is_directed)
     for t = 1:nt
         for i = 1:nv
             g.is_directed ? ind = 1 : ind = i
             
             for j = ind:nv
-                add_node!(g, (j, t))
                 if rand() <= p && (i != j || has_self_loops)
                     add_edge!(g, i, j, t)
                 end

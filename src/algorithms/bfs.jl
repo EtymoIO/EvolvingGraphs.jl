@@ -10,7 +10,7 @@ function _breadth_first_visit(g::AbstractEvolvingGraph, s::Tuple)
     while length(fronter) > 0
         next = Tuple[]
         for u in fronter
-            for v in out_neighbors(g, u)
+            for v in forward_neighbors(g, u)
                 if !(v in keys(level))
                     level[v] = i
                     push!(reachable, v)

@@ -29,7 +29,7 @@ function _DFS_shortest_path{V}(g::TimeGraph{V},
         return path
     end
    
-    for node in out_neighbors(g, v1)
+    for node in forward_neighbors(g, v1)
         if !has_node(path, node)
             if (shortest ==  Union{}) || length(path) < length(shortest) 
                 newPath = _DFS_shortest_path(g, node, v2, path, shortest, verbose = verbose)

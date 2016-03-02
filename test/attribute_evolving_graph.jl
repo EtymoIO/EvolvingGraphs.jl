@@ -34,8 +34,8 @@ B = matrix(g, 1, "a")
 
 b = [(2,1), (1,2)]
 
-@test out_neighbors(g, 1, 1) == b
-@test out_neighbors(g, 1, 2) == [(3,2)]
+@test forward_neighbors(g, 1, 1) == b
+@test forward_neighbors(g, 1, 2) == [(3,2)]
 
 # remove edge
 ag = attribute_evolving_graph(Int, Int, is_directed = false)

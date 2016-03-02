@@ -125,7 +125,7 @@ Graphs
 	      
    adds a time graph ``tg`` to an evolving graph ``g``.
 
-.. function:: out_neighbors(g, (v, t))
+.. function:: forward_neighbors(g, (v, t))
    :noindex:
 
    returns all the outward neighbors of the node ``v`` at timestamp ``t`` in 

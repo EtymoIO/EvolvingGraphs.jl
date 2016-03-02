@@ -158,7 +158,7 @@ The following functions are defined on ``TimeGraph``.
 
     add an edge from ``v1`` to ``v2`` to g.
 
-.. function:: out_neighbors(g, v)
+.. function:: forward_neighbors(g, v)
 
     return the nodes that ``v`` points to on graph ``g``.	      
 
@@ -280,7 +280,7 @@ definition::
 	      
    add a TimeGraph ``tg`` to EvolvingGraph ``g``.
 
-.. function:: out_neighbors(g, v, t)
+.. function:: forward_neighbors(g, v, t)
 
    returns all the outward neighbors of the node ``v`` at timestamp ``t`` in 
    the evolving graph ``g``. 
@@ -370,7 +370,7 @@ The following functions are defined for ``AttributeEvolvingGraph``.
    add an edge from ``v1`` to ``v2`` at timestamp ``t`` with attribute ``a`` 
    to the graph ``g``, where attribute is a dictionary.
 
-.. function:: out_neighbors(g, v, t)
+.. function:: forward_neighbors(g, v, t)
 
    returns all the outward neighbors of the node ``v`` at timestamp ``t`` in 
    the evolving graph ``g``. 

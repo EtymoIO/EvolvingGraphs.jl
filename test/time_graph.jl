@@ -7,7 +7,7 @@ add_node!(g, a)
 add_node!(g, b)
 add_node!(g, "c")
 add_edge!(g, e1)
-out_neighbors(g, a)
+forward_neighbors(g, a)
 has_node(g, a)
 @test num_nodes(g) == 3
 A = matrix(g, Int)

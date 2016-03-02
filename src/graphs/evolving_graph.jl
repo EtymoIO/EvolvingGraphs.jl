@@ -205,7 +205,7 @@ function add_graph!(g::EvolvingGraph, tg::TimeGraph)
     js = eltype(g.jlist)[]
     ts = eltype(g.timestamps)[]
     for v1 in nodes(tg)
-        for v2 in out_neighbors(tg, v1)
+        for v2 in forward_neighbors(tg, v1)
             push!(is, v1.key)
             push!(js, v2.key)
             push!(ts, t)
