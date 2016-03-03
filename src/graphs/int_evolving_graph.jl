@@ -70,7 +70,6 @@ copy(g::IntEvolvingGraph) = IntEvolvingGraph(is_directed(g),
                                              deepcopy(g.forward_adjlist))
 
 
-
 function forward_neighbors(g::IntEvolvingGraph, v::Int, t::Int)
     ns = g.nnodes
     n = v + ns*(t-1)
@@ -84,19 +83,19 @@ function forward_neighbors(g::IntEvolvingGraph, v::Int, t::Int)
 end
 forward_neighbors(g::IntEvolvingGraph, v::Tuple) = forward_neighbors(g, v[1], v[2])
 
-# assuming new edges are added according to the order of time stamps
+"""
+  add_edge!(g, v1, v2, t)
+
+Add a static edge from `v1` to `v2` at time stamp `t` to `g`.
+"""
 function add_edge!(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int)
     ns = g.nnodes
     n1 = v1 + ns*(t-1)
     n2 = v2 + ns*(t-1)
-    if n2 in g.forward_adjlist[n1]
-        error("$(n2) is already in the forward neighbors.")
-    else
+    if !(n2 in g.forward_adjlist[n1])
         push!(g.forward_adjlist[n1], n2)
     end
-    if n1 in g.backward_adjlist[n2]
-        error("$(n1) is already in the backward neighbors")
-    else
+    if !(n1 in g.backward_adjlist[n2])
         push!(g.backward_adjlist[n2], n1)
     end
     g.nedges += 1
@@ -109,15 +108,15 @@ function add_edge!(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int)
                 (v + ns*(i-1)) in g.backward_adjlist[n] || push!(g.backward_adjlist[n], v + ns*(i-1))
             end
         end
-        #for i in t+1:num_timestamps(g)
+        for i in t+1:num_timestamps(g)
          #   println("node: $(v + ns*(i-1))")
-          #  len = length(g.forward_adjlist[v + ns*(i-1)]) + 
-          #  length(g.backward_adjlist[v + ns*(i-1)])
-          #  if len > 0
-           #     push!(g.forward_adjlist[n], v+ ns*(i-1))
-           #     push!(g.backward_adjlist[v + ns*(i-1)], n)
-           # end
-       # end
+            len = length(g.forward_adjlist[v + ns*(i-1)]) + 
+            length(g.backward_adjlist[v + ns*(i-1)])
+            if len > 0
+                (v+ns*(i-1)) in g.forward_adjlist[n] || push!(g.forward_adjlist[n], v+ ns*(i-1))
+                n in g.forward_adjlist[v+ns*(i-1)] || push!(g.backward_adjlist[v + ns*(i-1)], n)
+            end
+        end
     end
     g
 end

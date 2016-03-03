@@ -47,14 +47,24 @@ function random_evolving_graph(nv::Int,
                                is_directed = true,
                                has_self_loops  = false)
     g = int_evolving_graph(nv, nt, is_directed = is_directed)
-    for t = 1:nt
-        for i = 1:nv
-            g.is_directed ? ind = 1 : ind = i
-            
-            for j = ind:nv
-                if rand() <= p && (i != j || has_self_loops)
-                    add_edge!(g, i, j, t)
-                end
+    random_evolving_graph(g, nt, p, has_self_loops = has_self_loops)
+end
+
+"""
+  random_evolving_graph(g, nt, p;)
+
+Add random edges within time stamp `nt` with probability `p` to an IntEvolvingGraph `g`.
+"""
+function random_evolving_graph(g::IntEvolvingGraph, nt::Int, p::Real = 0.5; 
+                               has_self_loops = false)
+    nn = g.nnodes
+    for t in 1:nt
+        for i = 1:nn
+            g.is_directed? ind =1 : ind = i
+            for j = ind:nn
+                    if (rand() <= p && (i != j || has_self_loops))
+                        add_edge!(g, i, j, t)
+                    end
             end
         end
     end
