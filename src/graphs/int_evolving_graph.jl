@@ -92,8 +92,7 @@ function add_edge!(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int)
     ns = g.nnodes
     n1 = v1 + ns*(t-1)
     n2 = v2 + ns*(t-1)
-    if !(n2 in g.forward_adjlist[n1])
-        push!(g.forward_adjlist[n1], n2)
+    if _insertnode!(g.forward_adjlist[n1], n2)
         g.nedges += 1
 
         for (v, n) in ((v1, n1), (v2, n2))
@@ -101,8 +100,8 @@ function add_edge!(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int)
                 len = length(g.forward_adjlist[v + ns*(i-1)]) + 
                 length(g.backward_adjlist[v + ns*(i-1)])       
                 if len > 0
-                    n in g.forward_adjlist[v + ns*(i-1)] || push!(g.forward_adjlist[v + ns*(i-1)], n) 
-                    (v + ns*(i-1)) in g.backward_adjlist[n] || push!(g.backward_adjlist[n], v + ns*(i-1))
+                    _insertnode!(g.forward_adjlist[v + ns*(i-1)], n)
+                    _insertnode!(g.backward_adjlist[n], (v+ns*(i-1)))
                 end
             end
             for i in t+1:num_timestamps(g)
@@ -110,14 +109,26 @@ function add_edge!(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int)
                 len = length(g.forward_adjlist[v + ns*(i-1)]) + 
                 length(g.backward_adjlist[v + ns*(i-1)])
                 if len > 0
-                    (v+ns*(i-1)) in g.forward_adjlist[n] || push!(g.forward_adjlist[n], v+ ns*(i-1))
-                    n in g.forward_adjlist[v+ns*(i-1)] || push!(g.backward_adjlist[v + ns*(i-1)], n)
+                    _insertnode!(g.forward_adjlist[n], (v+ns*(i-1)))
+                    _insertnode!(g.backward_adjlist[v+ns*(i-1)], n)
                 end
             end
         end
     end
-    if !(n1 in g.backward_adjlist[n2])
-        push!(g.backward_adjlist[n2], n1)
-    end
+    _insertnode!(g.backward_adjlist[n2], n1)
     g
 end
+
+# The function _insertnode! is from LightGraphs.jl
+# The LightGraphs.jl package is licensed under the Simplified "2-clause" BSD License:
+
+#Copyright (c) 2015: Seth Bromberger and other contributors.
+
+#Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+#Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
+#Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+#THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+# returns true if insert succeeded, false if it was a duplicate
+_insertnode!(v::Vector{Int}, x::Int) = isempty(splice!(v, searchsorted(v,x), x))
