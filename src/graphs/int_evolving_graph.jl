@@ -132,3 +132,25 @@ end
 
 # returns true if insert succeeded, false if it was a duplicate
 _insertnode!(v::Vector{Int}, x::Int) = isempty(splice!(v, searchsorted(v,x), x))
+
+# has_edge on active nodes
+function _has_edge(g::IntEvolvingGraph, n1::Int, n2::Int)
+    nn = length(g.nodes)
+    if n1 > nn || n2 > nn
+        return false
+    end
+    return n2 in g.forward_adjlist[n1]
+end
+
+
+"""
+  has_edge(g, v1, v2, t)
+
+Returns true if `v1` to `v2` at timestamp `t` is an edge of `g`.
+"""
+function has_edge(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int)
+    ns = g.nnodes
+    n1 = v1 + ns*(t-1)
+    n2 = v2 + ns*(t-1)
+    return _has_edge(g, n1, n2)
+end
