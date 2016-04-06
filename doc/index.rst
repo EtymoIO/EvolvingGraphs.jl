@@ -40,6 +40,7 @@ Table of Contents
    functions.rst
    algorithms.rst
    io.rst
+   plot.rst
 
 
 
