@@ -1,10 +1,16 @@
 export IncidenceList
 export incidence_list
 
+if VERSION < v"0.5.0-dev+961"
+    IncidenceVector = AbstractVector
+else
+    IncidenceVector = SparseVector
+end
+
 type IncidenceList
-    nnodes::Int
-    ntimestamps::Int
-    edges::Vector{SparseVector{Int}}
+    nnodes::Int         # number of nodes
+    ntimestamps::Int   # number of timestamps
+    edges::Vector{IncidenceVector{Int}}
 end
 
 nodes(g::IncidenceList) = collect(1:g.nnodes)
@@ -30,7 +36,7 @@ end
 
 Create an incidence matrix with `n` nodes
 """
-incidence_list(n::Int) = IncidenceList(n, 1, SparseVector{Int}[])
+incidence_list(n::Int) = IncidenceList(n, 1, IncidenceVector{Int}[])
 
 """
 `add_edge!(g, i, j, t)`
