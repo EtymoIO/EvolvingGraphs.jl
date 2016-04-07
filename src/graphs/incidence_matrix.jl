@@ -17,12 +17,16 @@ nodes(g::IncidenceList) = collect(1:g.nnodes)
 num_nodes(g::IncidenceList) = g.nnodes
 timestamps(g::IncidenceList) = collect(1:g.ntimestamps)
 num_timestamps(g::IncidenceList) = g.ntimestamps
-function edges(g::IncidenceList) 
+function edges(g::IncidenceList)
     nn = g.nnodes
     edges = g.edges
     elists = Tuple{Int, Int, Int}[]
     for e in edges
-        v1, v2 = e.nzind
+        if VERSION < v"0.5.0-dev+961"
+            v1, v2 = findn(e)
+        else
+            v1, v2 = e.nzind
+        end
         i = mod(v1, nn)
         j = mod(v2, nn)
         t = round(Int, (v1-i)/nn + 1)  
@@ -52,6 +56,12 @@ function add_edge!(g::IncidenceList, i::Int, j::Int, t::Int)
     i = i + (t-1)*nn
     j = j + (t-1)*nn
     i <= t*nn && j <= t*nn || throw(DimensionMismatch(""))
-    push!(g.edges, sparsevec([i,j], [1,1], t*nn))
+    if VERSION < v"0.5.0-dev+961"
+        v = zeros(Int, t*nn)
+        v[i] = one(Int); v[j] = one(Int)
+        push!(g.edges, v)
+    else
+        push!(g.edges, sparsevec([i,j], [1,1], t*nn))
+    end
     g
 end

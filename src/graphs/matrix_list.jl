@@ -139,7 +139,12 @@ for (f, vf, Af) in ((:forward_neighbors, :forward_trunc, :transpose),
                 push!(temporal_nodes, (v, i))
             end
             # the forward/backword neighbors at timestamp t 
-            nods = (($Af)(spmatrix(g, t))*sparsevec([v], [1], m)).nzind
+            matorvec = (($Af)(spmatrix(g, t))*sparsevec([v], [1], m))
+            if VERSION < v"0.5.0-dev+961"
+                nods = matorvec.rowval
+            else
+                nods = matorvec.nzind
+            end
             for nod in nods
                 push!(temporal_nodes, (nod, ns[idx]))
             end

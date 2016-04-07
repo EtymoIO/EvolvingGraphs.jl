@@ -1,7 +1,3 @@
-g = random_evolving_graph(4,5)
-g2 = MatrixList(g)
-@test num_matrices(g2) == num_timestamps(g)
-@test num_nodes(g2) == num_nodes(g)
 
 g = evolving_graph(Int, AbstractString) 
 add_edge!(g, 1, 2, "t1") 

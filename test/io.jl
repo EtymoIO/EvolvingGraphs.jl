@@ -1,9 +1,13 @@
-g = random_evolving_graph(5, 4)
+g = evolving_graph(AbstractString, AbstractString)
+add_edge!(g, "a", "b", "t1")
+add_edge!(g, "b", "c", "t1")
+add_edge!(g, "c", "d", "t2")
+add_edge!(g, "a", "b", "t2")
 
 egwrite(g, "test1.csv")
 g = egread("test1.csv")
-@test num_nodes(g) == 5
-@test num_timestamps(g) == 4
+@test num_nodes(g) == 4
+@test num_timestamps(g) == 2
 
 attribut1 =  Dict("a" => 3)
 attribut2 =  Dict("a" => 4)

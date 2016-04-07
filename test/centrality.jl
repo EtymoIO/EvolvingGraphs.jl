@@ -1,6 +1,10 @@
 # test Katz centrality
 
-g = random_evolving_graph(6, 4)
+g = evolving_graph(AbstractString, AbstractString)
+add_edge!(g, "a", "b", "t1")
+add_edge!(g, "b", "c", "t1")
+add_edge!(g, "c", "d", "t2")
+add_edge!(g, "a", "b", "t2")
 katz_centrality(g)
 katz_centrality(g, sorted = false)
 katz_centrality(g, 0.3, 0.2, mode = :receive)
