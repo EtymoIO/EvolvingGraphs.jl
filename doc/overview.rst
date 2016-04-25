@@ -4,7 +4,7 @@ Overview
 Introduction
 -------------
 
-We model an evolving graph as an ordered set of static graphs
+We model an evolving graph as a sequence of static graphs
 :math:`{G_1, G_2, \ldots, G_n }`, where :math:`G_t=(V(t), E(t))` is a
 snapshot of the evolving graph at timestamp :math:`t`. :ref:`fig_eg3t`
 shows an evolving graph with 3 timestamps. We say a node :math:`v` at
@@ -46,6 +46,35 @@ In **EvolvingGraphs**, we could do::
 
   julia> shortest_temporal_path(g, ('A', "t_1"), ('C',"t_3"))
   Temporal Path (3 walks) ('A',"t_1")->('A',"t_2")->('C',"t_2")->('C',"t_3")
+
+Definitions
+--------------
+
+  Evolving graphs
+                    An evolving graph :math:`G_n` is a sequence of static graphs 
+                    :math:`G_n=\langle G^{[1]}, G^{[2]}, \ldots G^{[n]} \rangle` with
+	            associated time labels :math:`t_1, t_2, \ldots t_n` respectively.
+		    Each :math:`G^{[t]} = (V^{[t]}, E^{[t]})` represents a static graph
+		    labeled by a time :math:`t`.
+
+  Temporal node
+                    A temporal node is a pair :math:`(v,t)`, where :math:`v \in V^{[t]}` is 
+		    a node at a time :math:`t`.
+
+  Active node
+                    A temporal node :math:`(v,t)` is an active node if there exists at least
+		    one edge :math:`e \in E^{[t]}` that connects :math:`v \in V^{[t]}` to 
+		    another node :math:`w \in V^{[t]}`, :math:`w \ne v`. An inactive node
+		    is a temporal node that is node an active node.
+
+		    
+  Temporal path
+                    A temporal path of length :math:`m` on an evolving graph :math:`G_n`
+		    from temporal node :math:`(v_1, t_1)` to temporal node :math:`(v_m, t_m)`
+		    is a time-ordered sequence of active nodes, 
+		    :math:`\langle (v_1, t_1), (v_2, t_2), \ldots, (v_m, t_m) \rangle`. Here, 
+	            time ordering means that :math:`t_1 \leq t_2 \leq \cdots \leq t_m` and
+		    :math:`v_i = v_j` iff :math:`t_i \ne t_j`.
 
 
 Main Features
