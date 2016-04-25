@@ -34,7 +34,6 @@ Table of Contents
    :maxdepth: 2
   
    overview.rst
-   start.rst
    tutorial.rst
    type.rst
    functions.rst
