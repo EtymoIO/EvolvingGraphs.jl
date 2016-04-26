@@ -76,6 +76,16 @@ Definitions
 	            time ordering means that :math:`t_1 \leq t_2 \leq \cdots \leq t_m` and
 		    :math:`v_i = v_j` iff :math:`t_i \ne t_j`.
 
+  Forward neighbor
+                    The k-forward neighbors of a temporal node :math:`(v,t)` are the temporal
+		    nodes that are the :math:`(k+1)` st temporal node in every temporal path
+		    of length :math:`k+1` starting from :math:`(v,t)`. The forward neighbors of
+		    a temporal node :math:`(v,t)` are its 1-forward neighbors.
+
+  Reachable
+                   A temporal node :math:`(w,s)` is reachable from a temporal node :math:`(v,t)`
+		   if there exists some finite integer :math:`k` for which :math:`(w,s)` is a 
+		   k-forward neighbor of :math:`(v,t)`.
 
 Main Features
 ------------------
