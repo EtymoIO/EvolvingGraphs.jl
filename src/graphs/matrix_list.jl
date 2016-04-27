@@ -200,10 +200,10 @@ matrix(g::MatrixList, ur::UnitRange{Int}) = g.matrices[ur]
 timestamps(g::MatrixList) = g.timestamps
 num_timestamps(g::MatrixList) = length(timestamps(g))
 
-copy(g::MatrixList) = MatrixList(is_directed(g), 
-                                 deepcopy(g.nodes),
-                                 deepcopy(g.timestamps),
-                                 deepcopy(g.matrices))
+deepcopy(g::MatrixList) = MatrixList(is_directed(g), 
+                                     deepcopy(g.nodes),
+                                     deepcopy(g.timestamps),
+                                     deepcopy(g.matrices))
 
 """
  `MatrixList(g)`

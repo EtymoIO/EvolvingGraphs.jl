@@ -280,7 +280,7 @@ undirected!(g::AbstractEvolvingGraph) = ( g.is_directed = false ; g)
 @doc doc"""
 `undirected(g)` turns a directed graph `g` to an undirected graph, leaving `g` unchanged.
 """->
-undirected(g::AbstractEvolvingGraph) = undirected!(copy(g))
+undirected(g::AbstractEvolvingGraph) = undirected!(deepcopy(g))
 
 @doc doc"""
 `has_node(g, v, t)` returns `true` if the node `v` at the timestamp `t` is 

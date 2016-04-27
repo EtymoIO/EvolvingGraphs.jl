@@ -1,6 +1,6 @@
 module EvolvingGraphs
 
-import Base: ==, show,  slice, issorted, copy, length, eltype
+import Base: ==, show,  slice, issorted, deepcopy, length, eltype
 
 export
 

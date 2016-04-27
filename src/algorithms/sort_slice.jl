@@ -32,7 +32,7 @@ end
 `sorttime(g)` sort the evolving graph `g` according to the 
 order of timestamps, leaving `g` unmodified.
 """->
-sorttime(g::AbstractEvolvingGraph) = sorttime!(copy(g))
+sorttime(g::AbstractEvolvingGraph) = sorttime!(deepcopy(g))
 
 @doc doc"""
 `slice!(g, t_min, t_max)` slice the evolving graph `g` between the timestamp
@@ -63,7 +63,7 @@ end
 `slice(g, t_min, t_max)` slices the evolving graph `g` between timestamp
 `t_min` and `t_max`, leaving `g` unmodified.
 """->
-slice(g::AbstractEvolvingGraph, t_min, t_max) = slice!(copy(g), t_min, t_max)
+slice(g::AbstractEvolvingGraph, t_min, t_max) = slice!(deepcopy(g), t_min, t_max)
 
 @doc doc"""
 `slice!(g, [n1, n2,..]) slices the evolving graph `g` according to 
@@ -87,5 +87,5 @@ end
 `slice(g, [n1, n2, ...])` slices the evolving graph `g` according to 
 the given nodes, leaving `g` unmodified.
 """->
-slice{V}(g::AbstractEvolvingGraph{V}, nodes::Array{V}) = slice!(copy(g), nodes)
+slice{V}(g::AbstractEvolvingGraph{V}, nodes::Array{V}) = slice!(deepcopy(g), nodes)
     

@@ -62,7 +62,7 @@ timestamps(g::IntEvolvingGraph) = unique(g.timestamps)
 num_timestamps(g::IntEvolvingGraph) = round(Int, length(g.timestamps)/g.nnodes)
 num_edges(g::IntEvolvingGraph, t::Int) = g.nedges
 
-copy(g::IntEvolvingGraph) = IntEvolvingGraph(is_directed(g), 
+deepcopy(g::IntEvolvingGraph) = IntEvolvingGraph(is_directed(g), 
                                              deepcopy(g.nodes), 
                                              deepcopy(g.timestamps), 
                                              g.nnodes,

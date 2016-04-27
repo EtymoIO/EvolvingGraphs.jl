@@ -44,11 +44,10 @@ Initialize an evolving graph with integer nodes and timestamps.
 """
 evolving_graph(;is_directed::Bool = true) = evolving_graph(Int, Int, is_directed = is_directed)
 
-copy(g::EvolvingGraph) = EvolvingGraph(is_directed(g), 
-                                       deepcopy(g.ilist),
-                                       deepcopy(g.jlist), 
-                                       deepcopy(g.timestamps))
-
+deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g), 
+                                           deepcopy(g.ilist),
+                                           deepcopy(g.jlist), 
+                                           deepcopy(g.timestamps))
 
 @doc doc"""
 `edges(g)` return the edges of an evolving graph `g`.

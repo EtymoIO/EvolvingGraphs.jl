@@ -23,7 +23,7 @@ attribute_evolving_graph(;is_directed::Bool = true) = attribute_evolving_graph(I
 attributesvec(g::AttributeEvolvingGraph) = g.attributesvec
 attributes(g::AttributeEvolvingGraph, e::AttributeTimeEdge) = e.attributes
 
-copy(g::AttributeEvolvingGraph) = AttributeEvolvingGraph(is_directed(g), 
+deepcopy(g::AttributeEvolvingGraph) = AttributeEvolvingGraph(is_directed(g), 
                                                          deepcopy(g.ilist), 
                                                          deepcopy(g.jlist),
                                                          deepcopy(g.timestamps),
