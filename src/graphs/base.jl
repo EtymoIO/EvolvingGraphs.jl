@@ -170,24 +170,19 @@ is_directed(g::AbstractGraph) = g.is_directed
 
 #### Static Graph functions ####
 
-@doc doc"""
-`nodes(g)` returns the nodes of a static graph `g`.
-"""->
+#`nodes(g)` returns the nodes of a static graph `g`.
 nodes(g::AbstractStaticGraph) = g.nodes
 
-@doc doc"""
-`num_nodes(g)` returns the number of nodes of a static graph `g`.
-"""->
+
+#`num_nodes(g)` returns the number of nodes of a static graph `g`.
 num_nodes(g::AbstractStaticGraph) = length(g.nodes)
 
-@doc doc"""
-`num_edges(g)` returns the number of edges of a static graph `g`.
-"""->
+
+#`num_edges(g)` returns the number of edges of a static graph `g`.
 num_edges(g::AbstractStaticGraph) = g.nedges
 
-@doc doc"""
-`add_node!(g, v)` add a node `v` to a static graph `g`.
-"""->
+
+#`add_node!(g, v)` add a node `v` to a static graph `g`.
 function add_node!{V<:NodeType}(g::AbstractStaticGraph{V}, v::V)
     if !(v in g.nodes)
         push!(g.nodes, v)
@@ -200,9 +195,7 @@ add_node!(g::AbstractStaticGraph, v) = add_node!(g, make_node(g, v))
 typealias EdgeType{V}  Union{Edge{V}, TimeEdge{V}, WeightedTimeEdge{V},
                                     AttributeTimeEdge{V}}
 
-@doc doc"""
-`add_edge!(g, e)` adds an edge `e` to a static graph `g`. 
-"""->
+#`add_edge!(g, e)` adds an edge `e` to a static graph `g`. 
 function add_edge!{V}(g::AbstractStaticGraph{V}, e::EdgeType{V})
     src = e.source
     dest = e.target
@@ -223,10 +216,7 @@ function add_edge!{V}(g::AbstractStaticGraph{V}, e::EdgeType{V})
     return g
 end
 
-@doc doc"""
-`add_edge!(g, i, j)` adds an edge from node `i` to node `j` to a static graph
-`g`.
-"""->
+#`add_edge!(g, i, j)` adds an edge from node `i` to node `j` to a static graph `g`.
 function add_edge!{V}(g::AbstractStaticGraph{V}, i::V, j::V)
     add_edge!(g, Edge(i,j))
 end 
@@ -237,23 +227,19 @@ function add_edge!(g::AbstractStaticGraph, i, j)
     add_edge!(g, n1, n2)
 end
 
-@doc doc"""
-`forward_neighbors(g, v)` returns a list of nodes that `v` points to on the
-static graph `g`.
-"""-> 
+
+#`forward_neighbors(g, v)` returns a list of nodes that `v` points to on the
+#static graph `g`.
 forward_neighbors{V}(g::AbstractStaticGraph{V}, v::V) = g.adjlist[v]
 
-@doc doc"""
-`has_node(g, v)` returns `true` if `v` is a node of the static graph `g` 
-and `false` otherwise.  
-"""->
+
+#`has_node(g, v)` returns `true` if `v` is a node of the static graph `g` 
+#and `false` otherwise.  
 has_node{V}(g::AbstractStaticGraph{V}, v::V) = (v in g.nodes)
 
 
-@doc doc"""
-`matrix(g, T)` generates an adjacency matrix of type T of 
-the static graph `g`. T = Bool by default.
-"""->
+#`matrix(g, T)` generates an adjacency matrix of type T of 
+#the static graph `g`. T = Bool by default.
 function matrix{T<:Number}(g::AbstractStaticGraph, ::Type{T})
     ns = nodes(g)
     n = num_nodes(g)
@@ -272,50 +258,40 @@ matrix(g::AbstractStaticGraph) = matrix(g, Bool)
 #### Evolving Graph functions ####
 
 
-@doc doc"""
-`undirected!(g)` turns a directed graph to an undirected graph. 
-"""->
+#`undirected!(g)` turns a directed graph to an undirected graph. 
 undirected!(g::AbstractEvolvingGraph) = ( g.is_directed = false ; g)
 
-@doc doc"""
-`undirected(g)` turns a directed graph `g` to an undirected graph, leaving `g` unchanged.
-"""->
+
+#`undirected(g)` turns a directed graph `g` to an undirected graph, leaving `g` unchanged.
 undirected(g::AbstractEvolvingGraph) = undirected!(deepcopy(g))
 
-@doc doc"""
-`has_node(g, v, t)` returns `true` if the node `v` at the timestamp `t` is 
-in the evolving graph `g` and `false` otherwise. 
-"""->
+
+#`has_node(g, v, t)` returns `true` if the node `v` at the timestamp `t` is 
+#in the evolving graph `g` and `false` otherwise. 
 function has_node(g::AbstractEvolvingGraph, v, t)
     p = findin(g.timestamps , [t])
     return (v in g.ilist[p]) || (v in g.jlist[p]) 
 end
 
-@doc doc"""
-`timestamps(g)` returns the timestamps of an evolving graph `g`.
-"""->
+
+#`timestamps(g)` returns the timestamps of an evolving graph `g`.
 function timestamps(g::AbstractEvolvingGraph) 
     ts = unique(g.timestamps)
     return sort(ts)
 end
 
-@doc doc"""
-`num_timestamps(g)` returns the number of timestamps of `g`, 
-where `g` is an evolving graph.
-"""->
+
+#`num_timestamps(g)` returns the number of timestamps of `g`, 
+#where `g` is an evolving graph.
 num_timestamps(g::AbstractEvolvingGraph) = length(timestamps(g))
 
 
-@doc doc"""
-`nodes(g)` returns the nodes of an evolving graph `g`. 
-"""->
+
+#`nodes(g)` returns the nodes of an evolving graph `g`. 
 nodes(g::AbstractEvolvingGraph) = union(g.ilist, g.jlist)
 num_nodes(g::AbstractEvolvingGraph) = length(nodes(g))
 
-@doc doc"""
-`forward_neighbors(g, (v, t))` returns all the outward neightbors of the 
-node `v` at timestamp `t` in the evolving graph `g`.
-"""->
+
 function forward_neighbors(g::AbstractEvolvingGraph, v::Tuple)
     has_node(g, v[1], v[2]) || return collect(zip([], []))
     g = sorttime(g)

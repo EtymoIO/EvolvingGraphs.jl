@@ -1,4 +1,5 @@
-# Evolving graphs with integer nodes and timestamps
+### evolving graphs with integer nodes and timestamps
+
 g = evolving_graph()
 add_edge!(g, 1, 2, 1)
 add_edge!(g, 1, 3, 1)
@@ -18,14 +19,21 @@ ns = nodes(g)
 
 ug = undirected(g)
 @test num_edges(ug) == 12
+@test is_directed(g)
+@test is_directed(ug) == false
 display(g)
+@test has_node(g, 1, 1)
+@test has_node(g, 4, 1) == false
+@test has_node(g, 4)
 
 
-# EvolvingGraph
+#### general evolving graphs
+
 aa = ['a', 'b', 'c', 'c', 'a']
 bb = ['b', 'a', 'a', 'b', 'b']
 tt = ["t1", "t2", "t3", "t4", "t5"]
 gg = evolving_graph(aa, bb, tt, is_directed = false)
+display(gg)
 nodes(gg)
 
 @test forward_neighbors(gg, 'c', "t4") == [('b', "t4")]
@@ -36,8 +44,6 @@ edges(gg, "t1")
 @test num_edges(gg) == 10
 timestamps(gg)
 @test num_timestamps(gg) == 5
-reduce_timestamps!(gg)
-@test num_timestamps(gg) == 3 
 
 
 

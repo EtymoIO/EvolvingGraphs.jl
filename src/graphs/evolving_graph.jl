@@ -49,9 +49,58 @@ deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g),
                                            deepcopy(g.jlist), 
                                            deepcopy(g.timestamps))
 
-@doc doc"""
-`edges(g)` return the edges of an evolving graph `g`.
-"""->
+"""
+    undirected!(g)
+
+Change a directed evolving graph g to an undirected evolving graph.
+"""
+undirected!(g::EvolvingGraph) = ( g.is_directed = false ; g)
+
+"""
+    undirected(g)
+
+Make a copy of g and change it to an undirected evolving graph.
+"""
+undirected(g::EvolvingGraph) = undirected!(deepcopy(g))
+
+###### nodes ##############################################
+
+"""
+    has_node(g, v, t)
+
+Return `true` if `(v,t)` is an active node of `g`.
+"""
+function has_node(g::EvolvingGraph, v, t)
+    p = findin(g.timestamps , [t])
+    return (v in g.ilist[p]) || (v in g.jlist[p]) 
+end
+
+"""
+    has_node(g, v)
+
+Return `true` if  `v` is a node of `g`.
+"""
+has_node(g::EvolvingGraph, v) = (v in g.ilist || v in g.jlist)
+
+"""
+    nodes(g)
+
+Return the nodes of the evolving graph `g`.
+"""
+nodes(g::EvolvingGraph) = union(g.ilist, g.jlist)
+num_nodes(g::EvolvingGraph) = length(nodes(g))
+
+function timestamps(g::EvolvingGraph) 
+    ts = unique(g.timestamps)
+    return sort(ts)
+end
+num_timestamps(g::EvolvingGraph) = length(timestamps(g))
+
+"""
+    edges(g)
+
+Return the edges of g in type TimeEdge.
+"""
 function edges(g::EvolvingGraph)
     n = length(g.ilist)
 
@@ -77,7 +126,7 @@ end
 @doc doc"""
 `edges(g, t)` return the edges of an evolving graph `g` at a given timestamp `t`.
 """->
-function edges{T}(g::EvolvingGraph, t::T)
+function edges(g::EvolvingGraph, t)
     t in g.timestamps || error("unknown timestamp $(t)")
 
     n = length(g.ilist)
@@ -110,24 +159,6 @@ end
 `num_edges(g)` returns the number of edges of an evolving graph `g`.
 """->
 num_edges(g::EvolvingGraph) = g.is_directed ? length(g.ilist) : length(g.ilist)*2
-
-# reduce the number of timestamps by emerging the graph with less
-# than n edges to a neighbour graph
-function reduce_timestamps!(g::EvolvingGraph, n::Int = 2)
-    times = timestamps(g)    
-    
-    for (i,t) in enumerate(times)
-        v = find(x -> x == t, g.timestamps)
-        if length(v) >= n
-            continue
-        end
-        try 
-            [g.timestamps[j] = times[i+1] for j in v] 
-        catch BoundsError
-        end
-    end
-    g
-end 
 
 
 @doc doc"""

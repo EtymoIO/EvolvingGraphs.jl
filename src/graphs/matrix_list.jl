@@ -38,10 +38,8 @@ end
 is_directed(g::IntMatrixList) = true
 nodelists(g::IntMatrixList) = g.nodelists
 
-"""
-`nodes(g)`
-returns the nodes of an evolving graph `g`.
-"""
+
+#`nodes(g)`returns the nodes of an evolving graph `g`.
 function nodes(g::IntMatrixList) 
     n = length(g.nodelists)
     collect(1:n)
