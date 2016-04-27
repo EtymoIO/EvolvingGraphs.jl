@@ -1,19 +1,25 @@
-# IntEvolvingGraph
-a = [rand(1:10) for i = 1:10]
-b = [rand(1:10) for i = 1:10]
-c = [1:10;]
-g = evolving_graph(a, b, c)
-is_directed(g)
-nodes(g)
-num_nodes(g)
-edges(g)
-n = num_edges(g)
-timestamps(g)
-num_timestamps(g)
+# Evolving graphs with integer nodes and timestamps
+g = evolving_graph()
+add_edge!(g, 1, 2, 1)
+add_edge!(g, 1, 3, 1)
+add_edge!(g, 1, 4, 2)
+add_edge!(g, 1, 2, 2)
+add_edge!(g, 2, 1, 3)
+add_edge!(g, 2, 3, 3)
+add_edge!(g, 1, 2, 1)
+
+@test is_directed(g)
+ns = nodes(g)
+@test rand(1:4) in ns
+@test num_nodes(g) == 4
+@test num_edges(g) == 6
+@test rand(1:3) in timestamps(g)
+@test num_timestamps(g) == 3
 
 ug = undirected(g)
+@test num_edges(ug) == 12
+display(g)
 
-@test num_edges(ug) == n*2
 
 # EvolvingGraph
 aa = ['a', 'b', 'c', 'c', 'a']

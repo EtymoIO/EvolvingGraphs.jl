@@ -13,17 +13,13 @@ type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V, Edge{V}, T}
 end
 
 
-@doc doc"""
-`evolving_graph(ils, jls, timestamps [, is_directed])` 
-generates an evolving graph 
+"""
+    evolving_graph(ils, jls, timestamps[, is_directed = true]) 
 
-Input:
-
-    `ils`: a vector of nodes
-    `jls`: a vector of nodes 
-    `timestamps`: a vector of timestamps
-    `is_directed`: (optional) whether the graph is directed or not
-"""->
+Generate an evolving graph from three input vectors: ils, jls and timestamps, such that
+the ith entry `(ils[i], jls[i] and timestamps[i])` is an edge from `ils[i]` to `jls[i]` at timestamp
+`timestamp[i]`.
+"""
 function evolving_graph{V,T}(ils::Vector{V}, 
                              jls::Vector{V}, 
                              timestamps::Vector{T}; 
@@ -33,23 +29,25 @@ function evolving_graph{V,T}(ils::Vector{V},
     return EvolvingGraph(is_directed, ils, jls, timestamps)    
 end
 
-@doc doc"""
-`evolving_graph([node_type, time_type, is_directed])`
-generates an evolving graph 
+"""
+    evolving_graph([node_type, time_type[, is_directed = true])
 
-Input:
-
-     `node_type`: type of the nodes
-     `time_type`: type of the timestamps
-     `is_directed`: whehter the graph is directed or not
-"""->
+Initialize an evolving graph where the nodes are of type `node_type` and 
+the timestamps are of type `time_type`.
+"""
 evolving_graph{V,T}(::Type{V}, ::Type{T} ;is_directed::Bool = true) = EvolvingGraph(is_directed, V[], V[], T[])
+
+"""
+    evolving_graph([is_directed = true])
+
+Initialize an evolving graph with integer nodes and timestamps.
+"""
+evolving_graph(;is_directed::Bool = true) = evolving_graph(Int, Int, is_directed = is_directed)
 
 copy(g::EvolvingGraph) = EvolvingGraph(is_directed(g), 
                                        deepcopy(g.ilist),
                                        deepcopy(g.jlist), 
                                        deepcopy(g.timestamps))
-
 
 
 @doc doc"""
