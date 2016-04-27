@@ -96,6 +96,8 @@ function timestamps(g::EvolvingGraph)
 end
 num_timestamps(g::EvolvingGraph) = length(timestamps(g))
 
+eltype(g::EvolvingGraph) = (eltype(g.ilist), eltype(g.timestamps))
+
 """
     edges(g)
 
@@ -103,14 +105,13 @@ Return the edges of g in type TimeEdge.
 """
 function edges(g::EvolvingGraph)
     n = length(g.ilist)
-
     edgelists = TimeEdge[]
 
     if g.is_directed
-       for i = 1:n
-           e = TimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i])
-           push!(edgelists, e)
-       end
+        for i = 1:n
+            e = TimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i])
+            push!(edgelists, e)
+        end
     else
         for i = 1:n
             e1 = TimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i])

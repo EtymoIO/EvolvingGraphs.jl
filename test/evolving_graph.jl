@@ -25,7 +25,9 @@ display(g)
 @test has_node(g, 1, 1)
 @test has_node(g, 4, 1) == false
 @test has_node(g, 4)
-
+N, T = eltype(g)
+@test N <: Integer
+@test T <: Integer
 
 #### general evolving graphs
 
@@ -35,6 +37,9 @@ tt = ["t1", "t2", "t3", "t4", "t5"]
 gg = evolving_graph(aa, bb, tt, is_directed = false)
 display(gg)
 nodes(gg)
+N, T = eltype(gg)
+@test N <: Char
+@test T <: AbstractString
 
 @test forward_neighbors(gg, 'c', "t4") == [('b', "t4")]
 
