@@ -68,7 +68,7 @@ undirected(g::EvolvingGraph) = undirected!(deepcopy(g))
 """
     has_node(g, v, t)
 
-Return `true` if `(v,t)` is an active node of `g`.
+Return `true` if `(v,t)` is an active node of `g` and `false` otherwise.
 """
 function has_node(g::EvolvingGraph, v, t)
     p = findin(g.timestamps , [t])
@@ -124,9 +124,11 @@ function edges(g::EvolvingGraph)
 end
 
 
-@doc doc"""
-`edges(g, t)` return the edges of an evolving graph `g` at a given timestamp `t`.
-"""->
+"""
+    edges(g, t)
+
+Return the edges of an evolving graph `g` at a given timestamp `t`.
+"""
 function edges(g::EvolvingGraph, t)
     t in g.timestamps || error("unknown timestamp $(t)")
 
@@ -156,15 +158,19 @@ function edges(g::EvolvingGraph, t)
 end
 
 
-@doc doc"""
-`num_edges(g)` returns the number of edges of an evolving graph `g`.
-"""->
+"""
+    num_edges(g)
+
+Return the number of edges of an evolving graph `g`.
+"""
 num_edges(g::EvolvingGraph) = g.is_directed ? length(g.ilist) : length(g.ilist)*2
 
 
-@doc doc"""
-`add_edge!(g, te)` adds a time edge `te` to an evolving graph `g`.
-"""->
+"""
+    add_edge!(g, te)
+
+Add a TimeEdge `te` to an evolving graph `g`.
+"""
 function add_edge!(g::EvolvingGraph, te::TimeEdge)
     if !(te in edges(g))
         push!(g.ilist, te.source)
@@ -175,10 +181,11 @@ function add_edge!(g::EvolvingGraph, te::TimeEdge)
 end
 
 
-@doc doc"""
-`add_edge!(g, v1, v2, t)` adds an edge from `v1` to `v2` at time `t` 
-to an evolving graph `g`.
-"""->
+"""
+    add_edge!(g, v1, v2, t)
+
+Add an edge from `v1` to `v2` at time `t` to an evolving graph `g`.
+"""
 function add_edge!(g::EvolvingGraph, v1, v2, t)
     add_edge!(g, TimeEdge(v1, v2, t))
     g
@@ -198,10 +205,11 @@ end
 
 has_edge(g::EvolvingGraph, te::TimeEdge) = te in edges(g)
 
-@doc doc"""
-`has_edge(g, v1, v2, t)` returns `true` if the edge from `v1` to `v2` 
-at time `t` is in graph `g` and false otherwise. 
-"""->
+"""
+    has_edge(g, v1, v2, t)
+
+Return `true` if `g` has an edge from `v1` to `v2` at time `t` and `false` otherwise. 
+"""
 has_edge(g::EvolvingGraph, v1, v2, t) = has_edge(g, TimeEdge(v1, v2, t))
 
 function rm_edge!(g::EvolvingGraph, te::TimeEdge)
@@ -219,15 +227,18 @@ function rm_edge!(g::EvolvingGraph, te::TimeEdge)
     g
 end
 
-@doc doc"""
-`rm_edge!(g, v1, v2, t)` removes an edge from `v1` to `v2` at time `t`
-from an evolving graph `g`. 
-"""->
+"""
+    rm_edge!(g, v1, v2, t) 
+
+Remove an edge from `v1` to `v2` at time `t` from `g`. 
+"""
 rm_edge!(g::EvolvingGraph, v1, v2, t) = rm_edge!(g, TimeEdge(v1, v2, t))
 
-@doc doc"""
-`add_graph!(g, tg)` adds a time graph `tg` to an evolving graph `g`.
-"""->
+"""
+    add_graph!(g, tg)
+
+Add a TimeGraph `tg` to an evolving graph `g`.
+"""
 function add_graph!(g::EvolvingGraph, tg::TimeGraph)
     t = timestamp(tg)
     is = eltype(g.ilist)[]
@@ -247,10 +258,11 @@ function add_graph!(g::EvolvingGraph, tg::TimeGraph)
 end
 
 
-@doc doc"""
-`matrix(g, t)` returns an adjacency matrix representation of
- an evolving graph `g` at timestamp `t`.
-"""->
+"""
+    matrix(g, t)
+
+Return an adjacency matrix representation of an evolving graph `g` at timestamp `t`.
+"""
 function matrix(g::EvolvingGraph, t)
     ns = nodes(g)
     n = num_nodes(g)
@@ -265,10 +277,12 @@ function matrix(g::EvolvingGraph, t)
 end
 
 
-@doc doc"""
-`spmatrix(g, t)` returns a sparse adjacency matrix representation of 
-an evolving graph `g` at timestamp `t`.
-"""->
+"""
+    spmatrix(g, t)
+
+Return a sparse adjacency matrix representation of an evolving graph
+`g` at timestamp `t`.
+"""
 function spmatrix(g::EvolvingGraph, t)
     ns = nodes(g)
     n = num_nodes(g)

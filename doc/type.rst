@@ -213,11 +213,11 @@ definition::
 
 
 .. function:: evolving_graph(ils, jls, timestamps [, is_directed = true)
-	    
-   generate an ``EvolvingGraph`` type object from 3 vectors ``ils``,
-   ``jls`` and ``timestamps`` such that ``ils[i] jls[i] timestamps[i]`` 
-   represent an edge from ``ils[i]`` to ``jls[i]`` at time ``timestamps[i]``.
-   The 3 vectors need to have the same length. For example::
+	   
+   Generate an evolving graph from three input vectors: ils, jls and
+   timestamps, such that the ith entry `(ils[i], jls[i] and
+   timestamps[i])` is an edge from `ils[i]` to `jls[i]` at timestamp
+   `timestamp[i]`. For example::
 
      aa = ['a', 'b', 'c', 'c', 'a']
      bb = ['b', 'a', 'a', 'b', 'b']
@@ -226,73 +226,72 @@ definition::
 
 .. function:: evolving_graph(node_type, time_type [, is_directed = true])
 
-   initialize an evolving graph with 0 nodes, 0 edges and 0 timestamps, 
-   ``node_type`` is the type of nodes and ``time_type`` is the type of timestamps.
+   Initialize an evolving graph where the nodes are of type `node_type` and 
+   the timestamps are of type `time_type`.
 
 .. function:: evolving_graph([is_directed = true])
 	      
-   initialize an evolving graph with ``Integer`` nodes  and timestamps. 
+   Initialize an evolving graph with ``Integer`` nodes  and timestamps. 
 
 .. function:: is_directed(g)
 	      
-   return ``true`` if graph ``g`` is a directed graph and ``false``
+   Return ``true`` if graph ``g`` is a directed graph and ``false``
    otherwise.
 
 .. function:: nodes(g)
 
-   return a list of nodes of graph ``g``.
+   Return the nodes of the evolving graph `g`.
 
 .. function:: num_nodes(g)
 
-   return the number of nodes of graph ``g``.
+   Return the number of nodes of graph ``g``.
 
 .. function:: has_node(g, v, t)
 
-   returns ``true`` of the node ``v`` at the timestamp ``t`` is in the 
-   evolving graph ``g`` and ``false`` otherwise.
+   Return `true` if `(v,t)` is an active node of `g` and `false` otherwise.
 
 .. function:: edges(g [, timestamp])
 
-   return a list of edges of graph ``g``. If ``timestamp`` is present,
+   Return a list of edges of graph ``g``. If ``timestamp`` is present,
    return the edge list at given ``timestamp``. 
 
 .. function:: num_edges(g)
 
-   return the number of edges of graph ``g``.
+   Return the number of edges of graph ``g``.
 
 .. function:: timestamps(g)
 
-   return the timestamps of graph ``g``.
+   Return the timestamps of graph ``g``.
 
 .. function:: num_timestamps(g)
  
-   return the number of timestamps of graph ``g``.
+   Return the number of timestamps of graph ``g``.
 
 .. function:: add_edge!(g, te)
 	      
-   add a TimeEdge ``te`` to EvolvingGraph ``g``.
+   Add a TimeEdge ``te`` to EvolvingGraph ``g``.
 
 .. function:: add_edge!(g, v1, v2, t)
 
-   add an edge (from ``v1`` to ``v2`` at timestamp ``t``) to EvolvingGraph ``g``.
+   Add an edge (from ``v1`` to ``v2`` at timestamp ``t``) to EvolvingGraph ``g``.
 
 .. function:: add_graph!(g, tg)
 	      
-   add a TimeGraph ``tg`` to EvolvingGraph ``g``.
+   Add a TimeGraph ``tg`` to EvolvingGraph ``g``.
 
 .. function:: forward_neighbors(g, v, t)
 
-   returns all the outward neighbors of the node ``v`` at timestamp ``t`` in 
+   Return all the outward neighbors of the node ``v`` at timestamp ``t`` in 
    the evolving graph ``g``. 
 
 .. function:: matrix(g, t)
 	      
-   return an adjacency matrix representation of the EvolvingGraph
+   Return an adjacency matrix representation of the EvolvingGraph
    ``g`` at timestamp ``t``.
 
 .. function:: spmatrix(g, t)
 
-   return a sparse adjacency matrix representation of the
+   Return a sparse adjacency matrix representation of the
    EvolvingGraph ``g`` at timestamp ``t``.
 
 
