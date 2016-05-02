@@ -34,7 +34,10 @@ B = matrix(g, 1, "a")
 
 b = [(2,1), (1,2)]
 
-@test forward_neighbors(g, 1, 1) == b
+nes =  forward_neighbors(g, 1, 1)
+for n in nes
+    @test n in b
+end
 @test forward_neighbors(g, 1, 2) == [(3,2)]
 
 # remove edge
