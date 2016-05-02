@@ -15,7 +15,8 @@ end
 
 attribute_evolving_graph{V,T}(::Type{V}, 
                               ::Type{T}; 
-                              is_directed::Bool = true) = AttributeEvolvingGraph(is_directed, V[], V[], T[], Dict[])
+                              is_directed::Bool = true) = 
+                              AttributeEvolvingGraph(is_directed, V[], V[], T[], Dict[])
 
 attribute_evolving_graph(;is_directed::Bool = true) = attribute_evolving_graph(Int, Int, is_directed = is_directed)
 
