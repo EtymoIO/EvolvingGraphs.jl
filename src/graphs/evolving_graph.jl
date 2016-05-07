@@ -9,25 +9,9 @@ type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V, Edge{V}, T}
     is_directed::Bool
     ilist::Vector{V}
     jlist::Vector{V}
-    timestamps::Vector{T} 
+    timestamps::Vector{T}
 end
 
-
-"""
-    evolving_graph(ils, jls, timestamps[, is_directed = true]) 
-
-Generate an evolving graph from three input vectors: ils, jls and timestamps, such that
-the ith entry `(ils[i], jls[i] and timestamps[i])` is an edge from `ils[i]` to `jls[i]` at timestamp
-`timestamp[i]`.
-"""
-function evolving_graph{V,T}(ils::Vector{V}, 
-                             jls::Vector{V}, 
-                             timestamps::Vector{T}; 
-                             is_directed::Bool = true)
-    length(ils) == length(jls) == length(timestamps)|| 
-            error("3 input vectors must have the same length.")
-    return EvolvingGraph(is_directed, ils, jls, timestamps)    
-end
 
 """
     evolving_graph([node_type, time_type[, is_directed = true])
@@ -43,6 +27,21 @@ evolving_graph{V,T}(::Type{V}, ::Type{T} ;is_directed::Bool = true) = EvolvingGr
 Initialize an evolving graph with integer nodes and timestamps.
 """
 evolving_graph(;is_directed::Bool = true) = evolving_graph(Int, Int, is_directed = is_directed)
+
+"""
+    evolving_graph(ils, jls, timestamps[, is_directed = true]) 
+Generate an evolving graph from three input vectors: ils, jls and timestamps, such that
+the ith entry `(ils[i], jls[i] and timestamps[i])` is an edge from `ils[i]` to `jls[i]` at timestamp
+`timestamp[i]`.
+"""
+function evolving_graph{V,T}(ils::Vector{V}, 
+                             jls::Vector{V}, 
+                             timestamps::Vector{T}; 
+                             is_directed::Bool = true)
+    length(ils) == length(jls) == length(timestamps)|| 
+            error("3 input vectors must have the same length.")
+    return EvolvingGraph(is_directed, ils, jls, timestamps)    
+end
 
 deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g), 
                                            deepcopy(g.ilist),
