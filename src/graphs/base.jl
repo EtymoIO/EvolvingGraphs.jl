@@ -2,7 +2,7 @@ export
 
   AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
   Node, Edge, TimeNode, AttributeNode, TimeEdge, WeightedTimeEdge,
-  AttributeTimeEdge, key, make_node, index, rev, AttributeDict,
+  AttributeTimeEdge, key, make_node, node_index, rev, AttributeDict,
   timestamp
 
 ###########################################
@@ -34,7 +34,7 @@ immutable Node{V}
     key::V
 end
  
-index(v::Node) = v.index
+node_index(v::Node) = v.index
 key(v::Node) = v.key
 ==(v1::Node, v2::Node) = (v1.key == v2.key && v1.index == v2.index)
 eltype{T}(::Node{T}) = T
@@ -47,7 +47,7 @@ type AttributeNode{V}
 end
 AttributeNode{V}(index::Int, key::V) = AttributeNode(index, key, Dict())
 
-index(v::AttributeNode) = v.index
+node_index(v::AttributeNode) = v.index
 key(v::AttributeNode) = v.key
 attributes(v::AttributeNode) = v.attributes
 attributes(v::AttributeNode, g::AbstractGraph) = v.attributes
@@ -65,14 +65,14 @@ end
 
 key(v::TimeNode) = v.key
 timestamp(v::TimeNode) = v.timestamp
-index(v::TimeNode) = v.index
+node_index(v::TimeNode) = v.index
 eltype{V,T}(::TimeNode{V,T}) = (V, T)
 
 ==(v1::TimeNode, v2::TimeNode) = (v1.key == v2.key && v1.timestamp== v2.timestamp
                                   && v1.index == v2.index )
 
 typealias NodeType{V}  Union{Node{V}, AttributeNode{V}, TimeNode{V}}
-index(v::NodeType, g::AbstractGraph) = index(v)
+node_index(v::NodeType, g::AbstractGraph) = index(v)
 
 function make_node(g::AbstractStaticGraph, key)
     ns = nodes(g)

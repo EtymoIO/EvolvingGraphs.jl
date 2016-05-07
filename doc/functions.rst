@@ -9,7 +9,7 @@ Nodes and Edges
 
    returns the key of a node ``v``. 
 
-.. function:: index(v)
+.. function:: node_index(v)
    :noindex:
  
    returns the index of a node ``v``.
