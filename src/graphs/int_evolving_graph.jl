@@ -12,9 +12,10 @@ type IntEvolvingGraph <: AbstractEvolvingGraph
 end
 
 """
-   int_evolving_graph(nv, nt; is_directed)
+    int_evolving_graph(nv, nt; is_directed)
 
-Initialize an evolving graph with `nv` nodes and `nt` timestamps
+Initialize an evolving graph with `nv` nodes and `nt` timestamps, where `nv` and `nt` 
+are integers.
 """
 function int_evolving_graph(nv::Int, nt::Int; is_directed::Bool = true)
     ts = Array(Int, nv*nt)
@@ -55,7 +56,7 @@ function temporal_nodes(g::IntEvolvingGraph)
     end
     ns
 end
-nodes(g::IntEvolvingGraph) = 1:g.nnodes
+nodes(g::IntEvolvingGraph) = collect(1:g.nnodes)
 num_nodes(g::IntEvolvingGraph) = g.nnodes
 num_edges(g::IntEvolvingGraph) = g.nedges
 timestamps(g::IntEvolvingGraph) = unique(g.timestamps)
