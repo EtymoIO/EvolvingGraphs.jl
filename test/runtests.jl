@@ -12,7 +12,7 @@ tests = [
          "random_graph",
          "sort_slice",
          "shortest_distance",
-         "shortest_temporal_distance",
+        # "shortest_temporal_distance",
          "io",
          "temporal_efficiency",
          "components",

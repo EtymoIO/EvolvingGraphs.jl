@@ -44,7 +44,7 @@ function evolving_graph{V,T}(ils::Vector{V},
     n = length(ils)
     n == length(jls) == length(timestamps)|| 
             error("3 input vectors must have the same length.")
-    g = evolving_graph(V, T, is_directed = is_directed)
+    g = evolving_graph(eltype(ils), eltype(timestamps), is_directed = is_directed)
     
     for i = 1:n
         v1 = add_node!(g, ils[i])

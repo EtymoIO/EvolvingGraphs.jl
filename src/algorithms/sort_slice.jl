@@ -41,8 +41,7 @@ function slice!(g::EvolvingGraph, t_min, t_max)
     issorted(g) || sorttime!(g)
     a = findfirst(g.timestamps, t_min)
     b = findlast(g.timestamps, t_max) 
-    g.ilist =  g.ilist[a:b]
-    g.jlist =  g.jlist[a:b]
+    g.edges = g.edges[a:b]
     g.timestamps =  g.timestamps[a:b]
     g
 end
@@ -62,13 +61,14 @@ end
 `slice(g, t_min, t_max)` slices the evolving graph `g` between timestamp
 `t_min` and `t_max`, leaving `g` unmodified.
 """->
-slice(g::AbstractEvolvingGraph, t_min, t_max) = slice!(deepcopy(g), t_min, t_max)
+slice(g::AttributeEvolvingGraph, t_min, t_max) = slice!(deepcopy(g), t_min, t_max)
 
 @doc doc"""
-`slice!(g, [n1, n2,..]) slices the evolving graph `g` according to 
-the given nodes.
+    slice!(g, [n1, n2,..]) 
+
+slices the evolving graph `g` according to the given nodes.
 """->
-function slice!{V}(g::AbstractEvolvingGraph{V}, nodes::Array{V})
+function slice!{V}(g::AttributeEvolvingGraph{V}, nodes::Array{V})
     iindx = findin(g.ilist, nodes)
     jindx = findin(g.jlist, nodes)
     nindx = intersect(iindx, jindx)

@@ -19,22 +19,22 @@ function egread(filename)
     end
     
     header = split(chomp(ll), ',')
-  
+
     length(header) >= 3 || error("The length of header must be >= 3") 
     
                   
     eg = length(header) == 3 ? true : false
 
-    ilist = Any[]
-    jlist = Any[]
-    timestamps = Any[]
+    ilist = ASCIIString[]
+    jlist = ASCIIString[]
+    timestamps = ASCIIString[]
 
     if eg
         entries = split(chomp(readline(file)), ',')
         while length(entries) == 3
-            push!(ilist, entries[1])
-            push!(jlist, entries[2])
-            push!(timestamps, entries[3])
+            push!(ilist, string(entries[1]))
+            push!(jlist, string(entries[2]))
+            push!(timestamps, string(entries[3]))
             entries = split(chomp(readline(file)), ',')
         end       
         
@@ -80,7 +80,7 @@ function _egwrite(io::IO, g::AbstractEvolvingGraph)
     write(io, "$(header)\n")
     firstline = "i,j,timestamps"
 
-    n = length(g.ilist)
+    n = num_edges(g)
 
     if _has_attribute(g)
         names = keys(g.attributesvec[1])
@@ -99,7 +99,8 @@ function _egwrite(io::IO, g::AbstractEvolvingGraph)
     else
         write(io, "$(firstline)\n")
         for i in 1:n
-            edges = join([g.ilist[i], g.jlist[i], g.timestamps[i]], ',')
+            es = g.edges[i]
+            edges = join([source(es), target(es), timestamp(es)], ',')
             write(io, "$(edges)\n")
         end
     end

@@ -21,8 +21,6 @@ p = sortperm(g.timestamps)
 
 [@test e in edges(g) for e in edges(g1)]
 
-g2 = slice(g, [2,3])
-@test nodes(g2) == [2,3]
 
 # test attribute evolving graph
 

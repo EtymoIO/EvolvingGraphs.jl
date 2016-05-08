@@ -38,10 +38,12 @@ end
 
 Convert an EvolvingGraph to an IntEvolvingGraph.
 """
-function int_evolving_graph(g::EvolvingGraph) 
-    g1 = int_evolving_graph(is_directed = is_directed(g))
+function int_evolving_graph(g::EvolvingGraph)
+    g1 = int_evolving_graph(num_nodes(g), num_edges(g), is_directed = is_directed(g))
     for e in edges(g)
-        add_edge!(g1, e)
+        v1 = node_index(source(e))
+        v2 = node_index(target(e))
+        add_edge!(g1, v1, v2, e.timestamp)
     end
     g1
 end
