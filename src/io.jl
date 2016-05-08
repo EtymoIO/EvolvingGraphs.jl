@@ -23,13 +23,13 @@ function egread(filename)
     length(header) >= 3 || error("The length of header must be >= 3") 
     
                   
-    evolving_graph = length(header) == 3 ? true : false
+    eg = length(header) == 3 ? true : false
 
     ilist = Any[]
     jlist = Any[]
     timestamps = Any[]
 
-    if evolving_graph
+    if eg
         entries = split(chomp(readline(file)), ',')
         while length(entries) == 3
             push!(ilist, entries[1])
@@ -47,7 +47,6 @@ function egread(filename)
         try 
             timestamps = [parse(Int64, s) for s in timestamps]
         end
-     
         g = evolving_graph(ilist, jlist, timestamps, is_directed = is_directed)
     else
         attributesvec = Dict[]

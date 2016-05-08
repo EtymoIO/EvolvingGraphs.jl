@@ -37,16 +37,19 @@ Generate an evolving graph from three input vectors: ils, jls and timestamps, su
 the ith entry `(ils[i], jls[i] and timestamps[i])` is an edge from `ils[i]` to `jls[i]` at timestamp
 `timestamp[i]`.
 """
-function evolving_graph{V,T}(ils::Vector{V}, 
-                             jls::Vector{V}, 
-                             timestamps::Vector{T}; 
+function evolving_graph{V,T}(ils::Vector{V},
+                             jls::Vector{V},
+                             timestamps::Vector{T};
                              is_directed::Bool = true)
     n = length(ils)
     n == length(jls) == length(timestamps)|| 
             error("3 input vectors must have the same length.")
     g = evolving_graph(V, T, is_directed = is_directed)
+    
     for i = 1:n
-        add_edge!(g, ils[i], jls[i], timestamps[i])
+        v1 = add_node!(g, ils[i])
+        v2 = add_node!(g, jls[i])
+        add_edge!(g, TimeEdge(v1, v2, timestamps[i]))
     end
     g
 end
@@ -241,14 +244,14 @@ function matrix(g::EvolvingGraph, t, T::Type = Bool)
     for e in es
         i = node_index(e.source)
         j = node_index(e.target)
-        A[(j-1)*n + i] = true
+        A[(j-1)*n + i] = one(T)
     end
     return A
 end
 
 
 """
-    spmatrix(g, t)
+    spmatrix(g, t[, T = Bool])
 
 Return a sparse adjacency matrix representation of an evolving graph
 `g` at timestamp `t`. `T` (optional) is the element type of the matrix.
