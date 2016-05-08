@@ -1,5 +1,5 @@
 
-g = evolving_graph(Int, AbstractString) 
+g = evolving_graph(Int, ASCIIString) 
 add_edge!(g, 1, 2, "t1") 
 add_edge!(g,  1, 3, "t2") 
 add_edge!(g, 4, 5, "t2") 
@@ -49,7 +49,7 @@ A = spmatrix(g)
 @test A[1:3, 7:9] == sparse([2], [2], [1], 3, 3)
 @test A[4:6, 7:9] == sparse([3], [3], [1], 3, 3)
 
-g = evolving_graph(Int, AbstractString)
+g = evolving_graph(Int, ASCIIString)
 add_edge!(g, 1, 2, "t1")
 add_edge!(g, 2, 3, "t2")
 add_edge!(g, 4, 2, "t2")
@@ -62,7 +62,7 @@ g2 = int_matrix_list(g)
 @test spmatrix(g, "t2") == spmatrix(g2, 2)
 @test nodelists(g2)[1] == [1,3]
 @test spmatrix(g2)[5:8, 5:8] == spmatrix(g, "t2")
-@test spmatrix(g2)[1:4, 5:8] == sparse([2, 3], [2,3], [1,1], 4, 4)
+@test spmatrix(g2)[1:4, 5:8] == sparse([2, 4], [2,4], [1,1], 4, 4)
 
 e1 = AttributeTimeEdge(1, 2, 1)
 e1.attributes["a"] = 1.5
