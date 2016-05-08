@@ -12,9 +12,8 @@ end
 order of timestamps.
 """->
 function sorttime!(g::EvolvingGraph)
-    p = sortperm(g.timestamps) 
-    g.ilist = g.ilist[p]
-    g.jlist = g.jlist[p]
+    p = sortperm(g.timestamps)
+    g.edges = g.edges[p]
     g.timestamps = g.timestamps[p]
     g
 end

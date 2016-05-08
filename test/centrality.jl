@@ -1,6 +1,6 @@
 # test Katz centrality
 
-g = evolving_graph(AbstractString, AbstractString)
+g = evolving_graph(ASCIIString, ASCIIString)
 add_edge!(g, "a", "b", "t1")
 add_edge!(g, "b", "c", "t1")
 add_edge!(g, "c", "d", "t2")

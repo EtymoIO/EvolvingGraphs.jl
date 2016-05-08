@@ -33,7 +33,7 @@ returns all the reachable active nodes from a given temporal node
 function breadth_first_visit(g::AbstractEvolvingGraph, s::Tuple)
     T = typeof(g)
     if T <: EvolvingGraph || T <: AttributeEvolvingGraph
-        warn("breadth fist visit on $(T)  is slow, using IntEvolvingGraph instead.")
+        error("breadth fist visit on $(T)  is slow, using IntEvolvingGraph instead.")
     end
     _breadth_first_visit(g, s)
 end

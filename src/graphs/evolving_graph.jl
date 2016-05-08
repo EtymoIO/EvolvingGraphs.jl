@@ -57,21 +57,9 @@ end
 deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g), 
                                            deepcopy(g.nodes),
                                            deepcopy(g.edges), 
-                                           deepcopy(g.timestamps))
+                                           deepcopy(g.timestamps),
+                                           deepcopy(g.indexof))
 
-"""
-    undirected!(g)
-
-Change a directed evolving graph g to an undirected evolving graph.
-"""
-undirected!(g::EvolvingGraph) = ( g.is_directed = false ; g)
-
-"""
-    undirected(g)
-
-Make a copy of g and change it to an undirected evolving graph.
-"""
-undirected(g::EvolvingGraph) = undirected!(deepcopy(g))
 eltype{V, T}(g::EvolvingGraph{V, T}) = (V, T)
 
 ###### nodes ##############################################
@@ -269,4 +257,9 @@ function spmatrix(g::EvolvingGraph, t, T::Type = Bool)
     end
     vs = ones(T, length(is))
     return sparse(is, js, vs, n, n)    
+end
+
+function forward_neighbors(g::EvolvingGraph, v::Tuple)
+    error("forward_neighbors is not implemented for EvolvingGraph, please
+               use IntEvolvingGraph instead.")
 end

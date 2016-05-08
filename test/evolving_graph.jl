@@ -11,23 +11,23 @@ add_edge!(g, 1, 2, 1)
 
 @test is_directed(g)
 ns = nodes(g)
-@test rand(1:4) in ns
+@test Node(1, 1) in ns
 @test num_nodes(g) == 4
 @test num_edges(g) == 6
 @test rand(1:3) in timestamps(g)
 @test num_timestamps(g) == 3
 
-ug = undirected(g)
-@test num_edges(ug) == 12
-@test is_directed(g)
-@test is_directed(ug) == false
-display(g)
-@test has_node(g, 1, 1)
-@test has_node(g, 4, 1) == false
-@test has_node(g, 4)
-N, T = eltype(g)
-@test N <: Integer
-@test T <: Integer
+g = evolving_graph(is_directed = false)
+add_edge!(g, 1, 2, 1)
+add_edge!(g, 1, 3, 1)
+add_edge!(g, 1, 4, 2)
+add_edge!(g, 1, 2, 2)
+add_edge!(g, 2, 1, 3)
+add_edge!(g, 2, 3, 3)
+add_edge!(g, 1, 2, 1)
+@test is_directed(g) == false
+@test num_nodes(g) == 4
+@test num_edges(g) == 12
 
 #### general evolving graphs
 
@@ -38,10 +38,7 @@ gg = evolving_graph(aa, bb, tt, is_directed = false)
 display(gg)
 nodes(gg)
 N, T = eltype(gg)
-@test N <: Char
-@test T <: AbstractString
-
-@test forward_neighbors(gg, 'c', "t4") == [('b', "t4")]
+# @test forward_neighbors(gg, 'c', "t4") == [('b', "t4")]
 
 @test num_nodes(gg) == 3
 edges(gg)
@@ -63,7 +60,7 @@ add_edge!(g2, 2, 3, 'b')
 @test num_timestamps(g2) == 2
 
 # remove edge
-g = evolving_graph(Int, AbstractString)
+g = evolving_graph(Int, ASCIIString)
 add_edge!(g, 1, 2, "t1")
 add_edge!(g, 2, 3, "t2")
 add_edge!(g, 4, 2, "t2")
@@ -71,21 +68,7 @@ add_edge!(g, 4, 2, "t1")
 add_edge!(g, 2, 1, "t3")
 
 @test num_edges(g) == 5
-@test has_edge(g, 1, 2, "t1")
-
-rm_edge!(g, 1, 2, "t1")
-
-@test !has_edge(g, 1, 2, "t1")
-@test num_edges(g) == 4
 
 add_edge!(g, [1,2,4], [3,4], "t1")
-
 n = num_edges(g)
-
 @test is_directed(g)
-
-undirected!(g)
-
-@test !is_directed(g)
-
-@test num_edges(g) ==  n*2
