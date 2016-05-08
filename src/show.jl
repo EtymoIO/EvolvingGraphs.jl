@@ -16,15 +16,15 @@ function show(io::IO, e::Edge)
 end
  
 function show(io::IO, e::TimeEdge)
-    print(io, "TimeEdge($(e.source)->$(e.target)) at time $(e.timestamp)")
+    print(io, "TimeEdge $(e.source)->$(e.target) at time $(e.timestamp)")
 end
 
 function show(io::IO, e::WeightedTimeEdge)
-    print(io, "WeightedTimeEdge($(e.source)-$(e.weight)->$(e.target)) at time $(e.timestamp)")
+    print(io, "WeightedTimeEdge $(e.source)-$(e.weight)->$(e.target) at time $(e.timestamp)")
 end
 
 function show(io::IO, e::AttributeTimeEdge)
-    print(io, "AttributeTimeEdge($(e.source)->$(e.target)) at time $(e.timestamp)")
+    print(io, "AttributeTimeEdge $(e.source)->$(e.target) at time $(e.timestamp)")
 end
 
 function show(io::IO, g::EvolvingGraph)

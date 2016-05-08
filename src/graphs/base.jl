@@ -33,12 +33,25 @@ immutable Node{V}
     index::Int
     key::V
 end
- 
+Node(v) = Node(0, v) 
 node_index(v::Node) = v.index
-key(v::Node) = v.key
-==(v1::Node, v2::Node) = (v1.key == v2.key && v1.index == v2.index)
-eltype{T}(::Node{T}) = T
+node_index{V}(g::AbstractGraph{V}, v::V) = node_index(v)
 
+key(v::Node) = v.key
+==(v1::Node, v2::Node) = (v1.key == v2.key) && (v1.index == v2.index)
+eltype{T}(::Node{T}) = T
+make_node{V <: Node}(g::AbstractGraph{V}, key) = V(num_nodes(g) + 1 , key)
+
+function make_node(g::AbstractStaticGraph, key)
+    ns = nodes(g)
+    keys = map(x -> x.key, ns)
+    index = findfirst(keys, key)
+    if index == 0        
+        return Node(num_nodes(g)+1, key)
+    else
+        return ns[index]
+    end        
+end
 
 type AttributeNode{V} 
     index::Int
@@ -52,6 +65,9 @@ key(v::AttributeNode) = v.key
 attributes(v::AttributeNode) = v.attributes
 attributes(v::AttributeNode, g::AbstractGraph) = v.attributes
 eltype{T}(::AttributeNode{T}) = T
+make_node{V <: AttributeNode}(g::AbstractGraph{V}, key, attr) = 
+   V(num_nodes(g) + 1 , key, attr)
+
 
 ==(v1::AttributeNode, v2::AttributeNode) = (v1.key == v2.key &&
                                             v1.attributes == v2.attributes && v1.index == v2.index)
@@ -74,16 +90,7 @@ eltype{V,T}(::TimeNode{V,T}) = (V, T)
 typealias NodeType{V}  Union{Node{V}, AttributeNode{V}, TimeNode{V}}
 node_index(v::NodeType, g::AbstractGraph) = index(v)
 
-function make_node(g::AbstractStaticGraph, key)
-    ns = nodes(g)
-    keys = map(x -> x.key, ns)
-    index = findfirst(keys, key)
-    if index == 0        
-        return Node(num_nodes(g)+1, key)
-    else
-        return ns[index]
-    end        
-end
+
 
 
 ##########################################
@@ -101,8 +108,7 @@ end
 source(e::Edge) = e.source
 target(e::Edge) = e.target
 ==(e1::Edge, e2::Edge) = (e1.source == e2.source && e1.target == e2.target)
- 
-rev(e::Edge) = Edge(e.target, e.source)
+ rev(e::Edge) = Edge(e.target, e.source)
  
 
 immutable TimeEdge{V,T}
@@ -121,6 +127,8 @@ timestamp(e::TimeEdge, g::AbstractEvolvingGraph) = e.timestamp
                                   e1.target == e2.target &&
                                   e1.timestamp == e2.timestamp)
 rev(e::TimeEdge) = TimeEdge(e.target, e.source, e.timestamp)
+make_edge{V, E<:TimeEdge, T}(g::AbstractGraph{V, E, T}, v1::V, v2::V, t::T) = 
+    TimeEdge(v1, v2, t)
 
 
 immutable WeightedTimeEdge{V, T, W<:Real} 
@@ -160,6 +168,15 @@ rev(e::AttributeTimeEdge) = AttributeTimeEdge(e.target, e.source, e.timestamp, e
 typealias EdgeType{V}  Union{Edge{V}, TimeEdge{V}, WeightedTimeEdge{V},
                                     AttributeTimeEdge{V}}
 
+"""
+    has_node(e, v)
+
+Return `true` if `v` is a node of the edge `e`.
+"""
+has_node{V}(e::EdgeType{V}, v::V) = (v == source(e) || v == target(e))
+function has_node(e::EdgeType, v)
+    v == source(e).key || v == target(e).key
+end
 
 #####################################
 #

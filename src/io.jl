@@ -48,7 +48,7 @@ function egread(filename)
             timestamps = [parse(Int64, s) for s in timestamps]
         end
      
-        g = EvolvingGraph(is_directed, ilist, jlist, timestamps)
+        g = evolving_graph(ilist, jlist, timestamps, is_directed = is_directed)
     else
         attributesvec = Dict[]
         entries = split(chomp(readline(file)), ',')

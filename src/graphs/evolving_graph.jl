@@ -5,11 +5,12 @@
 #
 #####################################################
 
-type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V, Edge{V}, T}
+type EvolvingGraph{V, E, T} <: AbstractEvolvingGraph{V, E, T}
     is_directed::Bool
-    ilist::Vector{V}
-    jlist::Vector{V}
-    timestamps::Vector{T}
+    nodes::Vector{V}                 # a vector of nodes
+    edges::Vector{E}                 # a vector of edges
+    timestamps::Vector{T}        # a vector of timestamps
+    indexof::Dict{Any, Int}        # a dictionary storing index for each node
 end
 
 
@@ -19,14 +20,16 @@ end
 Initialize an evolving graph where the nodes are of type `node_type` and 
 the timestamps are of type `time_type`.
 """
-evolving_graph{V,T}(::Type{V}, ::Type{T} ;is_directed::Bool = true) = EvolvingGraph(is_directed, V[], V[], T[])
+evolving_graph{V,T}(::Type{V}, ::Type{T} ;is_directed::Bool = true) = 
+      EvolvingGraph(is_directed, Node{V}[], TimeEdge{Node{V}, T}[], T[], Dict{Any, Int}())
 
 """
     evolving_graph([is_directed = true])
 
 Initialize an evolving graph with integer nodes and timestamps.
 """
-evolving_graph(;is_directed::Bool = true) = evolving_graph(Int, Int, is_directed = is_directed)
+evolving_graph(;is_directed::Bool = true) = 
+       evolving_graph(Int, Int, is_directed = is_directed)
 
 """
     evolving_graph(ils, jls, timestamps[, is_directed = true]) 
@@ -38,14 +41,19 @@ function evolving_graph{V,T}(ils::Vector{V},
                              jls::Vector{V}, 
                              timestamps::Vector{T}; 
                              is_directed::Bool = true)
-    length(ils) == length(jls) == length(timestamps)|| 
+    n = length(ils)
+    n == length(jls) == length(timestamps)|| 
             error("3 input vectors must have the same length.")
-    return EvolvingGraph(is_directed, ils, jls, timestamps)    
+    g = evolving_graph(V, T, is_directed = is_directed)
+    for i = 1:n
+        add_edge!(g, ils[i], jls[i], timestamps[i])
+    end
+    g
 end
 
 deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g), 
-                                           deepcopy(g.ilist),
-                                           deepcopy(g.jlist), 
+                                           deepcopy(g.nodes),
+                                           deepcopy(g.edges), 
                                            deepcopy(g.timestamps))
 
 """
@@ -61,6 +69,7 @@ undirected!(g::EvolvingGraph) = ( g.is_directed = false ; g)
 Make a copy of g and change it to an undirected evolving graph.
 """
 undirected(g::EvolvingGraph) = undirected!(deepcopy(g))
+eltype{V, T}(g::EvolvingGraph{V, T}) = (V, T)
 
 ###### nodes ##############################################
 
@@ -71,7 +80,13 @@ Return `true` if `(v,t)` is an active node of `g` and `false` otherwise.
 """
 function has_node(g::EvolvingGraph, v, t)
     p = findin(g.timestamps , [t])
-    return (v in g.ilist[p]) || (v in g.jlist[p]) 
+    es = g.edges[p]
+    for e in es
+        if !(has_node(e, v))
+            return false
+        end
+    end
+    return true
 end
 
 """
@@ -79,14 +94,23 @@ end
 
 Return `true` if  `v` is a node of `g`.
 """
-has_node(g::EvolvingGraph, v) = (v in g.ilist || v in g.jlist)
+has_node{V}(g::EvolvingGraph{V}, v::V) = v in g.nodes
+function has_node(g::EvolvingGraph, v)
+    id = zero(Int)
+    try 
+        id = g.indexof[v]
+    catch
+        id = zero(Int)
+    end
+    return id != zero(Int)
+end
 
 """
     nodes(g)
 
 Return the nodes of the evolving graph `g`.
 """
-nodes(g::EvolvingGraph) = union(g.ilist, g.jlist)
+nodes(g::EvolvingGraph) = g.nodes
 num_nodes(g::EvolvingGraph) = length(nodes(g))
 
 function timestamps(g::EvolvingGraph) 
@@ -95,32 +119,13 @@ function timestamps(g::EvolvingGraph)
 end
 num_timestamps(g::EvolvingGraph) = length(timestamps(g))
 
-eltype(g::EvolvingGraph) = (eltype(g.ilist), eltype(g.timestamps))
 
 """
     edges(g)
 
 Return the edges of g in type TimeEdge.
 """
-function edges(g::EvolvingGraph)
-    n = length(g.ilist)
-    edgelists = TimeEdge[]
-
-    if g.is_directed
-        for i = 1:n
-            e = TimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i])
-            push!(edgelists, e)
-        end
-    else
-        for i = 1:n
-            e1 = TimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i])
-            e2 = TimeEdge(g.jlist[i], g.ilist[i], g.timestamps[i])
-            push!(edgelists, e1)
-            push!(edgelists, e2)
-        end
-    end
-    return edgelists
-end
+edges(g::EvolvingGraph) = g.edges
 
 
 """
@@ -129,31 +134,11 @@ end
 Return the edges of an evolving graph `g` at a given timestamp `t`.
 """
 function edges(g::EvolvingGraph, t)
-    t in g.timestamps || error("unknown timestamp $(t)")
-
-    n = length(g.ilist)
-    
-    edgelists = TimeEdge[]
-  
-    if g.is_directed
-        for i = 1:n
-            if t == g.timestamps[i]
-                e = TimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i])
-                push!(edgelists, e)
-            end
-        end
-    else
-        for i = 1:n
-            if t == g.timestamps[i]
-                e1 = TimeEdge(g.ilist[i], g.jlist[i], g.timestamps[i])
-                e2 = TimeEdge(g.jlist[i], g.ilist[i], g.timestamps[i])
-                push!(edgelists, e1)
-                push!(edgelists, e2)
-            end
-        end
+    inds = findin(g.timestamps, [t])
+    if length(inds) == 0
+        error("unknown timestamp $(t)")
     end
-          
-    return edgelists
+    return g.edges[inds]
 end
 
 
@@ -162,23 +147,48 @@ end
 
 Return the number of edges of an evolving graph `g`.
 """
-num_edges(g::EvolvingGraph) = g.is_directed ? length(g.ilist) : length(g.ilist)*2
+num_edges(g::EvolvingGraph) = length(g.edges)
 
+
+"""
+    add_node!(g, v)
+
+Add a node `v` to an evolving graph `g`.
+"""
+function add_node!{V}(g::EvolvingGraph{V}, v::V) 
+    push!(g.nodes, v)
+    g.indexof[v.key] = length(g.nodes)
+    v
+end
+function add_node!{V}(g::EvolvingGraph{V}, v) 
+    id = zero(Int)
+    try 
+        id = g.indexof[v]
+    catch
+        id = zero(Int)
+    end
+    if id == zero(Int)
+        v = make_node(g, v)
+        return add_node!(g, v)
+    else
+        return Node(id, v)
+    end
+end
 
 """
     add_edge!(g, te)
 
 Add a TimeEdge `te` to an evolving graph `g`.
 """
-function add_edge!(g::EvolvingGraph, te::TimeEdge)
-    if !(te in edges(g))
-        push!(g.ilist, te.source)
-        push!(g.jlist, te.target)
-        push!(g.timestamps, te.timestamp)
+function add_edge!{V, E}(g::EvolvingGraph{V, E}, e::E)
+    push!(g.edges, e)
+    push!(g.timestamps, e.timestamp)
+    if !(is_directed(g))
+        push!(g.edges, rev(e))
+        push!(g.timestamps, e.timestamp)
     end
-    g
+    e
 end
-
 
 """
     add_edge!(g, v1, v2, t)
@@ -186,90 +196,51 @@ end
 Add an edge from `v1` to `v2` at time `t` to an evolving graph `g`.
 """
 function add_edge!(g::EvolvingGraph, v1, v2, t)
-    add_edge!(g, TimeEdge(v1, v2, t))
-    g
+    v1 = add_node!(g, v1)
+    v2 = add_node!(g, v2)
+    e = TimeEdge(v1, v2, t)
+    if !(e in edges(g))
+        add_edge!(g, e)
+    end
+    e
 end
 
+# short-cut for adding multiply edges
 function add_edge!(g::EvolvingGraph, v1::Array, v2::Array, t)
     for j in v2
         for i in v1
-            te = TimeEdge(i, j, t)
-            add_edge!(g, te)
+            add_edge!(g, i, j, t)
         end
     end
     g
 end
 
+has_edge{V, E}(g::EvolvingGraph{V,E}, e::E) = e in edges(g)
 
 
-has_edge(g::EvolvingGraph, te::TimeEdge) = te in edges(g)
+function rm_edge!(g::EvolvingGraph, e::TimeEdge)
+    id = findfirst(g.edges, e)
+    id == 0 || error("$(e) is not in the graph.")
 
-"""
-    has_edge(g, v1, v2, t)
-
-Return `true` if `g` has an edge from `v1` to `v2` at time `t` and `false` otherwise. 
-"""
-has_edge(g::EvolvingGraph, v1, v2, t) = has_edge(g, TimeEdge(v1, v2, t))
-
-function rm_edge!(g::EvolvingGraph, te::TimeEdge)
-    has_edge(g, te) || error("$(te) is not in the graph.")
-    i = 0
-    try 
-        i = _find_edge_index(g, te)
-    catch
-        i = _find_edge_index(g, rev(te))
-    end
-    
-    splice!(g.ilist, i)
-    splice!(g.jlist, i)
-    splice!(g.timestamps, i)
-    g
-end
-
-"""
-    rm_edge!(g, v1, v2, t) 
-
-Remove an edge from `v1` to `v2` at time `t` from `g`. 
-"""
-rm_edge!(g::EvolvingGraph, v1, v2, t) = rm_edge!(g, TimeEdge(v1, v2, t))
-
-"""
-    add_graph!(g, tg)
-
-Add a TimeGraph `tg` to an evolving graph `g`.
-"""
-function add_graph!(g::EvolvingGraph, tg::TimeGraph)
-    t = timestamp(tg)
-    is = eltype(g.ilist)[]
-    js = eltype(g.jlist)[]
-    ts = eltype(g.timestamps)[]
-    for v1 in nodes(tg)
-        for v2 in forward_neighbors(tg, v1)
-            push!(is, v1.key)
-            push!(js, v2.key)
-            push!(ts, t)
-        end
-    end
-    append!(g.ilist, is)
-    append!(g.jlist, js)
-    append!(g.timestamps, ts)
+    splice!(g.edges, id)
+    splice!(g.timestamps, id)
     g
 end
 
 
 """
-    matrix(g, t)
+    matrix(g, t[, T = Bool])
 
 Return an adjacency matrix representation of an evolving graph `g` at timestamp `t`.
+`T` (optional) is the element type of the matrix.
 """
-function matrix(g::EvolvingGraph, t)
-    ns = nodes(g)
+function matrix(g::EvolvingGraph, t, T::Type = Bool)
     n = num_nodes(g)
     es = edges(g, t)
-    A = zeros(Bool, n, n)
+    A = zeros(T, n, n)
     for e in es
-        i = findfirst(ns, e.source)
-        j = findfirst(ns, e.target)
+        i = node_index(e.source)
+        j = node_index(e.target)
         A[(j-1)*n + i] = true
     end
     return A
@@ -280,20 +251,19 @@ end
     spmatrix(g, t)
 
 Return a sparse adjacency matrix representation of an evolving graph
-`g` at timestamp `t`.
+`g` at timestamp `t`. `T` (optional) is the element type of the matrix.
 """
-function spmatrix(g::EvolvingGraph, t)
-    ns = nodes(g)
+function spmatrix(g::EvolvingGraph, t, T::Type = Bool)
     n = num_nodes(g)
     is = Int[]
     js = Int[]
     es = edges(g, t)
     for e in es
-        i = findfirst(ns, e.source)
-        j = findfirst(ns, e.target)
+        i = node_index(e.source)
+        j = node_index(e.target)
         push!(is, i)
         push!(js, j)
     end
-    vs = ones(Bool, length(is))
+    vs = ones(T, length(is))
     return sparse(is, js, vs, n, n)    
 end
