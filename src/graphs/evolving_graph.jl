@@ -5,12 +5,12 @@
 #
 #####################################################
 
-type EvolvingGraph{V, E, T} <: AbstractEvolvingGraph{V, E, T}
+type EvolvingGraph{V, E, T, I} <: AbstractEvolvingGraph{V, E, T}
     is_directed::Bool
     nodes::Vector{V}                 # a vector of nodes
     edges::Vector{E}                 # a vector of edges
     timestamps::Vector{T}        # a vector of timestamps
-    indexof::Dict{Any, Int}        # a dictionary storing index for each node
+    indexof::Dict{I, Int}        # a dictionary storing index for each node
 end
 
 
@@ -21,7 +21,7 @@ Initialize an evolving graph where the nodes are of type `node_type` and
 the timestamps are of type `time_type`.
 """
 evolving_graph{V,T}(::Type{V}, ::Type{T} ;is_directed::Bool = true) = 
-      EvolvingGraph(is_directed, Node{V}[], TimeEdge{Node{V}, T}[], T[], Dict{Any, Int}())
+      EvolvingGraph(is_directed, Node{V}[], TimeEdge{Node{V}, T}[], T[], Dict{V, Int}())
 
 """
     evolving_graph([is_directed = true])
