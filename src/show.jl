@@ -8,7 +8,7 @@ function show(io::IO, v::AttributeNode)
 end
 
 function show(io::IO, v::TimeNode)
-    print(io, "TimeNode($(v.key), $(v.timestamp))")
+    print(io, "TimeNode($(v.node), $(v.timestamp))")
 end
 
 function show(io::IO, e::Edge)
