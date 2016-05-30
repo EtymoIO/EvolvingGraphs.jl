@@ -66,7 +66,8 @@ deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g),
                                            deepcopy(g.nodes),
                                            deepcopy(g.edges), 
                                            deepcopy(g.timestamps),
-                                           deepcopy(g.indexof))
+                                           deepcopy(g.indexof),
+                                           deepcopy(g.activenodes))
 
 eltype{V, T}(g::EvolvingGraph{V, T}) = (V, T)
 
@@ -137,7 +138,7 @@ edges(g::EvolvingGraph) = g.edges
 """
     edges(g, t)
 
-Return the edges of an evolving graph `g` at a given timestamp `t`.
+Return the edges of evolving graph `g` at a given timestamp `t`.
 """
 function edges(g::EvolvingGraph, t)
     inds = findin(g.timestamps, [t])
@@ -151,7 +152,7 @@ end
 """
     num_edges(g)
 
-Return the number of edges of an evolving graph `g`.
+Return the number of edges of evolving graph `g`.
 """
 num_edges(g::EvolvingGraph) = length(g.edges)
 
@@ -159,7 +160,7 @@ num_edges(g::EvolvingGraph) = length(g.edges)
 """
     add_node!(g, v)
 
-Add a node `v` to an evolving graph `g`.
+Add a node `v` to evolving graph `g`.
 """
 function add_node!{V}(g::EvolvingGraph{V}, v::V) 
     push!(g.nodes, v)
@@ -185,7 +186,7 @@ end
 """
     add_edge!(g, te)
 
-Add a TimeEdge `te` to an evolving graph `g`.
+Add a TimeEdge `te` to evolving graph `g`.
 """
 function add_edge!{V, E}(g::EvolvingGraph{V, E}, e::E)
     push!(g.edges, e)
@@ -202,7 +203,7 @@ end
 """
     add_edge!(g, v1, v2, t)
 
-Add an edge from `v1` to `v2` at time `t` to an evolving graph `g`.
+Add an edge from `v1` to `v2` at time `t` to evolving graph `g`.
 """
 function add_edge!(g::EvolvingGraph, v1, v2, t)
     v1 = add_node!(g, v1)
@@ -240,7 +241,7 @@ end
 """
     matrix(g, t[, T = Bool])
 
-Return an adjacency matrix representation of an evolving graph `g` at timestamp `t`.
+Return an adjacency matrix representation of evolving graph `g` at timestamp `t`.
 `T` (optional) is the element type of the matrix.
 """
 function matrix(g::EvolvingGraph, t, T::Type = Bool)
@@ -259,7 +260,7 @@ end
 """
     spmatrix(g, t[, T = Bool])
 
-Return a sparse adjacency matrix representation of an evolving graph
+Return a sparse adjacency matrix representation of evolving graph
 `g` at timestamp `t`. `T` (optional) is the element type of the matrix.
 """
 function spmatrix(g::EvolvingGraph, t, T::Type = Bool)

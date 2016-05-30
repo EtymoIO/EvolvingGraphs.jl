@@ -72,3 +72,5 @@ add_edge!(g, 2, 1, "t3")
 add_edge!(g, [1,2,4], [3,4], "t1")
 n = num_edges(g)
 @test is_directed(g)
+
+forward_neighbors(g, 2, "t1")
