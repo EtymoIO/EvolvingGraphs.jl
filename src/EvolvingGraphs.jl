@@ -2,9 +2,15 @@ module EvolvingGraphs
 
 import Base: ==, show,  slice, issorted, deepcopy, length, eltype
 
-export
+export 
+
+  # base
+  Node, Edge, TimeNode, AttributeNode, TimeEdge, WeightedTimeEdge,
+  AttributeTimeEdge, key, make_node, node_index, rev, AttributeDict,
+  timestamp,
 
    # graph types
+   AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
    TimeGraph, AggregatedGraph, EvolvingGraph, 
    WeightedEvolvingGraph, AttributeEvolvingGraph, 
    IntEvolvingGraph, IntTimeEdge,
@@ -36,7 +42,10 @@ export
    issorted, sorttime!, sorttime, slice!, slice
 
 
-include("graphs/base.jl")
+include("base.jl")
+include("io.jl")
+
+# graph types
 include("graphs/time_graph.jl") 
 include("graphs/aggregated_graph.jl")
 include("graphs/evolving_graph.jl")
@@ -46,9 +55,9 @@ include("graphs/int_evolving_graph.jl")
 include("graphs/matrix_list.jl")
 include("graphs/incidence_matrix.jl")
 
-include("io.jl")
 include("show.jl")
 
+# algorithms
 include("algorithms/bfs.jl")
 include("algorithms/sort_slice.jl")
 include("algorithms/components.jl")

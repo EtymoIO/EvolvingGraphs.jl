@@ -25,9 +25,9 @@ function _breadth_first_visit(g::AbstractEvolvingGraph, s::Tuple)
 end
 
 """
-`breadth_first_visit(g, (v,t))`
+    breadth_first_visit(g, v, t)
 
-returns all the reachable active nodes from a given temporal node
+Return all the reachable active nodes from a given temporal node
 `(v,t)`.
 """
 function breadth_first_visit(g::AbstractEvolvingGraph, s::Tuple)
