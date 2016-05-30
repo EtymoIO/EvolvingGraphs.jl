@@ -299,12 +299,8 @@ Return the forward neighbors of temporal node `(v,t)`.
 """
 function forward_neighbors{V, E, T}(g::EvolvingGraph{V, E, T}, v, t)
     neighbors = Tuple{V, T}[]
-    for nod in nodes(g)
-        if key(nod) == v
-            return forward_neighbors(g, nod, T(t))
-        end
-    end
-    neighbors
+    v = find_node(g, v)
+    return forward_neighbors(g, v, T(t))
 end
 function forward_neighbors{V, E, T}(g::EvolvingGraph{V, E, T}, v::V, t::T)
     neighbors = Tuple{V, T}[]
