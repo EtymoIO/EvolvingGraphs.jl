@@ -7,21 +7,29 @@
 
 type EvolvingGraph{V, E, T, I} <: AbstractEvolvingGraph{V, E, T}
     is_directed::Bool
-    nodes::Vector{V}                 # a vector of nodes
-    edges::Vector{E}                 # a vector of edges
-    timestamps::Vector{T}        # a vector of timestamps
-    indexof::Dict{I, Int}        # a dictionary storing index for each node
+    nodes::Vector{V}                                   # a vector of nodes
+    edges::Vector{E}                                   # a vector of edges
+    timestamps::Vector{T}                          # a vector of timestamps
+    indexof::Dict{I, Int}                                # a dictionary storing index for each node
+    activenodes::Vector{TimeNode{V,T}} # a vector of active nodes
 end
 
 
 """
-    evolving_graph([node_type, time_type[, is_directed = true])
+    evolving_graph(node_type, time_type[, is_directed = true])
 
 Initialize an evolving graph where the nodes are of type `node_type` and 
 the timestamps are of type `time_type`.
 """
 evolving_graph{V,T}(::Type{V}, ::Type{T} ;is_directed::Bool = true) = 
-      EvolvingGraph(is_directed, Node{V}[], TimeEdge{Node{V}, T}[], T[], Dict{V, Int}())
+      EvolvingGraph(
+                                 is_directed, 
+                                 Node{V}[], 
+                                 TimeEdge{Node{V}, T}[], 
+                                 T[], 
+                                 Dict{V, Int}(),
+                                 TimeNode{Node{V}, T}[]
+                                 )
 
 """
     evolving_graph([is_directed = true])
@@ -99,7 +107,7 @@ end
 """
     nodes(g)
 
-Return the nodes of the evolving graph `g`.
+Return the nodes of evolving graph `g`.
 """
 nodes(g::EvolvingGraph) = g.nodes
 num_nodes(g::EvolvingGraph) = length(nodes(g))
@@ -109,6 +117,13 @@ function timestamps(g::EvolvingGraph)
     return sort(ts)
 end
 num_timestamps(g::EvolvingGraph) = length(timestamps(g))
+
+"""
+    activenodes(g)
+
+Return the active nodes of evolving graph `g`.
+"""
+activenodes(g::EvolvingGraph) = g.activenodes
 
 
 """
@@ -166,6 +181,7 @@ function add_node!{V}(g::EvolvingGraph{V}, v)
     end
 end
 
+
 """
     add_edge!(g, te)
 
@@ -173,6 +189,8 @@ Add a TimeEdge `te` to an evolving graph `g`.
 """
 function add_edge!{V, E}(g::EvolvingGraph{V, E}, e::E)
     push!(g.edges, e)
+    push!(g.activenodes, TimeNode(e.source, e.timestamp))
+    push!(g.activenodes, TimeNode(e.target, e.timestamp))
     push!(g.timestamps, e.timestamp)
     if !(is_directed(g))
         push!(g.edges, rev(e))
@@ -259,7 +277,45 @@ function spmatrix(g::EvolvingGraph, t, T::Type = Bool)
     return sparse(is, js, vs, n, n)    
 end
 
-function forward_neighbors(g::EvolvingGraph, v::Tuple)
-    error("forward_neighbors is not implemented for EvolvingGraph, please
-               use IntEvolvingGraph instead.")
+"""
+    forward_neighbors(g, v, t)
+
+Return the forward neighbors of temporal node `(v,t)`.
+"""
+function forward_neighbors{V, E, T}(g::EvolvingGraph{V, E, T}, v, t)
+    neighbors = Tuple{V, T}[]
+    for nod in nodes(g)
+        if key(nod) == v
+            return forward_neighbors(g, nod, T(t))
+        end
+    end
+    neighbors
+end
+function forward_neighbors{V, E, T}(g::EvolvingGraph{V, E, T}, v::V, t::T)
+    neighbors = Tuple{V, T}[]
+    if !(TimeNode(v, t) in activenodes(g))
+        return neighbors   # if (v, t) is not active, return an empty list.
+    end
+    for e in edges(g)
+        if v == e.source
+            if t == e.timestamp
+                push!(neighbors, (e.target, t))   # neighbors at timestamp t
+            elseif t < e.timestamp
+                push!(neighbors, (e.source, e.timestamp))  # v itself at later timestamps
+            end
+        elseif v == e.target
+            if t < e.timestamp
+                push!(neighbors, (e.target, e.timestamp))  # v itself at later timestamps
+            end
+        end
+    end
+    neighbors
+end
+"""
+    backward_neighbors(g, v, t)
+
+Return the backward neighbors of temporal node `(v,t)`.
+"""
+function backward_neighbors{V, E, T}(g::EvolvingGraph{V, E, T}, v::V, t::T)
+
 end

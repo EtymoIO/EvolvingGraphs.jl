@@ -13,7 +13,7 @@ export
    add_node!, add_edge!, add_graph!, rm_edge!, has_edge, has_node,
    nodes, num_nodes, edges, num_edges,
    source, target, matrices, num_matrices, 
-   timestamps, num_timestamps,
+   timestamps, num_timestamps, activenodes,
    forward_neighbors, is_directed, undirected!, undirected, 
    time_graph, evolving_graph, weighted_evolving_graph, weight,
    attribute_evolving_graph, attributesvec, attributes,
