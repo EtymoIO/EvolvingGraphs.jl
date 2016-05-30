@@ -183,12 +183,12 @@ function add_node!{V}(g::EvolvingGraph{V}, v)
 end
 
 function find_node(g::EvolvingGraph, v)
-    for nod in nodes(g)
-        if key(nod) == v
-            return nod
-        end
+    try
+        id = g.indexof[v]
+        return Node(id, v)
+    catch
+        return false
     end
-    return false
 end
 
 """
