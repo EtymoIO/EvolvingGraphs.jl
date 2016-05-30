@@ -18,11 +18,11 @@ attributes(b) =  Dict("a" => 2)
 @test b == b1
 print(b)
 
-d = TimeNode(2, 'd', "t1")
-@test key(d) == 'd'
+d = TimeNode(a,  "t1")
+@test key(d) == "a"
 @test timestamp(d) == "t1"
-@test node_index(d) == 2
-@test eltype(d)[1] <: Char
+@test node_index(d) == 1
+@test eltype(d)[1] <: Node
 @test eltype(d)[2] <: AbstractString
 print(d)
 
