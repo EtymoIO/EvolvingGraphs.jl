@@ -182,6 +182,14 @@ function add_node!{V}(g::EvolvingGraph{V}, v)
     end
 end
 
+function find_node(g::EvolvingGraph, v)
+    for nod in nodes(g)
+        if key(nod) == v
+            return nod
+        end
+    end
+    return false
+end
 
 """
     add_edge!(g, te)
@@ -189,10 +197,16 @@ end
 Add a TimeEdge `te` to evolving graph `g`.
 """
 function add_edge!{V, E}(g::EvolvingGraph{V, E}, e::E)
+    # add edge
     push!(g.edges, e)
-    push!(g.activenodes, TimeNode(e.source, e.timestamp))
-    push!(g.activenodes, TimeNode(e.target, e.timestamp))
+    # add active nodes
+    n1 = TimeNode(e.source, e.timestamp)
+    n2 = TimeNode(e.target, e.timestamp)
+    push!(g.activenodes, n1)
+    push!(g.activenodes, n2)
+    # add timestamp
     push!(g.timestamps, e.timestamp)
+    # handle the undirected case
     if !(is_directed(g))
         push!(g.edges, rev(e))
         push!(g.timestamps, e.timestamp)

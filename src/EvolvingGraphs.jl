@@ -4,10 +4,10 @@ import Base: ==, show,  slice, issorted, deepcopy, length, eltype
 
 export 
 
-  # base
-  Node, Edge, TimeNode, AttributeNode, TimeEdge, WeightedTimeEdge,
-  AttributeTimeEdge, key, make_node, node_index, rev, AttributeDict,
-  timestamp,
+   # base
+   Node, Edge, TimeNode, AttributeNode, TimeEdge, WeightedTimeEdge,
+   AttributeTimeEdge, key, make_node, node_index, rev, AttributeDict,
+   timestamp,
 
    # graph types
    AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
