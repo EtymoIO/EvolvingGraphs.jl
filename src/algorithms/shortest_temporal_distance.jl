@@ -6,19 +6,16 @@ type TemporalPath <: AbstractPath
 end
 
 TemporalPath() = TemporalPath([])
-
 length(p::TemporalPath) = length(p.walks)
 
-# spatical length disregard time 
+# spatical length disregard time
 spatial_length(p::TemporalPath) = length(unique(map(x -> x[1], p.walks)))
-
 has_node(p::TemporalPath, v::Tuple) = v in p.walks
-
 ==(p1::TemporalPath, p2::TemporalPath) = (p1.walks == p2.walks)
 
 # find the shortest temporal path via depth first search
 function _DFS_shortest_temporal_path(g::AbstractEvolvingGraph, 
-                                     v1::Tuple,
+                                     v1::Tuple,  # v1 and v2 are active nodes (v,t) 
                                      v2::Tuple,
                                      path = TemporalPath(),
                                      shortest =  Union{};
@@ -39,7 +36,7 @@ function _DFS_shortest_temporal_path(g::AbstractEvolvingGraph,
                 if (shortest ==  Union{}) || (spatial_length(path) < spatial_length(shortest))
                     newPath = _DFS_shortest_temporal_path(g, node, v2, path, shortest, verbose = verbose)
                     if newPath !=  Union{}
-                    shortest = newPath
+                        shortest = newPath
                     end
                 end
             end
@@ -48,19 +45,40 @@ function _DFS_shortest_temporal_path(g::AbstractEvolvingGraph,
     return shortest
 end
 
-@doc doc"""
-`shortest_temporal_path(g, (v1, t1), (v2, t2) [, verbose = false])` finds the shortest 
-temporal path from node `v1` at timestamp `t1` to node `v2` at timestamp 
-`t2` on the evolving graph `g`. If `verbose = true`, prints the current path 
-at each search step. 
-"""->
-shortest_temporal_path(g::AbstractEvolvingGraph, v1::Tuple, v2::Tuple; verbose = false) = _DFS_shortest_temporal_path(g, v1, v2, verbose = verbose)   
+
 
 @doc doc"""
-`shortest_temporal_distance(g, (v1, t1), (v2, t2))` finds the shortest 
-temporal distance from node `v1` at timestamp `t1` to node `v2` at timestamp 
-`t2` on the evolving graph `g`.
-"""->
-shortest_temporal_distance(g::AbstractEvolvingGraph, v1::Tuple, v2::Tuple) =
-        shortest_temporal_path(g, v1, v2) == Union{} ? Inf : length(shortest_temporal_path(g, v1, v2)) - 1
+        shortest_temporal_path(g, v1, t1, v2, t2 [, verbose = false])
 
+Find the shortest temporal path from node `v1` at timestamp `t1` 
+to node `v2` at timestamp `t2` on the evolving graph `g`. 
+If `verbose = true`, prints the current path at each search step. 
+"""->
+shortest_temporal_path(g::AbstractEvolvingGraph, v1, t1, v2, t2; verbose::Bool = false) =    _DFS_shortest_temporal_path(g, (v1, t1), (v2, t2), verbose = verbose)
+shortest_temporal_path{V,  E, T}(g::EvolvingGraph{V, E, T}, 
+                                                        v1::V, t1::T, v2::V, t2::T;
+                                                        verbose::Bool = false) =  
+   _DFS_shortest_temporal_path(g, (v1, t1), (v2, t2), verbose = verbose)
+
+
+
+function shortest_temporal_path{V, E, T}(g::EvolvingGraph{V, E, T}, v1, t1, v2, t2;
+                                                                        verbose::Bool = false)
+    v1 = find_node(g, v1)
+    v2 = find_node(g, v2)
+    shortest_temporal_path(g, v1, T(t1), v2, T(t2), verbose = verbose)
+end
+
+@doc doc"""
+        shortest_temporal_distance(g, v1, t1, v2, t2)
+
+Find the shortest temporal distance from node `v1` at timestamp `t1` to 
+node `v2` at timestamp `t2` on the evolving graph `g`.
+"""->
+function shortest_temporal_distance(g::AbstractEvolvingGraph, v1, t1, v2, t2)
+    if shortest_temporal_path(g, v1, t1, v2, t2) == Union{} 
+        return Inf 
+    else
+        return length(shortest_temporal_path(g, v1, t1, v2, t2)) - 1
+    end
+end

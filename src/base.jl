@@ -157,37 +157,3 @@ end
 ######################################
 
 is_directed(g::AbstractGraph) = g.is_directed
-
-
-#### Evolving Graph functions ####
-
-
-#`undirected!(g)` turns a directed graph to an undirected graph. 
-undirected!(g::AbstractEvolvingGraph) = ( g.is_directed = false ; g)
-
-
-#`undirected(g)` turns a directed graph `g` to an undirected graph, leaving `g` unchanged.
-undirected(g::AbstractEvolvingGraph) = undirected!(deepcopy(g))
-
-
-#`has_node(g, v, t)` returns `true` if the node `v` at the timestamp `t` is 
-#in the evolving graph `g` and `false` otherwise. 
-function has_node(g::AbstractEvolvingGraph, v, t)
-    p = findin(g.timestamps , [t])
-    return (v in g.ilist[p]) || (v in g.jlist[p]) 
-end
-
-
-#`timestamps(g)` returns the timestamps of an evolving graph `g`.
-function timestamps(g::AbstractEvolvingGraph) 
-    ts = unique(g.timestamps)
-    return sort(ts)
-end
-
-#`num_timestamps(g)` returns the number of timestamps of `g`, 
-#where `g` is an evolving graph.
-num_timestamps(g::AbstractEvolvingGraph) = length(timestamps(g))
-
-#`nodes(g)` returns the nodes of an evolving graph `g`. 
-nodes(g::AbstractEvolvingGraph) = union(g.ilist, g.jlist)
-num_nodes(g::AbstractEvolvingGraph) = length(nodes(g))

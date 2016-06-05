@@ -378,6 +378,7 @@ function forward_neighbors{V, E, T}(g::EvolvingGraph{V, E, T}, v, t)
     v = find_node(g, v)
     return forward_neighbors(g, v, T(t))
 end
+forward_neighbors(g::EvolvingGraph, v::Tuple) = forward_neighbors(g, v[1], v[2])
 function forward_neighbors{V, E, T}(g::EvolvingGraph{V, E, T}, v::V, t::T)
     neighbors = Tuple{V, T}[]
     if !(TimeNode(v, t) in activenodes(g))
