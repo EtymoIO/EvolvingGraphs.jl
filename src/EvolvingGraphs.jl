@@ -63,6 +63,5 @@ include("algorithms/random.jl")
 # metric
 include("algorithms/shortest_distance.jl")
 include("algorithms/shortest_temporal_distance.jl")
-include("algorithms/temporal_efficiency.jl")
 
 end # module

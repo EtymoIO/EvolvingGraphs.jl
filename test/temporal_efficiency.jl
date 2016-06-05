@@ -1,4 +1,4 @@
-g2 = evolving_graph(AbstractString, Int)
+g2 = evolving_graph(ASCIIString, Int)
 add_edge!(g2, "a", "b", 1)
 add_edge!(g2, "b", "c", 2)
 add_edge!(g2, "c", "d", 2)

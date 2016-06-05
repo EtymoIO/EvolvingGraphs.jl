@@ -16,7 +16,7 @@ tests = [
          "sort_slice",
          "shortest_distance",
          "shortest_temporal_distance",
-         #"temporal_efficiency",
+         "temporal_efficiency",
          #"components",
          ]
 

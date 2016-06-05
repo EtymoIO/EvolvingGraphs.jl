@@ -63,4 +63,3 @@ shortest_distance{V}(g::TimeGraph{Node{V}}, v1::V, v2::V) =
 
 #shortest_distance{V}(g::TimeGraph{AttributeNode{V}}, v1::V, v2::V) = 
 #            shortest_path(g, v1, v2) ==  Union{} ? Inf : length(shortest_path(g, v1, v2)) - 1
-
