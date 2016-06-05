@@ -22,19 +22,17 @@ function int_matrix_list(n::Int)
 end
 
 
-for elty in (:EvolvingGraph, :AttributeEvolvingGraph)
-    @eval begin
-        function int_matrix_list(g::$elty)
-            ts = timestamps(g)
-            n = num_nodes(g)
-            As = int_matrix_list(n)
-            for t in ts
-                add_matrix!(As, spmatrix(g, t))
-            end
-            As
-        end
+
+function int_matrix_list(g::EvolvingGraph)
+    ts = timestamps(g)
+    n = num_nodes(g)
+    As = int_matrix_list(n)
+    for t in ts
+        add_matrix!(As, spmatrix(g, t))
     end
+    As
 end
+
 is_directed(g::IntMatrixList) = true
 nodelists(g::IntMatrixList) = g.nodelists
 

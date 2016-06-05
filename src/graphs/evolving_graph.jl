@@ -71,7 +71,38 @@ deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g),
 
 eltype{V, T}(g::EvolvingGraph{V, T}) = (V, T)
 
-###### nodes ##############################################
+### Weighted Evolving Graph
+
+"""
+    weighted_evolving_graph(node_type, time_type, edge_weight_type [, is_directed = true])
+
+Initialize a weighted evolving graph where the nodes are of type `node_type`,
+timestamps are of type `time_type` and the edge weights are of type
+`edge_weight_type`.
+"""
+function weighted_evolving_graph{V, T, W <: Real}(::Type{V}, ::Type{T}, ::Type{W}; 
+                                          is_directed::Bool = true)
+    EvolvingGraph(
+                  is_directed,
+                  Node{V}[],
+                  WeightedTimeEdge{Node{V}, T, W}[],
+                  T[],
+                  Dict{V, Int}(),
+                  TimeNode{Node{V}, T}[]
+                  )
+end
+
+"""
+    weighted_evolving_graph([is_directed = true])
+
+Initialize a weighted evolving graph with integer nodes, integer timestamps, and
+integer edge weight.
+"""
+weighted_evolving_graph(;is_directed::Bool = true) = 
+     weighted_evolving_graph(Int, Int, Int, is_directed = is_directed)
+
+
+#############################################
 
 """
     has_node(g, v, t)
@@ -219,10 +250,26 @@ end
 
 Add an edge from `v1` to `v2` at time `t` to evolving graph `g`.
 """
-function add_edge!(g::EvolvingGraph, v1, v2, t)
+function add_edge!{V, E <: TimeEdge}(g::EvolvingGraph{V, E}, v1, v2, t)
     v1 = add_node!(g, v1)
     v2 = add_node!(g, v2)
-    e = TimeEdge(v1, v2, t)
+    e = E(v1, v2, t)
+    if !(e in edges(g))
+        add_edge!(g, e)
+    end
+    e
+end
+
+"""
+    add_edge!(g, v1, v2, t, w)
+
+Add an edge from `v1` to `v2` at time `t` with edge weight `w` to 
+evolving graph `g`.
+"""
+function add_edge!{V, E <: WeightedTimeEdge}(g::EvolvingGraph{V,E}, v1, v2, t, w)
+    v1 = add_node!(g, v1)
+    v2 = add_node!(g, v2)
+    e = E(v1, v2, w, t)
     if !(e in edges(g))
         add_edge!(g, e)
     end
@@ -230,7 +277,7 @@ function add_edge!(g::EvolvingGraph, v1, v2, t)
 end
 
 # short-cut for adding multiply edges
-function add_edge!(g::EvolvingGraph, v1::Array, v2::Array, t)
+function add_edge!{V, E <:TimeEdge}(g::EvolvingGraph{V, E}, v1::Array, v2::Array, t)
     for j in v2
         for i in v1
             add_edge!(g, i, j, t)
@@ -258,7 +305,7 @@ end
 Return an adjacency matrix representation of evolving graph `g` at timestamp `t`.
 `T` (optional) is the element type of the matrix.
 """
-function matrix(g::EvolvingGraph, t, T::Type = Bool)
+function matrix{V, E <:TimeEdge}(g::EvolvingGraph{V, E}, t, T::Type = Bool)
     n = num_nodes(g)
     es = edges(g, t)
     A = zeros(T, n, n)
@@ -270,6 +317,18 @@ function matrix(g::EvolvingGraph, t, T::Type = Bool)
     return A
 end
 
+function matrix{V, E <: WeightedTimeEdge}(g::EvolvingGraph{V,E}, t, T::Type = Float64) 
+    n = num_nodes(g)
+    es = edges(g, t)
+    A = zeros(T, n, n)
+    for e in es
+        i = node_index(e.source)
+        j = node_index(e.target)
+        w = e.weight
+        A[(j-1)*n + i] = T(w)
+    end
+    return A
+end
 
 """
     spmatrix(g, t[, T = Bool])
@@ -277,7 +336,7 @@ end
 Return a sparse adjacency matrix representation of evolving graph
 `g` at timestamp `t`. `T` (optional) is the element type of the matrix.
 """
-function spmatrix(g::EvolvingGraph, t, T::Type = Bool)
+function spmatrix{V, E <: TimeEdge}(g::EvolvingGraph{V, E}, t, T::Type = Bool)
     n = num_nodes(g)
     is = Int[]
     js = Int[]
@@ -290,6 +349,23 @@ function spmatrix(g::EvolvingGraph, t, T::Type = Bool)
     end
     vs = ones(T, length(is))
     return sparse(is, js, vs, n, n)    
+end
+
+function spmatrix{V, E <: WeightedTimeEdge}(g::EvolvingGraph{V, E}, t, T::Type = Float64)
+    n = num_nodes(g)
+    is = Int[]
+    js = Int[]
+    ws = T[]
+    es = edges(g, t)
+    for e in es
+        i = node_index(e.source)
+        j = node_index(e.target)
+        w = T(e.weight)
+        push!(is, i)
+        push!(js, j)
+        push!(ws, w)
+    end
+    return sparse(is, js, ws, n, n)   
 end
 
 """
@@ -328,5 +404,5 @@ end
 Return the backward neighbors of temporal node `(v,t)`.
 """
 function backward_neighbors{V, E, T}(g::EvolvingGraph{V, E, T}, v::V, t::T)
-
+    error("not implemented yet!")
 end

@@ -6,13 +6,11 @@ export
 
    # base
    Node, Edge, TimeNode, AttributeNode, TimeEdge, WeightedTimeEdge,
-   AttributeTimeEdge, key, make_node, node_index, rev, AttributeDict,
-   timestamp,
+   key, make_node, node_index, rev, timestamp,
 
    # graph types
    AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
-   TimeGraph, AggregatedGraph, EvolvingGraph, 
-   WeightedEvolvingGraph, AttributeEvolvingGraph, 
+   TimeGraph, AggregatedGraph, EvolvingGraph,
    IntEvolvingGraph, IntTimeEdge,
 
    # graph functions
@@ -49,8 +47,6 @@ include("io.jl")
 include("graphs/time_graph.jl") 
 include("graphs/aggregated_graph.jl")
 include("graphs/evolving_graph.jl")
-include("graphs/weighted_evolving_graph.jl")
-include("graphs/attribute_evolving_graph.jl")
 include("graphs/int_evolving_graph.jl")
 include("graphs/matrix_list.jl")
 include("graphs/incidence_matrix.jl")
@@ -68,6 +64,5 @@ include("algorithms/random.jl")
 include("algorithms/shortest_distance.jl")
 include("algorithms/shortest_temporal_distance.jl")
 include("algorithms/temporal_efficiency.jl")
-
 
 end # module

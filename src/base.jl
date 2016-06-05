@@ -136,30 +136,7 @@ target(e::WeightedTimeEdge) = e.target
 timestamp(e::WeightedTimeEdge) = e.timestamp
 weight(e::WeightedTimeEdge) = e.weight
 
-typealias AttributeDict Dict{UTF8String, Any}
-
-type AttributeTimeEdge{V, T} 
-    source::V
-    target::V
-    timestamp::T
-    attributes::Dict
-end
-
-AttributeTimeEdge{V, T}(v1::V, v2::V, t::T) = AttributeTimeEdge(v1, v2, t, AttributeDict())
-
-source(e::AttributeTimeEdge) = e.source
-target(e::AttributeTimeEdge) = e.target
-timestamp(e::AttributeTimeEdge) = e.timestamp
-attributes(e::AttributeTimeEdge) = e.attributes
-
-==(e1::AttributeTimeEdge, e2::AttributeTimeEdge) = (e1.source == e2.source && 
-                                                    e1.target == e2.target &&
-                                                    e1.timestamp== e2.timestamp)
-
-rev(e::AttributeTimeEdge) = AttributeTimeEdge(e.target, e.source, e.timestamp, e.attributes)
-
-typealias EdgeType{V}  Union{Edge{V}, TimeEdge{V}, WeightedTimeEdge{V},
-                                    AttributeTimeEdge{V}}
+typealias EdgeType{V}  Union{Edge{V}, TimeEdge{V}, WeightedTimeEdge{V}}
 
 """
     has_node(e, v)
@@ -205,64 +182,10 @@ function timestamps(g::AbstractEvolvingGraph)
     return sort(ts)
 end
 
-
 #`num_timestamps(g)` returns the number of timestamps of `g`, 
 #where `g` is an evolving graph.
 num_timestamps(g::AbstractEvolvingGraph) = length(timestamps(g))
 
-
-
 #`nodes(g)` returns the nodes of an evolving graph `g`. 
 nodes(g::AbstractEvolvingGraph) = union(g.ilist, g.jlist)
 num_nodes(g::AbstractEvolvingGraph) = length(nodes(g))
-
-
-function forward_neighbors(g::AbstractEvolvingGraph, v::Tuple)
-    has_node(g, v[1], v[2]) || return collect(zip([], []))
-    g = sorttime(g)
-      
-    starttime = findfirst(g.timestamps, v[2])
-    endtime = findlast(g.timestamps, v[2])
-
-    nodei = findin(g.ilist[starttime:end], [v[1]]) + starttime - 1
-    nodej = findin(g.jlist[starttime:end], [v[1]]) + starttime - 1
-    
-    neighbors = sizehint!(Tuple[], length(nodei) + length(nodej))
-    
-    for i in nodei
-        if i > endtime
-            push!(neighbors, (g.ilist[i], g.timestamps[i]))
-        else
-            push!(neighbors, (g.jlist[i], g.timestamps[i]))
-        end
-    end
-    for i in nodej
-        if i > endtime
-            push!(neighbors, (g.jlist[i], g.timestamps[i]))
-        end
-    end
-    
-    if !is_directed(g)
-        for i in nodej
-            if i <= endtime
-                push!(neighbors, (g.ilist[i], g.timestamps[i]))
-            end
-        end
-    end
-            
-    unique(neighbors)
-end
-
-forward_neighbors(g::AbstractEvolvingGraph, v, t) = forward_neighbors(g, (v,t))
-
-function _find_edge_index(g::AbstractEvolvingGraph, te::EdgeType)
-    tindx = findin(g.timestamps, [timestamp(te)])
-    iindx = findin(g.ilist, [source(te)])
-    jindx = findin(g.jlist, [target(te)])
-    return intersect(tindx, iindx, jindx)[1]
-end
-
-_has_attribute(g::AbstractEvolvingGraph) = typeof(g) <: AttributeEvolvingGraph ? 
-        true : false
-
-typealias NodeVector{V} Vector{Node{V}}
