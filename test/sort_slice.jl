@@ -20,24 +20,3 @@ slice!(g1, "t1", "t2")
 p = sortperm(g.timestamps)
 
 [@test e in edges(g) for e in edges(g1)]
-
-
-# test attribute evolving graph
-
-ag = attribute_evolving_graph(Int, Int)
-add_edge!(ag, 1, 2, 1,  Dict("a" => 1.2))
-add_edge!(ag, 2, 1, 4,  Dict("b" => 1.2, "a" => 0))
-add_edge!(ag, 2, 3, 3,  Dict("a" => 3.4))
-add_edge!(ag, 3, 2, 1,  Dict("a" => 2.5))
-
-ag1 = sorttime(ag)
-
-
-ag2 = slice(ag, 1, 1)
-
-@test num_timestamps(ag2) == 1
-@test ag2.timestamps[1] == 1 
-@test ag2.timestamps[2] == 1
-
-ag3 = slice(ag, [2,3])
-@test nodes(ag3) == [2,3]

@@ -22,57 +22,29 @@ function egread(filename)
 
     length(header) >= 3 || error("The length of header must be >= 3") 
     
-                  
-    eg = length(header) == 3 ? true : false
-
+    
     ilist = ASCIIString[]
     jlist = ASCIIString[]
     timestamps = ASCIIString[]
 
-    if eg
+    entries = split(chomp(readline(file)), ',')
+    while length(entries) == 3
+        push!(ilist, string(entries[1]))
+        push!(jlist, string(entries[2]))
+        push!(timestamps, string(entries[3]))
         entries = split(chomp(readline(file)), ',')
-        while length(entries) == 3
-            push!(ilist, string(entries[1]))
-            push!(jlist, string(entries[2]))
-            push!(timestamps, string(entries[3]))
-            entries = split(chomp(readline(file)), ',')
-        end       
+    end       
         
-        # try parse nodes and timestamps as Integer.
-        try 
-            ilist = [parse(Int64, s) for s in ilist]
-            jlist = [parse(Int64, s) for s in jlist]
-        end
-
-        try 
-            timestamps = [parse(Int64, s) for s in timestamps]
-        end
-        g = evolving_graph(ilist, jlist, timestamps, is_directed = is_directed)
-    else
-        attributesvec = Dict[]
-        entries = split(chomp(readline(file)), ',')
-
-        while length(entries) >= 4           
-            push!(ilist, entries[1])
-            push!(jlist, entries[2])
-            push!(timestamps, entries[3])
-            push!(attributesvec, Dict(zip(header[4:end], entries[4:end])))
-            entries = split(chomp(readline(file)), ',')
-        end
-        
-        # try parse nodes and timestamps as Integer.
-        try 
-            ilist = [parse(Int64, s) for s in ilist]
-            jlist = [parse(Int64, s) for s in jlist]
-        end
-
-        try 
-            timestamps = [parse(Int64, s) for s in timestamps]
-        end
-        
-        g = AttributeEvolvingGraph(is_directed, ilist, jlist, timestamps, attributesvec)
+    # try parse nodes and timestamps as Integer.
+    try 
+        ilist = [parse(Int64, s) for s in ilist]
+        jlist = [parse(Int64, s) for s in jlist]
     end
-    g
+
+    try 
+        timestamps = [parse(Int64, s) for s in timestamps]
+    end
+    return evolving_graph(ilist, jlist, timestamps, is_directed = is_directed)
 end
 
 function _egwrite(io::IO, g::AbstractEvolvingGraph)
@@ -81,30 +53,12 @@ function _egwrite(io::IO, g::AbstractEvolvingGraph)
     firstline = "i,j,timestamps"
 
     n = num_edges(g)
-
-    if _has_attribute(g)
-        names = keys(g.attributesvec[1])
-
-        # assuming all edges have the same number of attributes
-        write(io, "$(firstline),")
-        write(io, "$(join(names, ','))\n")
-        for i in 1:n
-            edges = join([g.ilist[i], g.jlist[i], g.timestamps[i]], ',')
-            write(io, "$(edges),")
-            for key in names
-                write(io, "$(g.attributesvec[i][key]),")
-            end
-            write(io,"\n")
-        end     
-    else
-        write(io, "$(firstline)\n")
-        for i in 1:n
-            es = g.edges[i]
-            edges = join([source(es), target(es), timestamp(es)], ',')
-            write(io, "$(edges)\n")
-        end
+    write(io, "$(firstline)\n")
+    for i in 1:n
+        es = g.edges[i]
+        edges = join([source(es), target(es), timestamp(es)], ',')
+        write(io, "$(edges)\n")
     end
-        
 end
 
 

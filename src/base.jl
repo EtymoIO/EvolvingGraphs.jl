@@ -83,7 +83,7 @@ eltype{V,T}(::TimeNode{V,T}) = (V, T)
 typealias NodeType{V}  Union{Node{V}, AttributeNode{V}, TimeNode{V}}
 node_index(v::NodeType, g::AbstractGraph) = index(v)
 
-
+typealias NodeVector{V} Vector{Node{V}}
 
 
 ##########################################
@@ -135,6 +135,8 @@ source(e::WeightedTimeEdge) = e.source
 target(e::WeightedTimeEdge) = e.target
 timestamp(e::WeightedTimeEdge) = e.timestamp
 weight(e::WeightedTimeEdge) = e.weight
+rev(e::WeightedTimeEdge) = 
+      WeightedTimeEdge(e.target, e.source, e.weight, e.timestamp)
 
 typealias EdgeType{V}  Union{Edge{V}, TimeEdge{V}, WeightedTimeEdge{V}}
 

@@ -74,3 +74,11 @@ n = num_edges(g)
 @test is_directed(g)
 
 forward_neighbors(g, 2, "t1")
+
+wg = weighted_evolving_graph(ASCIIString, Int, Int, is_directed = false)
+add_edge!(wg, "a", "b", 1, 2)
+add_edge!(wg, "b", "c", 1, 1)
+add_edge!(wg, "a", "e", 2, 4)
+add_edge!(wg, "e", "f", 3, 2)
+@test num_edges(wg) == 8
+display(wg)
