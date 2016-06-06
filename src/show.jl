@@ -12,15 +12,15 @@ function show(io::IO, v::TimeNode)
 end
 
 function show(io::IO, e::Edge)
-    print(io, "Edge $(e.source)->$(e.target)")
+    print(io, "$(e.source)->$(e.target)")
 end
  
 function show(io::IO, e::TimeEdge)
-    print(io, "TimeEdge $(e.source)->$(e.target) at time $(e.timestamp)")
+    print(io, "$(e.source)->$(e.target) at time $(e.timestamp)")
 end
 
 function show(io::IO, e::WeightedTimeEdge)
-    print(io, "WeightedTimeEdge $(e.source)-$(e.weight)->$(e.target) at time $(e.timestamp)")
+    print(io, "$(e.source)-$(e.weight)->$(e.target) at time $(e.timestamp)")
 end
 
 function show(io::IO, g::EvolvingGraph)
