@@ -1,14 +1,11 @@
-export int_evolving_graph, temporal_nodes
-
-
-type IntEvolvingGraph <: AbstractEvolvingGraph
+type IntEvolvingGraph{V ,T} <: AbstractEvolvingGraph{V, T}
     is_directed::Bool
-    nodes::UnitRange{Int}
-    timestamps::Vector{Int}
+    nodes::UnitRange{V}
+    timestamps::Vector{T}
     nnodes::Int      # number of nodes
     nedges::Int      # number of static edges
-    forward_adjlist::Vector{Vector{Int}}
-    backward_adjlist::Vector{Vector{Int}}
+    forward_adjlist::Vector{Vector{V}}
+    backward_adjlist::Vector{Vector{V}}
 end
 
 """

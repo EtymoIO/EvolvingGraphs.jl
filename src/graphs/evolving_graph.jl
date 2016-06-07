@@ -5,7 +5,7 @@
 #
 #####################################################
 
-type EvolvingGraph{V, E, T, I} <: AbstractEvolvingGraph{V, E, T}
+type EvolvingGraph{V, T, E, I} <: AbstractEvolvingGraph{V, T, E}
     is_directed::Bool
     nodes::Vector{V}                                   # a vector of nodes
     edges::Vector{E}                                   # a vector of edges
@@ -227,7 +227,7 @@ end
 
 Add a TimeEdge `te` to evolving graph `g`.
 """
-function add_edge!{V, E}(g::EvolvingGraph{V, E}, e::E)
+function add_edge!{V, T, E}(g::EvolvingGraph{V, T, E}, e::E)
     # add edge
     push!(g.edges, e)
     # add active nodes
@@ -250,7 +250,7 @@ end
 
 Add an edge from `v1` to `v2` at time `t` to evolving graph `g`.
 """
-function add_edge!{V, E <: TimeEdge}(g::EvolvingGraph{V, E}, v1, v2, t)
+function add_edge!{V, T, E <: TimeEdge}(g::EvolvingGraph{V, T, E}, v1, v2, t)
     v1 = add_node!(g, v1)
     v2 = add_node!(g, v2)
     e = E(v1, v2, t)
@@ -266,7 +266,8 @@ end
 Add an edge from `v1` to `v2` at time `t` with edge weight `w` to 
 evolving graph `g`.
 """
-function add_edge!{V, E <: WeightedTimeEdge}(g::EvolvingGraph{V,E}, v1, v2, t, w)
+function add_edge!{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V,T, E}, 
+                                                                                         v1, v2, t, w)
     v1 = add_node!(g, v1)
     v2 = add_node!(g, v2)
     e = E(v1, v2, w, t)
@@ -277,7 +278,8 @@ function add_edge!{V, E <: WeightedTimeEdge}(g::EvolvingGraph{V,E}, v1, v2, t, w
 end
 
 # short-cut for adding multiply edges
-function add_edge!{V, E <:TimeEdge}(g::EvolvingGraph{V, E}, v1::Array, v2::Array, t)
+function add_edge!{V, T, E <:TimeEdge}(g::EvolvingGraph{V, T, E}, 
+                                                                        v1::Array, v2::Array, t)
     for j in v2
         for i in v1
             add_edge!(g, i, j, t)
@@ -299,13 +301,14 @@ function rm_edge!(g::EvolvingGraph, e::TimeEdge)
 end
 
 
+
 """
     matrix(g, t[, T = Bool])
 
 Return an adjacency matrix representation of evolving graph `g` at timestamp `t`.
 `T` (optional) is the element type of the matrix.
 """
-function matrix{V, E <:TimeEdge}(g::EvolvingGraph{V, E}, t, T::Type = Bool)
+function matrix{V, T, E <:TimeEdge}(g::EvolvingGraph{V, T, E}, t, ::Type{T} = Float64)
     n = num_nodes(g)
     es = edges(g, t)
     A = zeros(T, n, n)
@@ -317,7 +320,8 @@ function matrix{V, E <:TimeEdge}(g::EvolvingGraph{V, E}, t, T::Type = Bool)
     return A
 end
 
-function matrix{V, E <: WeightedTimeEdge}(g::EvolvingGraph{V,E}, t, T::Type = Float64) 
+function matrix{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E}, 
+                                                                                  t, ::Type{T} = Float64) 
     n = num_nodes(g)
     es = edges(g, t)
     A = zeros(T, n, n)
@@ -336,7 +340,8 @@ end
 Return a sparse adjacency matrix representation of evolving graph
 `g` at timestamp `t`. `T` (optional) is the element type of the matrix.
 """
-function spmatrix{V, E <: TimeEdge}(g::EvolvingGraph{V, E}, t, T::Type = Bool)
+function spmatrix{V, T, E <: TimeEdge}(g::EvolvingGraph{V, T, E}, t, 
+                                                                      ::Type{T} = Float64)
     n = num_nodes(g)
     is = Int[]
     js = Int[]
@@ -351,7 +356,8 @@ function spmatrix{V, E <: TimeEdge}(g::EvolvingGraph{V, E}, t, T::Type = Bool)
     return sparse(is, js, vs, n, n)    
 end
 
-function spmatrix{V, E <: WeightedTimeEdge}(g::EvolvingGraph{V, E}, t, T::Type = Float64)
+function spmatrix{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E}, 
+                                                                                   t, ::Type{T} = Float64)
     n = num_nodes(g)
     is = Int[]
     js = Int[]
@@ -373,13 +379,13 @@ end
 
 Return the forward neighbors of temporal node `(v,t)`.
 """
-function forward_neighbors{V, E, T}(g::EvolvingGraph{V, E, T}, v, t)
+function forward_neighbors{V, T}(g::EvolvingGraph{V, T}, v, t)
     neighbors = Tuple{V, T}[]
     v = find_node(g, v)
     return forward_neighbors(g, v, T(t))
 end
 forward_neighbors(g::EvolvingGraph, v::Tuple) = forward_neighbors(g, v[1], v[2])
-function forward_neighbors{V, E, T}(g::EvolvingGraph{V, E, T}, v::V, t::T)
+function forward_neighbors{V, T}(g::EvolvingGraph{V, T}, v::V, t::T)
     neighbors = Tuple{V, T}[]
     if !(TimeNode(v, t) in activenodes(g))
         return neighbors   # if (v, t) is not active, return an empty list.
@@ -404,6 +410,6 @@ end
 
 Return the backward neighbors of temporal node `(v,t)`.
 """
-function backward_neighbors{V, E, T}(g::EvolvingGraph{V, E, T}, v::V, t::T)
+function backward_neighbors{V, T}(g::EvolvingGraph{V, T}, v::V, t::T)
     error("not implemented yet!")
 end

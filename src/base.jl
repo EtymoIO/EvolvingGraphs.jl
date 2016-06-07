@@ -5,8 +5,8 @@
 #
 #############################################
 
-abstract AbstractGraph{V, E, T}
-abstract AbstractEvolvingGraph{V, E, T} <: AbstractGraph{V, E, T}
+abstract AbstractGraph{V, T, E}  # V is node, T is time, and E is edge
+abstract AbstractEvolvingGraph{V, T, E} <: AbstractGraph{V, T, E}
 abstract AbstractStaticGraph{V, E} <: AbstractGraph{V, E}
 
 ######################################
@@ -120,7 +120,7 @@ timestamp(e::TimeEdge, g::AbstractEvolvingGraph) = e.timestamp
                                   e1.target == e2.target &&
                                   e1.timestamp == e2.timestamp)
 rev(e::TimeEdge) = TimeEdge(e.target, e.source, e.timestamp)
-make_edge{V, E<:TimeEdge, T}(g::AbstractGraph{V, E, T}, v1::V, v2::V, t::T) = 
+make_edge{V, E<:TimeEdge, T}(g::AbstractGraph{V, T, E}, v1::V, v2::V, t::T) = 
     TimeEdge(v1, v2, t)
 
 

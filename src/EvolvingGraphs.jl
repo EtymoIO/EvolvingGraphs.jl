@@ -22,12 +22,14 @@ export
    time_graph, evolving_graph, weighted_evolving_graph, weight,
    attribute_evolving_graph, attributesvec, attributes,
    matrix, spmatrix, attributes_values, aggregated_graph,
- 
+   int_evolving_graph, temporal_nodes,
+
    # io
    egread, egwrite,
 
    # algorithms
    katz_centrality, random_time_graph, random_evolving_graph,
+   breadth_first_visit,
 
    # metric
    Path, TemporalPath, shortest_temporal_path, shortest_temporal_distance,
