@@ -4,20 +4,17 @@
 Return `true` if there is path from `v1` at timestamp `t1` to `v2` at 
 timestamp `t2` and `false` otherwise.
 """
-temporal_connected(g::AbstractEvolvingGraph, v1, t1, v2, t2) = 
-     (v2, t2) in breadth_first_visit(g, v1, t1) ? true : false
-
-function temporal_connected{V, E, T}(g::EvolvingGraph{V, E, T}, v1, t1, v2, t2)
-    v1 = find_node(g, v1)
-    v2 = find_node(g, v2)
-    if (v2, T(t2)) in breadth_first_visit(g, v1, T(t1))
+temporal_connected{V, T}(g::AbstractEvolvingGraph{V, T}, v1::V, t1::T, v2::V, t2::T) = 
+     (v2, t2) in breadth_first_impl(g, v1, t1) ? true : false
+function temporal_connected{V, T}(g::EvolvingGraph{V, T}, v1, t1, v2, t2)
+    nv1 = find_node(g, v1)
+    nv2 = find_node(g, v2)
+    if (nv2, T(t2)) in breadth_first_impl(g, nv1, T(t1))
         return true
     else
         return false
     end
-end  
-# true = 1, false = 0
-
+end
 """
     weak_connected(g, v1, v2)
 
@@ -61,14 +58,14 @@ function weak_connected_components{V}(g::AbstractEvolvingGraph{V},
         i = 1
         if ! (node  in nodelist)
    
-            reachable = breadth_first_visit(g, node, t[i])
+            reachable = breadth_first_impl(g, node, t[i])
              while length(reachable) == 1
                  if i < n
                      i += 1
                  else
                      break
                  end
-                 reachable = breadth_first_visit(g, node, t[i])
+                 reachable = breadth_first_impl(g, node, t[i])
                  println("while")
                  display(reachable)
             end

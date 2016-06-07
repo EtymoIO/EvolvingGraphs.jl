@@ -69,7 +69,7 @@ deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g),
                                            deepcopy(g.indexof),
                                            deepcopy(g.activenodes))
 
-eltype{V, T}(g::EvolvingGraph{V, T}) = (V, T)
+eltype{V, T, E}(g::EvolvingGraph{V, T, E}) = (V, T, E)
 
 ### Weighted Evolving Graph
 
@@ -266,7 +266,7 @@ end
 Add an edge from `v1` to `v2` at time `t` with edge weight `w` to 
 evolving graph `g`.
 """
-function add_edge!{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V,T, E}, 
+function add_edge!{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E}, 
                                                                                          v1, v2, t, w)
     v1 = add_node!(g, v1)
     v2 = add_node!(g, v2)
