@@ -32,20 +32,21 @@ temporal path with the least number of unique nodes.
 
 In **EvolvingGraphs**, we could do::
 
-  julia> g = evolving_graph(Char, String)
-  Directed EvolvingGraph (0 nodes, 0 edges, 0 timestamps)
+  julia> g = evolving_graph(Char, Int)
+  Directed EvolvingGraph (0 nodes, 0 static edges, 0 timestamps)
 
-  julia> add_edge!(g, 'A', 'B', "t_1")
-  Directed EvolvingGraph (2 nodes, 1 edges, 1 timestamps)
+  julia> add_edge!(g, 'A', 'B', 1)
+  Node(A)->Node(B) at time 1
 
-  julia> add_edge!(g, 'A', 'C', "t_2")
-  Directed EvolvingGraph (3 nodes, 2 edges, 2 timestamps)
+  julia> add_edge!(g, 'A', 'C', 2)
+  Node(A)->Node(C) at time 2
 
-  julia> add_edge!(g, 'B', 'C', "t_3")
-  Directed EvolvingGraph (3 nodes, 3 edges, 3 timestamps)
+  julia> add_edge!(g, 'B', 'C', 3)
+  Node(B)->Node(C) at time 3
 
-  julia> shortest_temporal_path(g, ('A', "t_1"), ('C',"t_3"))
-  Temporal Path (3 walks) ('A',"t_1")->('A',"t_2")->('C',"t_2")->('C',"t_3")
+  julia> shortest_temporal_path(g, 'A', 1, 'C', 3)
+  (Node(A),1)->(Node(A),2)->(Node(C),2)->(Node(C),3)
+
 
 Definitions
 --------------
