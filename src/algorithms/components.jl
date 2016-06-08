@@ -9,6 +9,12 @@ temporal_connected{V, T}(g::AbstractEvolvingGraph{V, T}, v1::V, t1::T, v2::V, t2
 function temporal_connected{V, T}(g::EvolvingGraph{V, T}, v1, t1, v2, t2)
     nv1 = find_node(g, v1)
     nv2 = find_node(g, v2)
+
+    # check if v1 and v2 are nodes of the graph
+    if nv1 == false || nv2 == false
+        return false
+    end
+
     if (nv2, T(t2)) in breadth_first_impl(g, nv1, T(t1))
         return true
     else
@@ -54,36 +60,30 @@ function weak_connected_components{V}(g::AbstractEvolvingGraph{V},
     t = timestamps(g)
     n = length(t)
 
-    for node in nodes(g)     
+    for n1 in nodes(g)     
         i = 1
-        if ! (node  in nodelist)
+        if ! (n1 in nodelist)
    
-            reachable = breadth_first_impl(g, node, t[i])
+            reachable = breadth_first_impl(g, n1, t[i])
              while length(reachable) == 1
                  if i < n
                      i += 1
                  else
                      break
                  end
-                 reachable = breadth_first_impl(g, node, t[i])
-                 println("while")
-                 display(reachable)
+                 reachable = breadth_first_impl(g, n1, t[i])
             end
 
             append!(nodelist, map(x -> x[1], reachable))
             
-            #println("components:", components)
-            println("nodelist", nodelist)
-            components[(node, t[i])] = reachable
+            components[(n1, t[i])] = reachable
             ks = keys(components)
-            println("ks", ks)
-            for node2 in ks
-                if !(node2 == (node, t[i])) && 
-                    (temporal_connected(g, node, t[i], node2[1], node2[2]))
-                    components[node2] = reachable
-                    delete!(components, (node, t[i]))
-                    println("for")
-                    display(components)
+
+            for n2 in ks
+                if !(n2 == (n1, t[i])) && 
+                    (temporal_connected(g, n1, t[i], n2[1], n2[2]))
+                    components[n2] = reachable
+                    delete!(components, (n1, t[i]))
                 end
             end
         end
