@@ -228,6 +228,17 @@ definition::
 	      
    Initialize an evolving graph with integer nodes  and timestamps. 
 
+.. function:: weighted_evolving_graph(node_type, time_type, edge_weight_type [, is_directed = true])
+
+   Initialize a weighted evolving graph where the nodes are of type `node_type`,
+   timestamps are of type `time_type` and the edge weights are of type
+   `edge_weight_type`.
+
+.. function:: weighted_evolving_graph([is_directed = true])
+
+   Initialize a weighted evolving graph with integer nodes, integer timestamps, and
+   integer edge weight.	      
+
 .. function:: is_directed(g)
 	      
    Return ``true`` if graph ``g`` is a directed graph and ``false``
