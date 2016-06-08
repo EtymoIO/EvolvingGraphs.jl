@@ -18,7 +18,7 @@ Dynamic Graph Analysis Framework in Julia.
 We can generate the above evolving graph as
 
 ```julia
-    g = evolving_graph(Int, AbstractString)
+	g = evolving_graph(Int, ASCIIString)
 	add_edge!(g, 1, 2, "t1")
 	add_edge!(g, 1, 3, "t2")
 	add_edge!(g, 4, 5, "t2")
@@ -33,56 +33,38 @@ Now ``g`` is a directed evolving graph with
 	Directed EvolvingGraph (6 nodes, 5 edges, 3 timestamps)
 ```
 
-We can find the weakly connected components and the shortest
-temporal path of ``g``
+We can find the shortest temporal path of ``g`` by
 
 ```julia
-	julia> weak_connected_components(g)
-	2-element Array{Array{Tuple,1},1}:
-	Tuple[(1,"t1"),(2,"t1"),(1,"t2"),(2,"t3"),(3,"t2"),(3,"t3")]
-	Tuple[(4,"t2"),(5,"t2"),(5,"t3"),(6,"t3")]
+	help?> shortest_temporal_path
+
+      shortest_temporal_path(g, v1, t1, v2, t2 [, verbose = false])
+
+	Find the shortest temporal path from node v1 at timestamp t1 to node v2 at
+	timestamp t2 on the evolving graph g. If verbose = true, prints the current
+	path at each search step. 
 
 	julia> shortest_temporal_path(g, (1, "t1"), (3, "t3"))
-	Temporal Path (3 walks) (1,"t1")->(1,"t2")->(3,"t2")->(3,"t3")
+	(Node(1),"t1")->(Node(1),"t2")->(Node(3),"t2")->(Node(3),"t3")
 ```
 
 We can also convert ``g`` to a list of adjacency matrices
 
 ```julia
 	julia> matrix(g, "t2")
-	6x6 Array{Bool,2}:
-	false  false  false  false   true  false
-	false  false  false   true  false  false
-	false  false  false  false  false  false
-	false  false  false  false  false  false
-	false  false  false  false  false  false
-	false  false  false  false  false  false
+	6x6 Array{Float64,2}:
+	0.0  0.0  1.0  0.0  0.0  0.0
+	0.0  0.0  0.0  0.0  0.0  0.0
+	0.0  0.0  0.0  0.0  0.0  0.0
+	0.0  0.0  0.0  0.0  1.0  0.0
+	0.0  0.0  0.0  0.0  0.0  0.0
+	0.0  0.0  0.0  0.0  0.0  0.0
 
 	julia> spmatrix(g, "t2")
-	6x6 sparse matrix with 2 Bool entries:
-	[2, 4]  =  true
-	[1, 5]  =  true
+	6x6 sparse matrix with 2 Float64 entries:
+		[1, 3]  =  1.0
+		[4, 5]  =  1.0
 ```
-
-where the `(i,j)` entry is `true` if there is an edge from
-`nodes(g)[i]` to `nodes(g)[j]` and `false` otherwise. Here we have
-
-```julia
-	julia> nodes(g)[2]
-	4
-	
-	julia> nodes(g)[4]
-	5
-	
-	julia> nodes(g)[1]
-	1
-	
-	julia> nodes(g)[5]
-	3
-```
-
-and many [more things](http://evolvinggraphsjl.readthedocs.org/en/latest/tutorial.html).
-
 
 ## References
 
