@@ -37,7 +37,6 @@ Table of Contents
    tutorial.rst
    type.rst
    functions.rst
-   algorithms.rst
    io.rst
    plot.rst
 
