@@ -17,7 +17,7 @@ tests = [
          "shortest_distance",
          "shortest_temporal_distance",
          "temporal_efficiency",
-         #"components",
+         "components"
          ]
 
 for t in tests

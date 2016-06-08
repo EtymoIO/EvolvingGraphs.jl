@@ -308,28 +308,28 @@ end
 Return an adjacency matrix representation of evolving graph `g` at timestamp `t`.
 `T` (optional) is the element type of the matrix.
 """
-function matrix{V, T, E <:TimeEdge}(g::EvolvingGraph{V, T, E}, t, ::Type{T} = Float64)
+function matrix{V, T, E <:TimeEdge}(g::EvolvingGraph{V, T, E}, t, M::Type = Float64)
     n = num_nodes(g)
     es = edges(g, t)
-    A = zeros(T, n, n)
+    A = zeros(M, n, n)
     for e in es
         i = node_index(e.source)
         j = node_index(e.target)
-        A[(j-1)*n + i] = one(T)
+        A[(j-1)*n + i] = one(M)
     end
     return A
 end
 
 function matrix{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E}, 
-                                                                                  t, ::Type{T} = Float64) 
+                                                                                  t, M::Type = Float64) 
     n = num_nodes(g)
     es = edges(g, t)
-    A = zeros(T, n, n)
+    A = zeros(M, n, n)
     for e in es
         i = node_index(e.source)
         j = node_index(e.target)
         w = e.weight
-        A[(j-1)*n + i] = T(w)
+        A[(j-1)*n + i] = M(w)
     end
     return A
 end
@@ -341,7 +341,7 @@ Return a sparse adjacency matrix representation of evolving graph
 `g` at timestamp `t`. `T` (optional) is the element type of the matrix.
 """
 function spmatrix{V, T, E <: TimeEdge}(g::EvolvingGraph{V, T, E}, t, 
-                                                                      ::Type{T} = Float64)
+                                                                      M::Type = Float64)
     n = num_nodes(g)
     is = Int[]
     js = Int[]
@@ -352,16 +352,16 @@ function spmatrix{V, T, E <: TimeEdge}(g::EvolvingGraph{V, T, E}, t,
         push!(is, i)
         push!(js, j)
     end
-    vs = ones(T, length(is))
+    vs = ones(M, length(is))
     return sparse(is, js, vs, n, n)    
 end
 
 function spmatrix{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E}, 
-                                                                                   t, ::Type{T} = Float64)
+                                                                                   t, M::Type = Float64)
     n = num_nodes(g)
     is = Int[]
     js = Int[]
-    ws = T[]
+    ws = M[]
     es = edges(g, t)
     for e in es
         i = node_index(e.source)
