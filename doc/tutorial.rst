@@ -131,12 +131,12 @@ The answer is yes, since ``a`` can talk to ``b`` and ``b`` can talk to
 ``g`` in day ``1`` and ``g`` can talk to ``e`` on day ``2``. This can
 be computed using ``shortest_temporal_path`` ::
 
-  julia> shortest_temporal_path(g, ('a', 1), ('e', 2))
-  Temporal Path (4 walks) ('a',1)->('b',1)->('g',1)->('g',2)->('e',2)
+  julia> shortest_temporal_path(g, 'a', 1, 'e', 2)
+  (Node(a),1)->(Node(b),1)->(Node(g),1)->(Node(g),2)->(Node(e),2)
 
 and the shortest distance of passing this message is ``4``::
 
-  julia> shortest_temporal_distance(g, ('a', 1), ('e', 2))
+  julia> shortest_temporal_distance(g, 'a', 1, 'e', 2)
   4
 
 .. [grindrod11] P. Grindrod, M, Parsons, D.J. Higham, and E. Estrada, 

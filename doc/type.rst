@@ -4,16 +4,16 @@ Type System
 ``AbstractGraph`` is at the apex of EvolvingGraphs' type hierarchy. 
 It has two children: ``AbstractEvolvingGraph`` and ``AbstractStaticGraph``::
 
-  abstract AbstractGraph{V, E, T}
-  abstract AbstractEvolvingGraph{V, E, T} <: AbstractGraph{V, E, T}
+  abstract AbstractGraph{V, T, E}
+  abstract AbstractEvolvingGraph{V, T, E} <: AbstractGraph{V, T, E}
   abstract AbstractStaticGraph{V, E} <: AbstractGraph{V, E}
 
 
 ``AbstractEvolvingGraph`` and ``AbstractStaticGraph`` are abstractions
 of evolving graphs and static graphs
-respectively. ``AbstractEvolvingGraph`` has five children:
-``EvolvingGraph``, ``AttributeEvolvingGraph``, ``IntEvolvingGraph``,
-``MatrixList`` and ``WeightedEvolvingGraph``. ``AbstractStaticGraph``
+respectively. ``AbstractEvolvingGraph`` has three children:
+``EvolvingGraph``, ``IntEvolvingGraph``, and
+``MatrixList``. ``AbstractStaticGraph``
 has two children: ``TimeGraph`` and ``AggregatedGraph``.
 
 Before discussing the graph types, let us first look at the building
@@ -84,8 +84,8 @@ Edge Types
 ----------
 
 An edge is made of two nodes: a source node and a target node. In
-EvolvingGraphs, there are four types of edges: ``Edge``, ``TimeEdge``, 
-``WeightedTimeEdge`` and ``AttributeTimeEdge``. 
+EvolvingGraphs, there are four types of edges: ``Edge``, ``TimeEdge``,
+and ``WeightedTimeEdge``. 
 
 The definition of ``Edge`` is::
 
@@ -102,16 +102,6 @@ The definition of ``TimeEdge`` is::
     timestamp::T
   end
 
-The definition of ``AttributeTimeEdge`` is ::
-
-  type AttributeTimeEdge{V, T, W}
-    source::V
-    target::V
-    timestamp::T
-    attributes::W
-  end
-
-
 The definition of ``WeightedTimeEdge`` is ::
 
   immutable WeightedTimeEdge{V, T, W<:Real}
@@ -122,8 +112,9 @@ The definition of ``WeightedTimeEdge`` is ::
   end
 
 
-Graph Types
-^^^^^^^^^^^
+Static Graph Types
+^^^^^^^^^^^^^^^^^^^^
+
 
 TimeGraph
 ---------
@@ -197,6 +188,8 @@ An aggregated graph can be initialized as ::
   julia> add_edge!(a, 1, 2)
   Directed AggregatedGraph (2 nodes, 1 edges)
 
+Evolving Graph Types
+^^^^^^^^^^^^^^^^^^^^^^^
 
 EvolvingGraph
 -------------
@@ -204,11 +197,13 @@ EvolvingGraph
 The most important graph type is ``EvolvingGraph``. Here is the
 definition::
 
-  type EvolvingGraph{V,T} <: AbstractEvolvingGraph{V, T}
+  type EvolvingGraph{V, T, E, I} <: AbstractEvolvingGraph{V, T, E}
     is_directed::Bool
-    ilist::Vector{V}
-    jlist::Vector{V}
-    timestamps::Vector{T} 
+    nodes::Vector{V}                                   # a vector of nodes
+    edges::Vector{E}                                   # a vector of edges
+    timestamps::Vector{T}                          # a vector of timestamps
+    indexof::Dict{I, Int}                                # a dictionary storing index for each node
+    activenodes::Vector{TimeNode{V,T}} # a vector of active nodes
   end
 
 
@@ -231,7 +226,7 @@ definition::
 
 .. function:: evolving_graph([is_directed = true])
 	      
-   Initialize an evolving graph with ``Integer`` nodes  and timestamps. 
+   Initialize an evolving graph with integer nodes  and timestamps. 
 
 .. function:: is_directed(g)
 	      
@@ -275,10 +270,6 @@ definition::
 
    Add an edge (from ``v1`` to ``v2`` at timestamp ``t``) to EvolvingGraph ``g``.
 
-.. function:: add_graph!(g, tg)
-	      
-   Add a TimeGraph ``tg`` to EvolvingGraph ``g``.
-
 .. function:: forward_neighbors(g, v, t)
 
    Return all the outward neighbors of the node ``v`` at timestamp ``t`` in 
@@ -293,98 +284,6 @@ definition::
 
    Return a sparse adjacency matrix representation of the
    EvolvingGraph ``g`` at timestamp ``t``.
-
-
-AttributeEvolvingGraph
-----------------------
-
-An ``AttributeEvolvingGraph`` is an evolving graph with attribute edges.
-Here is the definition::
-
-  type AttributeEvolvingGraph{V,T,W} <: AbstractEvolvingGraph{V,T,W}
-    is_directed::Bool
-    ilist::Vector{V}
-    jlist::Vector{V}
-    timestamps::Vector{T}
-    attributesvec::Vector{W}
-  end
-
-The following functions are defined for ``AttributeEvolvingGraph``. 
-
-.. function:: attribute_evolving_graph(node_type, time_type [, is_directed = true])
-
-   initialize an evolving graph with 0 nodes, 0 edges and 0 timestamps, 
-   where ``node_type`` is the type of nodes and ``time_type`` is the type
-   of timestamps.
-
-.. function:: attribute_evolving_graph([is_directed = true])
-
-   initialize an evolving graph with ``Integer`` nodes and timestamps.
-
-.. function:: is_directed(g)
-
-   return ``true`` if graph ``g`` is a directed graph and ``false`` 
-   otherwise.
-
-.. function:: nodes(g)
-
-   return a list of nodes of graph ``g``.
-
-.. function:: has_node(g, v, t)
-
-   returns ``true`` of the node ``v`` at the timestamp ``t`` is in the 
-   evolving graph ``g`` and ``false`` otherwise.
-
-.. function:: num_nodes(g)
-
-   return the number of nodes of graph ``g``.
-
-.. function:: edges(g [, timestamp])
-
-   return a list of edges of graph ``g``. If ``timestamp`` is present, 
-   return the edge list at given ``timestamp``.
-
-.. function:: timestamps(g)
-
-   return the timestamps of graph ``g``.
-
-.. function:: num_timestamps(g)
-
-   return the number of timestamps of graph ``g``.
-
-.. function:: attributes(g, te)
-
-   return the attributes of edge ``te`` on graph ``g``. 
-
-.. function:: attributesvec(g)
-
-   return all the attributes of graph ``g``.
-	      
-.. function:: add_edge!(g, te)
-
-   add an AttributeTimeEdge ``te`` to AttributeEvolvingGraph ``g``.
-
-.. function:: add_edge!(g, v1, v2, t, a)
-
-   add an edge from ``v1`` to ``v2`` at timestamp ``t`` with attribute ``a`` 
-   to the graph ``g``, where attribute is a dictionary.
-
-.. function:: forward_neighbors(g, v, t)
-
-   returns all the outward neighbors of the node ``v`` at timestamp ``t`` in 
-   the evolving graph ``g``. 
-
-.. function:: matrix(g, t [, attr = Union{}])
-
-   return an adjacency matrix representation of graph ``g`` at timestamp ``t``. 
-   If ``attr`` is present, return a weighted adjacency matrix where 
-   the edge weight is given by the attribute ``attr``.
-
-.. function:: spmatrix(g, t [, attr = Union{}])
-
-   return a sparse adjacency matrix representation of graph ``g`` at timestamp ``t``. 
-   If ``attr`` is present, return a weighted adjacency matrix where 
-   the edge weight is given by the attribute ``attr``.
 
 
 MatrixList
@@ -459,79 +358,3 @@ For example::
  2-element Array{Tuple{Int64,Int64},1}:
   (2,1)
   (1,3)
-
-
-WeightedEvolvingGraph
----------------------
-
-.. note:: 
-  
-   ``WeightedEvolvingGraph`` is subject to change in the future version. 
-   Please use ``AttributeEvolvingGraph`` instead. 
-
-A ``WeightedEvolvingGraph`` is an evolving graph with weighted edges.
-Here is the definition::
-
-  type WeightedEvolvingGraph{V,T,W<:Real} <: AbstractEvolvingGraph{V,T,W}
-     is_directed::Bool
-     ilist::Vector{V}
-     jlist::Vector{V}
-     weights::Vector{W}
-     timestamps::Vector{T} 
-  end
-
-The following functions are defined for ``WeightedEvolvingGraph``.
-
-.. function:: weighted_evolving_graph(ils, jls, ws, timestamps [, is_directed = true])
-
-   generate an ``WeightedEvolvingGraph`` from 4 vectors of same length:
-   ``ils``, ``jls``, ``ws`` and ``timestamps`` such that 
-   ``ils[i] jls[i] ws[i] timestamps[i]`` is an edge of weight ``ws[i]`` 
-   from ``ils[i]`` to ``jls[i]`` at time ``timestamps[i]``. 
-
-.. function:: weighted_evolving_graph(node_type, weight_type, time_type [, is_directed = true])
-
-   initialize an evolving graph with ``node_type`` node, ``weight_type`` edge weight and 
-   ``time_type`` timestamps.
-
-.. function:: weighted_evolving_graph(;is_directed = true)
-
-   initialize an evolving graph with ``Integer`` node and timestamps and 
-   ``AbstractFloat`` edge weight.
-
-
-.. function:: is_directed(g)
-
-   return ``true`` if graph ``g`` is directed and ``false`` otherwise.
-
-.. function:: nodes(g)
-
-   return a list of nodes of graph ``g``.
-
-.. function:: num_nodes(g)
-
-   return the number of nodes of graph ``g``.
-
-.. function:: edges(g)
-
-   return a list of edges of graph ``g``.
-
-.. function:: num_edges(g)    	      
-
-   return the number of edges of graph ``g``.
-
-.. function:: timestamps(g)
-
-   return the timestamps of graph ``g``.
-
-.. function:: num_timestamps(g)
-
-   return the number of timestamps of graph ``g``.
-
-.. function:: add_edge!(g, te)
-
-   add a ``WeightedTimeEdge`` to graph ``g``.
-
-.. function:: add_edge!(g, v1, v2, w, t)
-
-   add an edge (of weight ``w`` from ``v1`` to ``v2`` at timestamp ``t``) to graph ``g``.
