@@ -18,12 +18,10 @@ Dynamic Graph Analysis Framework in Julia.
 We can generate the above evolving graph as
 
 ```julia
-	g = evolving_graph(Int, ASCIIString)
-	add_edge!(g, 1, 2, "t1")
-	add_edge!(g, 1, 3, "t2")
-	add_edge!(g, 4, 5, "t2")
-	add_edge!(g, 2, 3, "t3")
-	add_edge!(g, 5, 6, "t3")
+	julia> i = [1, 1, 4, 2, 5];
+	julia> j = [2, 3, 5, 3, 6];
+	julia> t = ["t1", "t2", "t2", "t3", "t3"];
+	julia> g = evolving_graph(i,j,t)
 ```
 Now ``g`` is a directed evolving graph with
 6 nodes, 5 edges and 3 timestamps.
@@ -44,7 +42,7 @@ We can find the shortest temporal path of ``g`` by
 	timestamp t2 on the evolving graph g. If verbose = true, prints the current
 	path at each search step. 
 
-	julia> shortest_temporal_path(g, (1, "t1"), (3, "t3"))
+	julia> shortest_temporal_path(g, 1, "t1", 3, "t3")
 	(Node(1),"t1")->(Node(1),"t2")->(Node(3),"t2")->(Node(3),"t3")
 ```
 
