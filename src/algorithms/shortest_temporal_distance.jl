@@ -54,14 +54,14 @@ to node `v2` at timestamp `t2` on the evolving graph `g`.
 If `verbose = true`, prints the current path at each search step. 
 """
 shortest_temporal_path(g::AbstractEvolvingGraph, v1, t1, v2, t2; verbose::Bool = false) =    _DFS_shortest_temporal_path(g, (v1, t1), (v2, t2), verbose = verbose)
-shortest_temporal_path{V,  E, T}(g::EvolvingGraph{V, E, T}, 
+shortest_temporal_path{V,  T}(g::EvolvingGraph{V, T}, 
                                                         v1::V, t1::T, v2::V, t2::T;
                                                         verbose::Bool = false) =  
    _DFS_shortest_temporal_path(g, (v1, t1), (v2, t2), verbose = verbose)
 
 
 
-function shortest_temporal_path{V, E, T}(g::EvolvingGraph{V, E, T}, v1, t1, v2, t2;
+function shortest_temporal_path{V, T}(g::EvolvingGraph{V, T}, v1, t1, v2, t2;
                                                                         verbose::Bool = false)
     v1 = find_node(g, v1)
     v2 = find_node(g, v2)
