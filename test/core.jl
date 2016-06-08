@@ -39,6 +39,7 @@ e2 = TimeEdge('a', 'b', 3)
 @test target(e2) == 'b'
 @test timestamp(e2) == 3
 print(e2)
+@test has_node(e2, 'a')
 
 e = WeightedTimeEdge(1, 2, 2.3, 2)
 @test source(e) == 1

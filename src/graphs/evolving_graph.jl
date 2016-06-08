@@ -109,16 +109,7 @@ weighted_evolving_graph(;is_directed::Bool = true) =
 
 Return `true` if `(v,t)` is an active node of `g` and `false` otherwise.
 """
-function has_node(g::EvolvingGraph, v, t)
-    p = findin(g.timestamps , [t])
-    es = g.edges[p]
-    for e in es
-        if !(has_node(e, v))
-            return false
-        end
-    end
-    return true
-end
+has_node{V, T}(g::EvolvingGraph{V, T}, v::V, t::T) = (TimeNode(v, t) in g.activenodes)
 
 """
     has_node(g, v)

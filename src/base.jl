@@ -113,15 +113,10 @@ end
 source(e::TimeEdge) = e.source
 target(e::TimeEdge) = e.target
 timestamp(e::TimeEdge) = e.timestamp
-source(e::TimeEdge, g::AbstractEvolvingGraph) = e.source
-target(e::TimeEdge, g::AbstractEvolvingGraph) = e.target
-timestamp(e::TimeEdge, g::AbstractEvolvingGraph) = e.timestamp
 ==(e1::TimeEdge, e2::TimeEdge) = (e1.source == e2.source && 
                                   e1.target == e2.target &&
                                   e1.timestamp == e2.timestamp)
 rev(e::TimeEdge) = TimeEdge(e.target, e.source, e.timestamp)
-make_edge{V, E<:TimeEdge, T}(g::AbstractGraph{V, T, E}, v1::V, v2::V, t::T) = 
-    TimeEdge(v1, v2, t)
 
 
 immutable WeightedTimeEdge{V, T, W<:Real} 

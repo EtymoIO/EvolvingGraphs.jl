@@ -7,6 +7,8 @@ add_edge!(g2, "c", "d", "t2")
 add_edge!(g2, "a", "b", "t2")
 
 g3 = aggregated_graph(g2)
+display(g3)
+
 A = matrix(g3, Int)
 @test A[1,2] == 1 
 @test A[2,3] == 1

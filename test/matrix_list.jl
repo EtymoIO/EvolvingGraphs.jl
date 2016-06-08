@@ -57,7 +57,7 @@ add_edge!(g, 4, 2, "t1")
 add_edge!(g, 2, 1, "t3")
 
 g2 = int_matrix_list(g)
-
+display(g2)
 @test spmatrix(g, "t1") == spmatrix(g2, 1)
 @test spmatrix(g, "t2") == spmatrix(g2, 2)
 @test nodelists(g2)[1] == [1,3]

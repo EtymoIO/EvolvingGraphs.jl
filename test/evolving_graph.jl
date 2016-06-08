@@ -66,6 +66,8 @@ add_edge!(g, 2, 3, "t2")
 add_edge!(g, 4, 2, "t2")
 add_edge!(g, 4, 2, "t1")
 add_edge!(g, 2, 1, "t3")
+v = EvolvingGraphs.find_node(g, 1)
+@test has_node(g, v, "t1")
 
 @test num_edges(g) == 5
 
@@ -82,3 +84,9 @@ add_edge!(wg, "a", "e", 2, 4)
 add_edge!(wg, "e", "f", 3, 2)
 @test num_edges(wg) == 8
 display(wg)
+
+@test matrix(wg, 1) == full(spmatrix(wg, 1))
+
+wg = weighted_evolving_graph()
+add_edge!(wg, 1, 2 ,1, 1)
+add_edge!(wg, 2, 1, 2, 2)

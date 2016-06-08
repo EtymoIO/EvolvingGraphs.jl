@@ -15,6 +15,7 @@ add_edge!(g, 2, 3, 3)
 add_edge!(g, 2, 3, 2)
 add_edge!(g, 3, 2, 2)
 add_edge!(g, 3, 4, 2)
+display(g)
 
 @test forward_neighbors(g, 1, 1) == [(2,1), (1,3)]
 @test forward_neighbors(g, 3, 1) == []
