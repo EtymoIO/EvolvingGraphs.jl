@@ -1,17 +1,12 @@
 EvolvingGraphs Release Notes
 ======================
 
-v0.1.0 (Coming soon)
---------------------
+v0.1.0
+---------
 
 * Drop support for Julia v0.3
 
-* Store matrices in `MatrixList` as sparse matrices
-
-* New functions:
-
-  - `add_matrix!(ms::SimpleMatrixList, A::SparseMatrixCSC)`
-  - `isempty(g::MatrixList)`
+* Bug fixes and performance improvements.
 
 v0.0.9
 ------
