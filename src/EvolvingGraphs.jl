@@ -1,8 +1,8 @@
 module EvolvingGraphs
 
-import Base: ==, show,  slice, issorted, deepcopy, length, eltype
+import Base: ==, show,  issorted, deepcopy, length, eltype
 
-export 
+export
 
    # base
    Node, Edge, TimeNode, AttributeNode, TimeEdge, WeightedTimeEdge,
@@ -16,9 +16,9 @@ export
    # graph functions
    add_node!, add_edge!, add_graph!, rm_edge!, has_edge, has_node,
    nodes, num_nodes, edges, num_edges,
-   source, target, matrices, num_matrices, 
+   source, target, matrices, num_matrices,
    timestamps, num_timestamps, activenodes,
-   forward_neighbors, is_directed, undirected!, undirected, 
+   forward_neighbors, is_directed, undirected!, undirected,
    time_graph, evolving_graph, weighted_evolving_graph, weight,
    attribute_evolving_graph, attributesvec, attributes,
    matrix, spmatrix, attributes_values, aggregated_graph,
@@ -46,7 +46,7 @@ include("base.jl")
 include("io.jl")
 
 # graph types
-include("graphs/time_graph.jl") 
+include("graphs/time_graph.jl")
 include("graphs/aggregated_graph.jl")
 include("graphs/evolving_graph.jl")
 include("graphs/int_evolving_graph.jl")
