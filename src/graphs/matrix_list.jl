@@ -3,7 +3,7 @@ import Base: isempty
 export IntMatrixList, MatrixList
 export add_matrix!, int_matrix_list, forward_neighbors, backward_neighbors, nodelists
 
-type IntMatrixList <: AbstractEvolvingGraph
+type IntMatrixList <: AbstractGraph
     nodelists::Vector{Vector{Int}}
     matrices::Vector{SparseMatrixCSC{Int, Int}}
 end
@@ -38,7 +38,7 @@ nodelists(g::IntMatrixList) = g.nodelists
 
 
 #`nodes(g)`returns the nodes of an evolving graph `g`.
-function nodes(g::IntMatrixList) 
+function nodes(g::IntMatrixList)
     n = length(g.nodelists)
     collect(1:n)
 end
@@ -46,7 +46,7 @@ end
 """
 `spmatrix(g, t)`
 
-returns the sparse matrix representation of an evolving graph `g` 
+returns the sparse matrix representation of an evolving graph `g`
 at a given timestamp `t`.
 """
 spmatrix(g::IntMatrixList, t::Int) = g.matrices[t]
@@ -68,7 +68,7 @@ function spmatrix(g::IntMatrixList)
         block = n*(t-1)
         for j = 1:n
             # diagonal blocks
-            for k = A.colptr[j]:A.colptr[j+1] -1   
+            for k = A.colptr[j]:A.colptr[j+1] -1
                 push!(v1, A.rowval[k] + block)
                 push!(v2, j + block)
                 push!(vals, A.nzval[k])
@@ -121,7 +121,7 @@ end
 forward_trunc(v, i) = v[i:end]
 backward_trunc(v,i) = v[i:-1:1]
 
-for (f, vf, Af) in ((:forward_neighbors, :forward_trunc, :transpose), 
+for (f, vf, Af) in ((:forward_neighbors, :forward_trunc, :transpose),
                         (:backward_neighbors, :backward_trunc, :identity))
     @eval begin
         function ($f)(g::IntMatrixList, v::Int, t::Int)
@@ -134,7 +134,7 @@ for (f, vf, Af) in ((:forward_neighbors, :forward_trunc, :transpose),
             for i in ns
                 push!(temporal_nodes, (v, i))
             end
-            # the forward/backword neighbors at timestamp t 
+            # the forward/backword neighbors at timestamp t
             matorvec = (($Af)(spmatrix(g, t))*sparsevec([v], [1], m))
             if VERSION < v"0.5.0-dev+961"
                 nods = matorvec.rowval
@@ -155,7 +155,7 @@ for f in (:backward_neighbors, :forward_neighbors)
 end
 
 # matrix list
-type MatrixList{V,T,Tv<:Number} <: AbstractEvolvingGraph
+type MatrixList{V,T,Tv<:Number} <: AbstractGraph
     is_directed::Bool
     nodes::Vector{V}
     timestamps::Vector{T}
@@ -163,9 +163,9 @@ type MatrixList{V,T,Tv<:Number} <: AbstractEvolvingGraph
 end
 
 # simple matrix list
-typealias SimpleMatrixList MatrixList{Int, Int, Bool}
+SimpleMatrixList = MatrixList{Int, Int, Bool}
 
-function MatrixList{V,T, Tv}(nodes::Vector{V}, 
+function MatrixList{V,T, Tv}(nodes::Vector{V},
                              timestamps::Vector{T},
                              matrices::Vector{SparseMatrixCSC{Tv}};
                              is_directed::Bool=true)
@@ -175,10 +175,10 @@ end
 
 """
  `MatrixList(;is_directed=true)`
-  
-initializes a simple matrix list. 
+
+initializes a simple matrix list.
 """
-MatrixList(;is_directed::Bool=true) = MatrixList(Int[], Int[], 
+MatrixList(;is_directed::Bool=true) = MatrixList(Int[], Int[],
                                                  SparseMatrixCSC{Bool}[],
                                                  is_directed = is_directed)
 
@@ -196,7 +196,7 @@ matrix(g::MatrixList, ur::UnitRange{Int}) = g.matrices[ur]
 timestamps(g::MatrixList) = g.timestamps
 num_timestamps(g::MatrixList) = length(timestamps(g))
 
-deepcopy(g::MatrixList) = MatrixList(is_directed(g), 
+deepcopy(g::MatrixList) = MatrixList(is_directed(g),
                                      deepcopy(g.nodes),
                                      deepcopy(g.timestamps),
                                      deepcopy(g.matrices))
