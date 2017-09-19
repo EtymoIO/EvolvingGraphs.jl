@@ -43,15 +43,17 @@ export
 
 
 include("base.jl")
-include("io.jl")
+
+# graph IO
+include("read_write/evolving_graph_io.jl")
 
 # graph types
-include("graphs/time_graph.jl")
-include("graphs/aggregated_graph.jl")
-include("graphs/evolving_graph.jl")
-include("graphs/int_evolving_graph.jl")
-include("graphs/matrix_list.jl")
-include("graphs/incidence_matrix.jl")
+include("graph_types/time_graph.jl")
+include("graph_types/aggregated_graph.jl")
+include("graph_types/evolving_graph.jl")
+include("graph_types/int_evolving_graph.jl")
+include("graph_types/matrix_list.jl")
+include("graph_types/incidence_matrix.jl")
 
 include("show.jl")
 
