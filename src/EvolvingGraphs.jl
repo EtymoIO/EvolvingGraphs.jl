@@ -6,7 +6,7 @@ export
 
    # base
    Node, Edge, TimeNode, AttributeNode, TimeEdge, WeightedTimeEdge,
-   key, make_node, node_index, rev, timestamp,
+   make_node, node_index, node_key, rev, timestamp,
 
    # graph types
    AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,

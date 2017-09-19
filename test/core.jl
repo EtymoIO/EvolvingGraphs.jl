@@ -1,6 +1,8 @@
-# test nodes 
+# test core functionalities
+
+# test nodes
 a = Node(1, "a")
-@test  key(a) == "a"
+@test  node_key(a) == "a"
 @test node_index(a) == 1
 @test eltype(a) <: AbstractString
 print(a)
@@ -12,14 +14,14 @@ b = AttributeNode(1, "a",  Dict())
 b1 = AttributeNode(1, "a")
 attributes(b) =  Dict("a" => 2)
 @test node_index(b) == 1
-@test key(b) == "a"
+@test node_key(b) == "a"
 @test attributes(b) ==  Dict("a" => 2)
 @test eltype(b) <: AbstractString
 @test b == b1
 print(b)
 
 d = TimeNode(a,  "t1")
-@test key(d) == "a"
+@test node_key(d) == "a"
 @test timestamp(d) == "t1"
 @test node_index(d) == 1
 @test eltype(d)[1] <: Node

@@ -1,6 +1,6 @@
 
 @doc doc"""
-`egread(filename)` read the contents of an Evolving Graph format file. 
+`egread(filename)` read the contents of an Evolving Graph format file.
 """->
 function egread(filename)
     file = open(filename, "r")
@@ -10,22 +10,22 @@ function egread(filename)
         throw(ParseError("Not a valid EvolvingGraph header"))
     end
     is_directed = tokens[2] == "directed" ? true : false
-    
+
     # skip all comments and empty lines
     ll = readline(file)
 
     while (length(ll) > 0 && ll[1] == '%')
         ll = readline(file)
     end
-    
+
     header = split(chomp(ll), ',')
 
-    length(header) >= 3 || error("The length of header must be >= 3") 
-    
-    
-    ilist = ASCIIString[]
-    jlist = ASCIIString[]
-    timestamps = ASCIIString[]
+    length(header) >= 3 || error("The length of header must be >= 3")
+
+
+    ilist = String[]
+    jlist = String[]
+    timestamps = String[]
 
     entries = split(chomp(readline(file)), ',')
     while length(entries) == 3
@@ -33,15 +33,15 @@ function egread(filename)
         push!(jlist, string(entries[2]))
         push!(timestamps, string(entries[3]))
         entries = split(chomp(readline(file)), ',')
-    end       
-        
+    end
+
     # try parse nodes and timestamps as Integer.
-    try 
+    try
         ilist = [parse(Int64, s) for s in ilist]
         jlist = [parse(Int64, s) for s in jlist]
     end
 
-    try 
+    try
         timestamps = [parse(Int64, s) for s in timestamps]
     end
     return evolving_graph(ilist, jlist, timestamps, is_directed = is_directed)
@@ -64,7 +64,7 @@ end
 
 @doc doc"""
 `egwrite(g, fn)` writes an evolving graph `g` to file `fn`. For example,
-`egwrite(g, ""example.csv"")`. 
+`egwrite(g, ""example.csv"")`.
 """->
 function egwrite(g::AbstractEvolvingGraph, fn::AbstractString)
     f = open(fn, "w")

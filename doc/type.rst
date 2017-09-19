@@ -1,7 +1,7 @@
 Type System
 ===========
 
-``AbstractGraph`` is at the apex of EvolvingGraphs' type hierarchy. 
+``AbstractGraph`` is at the apex of EvolvingGraphs' type hierarchy.
 It has two children: ``AbstractEvolvingGraph`` and ``AbstractStaticGraph``::
 
   abstract AbstractGraph{V, T, E}
@@ -17,7 +17,7 @@ respectively. ``AbstractEvolvingGraph`` has three children:
 has two children: ``TimeGraph`` and ``AggregatedGraph``.
 
 Before discussing the graph types, let us first look at the building
-blocks of graphs: nodes and edges. 
+blocks of graphs: nodes and edges.
 
 Nodes and Edges
 ^^^^^^^^^^^^^^^
@@ -50,26 +50,26 @@ string::
   1
 
 
-``AttributeNode`` is a node with attributes. Here is the definition of 
+``AttributeNode`` is a node with attributes. Here is the definition of
 ``AttributeNode``::
 
-  type AttributeNode{V} 
+  type AttributeNode{V}
     index::Int
     key::V
     attributes::Dict
   end
- 
-We can initialize an instance of ``AttributeNode`` with just 
+
+We can initialize an instance of ``AttributeNode`` with just
 ``index`` and ``key`` and modify the values of ``attributes`` later::
 
   a = AttributeNode(1, 'a')
   attributes(a) = Dict('a' => "red")
   index(a)       # 1
   key(a)         # 'a'
-  attributes(a)  #  Dict{Char,ASCIIString} with 1 entry: 'a' => "red"
- 
+  attributes(a)  #  Dict{Char,String} with 1 entry: 'a' => "red"
 
-``TimeNode`` is used to represent a node at a specific timestamp. 
+
+``TimeNode`` is used to represent a node at a specific timestamp.
 (We will embed ``TimeNode`` to evolving graphs in the future.)
 The definition of ``TimeNode`` is::
 
@@ -78,20 +78,20 @@ The definition of ``TimeNode`` is::
     key::K
     timestamp::T
   end
-	 
+
 
 Edge Types
 ----------
 
 An edge is made of two nodes: a source node and a target node. In
 EvolvingGraphs, there are four types of edges: ``Edge``, ``TimeEdge``,
-and ``WeightedTimeEdge``. 
+and ``WeightedTimeEdge``.
 
 The definition of ``Edge`` is::
 
   immutable Edge{V}
     source::V
-    target::V        
+    target::V
   end
 
 The definition of ``TimeEdge`` is::
@@ -121,7 +121,7 @@ TimeGraph
 
 ``TimeGraph`` represents a graph at given a timestamp. The data is
 stored as an adjacency list. Here is the definition::
-  
+
   type TimeGraph{V, T} <: AbstractEvolvingGraph{V, T}
     is_directed::Bool
     timestamp::T
@@ -138,11 +138,11 @@ The following functions are defined on ``TimeGraph``.
 
 .. function:: timestamp(g)
    :noindex:
-	      
-   return the timestamp of the graph ``g``.	
+
+   return the timestamp of the graph ``g``.
 
 .. function:: add_node!(g, v)
-	      
+
     add a node ``v`` to ``TimeGraph`` g.
 
 .. function:: add_edge!(g, v1, v2)
@@ -151,7 +151,7 @@ The following functions are defined on ``TimeGraph``.
 
 .. function:: forward_neighbors(g, v)
 
-    return the nodes that ``v`` points to on graph ``g``.	      
+    return the nodes that ``v`` points to on graph ``g``.
 
 .. function:: has_node(g, v)
 
@@ -161,8 +161,8 @@ The following functions are defined on ``TimeGraph``.
 AggregatedGraph
 ---------------
 
-``AggregatedGraph`` is a static graph ``g`` constructed by aggregating 
-an evolving graph, i.e., all the links between each pair of nodes are 
+``AggregatedGraph`` is a static graph ``g`` constructed by aggregating
+an evolving graph, i.e., all the links between each pair of nodes are
 flattened in a single edge. The definition of ``AggregatedGraph`` is::
 
   type AggregatedGraph{V} <: AbstractStaticGraph{V, Edge{V}}
@@ -181,7 +181,7 @@ We can convert an evolving graph to an aggregated graph::
   Directed AggregatedGraph (4 nodes, 11 edges)
 
 An aggregated graph can be initialized as ::
-  
+
   julia> a = aggregated_graph(Int)
   Directed AggregatedGraph (0 nodes, 0 edges)
 
@@ -208,7 +208,7 @@ definition::
 
 
 .. function:: evolving_graph(ils, jls, timestamps [, is_directed = true)
-	   
+
    Generate an evolving graph from three input vectors: ils, jls and
    timestamps, such that the ith entry `(ils[i], jls[i] and
    timestamps[i])` is an edge from `ils[i]` to `jls[i]` at timestamp
@@ -221,12 +221,12 @@ definition::
 
 .. function:: evolving_graph(node_type, time_type [, is_directed = true])
 
-   Initialize an evolving graph where the nodes are of type `node_type` and 
+   Initialize an evolving graph where the nodes are of type `node_type` and
    the timestamps are of type `time_type`.
 
 .. function:: evolving_graph([is_directed = true])
-	      
-   Initialize an evolving graph with integer nodes  and timestamps. 
+
+   Initialize an evolving graph with integer nodes  and timestamps.
 
 .. function:: weighted_evolving_graph(node_type, time_type, edge_weight_type [, is_directed = true])
 
@@ -237,10 +237,10 @@ definition::
 .. function:: weighted_evolving_graph([is_directed = true])
 
    Initialize a weighted evolving graph with integer nodes, integer timestamps, and
-   integer edge weight.	      
+   integer edge weight.
 
 .. function:: is_directed(g)
-	      
+
    Return ``true`` if graph ``g`` is a directed graph and ``false``
    otherwise.
 
@@ -259,7 +259,7 @@ definition::
 .. function:: edges(g [, timestamp])
 
    Return a list of edges of graph ``g``. If ``timestamp`` is present,
-   return the edge list at given ``timestamp``. 
+   return the edge list at given ``timestamp``.
 
 .. function:: num_edges(g)
 
@@ -270,11 +270,11 @@ definition::
    Return the timestamps of graph ``g``.
 
 .. function:: num_timestamps(g)
- 
+
    Return the number of timestamps of graph ``g``.
 
 .. function:: add_edge!(g, te)
-	      
+
    Add a TimeEdge ``te`` to EvolvingGraph ``g``.
 
 .. function:: add_edge!(g, v1, v2, t)
@@ -283,11 +283,11 @@ definition::
 
 .. function:: forward_neighbors(g, v, t)
 
-   Return all the outward neighbors of the node ``v`` at timestamp ``t`` in 
-   the evolving graph ``g``. 
+   Return all the outward neighbors of the node ``v`` at timestamp ``t`` in
+   the evolving graph ``g``.
 
 .. function:: matrix(g, t)
-	      
+
    Return an adjacency matrix representation of the EvolvingGraph
    ``g`` at timestamp ``t``.
 
@@ -300,7 +300,7 @@ definition::
 MatrixList
 -------------
 
-A ``MatrixList`` represents an evolving graph as a list of adjacency matrices. 
+A ``MatrixList`` represents an evolving graph as a list of adjacency matrices.
 It is defined as::
 
   type MatrixList{V,T} <: AbstractEvolvingGraph{V, Edge{V}, T}
@@ -350,7 +350,7 @@ timestamps. It is implemented as adjacency lists::
     backward_adjlist::Vector{Vector{Int}}
   end
 
-``IntEvolvingGraph`` can be initialized using the function ``int_evolving_graph``. 
+``IntEvolvingGraph`` can be initialized using the function ``int_evolving_graph``.
 For example::
 
  julia> g = int_evolving_graph(3,4)

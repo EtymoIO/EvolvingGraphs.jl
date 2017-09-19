@@ -13,20 +13,20 @@ end
 
 
 @doc doc"""
-`aggregated_graph(type [, is_directed = true])` initializes 
-an aggregated graph. 
+`aggregated_graph(type [, is_directed = true])` initializes
+an aggregated graph.
 """->
-aggregated_graph{V}(::Type{V}; is_directed::Bool = true) = 
-AggregatedGraph(is_directed, 
+aggregated_graph{V}(::Type{V}; is_directed::Bool = true) =
+AggregatedGraph(is_directed,
                 Node{V}[],
                 0,
                 Dict{Node{V}, NodeVector{V}}())
 
-aggregated_graph(::Type{AbstractString}; is_directed::Bool = true) = aggregated_graph(ASCIIString, is_directed = is_directed)
+aggregated_graph(::Type{AbstractString}; is_directed::Bool = true) = aggregated_graph(String, is_directed = is_directed)
 
 @doc doc"""
-`aggregated_graph(g)` converts an evolving graph `g` to 
-the corresponding aggregated static graph. 
+`aggregated_graph(g)` converts an evolving graph `g` to
+the corresponding aggregated static graph.
 """->
 function aggregated_graph{V}(g::AbstractEvolvingGraph{V})
     ag = aggregated_graph(V, is_directed = is_directed(g))
@@ -37,9 +37,8 @@ function aggregated_graph{V}(g::AbstractEvolvingGraph{V})
 end
 
 @doc doc"""
-`aggregated_graph(g)` converts a time graph `g` to the 
+`aggregated_graph(g)` converts a time graph `g` to the
 corresponding aggregated static graph.
 """->
-aggregated_graph{V}(g::TimeGraph{V}) =  AggregatedGraph(is_directed(g),  
+aggregated_graph{V}(g::TimeGraph{V}) =  AggregatedGraph(is_directed(g),
                                                         g.nodes, g.nedges, g.adjlist)
-

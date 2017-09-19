@@ -1,4 +1,4 @@
-function breadth_first_impl{V, T}(g::AbstractEvolvingGraph{V, T}, v::V, t::T)
+function breadth_first_impl{V, E, T}(g::AbstractEvolvingGraph{V, E, T}, v::V, t::T)
     level = Dict((v,t) => 0)
     i = 1
     fronter = [(v,t)]
@@ -25,7 +25,7 @@ end
 Return all the reachable active nodes from a given temporal node
 `(v,t)`.
 """
-function breadth_first_visit{V, T}(g::EvolvingGraph{V, T}, v, t)
+function breadth_first_visit{V, T, E, I}(g::EvolvingGraph{V, T, E, I}, v, t)
     new_v = find_node(g, v)
     breadth_first_impl(g, new_v, T(t))
 end

@@ -14,22 +14,22 @@ end
 
 @doc doc"""
 `time_graph(type, time [, is_directed = true])`
-generates a time graph 
+generates a time graph
 
-Input: 
+Input:
 
     `type`: type of the nodes
     `timestamp`: timestamp of the graph
     `is_directed`: (optional) whether the graph is directed or not
 """->
 time_graph{V,T}(::Type{V}, timestamp::T; is_directed::Bool = true) =
-    TimeGraph(is_directed, 
+    TimeGraph(is_directed,
               timestamp::T,
               Node{V}[],
               0,
               Dict{Node{V}, NodeVector{V}}())
 
-time_graph{T}(::Type{AbstractString}, timestamp::T; is_directed::Bool = true) = time_graph(ASCIIString, timestamp, is_directed = is_directed)
+time_graph{T}(::Type{AbstractString}, timestamp::T; is_directed::Bool = true) = time_graph(String, timestamp, is_directed = is_directed)
 
 
 @doc doc"""
@@ -62,7 +62,7 @@ end
 add_node!(g::AbstractStaticGraph, v) = add_node!(g, make_node(g, v))
 
 
-#`add_edge!(g, e)` adds an edge `e` to a static graph `g`. 
+#`add_edge!(g, e)` adds an edge `e` to a static graph `g`.
 function add_edge!{V}(g::AbstractStaticGraph{V}, e::EdgeType{V})
     src = e.source
     dest = e.target
@@ -74,7 +74,7 @@ function add_edge!{V}(g::AbstractStaticGraph{V}, e::EdgeType{V})
     end
 
     if !(dest in g.adjlist[src])
-        push!(g.adjlist[src], dest)    
+        push!(g.adjlist[src], dest)
         if !g.is_directed
             push!(g.adjlist[dest], src)
         end
@@ -86,9 +86,9 @@ end
 #`add_edge!(g, i, j)` adds an edge from node `i` to node `j` to a static graph `g`.
 function add_edge!{V}(g::AbstractStaticGraph{V}, i::V, j::V)
     add_edge!(g, Edge(i,j))
-end 
+end
 
-function add_edge!(g::AbstractStaticGraph, i, j) 
+function add_edge!(g::AbstractStaticGraph, i, j)
     n1 = add_node!(g, i)
     n2 = add_node!(g, j)
     add_edge!(g, n1, n2)
@@ -100,12 +100,12 @@ end
 forward_neighbors{V}(g::AbstractStaticGraph{V}, v::V) = g.adjlist[v]
 
 
-#`has_node(g, v)` returns `true` if `v` is a node of the static graph `g` 
-#and `false` otherwise.  
+#`has_node(g, v)` returns `true` if `v` is a node of the static graph `g`
+#and `false` otherwise.
 has_node{V}(g::AbstractStaticGraph{V}, v::V) = (v in g.nodes)
 
 
-#`matrix(g, T)` generates an adjacency matrix of type T of 
+#`matrix(g, T)` generates an adjacency matrix of type T of
 #the static graph `g`. T = Bool by default.
 function matrix{T<:Number}(g::AbstractStaticGraph, ::Type{T})
     ns = nodes(g)

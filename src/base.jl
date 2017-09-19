@@ -56,7 +56,7 @@ end
 AttributeNode(index::Int, key) = AttributeNode(index, key, Dict())
 
 node_index(v::AttributeNode) = v.index
-key(v::AttributeNode) = v.key
+node_key(v::AttributeNode) = v.key
 attributes(v::AttributeNode) = v.attributes
 attributes(v::AttributeNode, g::AbstractGraph) = v.attributes
 eltype{T}(::AttributeNode{T}) = T
@@ -73,7 +73,7 @@ immutable TimeNode{V<:Node,T}
     timestamp::T
 end
 
-key(v::TimeNode) = key(v.node)
+node_key(v::TimeNode) = node_key(v.node)
 timestamp(v::TimeNode) = v.timestamp
 node_index(v::TimeNode) = node_index(v.node)
 eltype{V,T}(::TimeNode{V,T}) = (V, T)
