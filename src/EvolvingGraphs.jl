@@ -1,6 +1,8 @@
 module EvolvingGraphs
 
 import Base: ==, show,  issorted, deepcopy, length, eltype
+using Requires
+
 
 export
 
@@ -49,7 +51,8 @@ include("base.jl")
 
 # graph IO
 include("read_write/evolving_graph_io.jl")
-
+# need to import EzXML
+@require EzXML include("read_write/graphml.jl")
 # graph types
 ## static graphs
 include("graph_types/digraph.jl")
