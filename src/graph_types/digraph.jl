@@ -19,8 +19,6 @@ type DiGraph{V, E, IncList} <: AbstractStaticGraph{V, E}
 end
 
 
-multivecs{T}(::Type{T}, n::Int) = [T[] for _ =1:n]
-
 """
     digraph(vs, es)
 
@@ -28,7 +26,7 @@ Generate a DiGraph type from a list of nodes `vs` and a list of edges `es`.
 """
 function digraph{V, E}(vs::Vector{V}, es::Vector{E})
     n = length(vs)
-    g = DiGraph(V[], E[], multivecs(E, n), multivecs(E, n), Dict{V, Int}())
+    g = DiGraph(V[], E[], [], [], Dict{V, Int}())
     for v in vs
         add_node!(g, v)
     end
@@ -121,3 +119,4 @@ function add_edge!{V,E}(g::DiGraph{V,E}, u::V, v::V)
     e = Edge(u, v)
     add_edge!(g, u, v, e)
 end
+add_edge!{V,E}(g::DiGraph{V,E}, e::E) = add_edge!(g, source(e), target(e), e)
