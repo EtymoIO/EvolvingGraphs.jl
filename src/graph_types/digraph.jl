@@ -55,13 +55,40 @@ num_edges(g::DiGraph) = length(g.edges)
 
 node_index{V}(g::DiGraph{V}, v::V) = try g.indexof[v] catch 0 end
 
-out_edges{V}(g::DiGraph{V}, v::V) = g.forward_ilist[node_index(v, g)]
-out_degree{V}(g::DiGraph{V}, v::V) = length(out_edges(v, g))
+"""
+    out_edges(g, v)
 
-in_edges{V}(g::DiGraph{V}, v::V) = g.backward_ilist[node_index(v, g)]
-in_degree{V}(g::DiGraph{V}, v::V) = length(in_edges(v, g))
+Return the outward edges of node `v` in graph `g`.
+"""
+out_edges{V}(g::DiGraph{V}, v::V) = g.forward_ilist[node_index(g, v)]
+
+"""
+    out_degree(g, v)
+
+Return the number of outward edges of node `v` in graph `g`.
+"""
+out_degree{V}(g::DiGraph{V}, v::V) = length(out_edges(g, v))
 
 
+"""
+    in_edges(g, v)
+
+Return the inward edges of node `v` in graph `g`.
+"""
+in_edges{V}(g::DiGraph{V}, v::V) = g.backward_ilist[node_index(g, v)]
+
+"""
+    in_degree(g, v)
+
+Return the number of inward edges of node `v` in graph `g`.
+"""
+in_degree{V}(g::DiGraph{V}, v::V) = length(in_edges(g, v))
+
+"""
+    add_node!(g, v)
+
+Add node `v` to the graph `g`.
+"""
 function add_node!{V, E}(g::DiGraph{V, E}, v::V)
     push!(g.nodes, v)
     push!(g.forward_ilist, E[])
@@ -70,6 +97,11 @@ function add_node!{V, E}(g::DiGraph{V, E}, v::V)
     v
 end
 
+"""
+    add_edge!(g, u, v, e)
+
+Add edge `e` with source node `u` and target node `v` to graph `g`.
+"""
 function add_edge!{V, E}(g::DiGraph{V ,E}, u::V, v::V, e::E)
     ui = node_index(g, u)::Int
     vi = node_index(g, v)::Int
@@ -80,6 +112,11 @@ function add_edge!{V, E}(g::DiGraph{V ,E}, u::V, v::V, e::E)
     e
 end
 
+"""
+    add_edge!(g, u, v)
+
+Add an edge with source node `u` and target node `v` to graph `g`.
+"""
 function add_edge!{V,E}(g::DiGraph{V,E}, u::V, v::V)
     e = Edge(u, v)
     add_edge!(g, u, v, e)
