@@ -11,7 +11,7 @@ export
    # graph types
    AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
    TimeGraph, AggregatedGraph, EvolvingGraph,
-   IntEvolvingGraph, IntTimeEdge,
+   IntEvolvingGraph, IntTimeEdge, DiGraph,
 
    # graph functions
    add_node!, add_edge!, add_graph!, rm_edge!, has_edge, has_node,
@@ -23,6 +23,7 @@ export
    attribute_evolving_graph, attributesvec, attributes,
    matrix, spmatrix, attributes_values, aggregated_graph,
    int_evolving_graph, temporal_nodes,
+   digraph, 
 
    # io
    egread, egwrite,
@@ -48,8 +49,11 @@ include("base.jl")
 include("read_write/evolving_graph_io.jl")
 
 # graph types
+## static graphs
+include("graph_types/digraph.jl")
 include("graph_types/time_graph.jl")
 include("graph_types/aggregated_graph.jl")
+## evolving graphs
 include("graph_types/evolving_graph.jl")
 include("graph_types/int_evolving_graph.jl")
 include("graph_types/matrix_list.jl")
