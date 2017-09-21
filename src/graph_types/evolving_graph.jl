@@ -18,15 +18,15 @@ end
 """
     evolving_graph(node_type, time_type[, is_directed = true])
 
-Initialize an evolving graph where the nodes are of type `node_type` and 
+Initialize an evolving graph where the nodes are of type `node_type` and
 the timestamps are of type `time_type`.
 """
-evolving_graph{V,T}(::Type{V}, ::Type{T} ;is_directed::Bool = true) = 
+evolving_graph{V,T}(::Type{V}, ::Type{T} ;is_directed::Bool = true) =
       EvolvingGraph(
-                                 is_directed, 
-                                 Node{V}[], 
-                                 TimeEdge{Node{V}, T}[], 
-                                 T[], 
+                                 is_directed,
+                                 Node{V}[],
+                                 TimeEdge{Node{V}, T}[],
+                                 T[],
                                  Dict{V, Int}(),
                                  TimeNode{Node{V}, T}[]
                                  )
@@ -36,11 +36,12 @@ evolving_graph{V,T}(::Type{V}, ::Type{T} ;is_directed::Bool = true) =
 
 Initialize an evolving graph with integer nodes and timestamps.
 """
-evolving_graph(;is_directed::Bool = true) = 
+evolving_graph(;is_directed::Bool = true) =
        evolving_graph(Int, Int, is_directed = is_directed)
 
 """
-    evolving_graph(ils, jls, timestamps[, is_directed = true]) 
+    evolving_graph(ils, jls, timestamps[, is_directed = true
+
 Generate an evolving graph from three input vectors: ils, jls and timestamps, such that
 the ith entry `(ils[i], jls[i] and timestamps[i])` is an edge from `ils[i]` to `jls[i]` at timestamp
 `timestamp[i]`.
@@ -50,10 +51,10 @@ function evolving_graph{V,T}(ils::Vector{V},
                              timestamps::Vector{T};
                              is_directed::Bool = true)
     n = length(ils)
-    n == length(jls) == length(timestamps)|| 
+    n == length(jls) == length(timestamps)||
             error("3 input vectors must have the same length.")
     g = evolving_graph(eltype(ils), eltype(timestamps), is_directed = is_directed)
-    
+
     for i = 1:n
         v1 = add_node!(g, ils[i])
         v2 = add_node!(g, jls[i])
@@ -62,9 +63,9 @@ function evolving_graph{V,T}(ils::Vector{V},
     g
 end
 
-deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g), 
+deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g),
                                            deepcopy(g.nodes),
-                                           deepcopy(g.edges), 
+                                           deepcopy(g.edges),
                                            deepcopy(g.timestamps),
                                            deepcopy(g.indexof),
                                            deepcopy(g.activenodes))
@@ -80,7 +81,7 @@ Initialize a weighted evolving graph where the nodes are of type `node_type`,
 timestamps are of type `time_type` and the edge weights are of type
 `edge_weight_type`.
 """
-function weighted_evolving_graph{V, T, W <: Real}(::Type{V}, ::Type{T}, ::Type{W}; 
+function weighted_evolving_graph{V, T, W <: Real}(::Type{V}, ::Type{T}, ::Type{W};
                                           is_directed::Bool = true)
     EvolvingGraph(
                   is_directed,
@@ -98,7 +99,7 @@ end
 Initialize a weighted evolving graph with integer nodes, integer timestamps, and
 integer edge weight.
 """
-weighted_evolving_graph(;is_directed::Bool = true) = 
+weighted_evolving_graph(;is_directed::Bool = true) =
      weighted_evolving_graph(Int, Int, Int, is_directed = is_directed)
 
 
@@ -119,7 +120,7 @@ Return `true` if  `v` is a node of `g`.
 has_node{V}(g::EvolvingGraph{V}, v::V) = v in g.nodes
 function has_node(g::EvolvingGraph, v)
     id = zero(Int)
-    try 
+    try
         id = g.indexof[v]
     catch
         id = zero(Int)
@@ -135,7 +136,7 @@ Return the nodes of evolving graph `g`.
 nodes(g::EvolvingGraph) = g.nodes
 num_nodes(g::EvolvingGraph) = length(nodes(g))
 
-function timestamps(g::EvolvingGraph) 
+function timestamps(g::EvolvingGraph)
     ts = unique(g.timestamps)
     return sort(ts)
 end
@@ -184,14 +185,14 @@ num_edges(g::EvolvingGraph) = length(g.edges)
 
 Add a node `v` to evolving graph `g`.
 """
-function add_node!{V}(g::EvolvingGraph{V}, v::V) 
+function add_node!{V}(g::EvolvingGraph{V}, v::V)
     push!(g.nodes, v)
     g.indexof[v.key] = length(g.nodes)
     v
 end
-function add_node!{V}(g::EvolvingGraph{V}, v) 
+function add_node!{V}(g::EvolvingGraph{V}, v)
     id = zero(Int)
-    try 
+    try
         id = g.indexof[v]
     catch
         id = zero(Int)
@@ -254,11 +255,11 @@ end
 """
     add_edge!(g, v1, v2, t, w)
 
-Add an edge from `v1` to `v2` at time `t` with edge weight `w` to 
+Add an edge from `v1` to `v2` at time `t` with edge weight `w` to
 evolving graph `g`.
 """
-function add_edge!{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E}, 
-                                                                                         v1, v2, t, w)
+function add_edge!{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E},
+                                                v1, v2, t, w)
     v1 = add_node!(g, v1)
     v2 = add_node!(g, v2)
     e = E(v1, v2, w, t)
@@ -269,8 +270,8 @@ function add_edge!{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E},
 end
 
 # short-cut for adding multiply edges
-function add_edge!{V, T, E <:TimeEdge}(g::EvolvingGraph{V, T, E}, 
-                                                                        v1::Array, v2::Array, t)
+function add_edge!{V, T, E <:TimeEdge}(g::EvolvingGraph{V, T, E},
+                                        v1::Array, v2::Array, t)
     for j in v2
         for i in v1
             add_edge!(g, i, j, t)
@@ -311,8 +312,8 @@ function matrix{V, T, E <:TimeEdge}(g::EvolvingGraph{V, T, E}, t, M::Type = Floa
     return A
 end
 
-function matrix{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E}, 
-                                                                                  t, M::Type = Float64) 
+function matrix{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E},
+                                                                                  t, M::Type = Float64)
     n = num_nodes(g)
     es = edges(g, t)
     A = zeros(M, n, n)
@@ -331,7 +332,7 @@ end
 Return a sparse adjacency matrix representation of evolving graph
 `g` at timestamp `t`. `T` (optional) is the element type of the matrix.
 """
-function spmatrix{V, T, E <: TimeEdge}(g::EvolvingGraph{V, T, E}, t, 
+function spmatrix{V, T, E <: TimeEdge}(g::EvolvingGraph{V, T, E}, t,
                                                                       M::Type = Float64)
     n = num_nodes(g)
     is = Int[]
@@ -344,10 +345,10 @@ function spmatrix{V, T, E <: TimeEdge}(g::EvolvingGraph{V, T, E}, t,
         push!(js, j)
     end
     vs = ones(M, length(is))
-    return sparse(is, js, vs, n, n)    
+    return sparse(is, js, vs, n, n)
 end
 
-function spmatrix{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E}, 
+function spmatrix{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E},
                                                                                    t, M::Type = Float64)
     n = num_nodes(g)
     is = Int[]
@@ -362,7 +363,7 @@ function spmatrix{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E},
         push!(js, j)
         push!(ws, w)
     end
-    return sparse(is, js, ws, n, n)   
+    return sparse(is, js, ws, n, n)
 end
 
 """
@@ -403,4 +404,18 @@ Return the backward neighbors of temporal node `(v,t)`.
 """
 function backward_neighbors{V, T}(g::EvolvingGraph{V, T}, v::V, t::T)
     error("not implemented yet!")
+end
+
+
+"""
+    add_graph!(eg, g, t)
+
+Add a static graph `g` at timestamp `t` to an evolving graph `eg`.
+"""
+function add_graph!{V, T}(eg::EvolvingGraph{V, T}, g::AbstractStaticGraph, t::T)
+    es = edges(g)
+    for e in es
+        add_edge!(eg, source(e), target(e), t)
+    end
+    eg
 end

@@ -16,13 +16,14 @@ export
    IntEvolvingGraph, IntTimeEdge, DiGraph,
 
    # graph functions
-   add_node!, add_edge!, add_graph!, rm_edge!,
-
+   ## modify graph
+   add_node!, add_edge!, add_graph!, rm_edge!, add_graph!, undirected!,
+   ## retrive information
    has_edge, has_node, in_edges, in_degree, out_edges, out_degree,
    nodes, num_nodes, edges, num_edges,
    source, target, matrices, num_matrices,
    timestamps, num_timestamps, activenodes,
-   forward_neighbors, is_directed, undirected!, undirected,
+   forward_neighbors, is_directed, undirected,
    time_graph, evolving_graph, weighted_evolving_graph, weight,
    attribute_evolving_graph, attributesvec, attributes,
    matrix, spmatrix, attributes_values, aggregated_graph,

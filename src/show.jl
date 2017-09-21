@@ -27,9 +27,9 @@ function show{V, E}(io::IO, g::DiGraph{V, E})
     print(io, "DiGraph{$V, $E} $(num_nodes(g)) nodes, $(num_edges(g)) edges")
 end
 
-function show(io::IO, g::EvolvingGraph)
+function show{V, T, E}(io::IO, g::EvolvingGraph{V, T, E})
     title = is_directed(g) ? "Directed EvolvingGraph" : "Undirected EvolvingGraph"
-    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) static edges, $(num_timestamps(g)) timestamps)")
+    print(io, "$(title){$V, $T, $E} $(num_nodes(g)) nodes, $(num_edges(g)) static edges, $(num_timestamps(g)) timestamps")
 end
 
 function show(io::IO, g::IntEvolvingGraph)

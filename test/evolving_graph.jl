@@ -90,3 +90,13 @@ display(wg)
 wg = weighted_evolving_graph()
 add_edge!(wg, 1, 2 ,1, 1)
 add_edge!(wg, 2, 1, 2, 2)
+
+# add a graph to an evolving graph
+g = digraph(String, Edge{String})
+add_node!(g, "1")
+add_node!(g, "2")
+add_edge!(g, "1", "2")
+eg = evolving_graph(String, Int)
+add_graph!(eg, g, 1)
+@test length(nodes(eg)) == 2
+@test length(edges(eg)) == 1
