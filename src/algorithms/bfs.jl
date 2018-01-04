@@ -4,7 +4,7 @@ function breadth_first_impl{V}(g::AbstractGraph, v::V, t)
     fronter = [(v,t)]
     reachable = [(v,t)]
     while length(fronter) > 0
-        next = Tuple{V,Int64}[]
+        next = Tuple{V,typeof(t)}[]
         for u in fronter
             for v in forward_neighbors(g, u[1], u[2])
                 if !(v in keys(level))

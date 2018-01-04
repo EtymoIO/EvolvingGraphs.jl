@@ -1,4 +1,4 @@
-mutable struct IntEvolvingGraph{V, T} <: AbstractGraph
+mutable struct IntEvolvingGraph{V,T} <: AbstractEvolvingGraph{V,T}
     is_directed::Bool
     nodes::UnitRange{V}
     timestamps::Vector{T}

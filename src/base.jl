@@ -9,7 +9,7 @@
 #abstract type AbstractEvolvingGraph{V, T, E} <: AbstractGraph{V, T, E} end
 #AbstractStaticGraph{V, E} = AbstractEvolvingGraph{V, 1, E}
 abstract type AbstractGraph end
-abstract type AbstractEvolvingGraph{V, T, E} <: AbstractGraph end
+abstract type AbstractEvolvingGraph{V, T} <: AbstractGraph end
 abstract type AbstractStaticGraph{V, E} <: AbstractGraph end
 
 
