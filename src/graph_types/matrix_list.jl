@@ -3,7 +3,7 @@ import Base: isempty
 export IntMatrixList, MatrixList
 export add_matrix!, int_matrix_list, forward_neighbors, backward_neighbors, nodelists
 
-mutable struct IntMatrixList <: AbstractEvolvingGraph
+mutable struct IntMatrixList <: AbstractGraph
     nodelists::Vector{Vector{Int}}
     matrices::Vector{SparseMatrixCSC{Int, Int}}
 end
