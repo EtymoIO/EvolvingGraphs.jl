@@ -3,7 +3,7 @@ import Base: isempty
 export IntMatrixList, MatrixList
 export add_matrix!, int_matrix_list, forward_neighbors, backward_neighbors, nodelists
 
-type IntMatrixList <: AbstractEvolvingGraph
+type IntMatrixList{V,T,E} <: AbstractEvolvingGraph{V,T,E}
     nodelists::Vector{Vector{Int}}
     matrices::Vector{SparseMatrixCSC{Int, Int}}
 end
@@ -155,7 +155,7 @@ for f in (:backward_neighbors, :forward_neighbors)
 end
 
 # matrix list
-type MatrixList{V,T,Tv<:Number} <: AbstractEvolvingGraph
+type MatrixList{V,T,Tv<:Number} <: AbstractEvolvingGraph{V,T,Tv}
     is_directed::Bool
     nodes::Vector{V}
     timestamps::Vector{T}
@@ -163,7 +163,7 @@ type MatrixList{V,T,Tv<:Number} <: AbstractEvolvingGraph
 end
 
 # simple matrix list
-typealias SimpleMatrixList MatrixList{Int, Int, Bool}
+const SimpleMatrixList = MatrixList{Int, Int, Bool}
 
 function MatrixList{V,T, Tv}(nodes::Vector{V}, 
                              timestamps::Vector{T},

@@ -5,9 +5,9 @@
 #
 #############################################
 
-abstract AbstractGraph{V, T, E}  # V is node, T is time, and E is edge
-abstract AbstractEvolvingGraph{V, T, E} <: AbstractGraph{V, T, E}
-abstract AbstractStaticGraph{V, E} <: AbstractGraph{V, E}
+abstract type AbstractGraph{V, T, E}  end # V is node, T is time, and E is edge
+abstract type AbstractEvolvingGraph{V, T, E} <: AbstractGraph{V, T, E} end
+AbstractStaticGraph{V, E} = AbstractEvolvingGraph{V, 1, E}
 
 ######################################
 #
@@ -15,7 +15,7 @@ abstract AbstractStaticGraph{V, E} <: AbstractGraph{V, E}
 #
 #######################################
 
-abstract AbstractPath
+abstract type AbstractPath end
 
 ##############################################
 #
@@ -23,7 +23,7 @@ abstract AbstractPath
 #
 ##############################################
 
-immutable Node{V} 
+struct Node{V} 
     index::Int
     key::V
 end
@@ -67,7 +67,7 @@ make_node{V <: AttributeNode}(g::AbstractGraph{V}, key, attr) =
                                             v1.attributes == v2.attributes && v1.index == v2.index)
 
 
-immutable TimeNode{V<:Node,T} 
+struct TimeNode{V<:Node,T} 
     node::V
     timestamp::T
 end
@@ -80,10 +80,10 @@ eltype{V,T}(::TimeNode{V,T}) = (V, T)
 ==(v1::TimeNode, v2::TimeNode) = (v1.node == v2.node && 
                                                                v1.timestamp== v2.timestamp)
 
-typealias NodeType{V}  Union{Node{V}, AttributeNode{V}, TimeNode{V}}
+NodeType{V} = Union{Node{V}, AttributeNode{V}, TimeNode{V}}
 node_index(v::NodeType, g::AbstractGraph) = index(v)
 
-typealias NodeVector{V} Vector{Node{V}}
+NodeVector{V} = Vector{Node{V}}
 
 
 ##########################################
@@ -93,7 +93,7 @@ typealias NodeVector{V} Vector{Node{V}}
 ##########################################
 
 
-immutable Edge{V}
+struct Edge{V}
     source::V
     target::V       
 end
@@ -104,7 +104,7 @@ target(e::Edge) = e.target
  rev(e::Edge) = Edge(e.target, e.source)
  
 
-immutable TimeEdge{V,T}
+struct TimeEdge{V,T}
     source::V
     target::V
     timestamp::T
@@ -119,7 +119,7 @@ timestamp(e::TimeEdge) = e.timestamp
 rev(e::TimeEdge) = TimeEdge(e.target, e.source, e.timestamp)
 
 
-immutable WeightedTimeEdge{V, T, W<:Real} 
+struct WeightedTimeEdge{V, T, W<:Real} 
     source::V
     target::V
     weight::W
@@ -133,7 +133,7 @@ weight(e::WeightedTimeEdge) = e.weight
 rev(e::WeightedTimeEdge) = 
       WeightedTimeEdge(e.target, e.source, e.weight, e.timestamp)
 
-typealias EdgeType{V}  Union{Edge{V}, TimeEdge{V}, WeightedTimeEdge{V}}
+EdgeType{V} = Union{Edge{V}, TimeEdge{V}, WeightedTimeEdge{V}}
 
 """
     has_node(e, v)

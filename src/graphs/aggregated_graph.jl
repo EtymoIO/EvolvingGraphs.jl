@@ -22,7 +22,7 @@ AggregatedGraph(is_directed,
                 0,
                 Dict{Node{V}, NodeVector{V}}())
 
-aggregated_graph(::Type{AbstractString}; is_directed::Bool = true) = aggregated_graph(ASCIIString, is_directed = is_directed)
+aggregated_graph(::Type{AbstractString}; is_directed::Bool = true) = aggregated_graph(String, is_directed = is_directed)
 
 @doc doc"""
 `aggregated_graph(g)` converts an evolving graph `g` to 

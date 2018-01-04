@@ -23,9 +23,9 @@ function egread(filename)
     length(header) >= 3 || error("The length of header must be >= 3") 
     
     
-    ilist = ASCIIString[]
-    jlist = ASCIIString[]
-    timestamps = ASCIIString[]
+    ilist = String[]
+    jlist = String[]
+    timestamps = String[]
 
     entries = split(chomp(readline(file)), ',')
     while length(entries) == 3

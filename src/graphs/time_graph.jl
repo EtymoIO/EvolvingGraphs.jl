@@ -29,7 +29,7 @@ time_graph{V,T}(::Type{V}, timestamp::T; is_directed::Bool = true) =
               0,
               Dict{Node{V}, NodeVector{V}}())
 
-time_graph{T}(::Type{AbstractString}, timestamp::T; is_directed::Bool = true) = time_graph(ASCIIString, timestamp, is_directed = is_directed)
+time_graph{T}(::Type{AbstractString}, timestamp::T; is_directed::Bool = true) = time_graph(String, timestamp, is_directed = is_directed)
 
 
 @doc doc"""

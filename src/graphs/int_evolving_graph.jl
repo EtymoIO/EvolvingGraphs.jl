@@ -1,11 +1,18 @@
-type IntEvolvingGraph{V ,T} <: AbstractEvolvingGraph{V, T}
+mutable struct IntEvolvingGraph{V, T, E} <: AbstractEvolvingGraph{V, T, E}
     is_directed::Bool
     nodes::UnitRange{V}
     timestamps::Vector{T}
     nnodes::Int      # number of nodes
     nedges::Int      # number of static edges
+    jedges::E
     forward_adjlist::Vector{Vector{V}}
     backward_adjlist::Vector{Vector{V}}
+end
+
+function IntEvolvingGraph{V, T}(is_directed::Bool, nodes::UnitRange{V}, timestamps::Vector{T},
+                                nnodes::Int, nedges::Int, forward_adjlist::Vector{Vector{V}}, 
+                                backward_adjlist::Vector{Vector{V}}) where {V,T}
+    IntEvolvingGraph(is_directed,nodes,timestamps,nnodes,nedges,TimeEdge{Node{V}, T}(),forward_adjlist,backward_adjlist)
 end
 
 """
