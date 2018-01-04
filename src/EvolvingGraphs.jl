@@ -1,28 +1,34 @@
 module EvolvingGraphs
 
-import Base: ==, show,  slice, issorted, deepcopy, length, eltype
+import Base: ==, show,  issorted, deepcopy, length, eltype
+using Requires
 
-export 
+
+export
 
    # base
    Node, Edge, TimeNode, AttributeNode, TimeEdge, WeightedTimeEdge,
-   key, make_node, node_index, rev, timestamp,
+   make_node, node_index, node_key, rev, timestamp,
 
    # graph types
    AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
    TimeGraph, AggregatedGraph, EvolvingGraph,
-   IntEvolvingGraph, IntTimeEdge,
+   IntEvolvingGraph, IntTimeEdge, DiGraph,
 
    # graph functions
-   add_node!, add_edge!, add_graph!, rm_edge!, has_edge, has_node,
+   ## modify graph
+   add_node!, add_edge!, add_graph!, rm_edge!, add_graph!, undirected!,
+   ## retrive information
+   has_edge, has_node, in_edges, in_degree, out_edges, out_degree,
    nodes, num_nodes, edges, num_edges,
-   source, target, matrices, num_matrices, 
+   source, target, matrices, num_matrices,
    timestamps, num_timestamps, activenodes,
-   forward_neighbors, is_directed, undirected!, undirected, 
+   forward_neighbors, is_directed, undirected,
    time_graph, evolving_graph, weighted_evolving_graph, weight,
    attribute_evolving_graph, attributesvec, attributes,
    matrix, spmatrix, attributes_values, aggregated_graph,
    int_evolving_graph, temporal_nodes,
+   digraph,
 
    # io
    egread, egwrite,
@@ -43,15 +49,21 @@ export
 
 
 include("base.jl")
-include("io.jl")
 
+# graph IO
+include("read_write/evolving_graph_io.jl")
+# need to import EzXML
+@require EzXML include("read_write/graphml.jl")
 # graph types
-include("graphs/time_graph.jl") 
-include("graphs/aggregated_graph.jl")
-include("graphs/evolving_graph.jl")
-include("graphs/int_evolving_graph.jl")
-include("graphs/matrix_list.jl")
-include("graphs/incidence_matrix.jl")
+## static graphs
+include("graph_types/digraph.jl")
+include("graph_types/time_graph.jl")
+include("graph_types/aggregated_graph.jl")
+## evolving graphs
+include("graph_types/evolving_graph.jl")
+include("graph_types/int_evolving_graph.jl")
+include("graph_types/matrix_list.jl")
+include("graph_types/incidence_matrix.jl")
 
 include("show.jl")
 

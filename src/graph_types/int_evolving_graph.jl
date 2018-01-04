@@ -18,7 +18,7 @@ end
 """
     int_evolving_graph(nv, nt; is_directed)
 
-Initialize an evolving graph with `nv` nodes and `nt` timestamps, where `nv` and `nt` 
+Initialize an evolving graph with `nv` nodes and `nt` timestamps, where `nv` and `nt`
 are integers.
 """
 function int_evolving_graph(nv::Int, nt::Int; is_directed::Bool = true)
@@ -43,7 +43,7 @@ end
 Convert an EvolvingGraph to an IntEvolvingGraph.
 """
 function int_evolving_graph(g::EvolvingGraph)
-    g1 = int_evolving_graph(num_nodes(g), num_timestamps(g), 
+    g1 = int_evolving_graph(num_nodes(g), num_timestamps(g),
                                              is_directed = is_directed(g))
     for e in edges(g)
         v1 = node_index(source(e))
@@ -53,7 +53,7 @@ function int_evolving_graph(g::EvolvingGraph)
     g1
 end
 
-# all temporal nodes of g 
+# all temporal nodes of g
 function temporal_nodes(g::IntEvolvingGraph)
     ns = Array(Tuple{Int, Int}, length(g.nodes))
     b = g.nnodes
@@ -70,11 +70,11 @@ timestamps(g::IntEvolvingGraph) = unique(g.timestamps)
 num_timestamps(g::IntEvolvingGraph) = round(Int, length(g.timestamps)/g.nnodes)
 num_edges(g::IntEvolvingGraph, t::Int) = g.nedges
 
-deepcopy(g::IntEvolvingGraph) = IntEvolvingGraph(is_directed(g), 
-                                             deepcopy(g.nodes), 
-                                             deepcopy(g.timestamps), 
+deepcopy(g::IntEvolvingGraph) = IntEvolvingGraph(is_directed(g),
+                                             deepcopy(g.nodes),
+                                             deepcopy(g.timestamps),
                                              g.nnodes,
-                                             g.nedges, 
+                                             g.nedges,
                                              deepcopy(g.forward_adjlist))
 
 
@@ -105,8 +105,8 @@ function add_edge!(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int)
 
         for (v, n) in ((v1, n1), (v2, n2))
             for i in 1:t-1
-                len = length(g.forward_adjlist[v + ns*(i-1)]) + 
-                length(g.backward_adjlist[v + ns*(i-1)])       
+                len = length(g.forward_adjlist[v + ns*(i-1)]) +
+                length(g.backward_adjlist[v + ns*(i-1)])
                 if len > 0
                     _insertnode!(g.forward_adjlist[v + ns*(i-1)], n)
                     _insertnode!(g.backward_adjlist[n], (v+ns*(i-1)))
@@ -114,7 +114,7 @@ function add_edge!(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int)
             end
             for i in t+1:num_timestamps(g)
                 #   println("node: $(v + ns*(i-1))")
-                len = length(g.forward_adjlist[v + ns*(i-1)]) + 
+                len = length(g.forward_adjlist[v + ns*(i-1)]) +
                 length(g.backward_adjlist[v + ns*(i-1)])
                 if len > 0
                     _insertnode!(g.forward_adjlist[n], (v+ns*(i-1)))

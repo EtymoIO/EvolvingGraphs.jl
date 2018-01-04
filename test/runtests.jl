@@ -7,6 +7,7 @@ tests = [
          "evolving_graph",
          "centrality",
          "random_graph",
+         "digraph",
          "io",
          "aggregated_graph",
          "int_evolving_graph",
