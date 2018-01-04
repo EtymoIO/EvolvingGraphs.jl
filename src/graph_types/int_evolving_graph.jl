@@ -21,7 +21,7 @@ Initialize an evolving graph with `nv` nodes and `nt` timestamps, where `nv` and
 are integers.
 """
 function int_evolving_graph(nv::Int, nt::Int; is_directed::Bool = true)
-    ts = Array(Int, nv*nt)
+    ts = Array{Int}(nv*nt)
     f_adj = Vector{Int}[]
     b_adj = Vector{Int}[]
     for i = 1:nv*nt

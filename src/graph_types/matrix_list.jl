@@ -208,7 +208,7 @@ function MatrixList(g::AbstractEvolvingGraph)
     ns = nodes(g)
     ts = timestamps(g)
     n = length(ts)
-    matrices = Array(SparseMatrixCSC{Float64}, n)
+    matrices = Array{SparseMatrixCSC{Float64}}(n)
     for (i,t) = enumerate(ts)
         matrices[i] = spmatrix(g,t)
     end
