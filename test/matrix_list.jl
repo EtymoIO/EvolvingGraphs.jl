@@ -1,5 +1,5 @@
 
-g = evolving_graph(Int, ASCIIString) 
+g = evolving_graph(Int, String) 
 add_edge!(g, 1, 2, "t1") 
 add_edge!(g,  1, 3, "t2") 
 add_edge!(g, 4, 5, "t2") 
@@ -49,7 +49,7 @@ A = spmatrix(g)
 @test A[1:3, 7:9] == sparse([2], [2], [1], 3, 3)
 @test A[4:6, 7:9] == sparse([3], [3], [1], 3, 3)
 
-g = evolving_graph(Int, ASCIIString)
+g = evolving_graph(Int, String)
 add_edge!(g, 1, 2, "t1")
 add_edge!(g, 2, 3, "t2")
 add_edge!(g, 4, 2, "t2")
