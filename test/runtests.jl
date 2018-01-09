@@ -21,8 +21,22 @@ tests = [
          "components"
          ]
 
-for t in tests
+t_passed = falses(length(tests))
+for (i,t) in enumerate(tests)
     tp = joinpath(Pkg.dir("EvolvingGraphs"), "test", "$(t).jl")
-    println("running $(tp) ...")
-    include(tp)
+    println("Testing $t ...")
+    try
+        include(tp)
+        println("$t tests passed.\n")
+        t_passed[i] = true
+    catch
+        println("$t tests failed!\n")
+    end
 end
+
+println("##### Test Summary: #####")
+for (i,t) in enumerate(tests)
+    println(t_passed[i] ? "$t ✓" : "$t ✗")
+end
+
+@test all(t_passed)

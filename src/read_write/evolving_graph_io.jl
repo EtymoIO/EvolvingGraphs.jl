@@ -21,8 +21,6 @@ function egread(filename)
     header = split(chomp(ll), ',')
 
     length(header) >= 3 || error("The length of header must be >= 3")
-
-
     ilist = String[]
     jlist = String[]
     timestamps = String[]

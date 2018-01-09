@@ -5,7 +5,7 @@ a = Node(1, "a")
 @test  node_key(a) == "a"
 @test node_index(a) == 1
 @test eltype(a) <: AbstractString
-print(a)
+println(a)
 
 a1 = Node(1, "a")
 @test a == a1
@@ -18,7 +18,7 @@ attributes(b) =  Dict("a" => 2)
 @test attributes(b) ==  Dict("a" => 2)
 @test eltype(b) <: AbstractString
 @test b == b1
-print(b)
+println(b)
 
 d = TimeNode(a,  "t1")
 @test node_key(d) == "a"
@@ -26,7 +26,7 @@ d = TimeNode(a,  "t1")
 @test node_index(d) == 1
 @test eltype(d)[1] <: Node
 @test eltype(d)[2] <: AbstractString
-print(d)
+println(d)
 
 # test edges
 e1 = Edge('a', 'b')
@@ -34,13 +34,13 @@ e1 = Edge('a', 'b')
 @test target(e1) == 'b'
 e3 = Edge('b', 'a')
 @test rev(e3) == e1
-print(e1)
+println(e1)
 
 e2 = TimeEdge('a', 'b', 3)
 @test source(e2) == 'a'
 @test target(e2) == 'b'
 @test timestamp(e2) == 3
-print(e2)
+println(e2)
 @test has_node(e2, 'a')
 
 e = WeightedTimeEdge(1, 2, 2.3, 2)
@@ -48,4 +48,4 @@ e = WeightedTimeEdge(1, 2, 2.3, 2)
 @test target(e) == 2
 @test timestamp(e) == 2
 @test weight(e) == 2.3
-print(e)
+println(e)

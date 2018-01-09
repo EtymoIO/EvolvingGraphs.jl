@@ -1,4 +1,4 @@
-type IntEvolvingGraph{V, T} <: AbstractGraph
+mutable struct IntEvolvingGraph{V,T} <: AbstractEvolvingGraph{V,T}
     is_directed::Bool
     nodes::UnitRange{V}
     timestamps::Vector{T}
@@ -8,6 +8,12 @@ type IntEvolvingGraph{V, T} <: AbstractGraph
     backward_adjlist::Vector{Vector{V}}
 end
 
+#function IntEvolvingGraph{V, T}(is_directed::Bool, nodes::UnitRange{V}, timestamps::Vector{T},
+#                                nnodes::Int, nedges::Int, forward_adjlist::Vector{Vector{V}}, 
+#                                backward_adjlist::Vector{Vector{V}}) where {V,T}
+#    IntEvolvingGraph(is_directed,nodes,timestamps,nnodes,nedges,TimeEdge{Node{V}, T}(),forward_adjlist,backward_adjlist)
+#end
+
 """
     int_evolving_graph(nv, nt; is_directed)
 
@@ -15,7 +21,7 @@ Initialize an evolving graph with `nv` nodes and `nt` timestamps, where `nv` and
 are integers.
 """
 function int_evolving_graph(nv::Int, nt::Int; is_directed::Bool = true)
-    ts = Array(Int, nv*nt)
+    ts = Array{Int}(nv*nt)
     f_adj = Vector{Int}[]
     b_adj = Vector{Int}[]
     for i = 1:nv*nt

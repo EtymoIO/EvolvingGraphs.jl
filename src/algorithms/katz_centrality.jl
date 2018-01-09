@@ -51,7 +51,7 @@ function katz_centrality(g::AbstractEvolvingGraph,
     S = spzeros(Float64, n, n)
     A = spzeros(Float64, n, n)
     spI = speye(Float64, n)
-    v = Array(Float64, n) 
+    v = Array{Float64}(n) 
     Δt = 1.
     for t in ts
         Δt += 0.01

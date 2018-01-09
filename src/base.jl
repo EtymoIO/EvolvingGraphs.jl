@@ -5,9 +5,13 @@
 #
 #############################################
 
+#abstract type AbstractGraph{V, T, E}  end # V is node, T is time, and E is edge
+#abstract type AbstractEvolvingGraph{V, T, E} <: AbstractGraph{V, T, E} end
+#AbstractStaticGraph{V, E} = AbstractEvolvingGraph{V, 1, E}
 abstract type AbstractGraph end
-abstract type AbstractEvolvingGraph{V, T, E} <: AbstractGraph end
+abstract type AbstractEvolvingGraph{V, T} <: AbstractGraph end
 abstract type AbstractStaticGraph{V, E} <: AbstractGraph end
+
 
 ######################################
 #
@@ -68,7 +72,7 @@ make_node(g::AbstractGraph, key, attr) =
                                             v1.attributes == v2.attributes && v1.index == v2.index)
 
 
-immutable TimeNode{V<:Node,T}
+struct TimeNode{V<:Node,T} 
     node::V
     timestamp::T
 end
@@ -94,7 +98,7 @@ NodeVector{V} = Vector{Node{V}}
 ##########################################
 
 
-immutable Edge{V}
+struct Edge{V}
     source::V
     target::V
 end
@@ -105,7 +109,7 @@ target(e::Edge) = e.target
  rev(e::Edge) = Edge(e.target, e.source)
 
 
-immutable TimeEdge{V,T}
+struct TimeEdge{V,T}
     source::V
     target::V
     timestamp::T

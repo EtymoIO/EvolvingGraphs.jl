@@ -4,7 +4,7 @@
 Return `true` if there is path from `v1` at timestamp `t1` to `v2` at 
 timestamp `t2` and `false` otherwise.
 """
-temporal_connected{V, T}(g::AbstractEvolvingGraph{V, T}, v1::V, t1::T, v2::V, t2::T) = 
+temporal_connected{V, T}(g::AbstractEvolvingGraph{V, T}, v1, t1, v2, t2) = 
      (v2, t2) in breadth_first_impl(g, v1, t1) ? true : false
 function temporal_connected{V, T}(g::EvolvingGraph{V, T}, v1, t1, v2, t2)
     nv1 = find_node(g, v1)

@@ -10,9 +10,9 @@ add_edge!(g, "a", "b")
 @test out_edges(g, "a") == [Edge("a", "b")]
 @test in_edges(g, "b") == [Edge("a", "b")]
 
-nodes = [1, 2, 4]
-edges = [Edge(1, 2), Edge(2, 4)]
+tnodes = [1, 2, 4]
+tedges = [Edge(1, 2), Edge(2, 4)]
 
-g2 = digraph(nodes, edges)
+g2 = digraph(tnodes, tedges)
 @test length(nodes(g2)) == 3
 @test length(edges(g2)) == 2
