@@ -1,7 +1,7 @@
 # EvolvingGraphs
 
-[![Build Status](https://travis-ci.org/weijianzhang/EvolvingGraphs.jl.svg?branch=master)](https://travis-ci.org/weijianzhang/EvolvingGraphs.jl)
-[![codecov.io](https://codecov.io/github/weijianzhang/EvolvingGraphs.jl/coverage.svg?branch=master)](https://codecov.io/github/weijianzhang/EvolvingGraphs.jl?branch=master)
+[![Build Status](https://travis-ci.org/EtymoIO/EvolvingGraphs.jl.svg?branch=master)](https://travis-ci.org/EtymoIO/EvolvingGraphs.jl)
+[![codecov.io](https://codecov.io/github/EtymoIO/EvolvingGraphs.jl/coverage.svg?branch=master)](https://codecov.io/github/EtymoIO/EvolvingGraphs.jl?branch=master)
 
 Dynamic Graph Analysis Framework in Julia.
 
@@ -40,7 +40,7 @@ We can find the shortest temporal path of ``g`` by
 
 	Find the shortest temporal path from node v1 at timestamp t1 to node v2 at
 	timestamp t2 on the evolving graph g. If verbose = true, prints the current
-	path at each search step. 
+	path at each search step.
 
 	julia> shortest_temporal_path(g, 1, "t1", 3, "t3")
 	(Node(1),"t1")->(Node(1),"t2")->(Node(3),"t2")->(Node(3),"t3")
