@@ -10,5 +10,5 @@ makedocs(
 deploydocs(
     branch = "gh-pages",
     latest = "master",
-    repo = "github.com/EtymoIO/EvolvingGraphs.jl.git"
+    repo = "EtymoIO/EvolvingGraphs.jl"
 )
