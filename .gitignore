@@ -2,3 +2,5 @@
 *.jl.mem
 *.org
 _build
+docs/build/
+docs/site/
