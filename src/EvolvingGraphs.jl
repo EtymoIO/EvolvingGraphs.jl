@@ -34,8 +34,7 @@ export
    egread, egwrite,
 
    # algorithms
-   katz_centrality, random_time_graph, random_evolving_graph,
-   breadth_first_visit,
+   random_time_graph, random_evolving_graph, breadth_first_visit,
 
    # metric
    Path, TemporalPath, shortest_temporal_path, shortest_temporal_distance,
@@ -71,11 +70,13 @@ include("show.jl")
 include("algorithms/bfs.jl")
 include("algorithms/sort_slice.jl")
 include("algorithms/components.jl")
-include("algorithms/katz_centrality.jl")
 include("algorithms/random.jl")
 
 # metric
 include("algorithms/shortest_distance.jl")
 include("algorithms/shortest_temporal_distance.jl")
+
+# Centrality module
+include("centrality/centrality.jl")
 
 end # module
