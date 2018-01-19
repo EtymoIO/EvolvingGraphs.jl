@@ -11,6 +11,9 @@ Dynamic Graph Analysis Framework in Julia.
 
 * [Release Notes](https://github.com/weijianzhang/EvolvingGraphs.jl/blob/master/NEWS.md)
 
+
+* New Documenation (testing): https://etymoio.github.io/EvolvingGraphs.jl/latest
+
 ## Examples
 
 ![simple evolving graph](doc/example1.png)
