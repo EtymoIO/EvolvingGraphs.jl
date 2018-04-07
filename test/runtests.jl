@@ -2,7 +2,7 @@ using EvolvingGraphs
 using Base.Test
 
 tests = [
-         "core",
+         "base",
          "time_graph",
          "evolving_graph",
          "centrality",

@@ -1,11 +1,27 @@
 """
-    katz(g [, α = 0.3, sorted = true]) 
+    katz(g::AbstractStaticGraph, α::Real = 0.1; normalized::Bool = true)
+
+Compute the Katz centrality for a static graph `g`.
+"""
+function katz(g::AbstractStaticGraph, α::Real = 0.1; normalized::Bool = true)
+    n = num_nodes(g)
+    ns = nodes(g)
+    v = ones(Float64, n)
+    A = spmatrix(g)
+    spI = speye(Float64, n)
+    return (spI - αA)\v
+end
+
+
+
+"""
+    katz(g::AbstractEvolvingGraph, α::Real = 0.3; sorted::Bool = true)
 
 Computes the broadcast centrality vector of an evolving graph `g`.
 
-Input:
+# Arguments
 
-     `g`: an evolving graph
+`g`: an evolving graph
      `α`: (= 0.3 default) a scalar the controls the influence of long walks.
 """
 function katz(g::AbstractEvolvingGraph, α::Real = 0.3; sorted::Bool = true)
@@ -29,7 +45,7 @@ function katz(g::AbstractEvolvingGraph, α::Real = 0.3; sorted::Bool = true)
 end
 
 """
-    katz(g, α, β [, mode = :broadcast])
+    katz(g::AbstractEvolvingGraph, α::Real, β::Real; mode::Symbol = :broadcast)
 
 Computes the Katz centrality of an evolving graph `g`.
 
@@ -72,5 +88,4 @@ function katz(g::AbstractEvolvingGraph,
     else
         throw(ArgumentError("unknown mode $(mode)"))
     end
-
 end
