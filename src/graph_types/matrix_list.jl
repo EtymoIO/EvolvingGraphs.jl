@@ -3,7 +3,7 @@ import Base: isempty
 export IntMatrixList, MatrixList
 export add_matrix!, int_matrix_list, forward_neighbors, backward_neighbors, nodelists
 
-mutable struct IntMatrixList <: AbstractGraph
+mutable struct IntMatrixList{V,E,T} <: AbstractEvolvingGraph{V,E,T}
     nodelists::Vector{Vector{Int}}
     matrices::Vector{SparseMatrixCSC{Int, Int}}
 end
@@ -155,7 +155,7 @@ for f in (:backward_neighbors, :forward_neighbors)
 end
 
 # matrix list
-type MatrixList{V,T,Tv<:Number} <: AbstractGraph
+type MatrixList{V,E,T,Tv} <: AbstractEvolvingGraph{V,E,T}
     is_directed::Bool
     nodes::Vector{V}
     timestamps::Vector{T}

@@ -8,7 +8,8 @@ export
 
    # base
    Node, Edge, TimeNode, AttributeNode, TimeEdge, WeightedTimeEdge,
-   make_node, node_index, node_key, rev, timestamp,
+   make_node, node_index, node_key, edge_reverse, node_timestamp, edge_timestamp,
+   node_attributes, edge_weight,
 
    # graph types
    AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
@@ -24,7 +25,7 @@ export
    source, target, matrices, num_matrices,
    timestamps, num_timestamps, activenodes,
    forward_neighbors, is_directed, undirected,
-   time_graph, evolving_graph, weighted_evolving_graph, weight,
+   time_graph, evolving_graph, weighted_evolving_graph,
    attribute_evolving_graph, attributesvec, attributes,
    matrix, spmatrix, attributes_values, aggregated_graph,
    int_evolving_graph, temporal_nodes,

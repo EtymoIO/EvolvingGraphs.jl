@@ -5,7 +5,7 @@
 #
 #####################################################
 
-type EvolvingGraph{V, T, E, I} <: AbstractEvolvingGraph{V, T}
+type EvolvingGraph{V, E, T, I} <: AbstractEvolvingGraph{V, E, T}
     is_directed::Bool
     nodes::Vector{V}                                   # a vector of nodes
     edges::Vector{E}                                   # a vector of edges

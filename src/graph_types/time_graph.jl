@@ -52,7 +52,7 @@ num_edges(g::AbstractStaticGraph) = g.nedges
 
 
 #`add_node!(g, v)` add a node `v` to a static graph `g`.
-function add_node!{V<:NodeType}(g::AbstractStaticGraph{V}, v::V)
+function add_node!{V<:AbstractNode}(g::AbstractStaticGraph{V}, v::V)
     if !(v in g.nodes)
         push!(g.nodes, v)
         g.adjlist[v] = V[]
@@ -63,7 +63,7 @@ add_node!(g::AbstractStaticGraph, v) = add_node!(g, make_node(g, v))
 
 
 #`add_edge!(g, e)` adds an edge `e` to a static graph `g`.
-function add_edge!{V}(g::AbstractStaticGraph{V}, e::EdgeType{V})
+function add_edge!{V}(g::AbstractStaticGraph{V}, e::AbstractEdge{V})
     src = e.source
     dest = e.target
     if !(src in g.nodes)
