@@ -214,12 +214,29 @@ has_edge{V, E}(g::EvolvingGraph{V,E}, e::E) = e in edges(g)
 
 
 """
-    matrix(g, t[, T = Bool])
+    adjacency_matrix(g, t[, T = Bool])
 
-Return an adjacency matrix representation of evolving graph `g` at timestamp `t`.
-`T` (optional) is the element type of the matrix.
+Return an adjacency matrix representation of an evolving graph `g` at timestamp `t`.
+`T` (default=Float64) is the element type of the matrix.
+
+# Example
+
+```jldoctest
+julia> using EvolvingGraphs
+
+julia> g = evolving_graph_from_arrays([1,2,3], [4,5,2], [1,1,2])
+Directed EvolvingGraph 5 nodes, 3 static edges, 2 timestamps
+
+julia> adjacency_matrix(g, 1)
+5×5 Array{Float64,2}:
+ 0.0  1.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  1.0  0.0
+ 0.0  0.0  0.0  0.0  0.0
+ 0.0  0.0  0.0  0.0  0.0
+```
 """
-function adjacency_matrix{V, T, E <:TimeEdge}(g::EvolvingGraph{V, T, E}, t, M::Type = Float64)
+function adjacency_matrix{V, E, T}(g::EvolvingGraph{V, E, T}, t::T, M::Type = Float64)
     n = num_nodes(g)
     es = edges(g, t)
     A = zeros(M, n, n)
@@ -231,27 +248,44 @@ function adjacency_matrix{V, T, E <:TimeEdge}(g::EvolvingGraph{V, T, E}, t, M::T
     return A
 end
 
-function adjacency_matrix{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E}, t, M::Type = Float64)
-    n = num_nodes(g)
-    es = edges(g, t)
-    A = zeros(M, n, n)
-    for e in es
-        i = node_index(e.source)
-        j = node_index(e.target)
-        w = e.weight
-        A[(j-1)*n + i] = M(w)
-    end
-    return A
-end
+# function adjacency_matrix{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E}, t, M::Type = Float64)
+#     n = num_nodes(g)
+#     es = edges(g, t)
+#     A = zeros(M, n, n)
+#     for e in es
+#         i = node_index(e.source)
+#         j = node_index(e.target)
+#         w = e.weight
+#         A[(j-1)*n + i] = M(w)
+#     end
+#     return A
+# end
 
 """
     sparse_adjacency_matrix(g, t[, T = Bool])
 
-Return a sparse adjacency matrix representation of evolving graph
-`g` at timestamp `t`. `T` (optional) is the element type of the matrix.
+Return a sparse adjacency matrix representation of an evolving graph
+`g` at timestamp `t`. `T` (default=Float64) is the element type of the matrix.
+
+# Example
+
+```jldoctest
+julia> using EvolvingGraphs
+
+julia> g = evolving_graph_from_arrays([1,2,3], [4,5,2], [1,1,2])
+Directed EvolvingGraph 5 nodes, 3 static edges, 2 timestamps
+
+julia> sparse_adjacency_matrix(g,2)
+5×5 SparseMatrixCSC{Float64,Int64} with 1 stored entry:
+  [5, 3]  =  1.0
+
+julia> sparse_adjacency_matrix(g,1)
+5×5 SparseMatrixCSC{Float64,Int64} with 2 stored entries:
+  [1, 2]  =  1.0
+  [3, 4]  =  1.0
+```
 """
-function sparse_adjacency_matrix{V, T, E <: TimeEdge}(g::EvolvingGraph{V, T, E}, t,
-                                                                      M::Type = Float64)
+function sparse_adjacency_matrix{V,E,T}(g::EvolvingGraph{V,E,T}, t::T, M::Type = Float64)
     n = num_nodes(g)
     is = Int[]
     js = Int[]
@@ -266,23 +300,22 @@ function sparse_adjacency_matrix{V, T, E <: TimeEdge}(g::EvolvingGraph{V, T, E},
     return sparse(is, js, vs, n, n)
 end
 
-function sparse_adjacency_matrix{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E},
-    t, M::Type = Float64)
-    n = num_nodes(g)
-    is = Int[]
-    js = Int[]
-    ws = M[]
-    es = edges(g, t)
-    for e in es
-        i = node_index(e.source)
-        j = node_index(e.target)
-        w = T(e.weight)
-        push!(is, i)
-        push!(js, j)
-        push!(ws, w)
-    end
-    return sparse(is, js, ws, n, n)
-end
+# function sparse_adjacency_matrix{V, T, E <: WeightedTimeEdge}(g::EvolvingGraph{V, T, E}, t, M::Type = Float64)
+#     n = num_nodes(g)
+#     is = Int[]
+#     js = Int[]
+#     ws = M[]
+#     es = edges(g, t)
+#     for e in es
+#         i = node_index(e.source)
+#         j = node_index(e.target)
+#         w = T(e.weight)
+#         push!(is, i)
+#         push!(js, j)
+#         push!(ws, w)
+#     end
+#     return sparse(is, js, ws, n, n)
+# end
 
 """
     forward_neighbors(g, v, t)

@@ -14,21 +14,20 @@ export
    # graph types
    AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
    TimeGraph, AggregatedGraph, EvolvingGraph,
-   AdjacencyList, IntTimeEdge, DiGraph, evolving_graph_from_arrays,
+   AdjacencyList, DiGraph, evolving_graph_from_arrays, adjacency_matrix, sparse_adjacency_matrix,
 
    # graph functions
    ## modify graph
    add_node!, add_edge!, add_graph!, rm_edge!, add_graph!, undirected!,
    add_edge_from_array!,
-   ## retrive information
+
    has_edge, has_node, in_edges, in_degree, out_edges, out_degree,
    nodes, num_nodes, edges, num_edges,
    source, target, matrices, num_matrices, unique_timestamps,
    timestamps, num_timestamps, active_nodes, num_active_nodes,
    forward_neighbors, is_directed, undirected,
    time_graph,
-   attribute_evolving_graph, attributesvec, attributes,
-   matrix, spmatrix, attributes_values, aggregated_graph,
+   attributes_values, aggregated_graph,
    int_evolving_graph, temporal_nodes,
    digraph,
 
