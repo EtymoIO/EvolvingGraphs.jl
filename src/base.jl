@@ -56,10 +56,10 @@ node_key(v::AbstractNode) = v.key
 
 """
     Node(index, key)
-    Node(key)
-    Node(g, key)
+    Node{V}(key)
+    Node{V}(g, key)
 
-Constructs a Node with node index `index` and key value `key`.
+Constructs a Node with node index `index` of type `V` and key value `key`.
 If only `key` is given, set `index` to `0`. Node(g, key) constructs a new node in graph `g`, so index is equal to `num_nodes(g) + 1`.
 
 # Example
@@ -76,7 +76,7 @@ julia> node_index(a)
 julia> node_key(a)
 "a"
 
-julia> b = Node("b")
+julia> b = Node{String}("b")
 Node(b)
 
 julia> node_index(b)
@@ -87,18 +87,17 @@ struct Node{V} <: AbstractNode{V}
     index::Int
     key::V
 end
-Node(key) = Node(0, key)
-Node(g::AbstractGraph, key) = Node(num_nodes(g)+ 1, key)
+Node{V}(key::V) where {V} = Node(0, key)
+Node{V}(g::AbstractGraph, key::V) where {V} = Node(num_nodes(g)+ 1, key)
 
 ==(v1::Node, v2::Node) = (v1.key == v2.key) && (v1.index == v2.index)
 eltype{T}(::Node{T}) = T
-
-
+eltype{T}(::Type{Node{T}}) = T
 
 """
     AttributeNode(index, key, attributes=Dict())
-    AttributeNode(key, attributes=Dict())
-    AttributeNode(g, key, attributes=Dict())
+    AttributeNode{K, D_k, D_v}(key, attributes=Dict())
+    AttributeNode{K, D_k, D_v}(g, key, attributes=Dict())
 
 Construct an AttributeNode with index `index`, key value `key` and attributes `attributes`. If `index` is not given, set `index = 0`. `AttributeNode(g, key, attributes)` constructs a new AttributeNode for graph `g`, where `index = num_nodes(g) + 1`.
 
@@ -126,9 +125,8 @@ struct AttributeNode{V, D_k, D_v} <: AbstractNode{V}
     key::V
     attributes::Dict{D_k, D_v}
 end
-AttributeNode(key, attributes=Dict()) = AttributeNode(0, key, attributes)
-AttributeNode(index::Int, key, attributes=Dict()) = AttributeNode(index, key, attributes)
-AttributeNode(g::AbstractGraph, key, attributes=Dict()) = AttributeNode(num_nodes(g) + 1 , key, attributes)
+AttributeNode{V, D_k, D_v}(key::V, attributes=Dict()) where V where D_k where D_v = AttributeNode(0, key, attributes)
+AttributeNode{V, D_k, D_v}(g::AbstractGraph, key::V, attributes=Dict()) where V where D_k where D_v = AttributeNode(num_nodes(g) + 1 , key, attributes)
 
 
 """
@@ -142,13 +140,14 @@ node_attributes(v::AttributeNode, g::AbstractGraph) = v.attributes
 
 
 eltype{T}(::AttributeNode{T}) = T
+eltype{T}(::Type{AttributeNode{T}}) = T
 ==(v1::AttributeNode, v2::AttributeNode) = (v1.key == v2.key &&
                                             v1.attributes == v2.attributes && v1.index == v2.index)
 
 """
     TimeNode(index, key, timestamp)
-    TimeNode(key, timestamp)
-    TimeNode(g, key, timestamp)
+    TimeNode{V,T}(key, timestamp)
+    TimeNode{V,T}(g, key, timestamp)
 
 Constructs a TimeNode at timestamp `timestamp`. `TimeNode(g, key, timestamp)` constructs a TimeNode in graph `g`.
 
@@ -175,9 +174,8 @@ struct TimeNode{V,T} <: AbstractNode{V}
     key::V
     timestamp::T
 end
-TimeNode(key, timestamp) = TimeNode(0, key, timestamp)
-TimeNode(g::AbstractGraph, key, timestamp) = TimeNode(num_nodes(g), key, timestamp)
-
+TimeNode{V,T}(key, timestamp) where {V} where {T} = TimeNode(0, key, timestamp)
+TimeNode{V,T}(g::AbstractGraph, key::V, timestamp::T) where {V} where {T} = TimeNode(num_active_nodes(g) + 1, key, timestamp)
 
 """
     node_timestamp(v)
@@ -190,7 +188,7 @@ eltype{V,T}(::TimeNode{V,T}) = (V, T)
 ==(v1::TimeNode, v2::TimeNode) = (v1.key == v2.key && v1.timestamp== v2.timestamp)
 
 
-NodeVector{V} = Vector{Node{V}}
+# NodeVector{V} = Vector{Node{V}}
 
 
 
@@ -283,6 +281,10 @@ struct WeightedTimeEdge{V, T, W<:Real}
 end
 WeightedTimeEdge(source, target, timestamp) = WeightedTimeEdge(source, target, 1.0, timestamp)
 
+
+eltype{V,T,W}(::WeightedTimeEdge{V,T,W}) = (V,T,W)
+eltype{V,T,W}(::Type{WeightedTimeEdge{V,T,W}}) = (V,T,W)
+
 """
     edge_weight(e)
 
@@ -308,3 +310,114 @@ edge_reverse(e::WeightedTimeEdge) =
 Return `true` if `v` is a node of the edge `e`.
 """
 has_node{V}(e::AbstractEdge{V}, v::V) = (v == source(e) || v == target(e))
+
+"""
+    has_node(g, v)
+
+Return `true` if graph `g` contains node `v` and `false` otherwise, where `v` can a node type object or a node key.
+"""
+function has_node end
+
+
+"""
+    nodes(g)
+
+Return the nodes of a graph `g`.
+"""
+function nodes end
+
+
+"""
+    num_nodes(g)
+"""
+function num_nodes end
+
+"""
+    active_nodes(g)
+
+Return the active nodes of an evolving graph `g`.
+"""
+function active_nodes end
+
+
+"""
+    num_active_nodes(g)
+
+Return the number of active nodes of evolving graph `g`.
+"""
+function num_active_nodes end
+
+
+"""
+    find_node(g, v)
+
+Return node `v` if `v` is a node of graph `g`, otherwise return false. If `v` is a node key, return corresponding node.
+"""
+function find_node end
+
+"""
+    add_node!(g, v)
+
+Add a node to graph `g`, where `v` can be either a node type object or a node key.
+"""
+function add_node! end
+
+"""
+    edges(g)
+    edges(g, t)
+
+Return all the edges of graph `g`. If timestamp `t` is given, returns all the edges at timestamp `t`.
+"""
+function edges end
+
+
+"""
+    num_edges(g)
+
+Return the number of edges of graph `g`.
+"""
+function num_edges end
+
+"""
+    add_edge!(g, v1, v2, t)
+
+Add edge (v1->v2 at timestamp t) to evolving graph `g`.
+"""
+function add_edge! end
+
+
+"""
+    add_edge_from_array!(g, a1, a2)
+
+
+"""
+function add_edge_from_array! end
+
+"""
+    is_directed(g)
+
+Determine if a graph `g` is a directed graph.
+"""
+function is_directed end
+
+
+"""
+    timestamps(g)
+
+Return the timestamps of graph `g`.
+"""
+function timestamps end
+
+"""
+    unique_timestamps(g)
+
+Return the unique timestamps of graph `g`.
+"""
+function unique_timestamps end
+
+"""
+    num_timestamps(g)
+
+Return the number of timestamps of graph `g`.
+"""
+function num_timestamps end

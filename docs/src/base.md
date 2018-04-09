@@ -1,10 +1,10 @@
 # Base
 
+## Nodes and Edges
+
+Node and edge types and functions.
+
 ```@docs
-EvolvingGraphs.AbstractGraph
-EvolvingGraphs.AbstractEvolvingGraph
-EvolvingGraphs.AbstractStaticGraph
-EvolvingGraphs.AbstractPath
 EvolvingGraphs.AbstractNode
 EvolvingGraphs.node_index
 EvolvingGraphs.node_key
@@ -23,4 +23,12 @@ EvolvingGraphs.TimeEdge
 EvolvingGraphs.WeightedTimeEdge
 EvolvingGraphs.edge_weight
 EvolvingGraphs.has_node
+```
+
+## Paths
+
+Path types and functions.
+
+```@docs
+EvolvingGraphs.AbstractPath
 ```

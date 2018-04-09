@@ -8,24 +8,25 @@ export
 
    # base
    Node, Edge, TimeNode, AttributeNode, TimeEdge, WeightedTimeEdge,
-   make_node, node_index, node_key, edge_reverse, node_timestamp, edge_timestamp,
+   make_node, node_index, node_key, edge_reverse, node_timestamp, edge_timestamp, find_node,
    node_attributes, edge_weight,
 
    # graph types
    AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
    TimeGraph, AggregatedGraph, EvolvingGraph,
-   IntEvolvingGraph, IntTimeEdge, DiGraph,
+   AdjacencyList, IntTimeEdge, DiGraph, evolving_graph_from_arrays,
 
    # graph functions
    ## modify graph
    add_node!, add_edge!, add_graph!, rm_edge!, add_graph!, undirected!,
+   add_edge_from_array!,
    ## retrive information
    has_edge, has_node, in_edges, in_degree, out_edges, out_degree,
    nodes, num_nodes, edges, num_edges,
-   source, target, matrices, num_matrices,
-   timestamps, num_timestamps, activenodes,
+   source, target, matrices, num_matrices, unique_timestamps,
+   timestamps, num_timestamps, active_nodes, num_active_nodes,
    forward_neighbors, is_directed, undirected,
-   time_graph, evolving_graph, weighted_evolving_graph,
+   time_graph,
    attribute_evolving_graph, attributesvec, attributes,
    matrix, spmatrix, attributes_values, aggregated_graph,
    int_evolving_graph, temporal_nodes,
@@ -56,12 +57,13 @@ include("read_write/evolving_graph_io.jl")
 @require EzXML include("read_write/graphml.jl")
 # graph types
 ## static graphs
+include("graph_types/graph.jl")
 include("graph_types/digraph.jl")
 include("graph_types/time_graph.jl")
 include("graph_types/aggregated_graph.jl")
 ## evolving graphs
 include("graph_types/evolving_graph.jl")
-include("graph_types/int_evolving_graph.jl")
+include("graph_types/adjacency_list.jl")
 include("graph_types/matrix_list.jl")
 include("graph_types/incidence_matrix.jl")
 

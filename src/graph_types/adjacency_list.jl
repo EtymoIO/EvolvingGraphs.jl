@@ -1,4 +1,7 @@
-mutable struct IntEvolvingGraph{V,E,T} <: AbstractEvolvingGraph{V,E,T}
+"""
+
+"""
+mutable struct AdjacencyList{V,E,T} <: AbstractEvolvingGraph{V,E,T}
     is_directed::Bool
     nodes::UnitRange{V}
     timestamps::Vector{T}
@@ -8,10 +11,10 @@ mutable struct IntEvolvingGraph{V,E,T} <: AbstractEvolvingGraph{V,E,T}
     backward_adjlist::Vector{Vector{V}}
 end
 
-#function IntEvolvingGraph{V, T}(is_directed::Bool, nodes::UnitRange{V}, timestamps::Vector{T},
+#function AdjacencyList{V, T}(is_directed::Bool, nodes::UnitRange{V}, timestamps::Vector{T},
 #                                nnodes::Int, nedges::Int, forward_adjlist::Vector{Vector{V}},
 #                                backward_adjlist::Vector{Vector{V}}) where {V,T}
-#    IntEvolvingGraph(is_directed,nodes,timestamps,nnodes,nedges,TimeEdge{Node{V}, T}(),forward_adjlist,backward_adjlist)
+#    AdjacencyList(is_directed,nodes,timestamps,nnodes,nedges,TimeEdge{Node{V}, T}(),forward_adjlist,backward_adjlist)
 #end
 
 """
@@ -33,13 +36,13 @@ function int_evolving_graph(nv::Int, nt::Int; is_directed::Bool = true)
             ts[v + nv*(t-1)] = t
         end
     end
-    IntEvolvingGraph(is_directed, 1:nv*nt, ts, nv, 0, f_adj, b_adj)
+    AdjacencyList(is_directed, 1:nv*nt, ts, nv, 0, f_adj, b_adj)
 end
 
 """
     int_evolving_graph(g)
 
-Convert an EvolvingGraph to an IntEvolvingGraph.
+Convert an EvolvingGraph to an AdjacencyList.
 """
 function int_evolving_graph(g::EvolvingGraph)
     g1 = int_evolving_graph(num_nodes(g), num_timestamps(g),
@@ -53,7 +56,7 @@ function int_evolving_graph(g::EvolvingGraph)
 end
 
 # all temporal nodes of g
-function temporal_nodes(g::IntEvolvingGraph)
+function temporal_nodes(g::AdjacencyList)
     ns = Array(Tuple{Int, Int}, length(g.nodes))
     b = g.nnodes
     for i in g.nodes
@@ -62,14 +65,14 @@ function temporal_nodes(g::IntEvolvingGraph)
     end
     ns
 end
-nodes(g::IntEvolvingGraph) = collect(1:g.nnodes)
-num_nodes(g::IntEvolvingGraph) = g.nnodes
-num_edges(g::IntEvolvingGraph) = g.nedges
-timestamps(g::IntEvolvingGraph) = unique(g.timestamps)
-num_timestamps(g::IntEvolvingGraph) = round(Int, length(g.timestamps)/g.nnodes)
-num_edges(g::IntEvolvingGraph, t::Int) = g.nedges
+nodes(g::AdjacencyList) = collect(1:g.nnodes)
+num_nodes(g::AdjacencyList) = g.nnodes
+num_edges(g::AdjacencyList) = g.nedges
+timestamps(g::AdjacencyList) = unique(g.timestamps)
+num_timestamps(g::AdjacencyList) = round(Int, length(g.timestamps)/g.nnodes)
+num_edges(g::AdjacencyList, t::Int) = g.nedges
 
-deepcopy(g::IntEvolvingGraph) = IntEvolvingGraph(is_directed(g),
+deepcopy(g::AdjacencyList) = AdjacencyList(is_directed(g),
                                              deepcopy(g.nodes),
                                              deepcopy(g.timestamps),
                                              g.nnodes,
@@ -77,7 +80,7 @@ deepcopy(g::IntEvolvingGraph) = IntEvolvingGraph(is_directed(g),
                                              deepcopy(g.forward_adjlist))
 
 
-function forward_neighbors(g::IntEvolvingGraph, v::Int, t::Int)
+function forward_neighbors(g::AdjacencyList, v::Int, t::Int)
     ns = g.nnodes
     n = v + ns*(t-1)
     nn = Tuple{Int, Int}[]
@@ -88,14 +91,14 @@ function forward_neighbors(g::IntEvolvingGraph, v::Int, t::Int)
     end
     nn
 end
-forward_neighbors(g::IntEvolvingGraph, v::Tuple) = forward_neighbors(g, v[1], v[2])
+forward_neighbors(g::AdjacencyList, v::Tuple) = forward_neighbors(g, v[1], v[2])
 
 """
   add_edge!(g, v1, v2, t)
 
 Add a static edge from `v1` to `v2` at time stamp `t` to `g`.
 """
-function add_edge!(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int)
+function add_edge!(g::AdjacencyList, v1::Int, v2::Int, t::Int)
     ns = g.nnodes
     n1 = v1 + ns*(t-1)
     n2 = v2 + ns*(t-1)
@@ -141,7 +144,7 @@ end
 _insertnode!(v::Vector{Int}, x::Int) = isempty(splice!(v, searchsorted(v,x), x))
 
 # has_edge on active nodes
-function _has_edge(g::IntEvolvingGraph, n1::Int, n2::Int)
+function _has_edge(g::AdjacencyList, n1::Int, n2::Int)
     nn = length(g.nodes)
     if n1 > nn || n2 > nn
         return false
@@ -155,7 +158,7 @@ end
 
 Returns true if `v1` to `v2` at timestamp `t` is an edge of `g`.
 """
-function has_edge(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int)
+function has_edge(g::AdjacencyList, v1::Int, v2::Int, t::Int)
     ns = g.nnodes
     n1 = v1 + ns*(t-1)
     n2 = v2 + ns*(t-1)

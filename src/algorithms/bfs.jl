@@ -29,4 +29,4 @@ function breadth_first_visit{V, T, E, I}(g::EvolvingGraph{V, T, E, I}, v, t)
     new_v = find_node(g, v)
     breadth_first_impl(g, new_v, t)
 end
-breadth_first_visit(g::IntEvolvingGraph, v, t) = breadth_first_impl(g, v, t)
+breadth_first_visit(g::AdjacencyList, v, t) = breadth_first_impl(g, v, t)
