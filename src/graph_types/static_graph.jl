@@ -1,10 +1,10 @@
 %##################################
 #
-# TimeGraph
+# StaticGraph
 #
 ##################################
 
-type TimeGraph{V, T} <: AbstractStaticGraph{V, Edge{V}}
+type StaticGraph{V, T} <: AbstractStaticGraph{V, Edge{V}}
     is_directed::Bool
     timestamp::T
     nodes::Vector{V}
@@ -23,7 +23,7 @@ Input:
     `is_directed`: (optional) whether the graph is directed or not
 """->
 time_graph{V,T}(::Type{V}, timestamp::T; is_directed::Bool = true) =
-    TimeGraph(is_directed,
+    StaticGraph(is_directed,
               timestamp::T,
               Node{V}[],
               0,
@@ -35,8 +35,15 @@ time_graph{T}(::Type{AbstractString}, timestamp::T; is_directed::Bool = true) = 
 @doc doc"""
 `time(g)` returns the time of a time graph `g`.
 """->
-timestamp(g::TimeGraph) = g.timestamp
+timestamp(g::StaticGraph) = g.timestamp
 
+
+"""
+aggregate_graph(g)
+
+aggregate evolving graphs to form a static graph.
+"""
+function aggregate_graph(g) end
 #### Static Graph functions ####
 
 #`nodes(g)` returns the nodes of a static graph `g`.

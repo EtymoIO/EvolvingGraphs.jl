@@ -1,15 +1,16 @@
 """
-    EvolvingGraph{V,T}(is_directed = true)
+    EvolvingGraph{V,T}(;is_directed = true; is_weighted=true)
 
 
 Construct an evolving graph with node type `V` and timestamp type `T`.
+
 
 # Example
 
 ```jldoctest
 julia> using EvolvingGraphs
 
-julia> g = EvolvingGraph{Node{Int}, Int}()
+julia> g = EvolvingGraph{Node{Int}, Int}(is_weighted=false)
 Directed EvolvingGraph 0 nodes, 0 static edges, 0 timestamps
 
 julia> add_node!(g, 1)
@@ -42,9 +43,9 @@ mutable struct EvolvingGraph{V, E, T, KV} <: AbstractEvolvingGraph{V, E, T}
     active_nodes::Vector{TimeNode{KV,T}}         # a vector of active nodes
 end
 
-function EvolvingGraph{V,T}(;is_directed::Bool=true) where {V,T}
+function EvolvingGraph{V,T}(;is_directed::Bool=true, is_weighted::Bool=true) where {V,T}
     KV = eltype(V);
-    E = TimeEdge{V, T};
+    E = is_weighted ? WeightedTimeEdge{V,T,Float64} : TimeEdge{V,T};
     return EvolvingGraph(is_directed, V[], E[], T[], Dict{KV, Int}(),TimeNode{KV, T}[])
 end
 
@@ -52,11 +53,10 @@ end
 
 
 """
+    evolving_graph_from_arrays(ils, jls, wls, timestamps; is_directed=true)
     evolving_graph_from_arrays(ils, jls, timestamps; is_directed=true)
 
-Generate an EvolvingGraph type object from three input arrays: ils, jls and timestamps, such that
-the ith entry `(ils[i], jls[i] and timestamps[i])` is a TimeEdge from `ils[i]` to `jls[i]` at timestamp
-`timestamp[i]`.
+Generate an EvolvingGraph type object from four input arrays: `ils`, `jls`, `wls` and `timestamps`, such that the ith entry `(ils[i], jls[i], wls[i], timestamps[i])` represents a WeightedTimeEdge from `ils[i]` to `jls[i]` with edge weight `wls[i]` at timestamp `timestamp[i]`. By default, `wls` is a vector of ones.
 
 #  Example
 
@@ -75,29 +75,31 @@ julia> nodes(g)
  Node(3)
 
 julia> edges(g)
-3-element Array{EvolvingGraphs.TimeEdge{EvolvingGraphs.Node{Int64},Int64},1}:
- Node(1)->Node(4) at time 1
- Node(2)->Node(5) at time 1
- Node(3)->Node(2) at time 2
+3-element Array{EvolvingGraphs.WeightedTimeEdge{EvolvingGraphs.Node{Int64},Int64,Float64},1}:
+ Node(1)-1.0->Node(4) at time 1
+ Node(2)-1.0->Node(5) at time 1
+ Node(3)-1.0->Node(2) at time 2
 ```
 """
 function evolving_graph_from_arrays{V,T}(ils::Vector{V},
-                            jls::Vector{V},
+                            jls::Vector{V}, wls::Vector{<:Real},
                             timestamps::Vector{T};
                             is_directed::Bool = true)
     n = length(ils)
-    n == length(jls) == length(timestamps)||
-            error("3 input vectors must have the same length.")
+    n == length(jls) == length(timestamps) == length(wls)||
+            error("4 input vectors must have the same length.")
 
     g = EvolvingGraph{Node{eltype(ils)}, eltype(timestamps)}(is_directed = is_directed)
 
     for i = 1:n
         v1 = add_node!(g, ils[i])
         v2 = add_node!(g, jls[i])
-        add_edge!(g, v1, v2, timestamps[i])
+        w = wls[i]
+        add_edge!(g, v1, v2, timestamps[i], weight = w)
     end
     g
 end
+evolving_graph_from_arrays{V,T}(ils::Vector{V}, jls::Vector{V}, timestamps::Vector{T}; is_directed::Bool = true) = evolving_graph_from_arrays(ils, jls, ones(Float64,length(ils)), timestamps, is_directed = is_directed)
 
 deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g),
                                            deepcopy(g.nodes),
@@ -170,28 +172,28 @@ find_node{V}(g::EvolvingGraph{V}, v::V) = v in g.nodes ? v : false
 
 
 
-function add_edge!{V, E, T, KV}(g::EvolvingGraph{V, E, T, KV}, v1::KV, v2::KV, t::T)
+function add_edge!{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v1::KV, v2::KV, t::T; weight::Real = 1.0)
     v1 = add_node!(g, v1)
     v2 = add_node!(g, v2)
-    e1 = E(v1, v2, t)
-    if !(e1 in edges(g))
-        add_edge!(g, v1, v2, t)
-    end
-    e1
+
+    add_edge!(g, v1, v2, t, weight = weight)
 end
 
-function add_edge!{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v1::V, v2::V, t::T)
+
+function add_edge!{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v1::V, v2::V, t::T; weight::Real = 1.0)
     n1 = TimeNode{KV,T}(g, v1.key, t)
     n2 = TimeNode{KV,T}(g, v2.key, t)
-    e1 = E(v1, v2, t)
-    push!(g.active_nodes, n1)
-    push!(g.active_nodes, n2)
-    push!(g.edges, e1)
-    push!(g.timestamps, t)
-
-    if !(is_directed(g))
-        push!(g.edges, edge_reverse(e1))
+    e1 = E <: WeightedTimeEdge? E(v1, v2, weight, t) : E(v1, v2, t)
+    if !(e1 in edges(g))
+        push!(g.active_nodes, n1)
+        push!(g.active_nodes, n2)
+        push!(g.edges, e1)
         push!(g.timestamps, t)
+
+        if !(is_directed(g))
+            push!(g.edges, edge_reverse(e1))
+            push!(g.timestamps, t)
+        end
     end
     return e1
 end
@@ -208,16 +210,13 @@ function add_edge_from_array!{V, E, T, KV}(g::EvolvingGraph{V, E, T, KV},
     g
 end
 
-has_edge{V, E}(g::EvolvingGraph{V,E}, e::E) = e in edges(g)
-
 
 
 
 """
-    adjacency_matrix(g, t[, T = Bool])
+    adjacency_matrix(g, t)
 
 Return an adjacency matrix representation of an evolving graph `g` at timestamp `t`.
-`T` (default=Float64) is the element type of the matrix.
 
 # Example
 
@@ -236,14 +235,15 @@ julia> adjacency_matrix(g, 1)
  0.0  0.0  0.0  0.0  0.0
 ```
 """
-function adjacency_matrix{V, E, T}(g::EvolvingGraph{V, E, T}, t::T, M::Type = Float64)
+function adjacency_matrix{V, E, T}(g::EvolvingGraph{V, E, T}, t::T)
     n = num_nodes(g)
     es = edges(g, t)
-    A = zeros(M, n, n)
+    A = zeros(Float64, n, n)
     for e in es
         i = node_index(e.source)
         j = node_index(e.target)
-        A[(j-1)*n + i] = one(M)
+        v = E <: WeightedTimeEdge ? e.weight : 1.0
+        A[(j-1)*n + i] = v
     end
     return A
 end
@@ -262,10 +262,10 @@ end
 # end
 
 """
-    sparse_adjacency_matrix(g, t[, T = Bool])
+    sparse_adjacency_matrix(g, t)
 
 Return a sparse adjacency matrix representation of an evolving graph
-`g` at timestamp `t`. `T` (default=Float64) is the element type of the matrix.
+`g` at timestamp `t`.
 
 # Example
 
@@ -289,14 +289,18 @@ function sparse_adjacency_matrix{V,E,T}(g::EvolvingGraph{V,E,T}, t::T, M::Type =
     n = num_nodes(g)
     is = Int[]
     js = Int[]
+    vs = Float64[]
     es = edges(g, t)
+
     for e in es
         i = node_index(e.source)
         j = node_index(e.target)
+        v = E <: WeightedTimeEdge ? e.weight : 1.0
         push!(is, i)
         push!(js, j)
+        push!(vs, v)
     end
-    vs = ones(M, length(is))
+
     return sparse(is, js, vs, n, n)
 end
 

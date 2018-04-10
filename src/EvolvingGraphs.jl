@@ -13,13 +13,13 @@ export
 
    # graph types
    AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
-   TimeGraph, AggregatedGraph, EvolvingGraph,
-   AdjacencyList, DiGraph, evolving_graph_from_arrays, adjacency_matrix, sparse_adjacency_matrix,
+   EvolvingGraph, StaticGraph, AdjacencyList,
+
+   evolving_graph_from_arrays, adjacency_matrix, sparse_adjacency_matrix,
 
    # graph functions
    ## modify graph
-   add_node!, add_edge!, add_graph!, rm_edge!, add_graph!, undirected!,
-   add_edge_from_array!,
+   add_node!, add_edge!, add_graph!, rm_edge!, add_graph!, undirected!, add_edge_from_array!,
 
    has_edge, has_node, in_edges, in_degree, out_edges, out_degree,
    nodes, num_nodes, edges, num_edges,
@@ -29,7 +29,6 @@ export
    time_graph,
    attributes_values, aggregated_graph,
    int_evolving_graph, temporal_nodes,
-   digraph,
 
    # io
    egread, egwrite,
@@ -54,12 +53,10 @@ include("base.jl")
 include("read_write/evolving_graph_io.jl")
 # need to import EzXML
 @require EzXML include("read_write/graphml.jl")
+
 # graph types
 ## static graphs
-include("graph_types/graph.jl")
-include("graph_types/digraph.jl")
-include("graph_types/time_graph.jl")
-include("graph_types/aggregated_graph.jl")
+include("graph_types/static_graph.jl")
 ## evolving graphs
 include("graph_types/evolving_graph.jl")
 include("graph_types/adjacency_list.jl")

@@ -23,8 +23,8 @@ function show(io::IO, e::WeightedTimeEdge)
     print(io, "$(e.source)-$(e.weight)->$(e.target) at time $(e.timestamp)")
 end
 
-function show{V, E}(io::IO, g::DiGraph{V, E})
-    print(io, "DiGraph{$V, $E} $(num_nodes(g)) nodes, $(num_edges(g)) edges")
+function show{V, E}(io::IO, g::StaticGraph{V, E})
+    print(io, "StaticGraph{$V, $E} $(num_nodes(g)) nodes, $(num_edges(g)) edges")
 end
 
 function show{V, E, T, KV}(io::IO, g::EvolvingGraph{V, E, T, KV})
@@ -37,16 +37,6 @@ function show(io::IO, g::AdjacencyList)
     print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) static edges, $(num_timestamps(g)) timestamps)")
 end
 
-function show(io::IO, g::TimeGraph)
-    title = is_directed(g) ? "Directed TimeGraph" : "Undirected TimeGraph"
-    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) static edges)")
-end
-
-
-function show(io::IO, g::AggregatedGraph)
-    title = is_directed(g)? "Directed AggregatedGraph" : "Undirected AggregatedGraph"
-    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) static edges)")
-end
 
 
 function show(io::IO, g::MatrixList)

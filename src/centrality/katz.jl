@@ -7,7 +7,7 @@ function katz(g::AbstractStaticGraph, α::Real = 0.1; normalized::Bool = true)
     n = num_nodes(g)
     ns = nodes(g)
     v = ones(Float64, n)
-    A = spmatrix(g)
+    A = sparse_adjacency_matrix(g)
     spI = speye(Float64, n)
     return (spI - αA)\v
 end
@@ -18,6 +18,10 @@ end
     katz(g::AbstractEvolvingGraph, α::Real = 0.3; sorted::Bool = true)
 
 Computes the broadcast centrality vector of an evolving graph `g`.
+
+# References:
+
+* 
 
 # Arguments
 
@@ -32,7 +36,7 @@ function katz(g::AbstractEvolvingGraph, α::Real = 0.3; sorted::Bool = true)
     A = spzeros(Float64, n, n)
     spI = speye(Float64, n)
     for t in ts
-        A =  spmatrix(g,t)
+        A =  sparse_adjacency_matrix(g,t)
         v = (spI - α*A)\v
         v =  v/norm(v)
     end

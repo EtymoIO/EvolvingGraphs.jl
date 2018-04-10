@@ -379,9 +379,9 @@ Return the number of edges of graph `g`.
 function num_edges end
 
 """
-    add_edge!(g, v1, v2, t)
+    add_edge!(g, v1, v2, t; weight = 1.0)
 
-Add edge (v1->v2 at timestamp t) to evolving graph `g`.
+Add an edge from `v1` to `v2` at timestamp `t` to evolving graph `g`. By default edge weight `weight` is equal to `1.0`.
 """
 function add_edge! end
 
