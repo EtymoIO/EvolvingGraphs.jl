@@ -101,6 +101,25 @@ function evolving_graph_from_arrays{V,T}(ils::Vector{V},
 end
 evolving_graph_from_arrays{V,T}(ils::Vector{V}, jls::Vector{V}, timestamps::Vector{T}; is_directed::Bool = true) = evolving_graph_from_arrays(ils, jls, ones(Float64,length(ils)), timestamps, is_directed = is_directed)
 
+"""
+    evolving_graph_from_edges(edges; is_directed::Bool = true)
+
+Generate an evolving graph from an array of edges.
+"""
+function evolving_graph_from_edges(edges::Vector{<:AbstractEdge}; is_directed::Bool = true)
+    E = eltype(edges)
+    is_weighted = E <: WeightedTimeEdge ? true : false
+
+    types = eltype(E)
+
+    g = EvolvingGraph{types[1], types[2]}(is_directed = is_directed, is_weighted = is_weighted)
+
+    for e in edges
+        is_weighted? add_edge!(g, e.source, e.target, e.timestamp, weight = e.weight) : add_edge!(g, e.source, e.target, e.timestamp)
+    end
+    return g
+end
+
 deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g),
                                            deepcopy(g.nodes),
                                            deepcopy(g.edges),

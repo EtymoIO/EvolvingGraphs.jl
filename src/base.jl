@@ -266,6 +266,8 @@ end
 ==(e1::TimeEdge, e2::TimeEdge) = (e1.source == e2.source &&
                                   e1.target == e2.target &&
                                   e1.timestamp == e2.timestamp)
+eltype{V,T}(::TimeEdge{V,T}) = (V,T)
+eltype{V,T}(::Type{TimeEdge{V,T}}) = (V,T)
 
 """
     WeightedTimeEdge(source, target, weight, timestamp)
