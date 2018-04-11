@@ -20,13 +20,6 @@ Abstract supertype for all static graph types, where `V` represents node type an
 abstract type AbstractStaticGraph{V,E} <: AbstractGraph{V,E} end
 
 
-"""
-    AbstractPath
-
-Abstract supertype for all path types.
-"""
-abstract type AbstractPath end
-
 
 """
     AbstractNode{V}
@@ -188,9 +181,6 @@ eltype{V,T}(::TimeNode{V,T}) = (V, T)
 ==(v1::TimeNode, v2::TimeNode) = (v1.key == v2.key && v1.timestamp== v2.timestamp)
 
 
-# NodeVector{V} = Vector{Node{V}}
-
-
 
 """
     AbstractEdge{V}
@@ -308,17 +298,72 @@ edge_reverse(e::WeightedTimeEdge) =
 
 """
     has_node(e, v)
+    has_node(g, v)
 
-Return `true` if `v` is a node of the edge `e`.
+In the first case, return `true` if `v` is a node of the edge `e`. In the second case, return `true` if graph `g` contains node `v` and `false` otherwise, where `v` can a node type object or a node key.
 """
 has_node{V}(e::AbstractEdge{V}, v::V) = (v == source(e) || v == target(e))
 
-"""
-    has_node(g, v)
 
-Return `true` if graph `g` contains node `v` and `false` otherwise, where `v` can a node type object or a node key.
 """
-function has_node end
+    AbstractPath
+
+Abstract supertype for all path types.
+"""
+abstract type AbstractPath end
+
+"""
+    TemporalPath()
+
+Construct a TemporalPath, i.e., an array of TimeNode.
+
+# Example
+
+```jldoctest
+julia> using EvolvingGraphs
+
+julia> p = TemporalPath()
+
+
+julia> push!(p, TimeNode(1, "a", 2001))
+1-element Array{EvolvingGraphs.TimeNode,1}:
+ TimeNode(a, 2001)
+
+julia> push!(p, TimeNode(1, "b", 2002))
+2-element Array{EvolvingGraphs.TimeNode,1}:
+ TimeNode(a, 2001)
+ TimeNode(b, 2002)
+
+julia> p
+TimeNode(a, 2001)->TimeNode(b, 2002)
+
+julia> append!(p,p)
+4-element Array{EvolvingGraphs.TimeNode,1}:
+ TimeNode(a, 2001)
+ TimeNode(b, 2002)
+ TimeNode(a, 2001)
+ TimeNode(b, 2002)
+
+julia> p
+TimeNode(a, 2001)->TimeNode(b, 2002)->TimeNode(a, 2001)->TimeNode(b, 2002)
+```
+"""
+mutable struct TemporalPath <: AbstractPath
+    nodes::Vector{TimeNode}
+end
+TemporalPath() = TemporalPath(TimeNode[])
+push!(t::TemporalPath, n::TimeNode) = push!(t.nodes, n)
+append!(t::TemporalPath, ns::Vector{TimeNode}) = append!(t.nodes, ns)
+append!(t::TemporalPath, t2::TemporalPath) = append!(t, t2.nodes)
+
+length(p::TemporalPath) = length(p.nodes)
+
+
+# spatical length disregard time
+spatial_length(p::TemporalPath) = length(unique(map(x -> x[1], p.nodes)))
+has_node(p::TemporalPath, v::Tuple) = v in p.nodes
+==(p1::TemporalPath, p2::TemporalPath) = (p1.nodes == p2.nodes)
+
 
 
 """

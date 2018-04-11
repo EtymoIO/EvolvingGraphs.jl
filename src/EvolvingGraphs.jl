@@ -1,6 +1,6 @@
 module EvolvingGraphs
 
-import Base: ==, show,  issorted, deepcopy, length, eltype
+import Base: ==, show, issorted, deepcopy, length, eltype, push!, append!
 using Requires
 
 
@@ -10,6 +10,7 @@ export
    Node, Edge, TimeNode, AttributeNode, TimeEdge, WeightedTimeEdge,
    make_node, node_index, node_key, edge_reverse, node_timestamp, edge_timestamp, find_node,
    node_attributes, edge_weight,
+   AbstractPath, TemporalPath,
 
    # graph types
    AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,

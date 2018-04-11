@@ -1,21 +1,11 @@
 # Reference: Temporal Distance Metrics for Social Network Analysis,
 #  John Tang, Mirco Musolesi, Cecilia Mascolo and Vito Latora,
-# 2009.  
-type TemporalPath <: AbstractPath
-    walks::Vector{Tuple}
-end
+# 2009.
 
-TemporalPath() = TemporalPath([])
-length(p::TemporalPath) = length(p.walks)
-
-# spatical length disregard time
-spatial_length(p::TemporalPath) = length(unique(map(x -> x[1], p.walks)))
-has_node(p::TemporalPath, v::Tuple) = v in p.walks
-==(p1::TemporalPath, p2::TemporalPath) = (p1.walks == p2.walks)
 
 # find the shortest temporal path via depth first search
-function _DFS_shortest_temporal_path(g::AbstractEvolvingGraph, 
-                                     v1::Tuple,  # v1 and v2 are active nodes (v,t) 
+function _DFS_shortest_temporal_path(g::AbstractEvolvingGraph,
+                                     v1::Tuple,  # v1 and v2 are active nodes (v,t)
                                      v2::Tuple,
                                      path = TemporalPath(),
                                      shortest =  Union{};
@@ -26,7 +16,7 @@ function _DFS_shortest_temporal_path(g::AbstractEvolvingGraph,
     if verbose
         println("current:", path)
     end
-    
+
     if v1 == v2
         return path
     end
@@ -49,14 +39,14 @@ end
 """
         shortest_temporal_path(g, v1, t1, v2, t2 [, verbose = false])
 
-Find the shortest temporal path from node `v1` at timestamp `t1` 
-to node `v2` at timestamp `t2` on the evolving graph `g`. 
-If `verbose = true`, prints the current path at each search step. 
+Find the shortest temporal path from node `v1` at timestamp `t1`
+to node `v2` at timestamp `t2` on the evolving graph `g`.
+If `verbose = true`, prints the current path at each search step.
 """
 shortest_temporal_path(g::AbstractEvolvingGraph, v1, t1, v2, t2; verbose::Bool = false) =    _DFS_shortest_temporal_path(g, (v1, t1), (v2, t2), verbose = verbose)
-shortest_temporal_path{V,  T}(g::EvolvingGraph{V, T}, 
+shortest_temporal_path{V,  T}(g::EvolvingGraph{V, T},
                                                         v1::V, t1::T, v2::V, t2::T;
-                                                        verbose::Bool = false) =  
+                                                        verbose::Bool = false) =
    _DFS_shortest_temporal_path(g, (v1, t1), (v2, t2), verbose = verbose)
 
 
@@ -71,12 +61,12 @@ end
 """
         shortest_temporal_distance(g, v1, t1, v2, t2)
 
-Find the shortest temporal distance from node `v1` at timestamp `t1` to 
+Find the shortest temporal distance from node `v1` at timestamp `t1` to
 node `v2` at timestamp `t2` on the evolving graph `g`.
 """
 function shortest_temporal_distance(g::AbstractEvolvingGraph, v1, t1, v2, t2)
-    if shortest_temporal_path(g, v1, t1, v2, t2) == Union{} 
-        return Inf 
+    if shortest_temporal_path(g, v1, t1, v2, t2) == Union{}
+        return Inf
     else
         return length(shortest_temporal_path(g, v1, t1, v2, t2)) - 1
     end
@@ -88,21 +78,21 @@ end
 Find the temporal efficiency from node `v1` at timestamp `t1` to node `v2` at timestamp
 `t2` on the evolving graph `g`.
 """
-temporal_efficiency(g::AbstractEvolvingGraph, v1, t1, v2, t2) = 
-         one(Float64)/shortest_temporal_distance(g, v1, t1, v2, t2) 
+temporal_efficiency(g::AbstractEvolvingGraph, v1, t1, v2, t2) =
+         one(Float64)/shortest_temporal_distance(g, v1, t1, v2, t2)
 
 """
-        global_temporal_efficiency(g, t1, t2) 
+        global_temporal_efficiency(g, t1, t2)
 
-Return the global temporal efficiency of the evolving graph `g` between 
-timestamp `t1` and `t2`. The global temporal efficiency is a measure of 
-how well information flow between two given timestamps. 
+Return the global temporal efficiency of the evolving graph `g` between
+timestamp `t1` and `t2`. The global temporal efficiency is a measure of
+how well information flow between two given timestamps.
 """
 function global_temporal_efficiency(g::AbstractEvolvingGraph, t1, t2)
     result = zero(Float64)
     for j in nodes(g)
         for i in nodes(g)
-            result += temporal_efficiency(g, i,t1, j,t2)           
+            result += temporal_efficiency(g, i,t1, j,t2)
         end
     end
     result

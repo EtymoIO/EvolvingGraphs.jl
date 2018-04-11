@@ -49,9 +49,9 @@ function show(io::IO, p::AbstractPath)
     result = ""
     for i in 1:length(p)
         if i == length(p)
-            result = string(result, p.walks[i])
+            result = string(result, p.nodes[i])
         else
-            result = string(result, p.walks[i], "->")
+            result = string(result, p.nodes[i], "->")
         end
     end
     print(io, "$(result)")

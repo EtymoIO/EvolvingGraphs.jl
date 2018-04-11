@@ -31,4 +31,5 @@ Path types and functions.
 
 ```@docs
 EvolvingGraphs.AbstractPath
+EvolvingGraphs.TemporalPath
 ```
