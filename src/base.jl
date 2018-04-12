@@ -475,3 +475,57 @@ function unique_timestamps end
 Return the number of timestamps of graph `g`.
 """
 function num_timestamps end
+
+
+"""
+    forward_neighbors(g, v)
+
+Find the forward neighbors of a node `v` in graph `g`. If `g` is an evolving graph, we define the forward neighbors of a TimeNode `v` to be a collection of forward neighbors at time stamp `node_timestamp(v)` and the same node key at later time stamps.
+
+# Example
+
+```jldoctest
+julia> using EvolvingGraphs
+
+julia> g = evolving_graph_from_arrays([1,1,2],[2,3,3], [1,2,3])
+Directed EvolvingGraph 3 nodes, 3 static edges, 3 timestamps
+
+julia> n = active_nodes(g)[1]
+TimeNode(1, 1)
+
+julia> forward_neighbors(g,n)
+2-element Array{EvolvingGraphs.TimeNode{Int64,Int64},1}:
+ TimeNode(2, 1)
+ TimeNode(1, 2)
+```
+
+# References:
+
+1. Jiahao Chen and Weijian Zhang, The Right Way to Search Evolving Graphs, Proceedings of IPDPS 2016.
+"""
+function forward_neighbors end
+
+"""
+    backward_neighbors(g, v)
+
+Find the backward neighbors of a node `v` in graph `g`. If `g` is an evolving graph, we define the backward neighbors of a TimeNode `v` to be a collection of backward neighbors at time stamp `node_timestamp(v)` and the same node key at earlier time stamps.
+
+```jldoctest
+julia> using EvolvingGraphs
+
+julia> g = evolving_graph_from_arrays([1,1,2],[2,3,3], [1,2,3])
+Directed EvolvingGraph 3 nodes, 3 static edges, 3 timestamps
+
+julia> n = active_nodes(g)[2]
+TimeNode(2, 1)
+
+julia> backward_neighbors(g,n)
+1-element Array{EvolvingGraphs.TimeNode{Int64,Int64},1}:
+ TimeNode(1, 1)
+```
+
+# References:
+
+1. Jiahao Chen and Weijian Zhang, The Right Way to Search Evolving Graphs, Proceedings of IPDPS 2016.
+"""
+function backward_neighbors end

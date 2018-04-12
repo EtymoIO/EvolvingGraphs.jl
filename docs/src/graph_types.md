@@ -35,4 +35,6 @@ EvolvingGraphs.is_directed
 EvolvingGraphs.timestamps
 EvolvingGraphs.unique_timestamps
 EvolvingGraphs.num_timestamps
+EvolvingGraphs.forward_neighbors
+EvolvingGraphs.backward_neighbors
 ```

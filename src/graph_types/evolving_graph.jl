@@ -361,77 +361,51 @@ function sparse_adjacency_matrix{V,E,T}(g::EvolvingGraph{V,E,T}, t::T, M::Type =
 end
 
 
-"""
-    forward_neighbors(g, v, t)
 
-Return the forward neighbors of temporal node `(v,t)`.
-"""
-function forward_neighbors{V, T}(g::EvolvingGraph{V, T}, v, t)
-    neighbors = Tuple{V, T}[]
-    v = find_node(g, v)
-    return forward_neighbors(g, v, T(t))
-end
-forward_neighbors(g::EvolvingGraph, v::Tuple) = forward_neighbors(g, v[1], v[2])
-function forward_neighbors{V, T}(g::EvolvingGraph{V, T}, v::V, t::T)
+function neighbors{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v::TimeNode{KV,T}; mode::Symbol = :forward)
+    r = TimeNode{KV,T}[]
 
-    neighbors = Tuple{V, T}[]
-    if !(TimeNode(v, t) in active_nodes(g))
-        return neighbors   # if (v, t) is not active, return an empty list.
+    switch_mode = Dict(
+        :forward => (source, target, >),
+        :backward => (target, source, <)
+    )
+
+    this, that, compare = switch_mode[mode]
+
+    if ! has_active_node(g,v)
+        return r
     end
-    for e in edges(g)
-        if v == e.source
-            if t == e.timestamp
-                push!(neighbors, (e.target, t))   # neighbors at timestamp t
-            elseif t < e.timestamp
-                push!(neighbors, (e.source, e.timestamp))  # v itself at later timestamps
-            end
-        elseif v == e.target
-            if t < e.timestamp
-                push!(neighbors, (e.target, e.timestamp))  # v itself at later timestamps
-            end
-        end
-    end
-    neighbors
-end
 
-"""
-    forward_neighbors(g, v)
-
-Find the forward neighbors of a node `v` in graph `g`. If `g` is an evolving graph,
-we define the forward neighbors of a TimeNode `(v,t)` to be a collection of forward neighbors
-at time stamp `t` and the same node key at later time stamps.
-
-# References:
-
-1.
-"""
-function forward_neighbors{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v::TimeNode)
     v_t = node_timestamp(v)
     v_key = node_key(v)
-    node_index = g.node_indexof[v_key]
-    ts = timestamps(g)
 
+    for e in edges(g)
 
+        # forword neighbors at timestamp v_t
+        if edge_timestamp(e) == v_t
+            if node_key(this(e)) == v_key
+                v_key_new = node_key(that(e))
+                v_index = g.active_node_indexof[(v_key_new,v_t)]
+                push!(r, TimeNode(v_index, v_key_new, v_t))
+            end
+        end
 
-    for t in ts
-        if t > v_t
-            A = sparse_adjacency_matrix(g, t)
-            row = A[node_index,:]
-            col = A[:, node_index]
-            if nonzero
-
+        if compare(edge_timestamp(e), v_t)
+            if node_key(source(e)) == v_key || node_key(target(e)) == v_key
+                v_t_new = edge_timestamp(e)
+                v_index = g.active_node_indexof[(v_key, v_t_new)]
+                push!(r, TimeNode(v_index, v_key, v_t_new))
             end
         end
     end
+    return r
 end
-"""
-    backward_neighbors(g, v, t)
 
-Return the backward neighbors of temporal node `(v,t)`.
-"""
-function backward_neighbors{V, T}(g::EvolvingGraph{V, T}, v::V, t::T)
-    error("not implemented yet!")
-end
+
+forward_neighbors{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v::TimeNode{KV,T}) = neighbors(g, v, mode = :forward)
+
+backward_neighbors{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v::TimeNode{KV,T}) = neighbors(g, v, mode = :backward)
+
 
 
 """

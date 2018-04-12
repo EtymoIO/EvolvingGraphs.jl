@@ -27,7 +27,7 @@ export
    nodes, num_nodes, edges, num_edges,
    source, target, matrices, num_matrices, unique_timestamps,
    timestamps, num_timestamps, active_nodes, num_active_nodes,
-   forward_neighbors, is_directed, undirected,
+   forward_neighbors, backward_neighbors, is_directed, undirected,
    time_graph,
    attributes_values, aggregated_graph,
    int_evolving_graph, temporal_nodes,
