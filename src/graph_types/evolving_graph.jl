@@ -386,7 +386,10 @@ function neighbors{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v::TimeNode{KV,T}; mode
             if node_key(this(e)) == v_key
                 v_key_new = node_key(that(e))
                 v_index = g.active_node_indexof[(v_key_new,v_t)]
-                push!(r, TimeNode(v_index, v_key_new, v_t))
+                n = TimeNode(v_index, v_key_new, v_t)
+                if !(n in r)
+                    push!(r, n)
+                end
             end
         end
 
@@ -394,7 +397,10 @@ function neighbors{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v::TimeNode{KV,T}; mode
             if node_key(source(e)) == v_key || node_key(target(e)) == v_key
                 v_t_new = edge_timestamp(e)
                 v_index = g.active_node_indexof[(v_key, v_t_new)]
-                push!(r, TimeNode(v_index, v_key, v_t_new))
+                n = TimeNode(v_index, v_key, v_t_new)
+                if !(n in r)
+                    push!(r, n)
+                end
             end
         end
     end
