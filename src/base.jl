@@ -265,7 +265,7 @@ eltype{V,T}(::Type{TimeEdge{V,T}}) = (V,T)
 
 Construct a WeightedTimeEdge. if `weight` is not given, set `weight = 1.0`.
 """
-struct WeightedTimeEdge{V, T, W<:Real}
+struct WeightedTimeEdge{V, T, W<:Real} <:AbstractEdge{V}
     source::V
     target::V
     weight::W
@@ -304,6 +304,13 @@ In the first case, return `true` if `v` is a node of the edge `e`. In the second
 """
 has_node{V}(e::AbstractEdge{V}, v::V) = (v == source(e) || v == target(e))
 
+"""
+    has_active_node(g,v)
+
+Return `true` if evolving graph `g` contains active node `v`
+and `false` otherwise, where `v` can a TimeNode or a node key.
+"""
+function has_active_node end
 
 """
     AbstractPath
