@@ -333,25 +333,15 @@ julia> p = TemporalPath()
 
 
 julia> push!(p, TimeNode(1, "a", 2001))
-1-element Array{EvolvingGraphs.TimeNode,1}:
  TimeNode(a, 2001)
 
 julia> push!(p, TimeNode(1, "b", 2002))
-2-element Array{EvolvingGraphs.TimeNode,1}:
- TimeNode(a, 2001)
- TimeNode(b, 2002)
+TimeNode(a, 2001)->TimeNode(b, 2002)
 
 julia> p
 TimeNode(a, 2001)->TimeNode(b, 2002)
 
 julia> append!(p,p)
-4-element Array{EvolvingGraphs.TimeNode,1}:
- TimeNode(a, 2001)
- TimeNode(b, 2002)
- TimeNode(a, 2001)
- TimeNode(b, 2002)
-
-julia> p
 TimeNode(a, 2001)->TimeNode(b, 2002)->TimeNode(a, 2001)->TimeNode(b, 2002)
 ```
 """

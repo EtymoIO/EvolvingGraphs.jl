@@ -69,6 +69,7 @@ include("show.jl")
 
 # algorithms
 include("algorithms/bfs.jl")
+include("algorithms/dfs.jl")
 include("algorithms/sort_slice.jl")
 include("algorithms/components.jl")
 include("algorithms/random.jl")

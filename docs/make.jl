@@ -12,7 +12,8 @@ makedocs(
                 "graph_types.md",
                 "centrality.md",
                 "examples.md",
-                "read_write.md"
+                "read_write.md",
+                "algorithms.md"
                 ]
     ]
 )
