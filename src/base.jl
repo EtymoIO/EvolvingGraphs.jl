@@ -113,13 +113,15 @@ Dict{String,Int64} with 1 entry:
   "a" => 12
 ```
 """
-struct AttributeNode{V, D_k, D_v} <: AbstractNode{V}
+mutable struct AttributeNode{V, D_k, D_v} <: AbstractNode{V}
     index::Int
     key::V
     attributes::Dict{D_k, D_v}
 end
-AttributeNode{V, D_k, D_v}(key::V, attributes=Dict()) where V where D_k where D_v = AttributeNode(0, key, attributes)
+AttributeNode{V, D_k, D_v}(key::V, attributes=Dict{D_k, D_v}()) where V where D_k where D_v = AttributeNode(0, key, attributes)
+AttributeNode{V}(key::V, attributes=Dict()) where V = AttributeNode(0, key, attributes)
 AttributeNode{V, D_k, D_v}(g::AbstractGraph, key::V, attributes=Dict()) where V where D_k where D_v = AttributeNode(num_nodes(g) + 1 , key, attributes)
+AttributeNode{KV}(g::AbstractGraph, key::KV, attributes=Dict()) = AttributeNode{KV, Any, Any}(g, key, attributes=attributes)
 
 
 """
@@ -240,7 +242,8 @@ struct Edge{V} <: AbstractEdge{V}
 end
 
 ==(e1::Edge, e2::Edge) = (e1.source == e2.source && e1.target == e2.target)
-
+eltype{V}(::Edge{V}) = V
+eltype{V}(::Type{Edge{V}}) = V
 
 """
     TimeEdge(source, target, timestamp)
