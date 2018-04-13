@@ -29,7 +29,7 @@ function edges(g::IncidenceList)
         end
         i = mod(v1, nn)
         j = mod(v2, nn)
-        t = round(Int, (v1-i)/nn + 1)  
+        t = round(Int, (v1-i)/nn + 1)
         push!(elists, (i,j,t)) # (i,j,t) node i to node j at time stamp t
     end
     elists
@@ -42,11 +42,7 @@ Create an incidence matrix with `n` nodes
 """
 incidence_list(n::Int) = IncidenceList(n, 1, IncidenceVector{Int}[])
 
-"""
-`add_edge!(g, i, j, t)`
 
-Add an edge from `i` to `j` at time stamp `t` to an evolving graph `g`.
-"""
 function add_edge!(g::IncidenceList, i::Int, j::Int, t::Int)
     nn = g.nnodes
     nt = g.ntimestamps

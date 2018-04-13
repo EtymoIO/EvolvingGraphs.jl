@@ -433,11 +433,32 @@ function add_edge! end
 
 
 """
-    add_edge_from_array!(g, a1, a2)
+    add_bunch_of_edges!(g, ebunch)
 
+Add a bunch of edges to graph `g` where `ebunch` is an array of edges.
+Each edge in `ebunch` is of form `(source, target, timestamp)` or
+`(source, target, timestamp, weight)`.
 
+# Example
+
+```jldoctest
+julia> using EvolvingGraphs
+
+julia> g = EvolvingGraph()
+Directed EvolvingGraph 0 nodes, 0 static edges, 0 timestamps
+
+julia> add_bunch_of_edges!(g, [(1,2,2001), (2,3,2001), (3,1,2002), (2,3,2004)])
+Directed EvolvingGraph 3 nodes, 4 static edges, 3 timestamps
+
+julia> timestamps(g)
+4-element Array{Int64,1}:
+ 2001
+ 2001
+ 2002
+ 2004
+```
 """
-function add_edge_from_array! end
+function add_bunch_of_edges! end
 
 """
     is_directed(g)

@@ -30,7 +30,7 @@ EvolvingGraphs.find_node
 EvolvingGraphs.edges
 EvolvingGraphs.num_edges
 EvolvingGraphs.add_edge!
-EvolvingGraphs.add_edge_from_array!
+EvolvingGraphs.add_bunch_of_edges!
 EvolvingGraphs.is_directed
 EvolvingGraphs.timestamps
 EvolvingGraphs.unique_timestamps

@@ -1,7 +1,7 @@
 import Base: isempty
 
 export IntMatrixList, MatrixList
-export add_matrix!, int_matrix_list, forward_neighbors, backward_neighbors, nodelists
+export add_matrix!, int_matrix_list, nodelists
 
 mutable struct IntMatrixList{V,E,T} <: AbstractEvolvingGraph{V,E,T}
     nodelists::Vector{Vector{Int}}

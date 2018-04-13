@@ -135,24 +135,7 @@ function evolving_graph_from_arrays{V,T}(ils::Vector{V},
 end
 evolving_graph_from_arrays{V,T}(ils::Vector{V}, jls::Vector{V}, timestamps::Vector{T}; is_directed::Bool = true) = evolving_graph_from_arrays(ils, jls, ones(Float64,length(ils)), timestamps, is_directed = is_directed)
 
-"""
-    evolving_graph_from_edges(edges; is_directed::Bool = true)
 
-Generate an evolving graph from an array of edges.
-"""
-function evolving_graph_from_edges(edges::Vector{<:AbstractEdge}; is_directed::Bool = true)
-    E = eltype(edges)
-    is_weighted = E <: WeightedTimeEdge ? true : false
-
-    types = eltype(E)
-
-    g = EvolvingGraph{types[1], types[2]}(is_directed = is_directed, is_weighted = is_weighted)
-
-    for e in edges
-        is_weighted? add_edge!(g, source(e), target(e), edge_timestamp(e), weight = edge_weight(e)) : add_edge!(g, source(e), target(e), edge_timestamp(e))
-    end
-    return g
-end
 
 deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g),
                                            deepcopy(g.nodes),
@@ -267,15 +250,20 @@ function add_edge!{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v1::V, v2::V, t::T; wei
 end
 
 
-
-function add_edge_from_array!{V, E, T, KV}(g::EvolvingGraph{V, E, T, KV},
-                                        v1::Array{KV}, v2::Array{KV}, t::T)
-    for j in v2
-        for i in v1
+function add_bunch_of_edges!(g::EvolvingGraph, ebunch)
+    for e in ebunch
+        if length(e) == 3
+            i,j,t = e
             add_edge!(g, i, j, t)
+        elseif length(e) == 4
+            i, j, t, w = e
+            add_edge!(g, i, j, t, weight = w)
+        else
+            error("Each edge in ebunch must have 3 or 4 elements")
         end
+
     end
-    g
+    return g
 end
 
 

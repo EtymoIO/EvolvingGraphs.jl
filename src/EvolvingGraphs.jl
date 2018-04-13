@@ -16,7 +16,7 @@ export
    AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
    EvolvingGraph, StaticGraph, AdjacencyList,
 
-   evolving_graph_from_arrays, evolving_graph_from_edges,
+   evolving_graph_from_arrays, add_bunch_of_edges!,
    adjacency_matrix, sparse_adjacency_matrix,
 
    # graph functions
