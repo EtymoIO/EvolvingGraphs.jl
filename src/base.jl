@@ -309,9 +309,12 @@ has_node{V}(e::AbstractEdge{V}, v::V) = (v == source(e) || v == target(e))
 
 """
     has_active_node(g,v)
+    has_active_node(g,key,t)
 
 Return `true` if evolving graph `g` contains active node `v`
-and `false` otherwise, where `v` can a TimeNode or a node key.
+and `false` otherwise, where `v` is a TimeNode. Alternatively,
+we can input node key `key` and timestamp `t` to check if `g`
+contains the corresponding active node.
 """
 function has_active_node end
 

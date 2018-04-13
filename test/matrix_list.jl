@@ -1,4 +1,4 @@
-g = evolving_graph(Int, String)
+g = EvolvingGraph{Node{Int}, String}()
 add_edge!(g, 1, 2, "t1")
 add_edge!(g, 1, 3, "t2")
 add_edge!(g, 4, 5, "t2")
@@ -29,10 +29,10 @@ A3 = sparse([2], [3], [4], 3, 3)
 add_matrix!(g, A1)
 add_matrix!(g, A2)
 add_matrix!(g, A3)
-A = spmatrix(g)
+A = sparse_adjacency_matrix(g)
 @test g.nodelists[1] == [1, 2]
 @test g.nodelists[2] == [1, 3]
-@test spmatrix(g, 2) == A2
+@test sparse_adjacency_matrix(g, 2) == A2
 @test forward_neighbors(g, 1, 1) == [(1,1), (1,2), (2,1)]
 @test forward_neighbors(g, (2, 2)) == [(0,0)]
 @test forward_neighbors(g, 3, 2) == [(3,2), (3,3)]
@@ -41,14 +41,14 @@ A = spmatrix(g)
 @test backward_neighbors(g, 3,2) == [(3,2), (1,2)]
 @test backward_neighbors(g, 2,3) == [(2,3), (2,1)]
 
-@test A[1:3, 1:3] == spmatrix(g, 1)
-@test A[4:6, 4:6] == spmatrix(g, 2)
-@test A[7:9, 7:9] == spmatrix(g, 3)
+@test A[1:3, 1:3] == sparse_adjacency_matrix(g, 1)
+@test A[4:6, 4:6] == sparse_adjacency_matrix(g, 2)
+@test A[7:9, 7:9] == sparse_adjacency_matrix(g, 3)
 @test A[1:3, 4:6] == sparse([1], [1], [1], 3, 3)
 @test A[1:3, 7:9] == sparse([2], [2], [1], 3, 3)
 @test A[4:6, 7:9] == sparse([3], [3], [1], 3, 3)
 
-g = evolving_graph(Int, String)
+g = EvolvingGraph{Node{Int}, String}()
 add_edge!(g, 1, 2, "t1")
 add_edge!(g, 2, 3, "t2")
 add_edge!(g, 4, 2, "t2")
@@ -57,8 +57,8 @@ add_edge!(g, 2, 1, "t3")
 
 g2 = int_matrix_list(g)
 display(g2)
-@test spmatrix(g, "t1") == spmatrix(g2, 1)
-@test spmatrix(g, "t2") == spmatrix(g2, 2)
+@test sparse_adjacency_matrix(g, "t1") == sparse_adjacency_matrix(g2, 1)
+@test sparse_adjacency_matrix(g, "t2") == sparse_adjacency_matrix(g2, 2)
 @test nodelists(g2)[1] == [1,3]
-@test spmatrix(g2)[5:8, 5:8] == spmatrix(g, "t2")
-@test spmatrix(g2)[1:4, 5:8] == sparse([2, 4], [2,4], [1,1], 4, 4)
+@test sparse_adjacency_matrix(g2)[5:8, 5:8] == sparse_adjacency_matrix(g, "t2")
+@test sparse_adjacency_matrix(g2)[1:4, 5:8] == sparse([2, 4], [2,4], [1,1], 4, 4)

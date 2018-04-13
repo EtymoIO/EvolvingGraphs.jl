@@ -157,6 +157,7 @@ num_nodes(g::EvolvingGraph) = length(nodes(g))
 has_node{V}(g::EvolvingGraph{V}, v::V) = v in g.nodes
 has_node{V, E, T, KV}(g::EvolvingGraph{V, E, T, KV}, node_key::KV) = node_key in g.node_indexof
 
+
 unique_timestamps(g::EvolvingGraph) = unique(g.timestamps)
 timestamps(g::EvolvingGraph) = g.timestamps
 num_timestamps(g::EvolvingGraph) = length(unique_timestamps(g))
@@ -164,8 +165,10 @@ num_timestamps(g::EvolvingGraph) = length(unique_timestamps(g))
 
 active_nodes(g::EvolvingGraph) = g.active_nodes
 num_active_nodes(g::EvolvingGraph) = length(g.active_nodes)
-has_active_node{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v::TimeNode{KV,T}) = v in g.active_nodes
-has_active_node{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, node_key::KV, node_timestamp::T) = (node_key, node_timestamp) in g.active_node_indexof
+has_active_node{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v::TimeNode{KV,T}) =
+v in g.active_nodes
+has_active_node{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, key::KV, t::T) =
+get(g.active_node_indexof, (key,t), false) != false ? true : false 
 
 edges(g::EvolvingGraph) = g.edges
 function edges(g::EvolvingGraph, t)

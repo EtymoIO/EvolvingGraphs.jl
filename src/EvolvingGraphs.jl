@@ -23,7 +23,7 @@ export
    ## modify graph
    add_node!, add_edge!, add_graph!, rm_edge!, add_graph!, undirected!, add_edge_from_array!,
 
-   has_edge, has_node, in_edges, in_degree, out_edges, out_degree,
+   has_edge, has_node, in_edges, in_degree, out_edges, out_degree, has_active_node,
    nodes, num_nodes, edges, num_edges,
    source, target, matrices, num_matrices, unique_timestamps,
    timestamps, num_timestamps, active_nodes, num_active_nodes,

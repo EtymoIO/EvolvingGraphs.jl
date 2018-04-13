@@ -28,7 +28,7 @@ function int_matrix_list(g::EvolvingGraph)
     n = num_nodes(g)
     As = int_matrix_list(n)
     for t in ts
-        add_matrix!(As, spmatrix(g, t))
+        add_matrix!(As, sparse_adjacency_matrix(g, t))
     end
     As
 end
@@ -44,27 +44,27 @@ function nodes(g::IntMatrixList)
 end
 
 """
-`spmatrix(g, t)`
+`sparse_adjacency_matrix(g, t)`
 
 returns the sparse matrix representation of an evolving graph `g`
 at a given timestamp `t`.
 """
-spmatrix(g::IntMatrixList, t::Int) = g.matrices[t]
+sparse_adjacency_matrix(g::IntMatrixList, t::Int) = g.matrices[t]
 
 
 """
-`spmatrix(g)`
+`sparse_adjacency_matrix(g)`
 
 converts an evolving graph `g` to an adjacency matrix of a  static graph.
 """
-function spmatrix(g::IntMatrixList)
+function sparse_adjacency_matrix(g::IntMatrixList)
     n = length(g.nodelists)
     num_t = length(g.matrices)
     v1 = Int[]
     v2 = Int[]
     vals = Int[]
     for t = 1:num_t
-        A = spmatrix(g, t)
+        A = sparse_adjacency_matrix(g, t)
         block = n*(t-1)
         for j = 1:n
             # diagonal blocks
@@ -122,7 +122,7 @@ forward_trunc(v, i) = v[i:end]
 backward_trunc(v,i) = v[i:-1:1]
 
 for (f, vf, Af) in ((:forward_neighbors, :forward_trunc, :transpose),
-                        (:backward_neighbors, :backward_trunc, :identity))
+                 (:backward_neighbors, :backward_trunc, :identity))
     @eval begin
         function ($f)(g::IntMatrixList, v::Int, t::Int)
             ns = g.nodelists[v]
@@ -135,7 +135,7 @@ for (f, vf, Af) in ((:forward_neighbors, :forward_trunc, :transpose),
                 push!(temporal_nodes, (v, i))
             end
             # the forward/backword neighbors at timestamp t
-            matorvec = (($Af)(spmatrix(g, t))*sparsevec([v], [1], m))
+            matorvec = (($Af)(sparse_adjacency_matrix(g, t))*sparsevec([v], [1], m))
             if VERSION < v"0.5.0-dev+961"
                 nods = matorvec.rowval
             else
@@ -210,7 +210,7 @@ function MatrixList(g::AbstractEvolvingGraph)
     n = length(ts)
     matrices = Array{SparseMatrixCSC{Float64}}(n)
     for (i,t) = enumerate(ts)
-        matrices[i] = spmatrix(g,t)
+        matrices[i] = sparse_adjacency_matrix(g,t)
     end
     MatrixList(ns, ts, matrices, is_directed = is_directed(g))
 end
