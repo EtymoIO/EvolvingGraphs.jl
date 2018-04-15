@@ -275,7 +275,11 @@ struct WeightedTimeEdge{V, T, W<:Real} <:AbstractEdge{V}
     timestamp::T
 end
 WeightedTimeEdge(source, target, timestamp) = WeightedTimeEdge(source, target, 1.0, timestamp)
-
+==(e1::WeightedTimeEdge, e2::WeightedTimeEdge) =
+                (e1.source == e2.source &&
+                 e1.target == e2.target &&
+                 e1.weight ≈ e2.weight &&
+                 e1.timestamp == e2.timestamp)
 
 eltype{V,T,W}(::WeightedTimeEdge{V,T,W}) = (V,T,W)
 eltype{V,T,W}(::Type{WeightedTimeEdge{V,T,W}}) = (V,T,W)

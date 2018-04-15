@@ -1,4 +1,4 @@
-g = evolving_graph()
+g = EvolvingGraph()
 
 add_edge!(g, 1, 2, 1)
 add_edge!(g, 1, 3, 2)
@@ -10,7 +10,7 @@ nns = nodes(g)
 @test (nns[2], 3) in ns
 @test (nns[3], 3) in ns
 
-g = int_evolving_graph(4,3)
+g = IntAdjacencyList(4,3)
 
 add_edge!(g, 1, 2, 1)
 add_edge!(g, 1, 3, 2)

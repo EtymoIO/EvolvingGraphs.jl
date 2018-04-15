@@ -139,9 +139,9 @@ evolving_graph_from_arrays{V,T}(ils::Vector{V}, jls::Vector{V}, timestamps::Vect
 
 deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g),
                                            deepcopy(g.nodes),
+                                           deepcopy(g.node_indexof),
                                            deepcopy(g.edges),
                                            deepcopy(g.timestamps),
-                                           deepcopy(g.node_indexof),
                                            deepcopy(g.active_nodes),
                                            deepcopy(g.active_node_indexof))
 

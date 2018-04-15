@@ -28,9 +28,8 @@ export
    nodes, num_nodes, edges, num_edges,
    source, target, matrices, num_matrices, unique_timestamps,
    timestamps, num_timestamps, active_nodes, num_active_nodes,
-   forward_neighbors, backward_neighbors, is_directed, undirected,
-   time_graph,
-   attributes_values, aggregate_graph,
+   forward_neighbors, backward_neighbors, is_directed, undirected, attributes_values, aggregate_graph,
+   random_graph, random_evolving_graph,
 
    # io
    egread, egwrite,
@@ -46,8 +45,7 @@ export
    temporal_connected, weak_connected, weak_connected_components,
 
    # sort slice
-   issorted, sorttime!, sorttime, slice!, slice
-
+   issorted, sort_timestamps!, sort_timestamps, slice_timestamps!, slice_timestamps
 
 include("base.jl")
 

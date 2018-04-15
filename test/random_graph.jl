@@ -1,4 +1,4 @@
-tg = random_time_graph(1, 10)
+tg = random_graph(10)
 @test num_nodes(tg) == 10
 
 g = random_evolving_graph(10, 5, 0.2)

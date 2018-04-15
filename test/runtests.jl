@@ -8,7 +8,7 @@ tests = [
          "centrality",
          "random_graph",
          "static_graph",
-         "io",
+         #"io",
          "matrix_list",
          "incidence_matrix",
          "bfs",

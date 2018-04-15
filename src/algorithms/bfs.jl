@@ -1,4 +1,4 @@
-function breadth_first_impl{V}(g::AbstractGraph, v::V, t)
+function breadth_first_impl{V,E,T}(g::AbstractEvolvingGraph{V,E,T}, v::V, t::T)
     level = Dict((v,t) => 0)
     i = 1
     fronter = [(v,t)]
