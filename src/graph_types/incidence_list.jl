@@ -1,11 +1,7 @@
 export IncidenceList
 export incidence_list
 
-if VERSION < v"0.5.0-dev+961"
-    IncidenceVector = AbstractVector
-else
-    IncidenceVector = SparseVector
-end
+IncidenceVector = SparseVector
 
 type IncidenceList
     nnodes::Int         # number of nodes
@@ -22,11 +18,7 @@ function edges(g::IncidenceList)
     edges = g.edges
     elists = Tuple{Int, Int, Int}[]
     for e in edges
-        if VERSION < v"0.5.0-dev+961"
-            v1, v2 = findn(e)
-        else
-            v1, v2 = e.nzind
-        end
+        v1, v2 = e.nzind
         i = mod(v1, nn)
         j = mod(v2, nn)
         t = round(Int, (v1-i)/nn + 1)
@@ -52,12 +44,7 @@ function add_edge!(g::IncidenceList, i::Int, j::Int, t::Int)
     i = i + (t-1)*nn
     j = j + (t-1)*nn
     i <= t*nn && j <= t*nn || throw(DimensionMismatch(""))
-    if VERSION < v"0.5.0-dev+961"
-        v = zeros(Int, t*nn)
-        v[i] = one(Int); v[j] = one(Int)
-        push!(g.edges, v)
-    else
-        push!(g.edges, sparsevec([i,j], [1,1], t*nn))
-    end
+
+    push!(g.edges, sparsevec([i,j], [1,1], t*nn))
     g
 end

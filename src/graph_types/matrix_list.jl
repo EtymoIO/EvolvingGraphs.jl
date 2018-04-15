@@ -10,7 +10,7 @@ MatrixList() = MatrixList(SparseMatrixCSC[])
 
 
 """
-    evolving_graph_to_adj(g)
+    evolving_graph_to_matrices(g)
 
 Convert an evolving graph `g` to a matrix list.
 
@@ -25,7 +25,7 @@ Directed EvolvingGraph 0 nodes, 0 static edges, 0 timestamps
 julia> add_bunch_of_edges!(g, [(1,2,1), (2,4,1), (2,3,1), (3,4,2), (1,3,3)])
 Directed EvolvingGraph 4 nodes, 5 static edges, 3 timestamps
 
-julia> ml = evolving_graph_to_adj(g)
+julia> ml = evolving_graph_to_matrices(g)
 MatrixList (3 matrices)
 
 julia> sparse_adjacency_matrix(ml, 1)
@@ -39,7 +39,7 @@ julia> sparse_adjacency_matrix(ml,2)
   [4, 3]  =  1.0
 ```
 """
-function evolving_graph_to_adj(g::AbstractEvolvingGraph)
+function evolving_graph_to_matrices(g::AbstractEvolvingGraph)
     ts = unique_timestamps(g)
     n = length(ts)
     matrices = Array{SparseMatrixCSC{Float64}}(n)

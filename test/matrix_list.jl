@@ -5,7 +5,7 @@ add_edge!(g, 4, 5, 2002)
 add_edge!(g, 2, 3, 2002)
 add_edge!(g, 5, 6, 2003)
 
-ml = evolving_graph_to_adj(g)
+ml = evolving_graph_to_matrices(g)
 for (i,m) in enumerate(ml)
     println("Matrix $i")
     println(m)

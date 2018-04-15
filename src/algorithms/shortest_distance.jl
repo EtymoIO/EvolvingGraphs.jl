@@ -11,7 +11,7 @@ has_node(p::Path, v) = v in p.walks
 ==(p1::Path, p2::Path) = (p1.walks == p2.walks)
 
 # find the shortest path via depth first search
-function _DFS_shortest_path{V}(g::StaticGraph{V}, 
+function _DFS_shortest_path{V}(g::DiGraph{V},
                                v1::V,
                                v2::V,
                                path = Path(),
@@ -46,10 +46,10 @@ end
 `shortest_path(g, v1, v2 [, verbose = false])` finds the shortest path from `v1` to `v2` on
 the time graph `g`. if `verbose = true`, prints the current path at each search step.
 """->
-shortest_path{V}(g::StaticGraph{Node{V}}, v1::V, v2::V; verbose = false) =
+shortest_path{V}(g::DiGraph{Node{V}}, v1::V, v2::V; verbose = false) =
 _DFS_shortest_path(g, make_node(g,v1), make_node(g,v2), verbose = verbose)
 
-#shortest_path{V}(g::StaticGraph{AttributeNode{V}}, v1::V, v2::V; verbose = false) =
+#shortest_path{V}(g::DiGraph{AttributeNode{V}}, v1::V, v2::V; verbose = false) =
 #_DFS_shortest_path(g, make_node(g,v1), make_node(g,v2), verbose = verbose)
 
 
@@ -58,8 +58,8 @@ _DFS_shortest_path(g, make_node(g,v1), make_node(g,v2), verbose = verbose)
 `shortest_distance(g, v1, v2)` finds the shortest distance from `v1` to `v2`
 on the time graph `g`.
 """->
-shortest_distance{V}(g::StaticGraph{Node{V}}, v1::V, v2::V) =
+shortest_distance{V}(g::DiGraph{Node{V}}, v1::V, v2::V) =
           shortest_path(g, v1, v2) == Union{} ? Inf : length(shortest_path(g, v1, v2)) - 1
 
-#shortest_distance{V}(g::StaticGraph{AttributeNode{V}}, v1::V, v2::V) =
+#shortest_distance{V}(g::DiGraph{AttributeNode{V}}, v1::V, v2::V) =
 #            shortest_path(g, v1, v2) ==  Union{} ? Inf : length(shortest_path(g, v1, v2)) - 1

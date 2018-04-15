@@ -14,11 +14,11 @@ export
 
    # graph types
    AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
-   EvolvingGraph, StaticGraph, AdjacencyList, MatrixList,
+   EvolvingGraph, DiGraph, AdjacencyList, MatrixList,
 
    evolving_graph_from_arrays, add_bunch_of_edges!,
    adjacency_matrix, sparse_adjacency_matrix,
-   evolving_graph_to_adj,
+   evolving_graph_to_adj, evolving_graph_to_matrices,
 
    # graph functions
    ## modify graph
@@ -30,7 +30,7 @@ export
    timestamps, num_timestamps, active_nodes, num_active_nodes,
    forward_neighbors, backward_neighbors, is_directed, undirected,
    time_graph,
-   attributes_values, aggregated_graph,
+   attributes_values, aggregate_graph,
 
    # io
    egread, egwrite,
@@ -58,12 +58,16 @@ include("read_write/evolving_graph_io.jl")
 
 # graph types
 ## static graphs
-include("graph_types/static_graph.jl")
+include("graph_types/static_dgraph.jl")
+
 ## evolving graphs
 include("graph_types/evolving_graph.jl")
-include("graph_types/adjacency_list.jl")
+
+
+# Other types
 include("graph_types/matrix_list.jl")
-include("graph_types/incidence_matrix.jl")
+include("graph_types/adjacency_list.jl")
+include("graph_types/incidence_list.jl")
 
 include("show.jl")
 

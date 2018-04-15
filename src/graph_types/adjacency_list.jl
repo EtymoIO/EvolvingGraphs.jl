@@ -1,7 +1,10 @@
 """
+    AdjacencyList{V,T}(nv, nt)
+    AdjacencyList(nv, nt)
 
+Construct a graph represented by adjacency list with `nv` nodes and `nt` timestamps, where `V` and `T` are the type of nodes and timestamps respectively. `AdjacencyList(nv, nt)` constructs an adjacency list with integer numbers of and timestamps.
 """
-mutable struct AdjacencyList{V,E,T} <: AbstractEvolvingGraph{V,E,T}
+mutable struct AdjacencyList{V,T} <: AbstractGraph{V,T}
     is_directed::Bool
     nodes::UnitRange{V}
     timestamps::Vector{T}
@@ -10,20 +13,22 @@ mutable struct AdjacencyList{V,E,T} <: AbstractEvolvingGraph{V,E,T}
     forward_adjlist::Vector{Vector{V}}
     backward_adjlist::Vector{Vector{V}}
 end
-
-#function AdjacencyList{V, T}(is_directed::Bool, nodes::UnitRange{V}, timestamps::Vector{T},
-#                                nnodes::Int, nedges::Int, forward_adjlist::Vector{Vector{V}},
-#                                backward_adjlist::Vector{Vector{V}}) where {V,T}
-#    AdjacencyList(is_directed,nodes,timestamps,nnodes,nedges,TimeEdge{Node{V}, T}(),forward_adjlist,backward_adjlist)
-#end
-
-"""
-    int_evolving_graph(nv, nt; is_directed)
-
-Initialize an evolving graph with `nv` nodes and `nt` timestamps, where `nv` and `nt`
-are integers.
-"""
-function int_evolving_graph(nv::Int, nt::Int; is_directed::Bool = true)
+function AdjacencyList{V,T}(nv::Int, nt::Int; is_directed::Bool = true) where V where T
+    ts = Array{T}(nv*nt)
+    f_adj = Vector{V}[]
+    b_adj = Vector{V}[]
+    for i = 1:nv*nt
+        push!(f_adj, V[])
+        push!(b_adj, V[])
+    end
+    for t = 1:nt
+        for v = 1:nv
+            ts[v + nv*(t-1)] = t
+        end
+    end
+    AdjacencyList(is_directed, 1:nv*nt, ts, nv, 0, f_adj, b_adj)
+end
+function AdjacencyList(nv::Int, nt::Int; is_directed::Bool = true)
     ts = Array{Int}(nv*nt)
     f_adj = Vector{Int}[]
     b_adj = Vector{Int}[]
@@ -40,12 +45,12 @@ function int_evolving_graph(nv::Int, nt::Int; is_directed::Bool = true)
 end
 
 """
-    int_evolving_graph(g)
+    evolving_graph_to_adj(g)
 
-Convert an EvolvingGraph to an AdjacencyList.
+Convert an evolving graph `g` to an adjacency list.
 """
-function int_evolving_graph(g::EvolvingGraph)
-    g1 = int_evolving_graph(num_nodes(g), num_timestamps(g),
+function evolving_graph_to_adj(g::AbstractEvolvingGraph)
+    g1 = AdjacencyList(num_nodes(g), num_timestamps(g),
                                              is_directed = is_directed(g))
     for e in edges(g)
         v1 = node_index(source(e))
@@ -55,8 +60,8 @@ function int_evolving_graph(g::EvolvingGraph)
     g1
 end
 
-# all temporal nodes of g
-function temporal_nodes(g::AdjacencyList)
+
+function active_nodes(g::AdjacencyList)
     ns = Array(Tuple{Int, Int}, length(g.nodes))
     b = g.nnodes
     for i in g.nodes
@@ -65,12 +70,12 @@ function temporal_nodes(g::AdjacencyList)
     end
     ns
 end
+
 nodes(g::AdjacencyList) = collect(1:g.nnodes)
 num_nodes(g::AdjacencyList) = g.nnodes
 num_edges(g::AdjacencyList) = g.nedges
 timestamps(g::AdjacencyList) = unique(g.timestamps)
 num_timestamps(g::AdjacencyList) = round(Int, length(g.timestamps)/g.nnodes)
-num_edges(g::AdjacencyList, t::Int) = g.nedges
 
 deepcopy(g::AdjacencyList) = AdjacencyList(is_directed(g),
                                              deepcopy(g.nodes),

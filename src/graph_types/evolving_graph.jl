@@ -168,7 +168,7 @@ num_active_nodes(g::EvolvingGraph) = length(g.active_nodes)
 has_active_node{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v::TimeNode{KV,T}) =
 v in g.active_nodes
 has_active_node{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, key::KV, t::T) =
-get(g.active_node_indexof, (key,t), false) != false ? true : false 
+get(g.active_node_indexof, (key,t), false) != false ? true : false
 
 edges(g::EvolvingGraph) = g.edges
 function edges(g::EvolvingGraph, t)
@@ -302,7 +302,7 @@ function adjacency_matrix{V, E, T}(g::EvolvingGraph{V, E, T}, t::T)
         i = node_index(source(e))
         j = node_index(target(e))
         v = E <: WeightedTimeEdge ? e.weight : 1.0
-        A[(j-1)*n + i] = v
+        A[i,j] = v
     end
     return A
 end
@@ -410,10 +410,10 @@ backward_neighbors{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v::TimeNode{KV,T}) = ne
 
 Add a static graph `g` at timestamp `t` to an evolving graph `eg`.
 """
-function add_graph!{V, T}(eg::EvolvingGraph{V, T}, g::AbstractStaticGraph, t::T)
+function add_graph!{V, E, T}(eg::EvolvingGraph{V, E, T}, g::AbstractStaticGraph, t::T)
     es = edges(g)
     for e in es
-        add_edge!(eg, source(e), target(e), t)
+        add_edge!(eg, node_key(source(e)), node_key(target(e)), t)
     end
     eg
 end

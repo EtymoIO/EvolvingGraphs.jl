@@ -19,13 +19,28 @@ EvolvingGraphs.sparse_adjacency_matrix
 
 ```@docs
 EvolvingGraphs.MatrixList
-EvolvingGraphs.evolving_graph_to_adj
+EvolvingGraphs.evolving_graph_to_matrices
 EvolvingGraphs.matrices
 EvolvingGraphs.num_matrices
 ```
 
+## Adjacency List
+
+```@docs
+EvolvingGraphs.AdjacencyList
+EvolvingGraphs.evolving_graph_to_adj
+```
+
 ## Static Graphs
 
+```@docs
+EvolvingGraphs.DiGraph
+EvolvingGraphs.out_edges
+EvolvingGraphs.out_degree
+EvolvingGraphs.in_edges
+EvolvingGraphs.in_degree
+EvolvingGraphs.aggregate_graph
+```
 
 ## General Functions
 

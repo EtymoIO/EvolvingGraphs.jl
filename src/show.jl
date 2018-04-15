@@ -23,8 +23,8 @@ function show(io::IO, e::WeightedTimeEdge)
     print(io, "$(e.source)-$(e.weight)->$(e.target) at time $(e.timestamp)")
 end
 
-function show{V, E}(io::IO, g::StaticGraph{V, E})
-    print(io, "StaticGraph{$V, $E} $(num_nodes(g)) nodes, $(num_edges(g)) edges")
+function show{V, E}(io::IO, g::DiGraph{V, E})
+    print(io, "DiGraph $(num_nodes(g)) nodes, $(num_edges(g)) edges")
 end
 
 function show{V, E, T, KV}(io::IO, g::EvolvingGraph{V, E, T, KV})
