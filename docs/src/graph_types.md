@@ -27,7 +27,7 @@ EvolvingGraphs.num_matrices
 ## Adjacency List
 
 ```@docs
-EvolvingGraphs.AdjacencyList
+EvolvingGraphs.IntAdjacencyList
 EvolvingGraphs.evolving_graph_to_adj
 ```
 

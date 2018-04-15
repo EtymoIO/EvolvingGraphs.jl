@@ -4,6 +4,7 @@ using Base.Test
 tests = [
          "base",
          "evolving_graph",
+         "adjacency_list",
          "centrality",
          "random_graph",
          "static_graph",

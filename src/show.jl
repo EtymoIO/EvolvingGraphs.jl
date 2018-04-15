@@ -32,8 +32,8 @@ function show{V, E, T, KV}(io::IO, g::EvolvingGraph{V, E, T, KV})
     print(io, "$(title) $(num_nodes(g)) nodes, $(num_edges(g)) static edges, $(num_timestamps(g)) timestamps")
 end
 
-function show(io::IO, g::AdjacencyList)
-    title = is_directed(g) ? "Directed IntEvolvingGraph" : "Undirected IntEvolvingGraph"
+function show(io::IO, g::IntAdjacencyList)
+    title = is_directed(g) ? "Directed IntAdjacencyList" : "Undirected IntAdjacencyList"
     print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) static edges, $(num_timestamps(g)) timestamps)")
 end
 

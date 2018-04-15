@@ -1,5 +1,6 @@
 """
     DiGraph{V,E}()
+    DiGraph{V}()
     DiGraph()
 
 Construct a static directed graph with node type `V` and edge type `E`. `DiGraph()` constructs a static directed graph with integer nodes and edges.
@@ -35,7 +36,7 @@ julia> nodes(g)
  Node(4)
 ```
 """
-type DiGraph{V<:AbstractNode, E<:AbstractEdge, IncList, VK} <: AbstractStaticGraph{V, E}
+mutable struct DiGraph{V<:AbstractNode, E<:AbstractEdge, IncList, VK} <: AbstractStaticGraph{V, E}
     nodes::Vector{V}
     edges::Vector{E}
     forward_ilist::IncList # forward incidence list
@@ -43,6 +44,7 @@ type DiGraph{V<:AbstractNode, E<:AbstractEdge, IncList, VK} <: AbstractStaticGra
     indexof::Dict{VK,Int}
 end
 DiGraph{V, E}() where V where E = DiGraph(V[], E[], [], [], Dict{eltype(V), Int}())
+DiGraph{V}() where V = DiGraph{V, Edge{V}}()
 DiGraph() = DiGraph{Node{Int}, Edge{Node{Int}}}()
 
 

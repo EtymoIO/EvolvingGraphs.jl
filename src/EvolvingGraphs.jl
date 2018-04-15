@@ -14,7 +14,7 @@ export
 
    # graph types
    AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
-   EvolvingGraph, DiGraph, AdjacencyList, MatrixList,
+   EvolvingGraph, DiGraph, IntAdjacencyList, MatrixList,
 
    evolving_graph_from_arrays, add_bunch_of_edges!,
    adjacency_matrix, sparse_adjacency_matrix,
@@ -39,7 +39,7 @@ export
    random_time_graph, random_evolving_graph, breadth_first_visit,
 
    # metric
-   Path, TemporalPath, shortest_temporal_path, shortest_temporal_distance,
+   shortest_temporal_path, shortest_temporal_distance,
    shortest_path, shortest_distance, temporal_efficiency, global_temporal_efficiency,
 
    # components

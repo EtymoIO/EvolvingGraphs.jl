@@ -53,9 +53,9 @@ end
 """
   random_evolving_graph(g, nt, p;)
 
-Add random edges within time stamp `nt` with probability `p` to an AdjacencyList `g`.
+Add random edges within time stamp `nt` with probability `p` to an IntAdjacencyList `g`.
 """
-function random_evolving_graph(g::AdjacencyList, nt::Int, p::Real = 0.5;
+function random_evolving_graph(g::IntAdjacencyList, nt::Int, p::Real = 0.5;
                                has_self_loops = false)
     nn = g.nnodes
     for t in 1:nt
