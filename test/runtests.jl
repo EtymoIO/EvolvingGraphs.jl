@@ -3,7 +3,6 @@ using Base.Test
 
 tests = [
          "base",
-         "time_graph",
          "evolving_graph",
          "centrality",
          "random_graph",

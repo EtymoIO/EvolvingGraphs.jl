@@ -14,14 +14,15 @@ export
 
    # graph types
    AbstractGraph, AbstractEvolvingGraph, AbstractStaticGraph,
-   EvolvingGraph, StaticGraph, AdjacencyList,
+   EvolvingGraph, StaticGraph, AdjacencyList, MatrixList,
 
    evolving_graph_from_arrays, add_bunch_of_edges!,
    adjacency_matrix, sparse_adjacency_matrix,
+   evolving_graph_to_adj,
 
    # graph functions
    ## modify graph
-   add_node!, add_edge!, add_graph!, rm_edge!, add_graph!, undirected!, add_edge_from_array!,
+   add_node!, add_edge!, add_graph!, rm_edge!, add_graph!, undirected!,
 
    has_edge, has_node, in_edges, in_degree, out_edges, out_degree, has_active_node,
    nodes, num_nodes, edges, num_edges,
@@ -30,7 +31,6 @@ export
    forward_neighbors, backward_neighbors, is_directed, undirected,
    time_graph,
    attributes_values, aggregated_graph,
-   int_evolving_graph, temporal_nodes,
 
    # io
    egread, egwrite,

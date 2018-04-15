@@ -15,10 +15,19 @@ EvolvingGraphs.adjacency_matrix
 EvolvingGraphs.sparse_adjacency_matrix
 ```
 
+## Matrix List
+
+```@docs
+EvolvingGraphs.MatrixList
+EvolvingGraphs.evolving_graph_to_adj
+EvolvingGraphs.matrices
+EvolvingGraphs.num_matrices
+```
+
 ## Static Graphs
 
 
-## Functions
+## General Functions
 
 ```@docs
 EvolvingGraphs.nodes

@@ -360,7 +360,7 @@ append!(t::TemporalPath, ns::Vector{TimeNode}) = (append!(t.nodes, ns);  t)
 append!(t::TemporalPath, t2::TemporalPath) = (append!(t, t2.nodes);  t)
 deepcopy(t::TemporalPath) = TemporalPath(deepcopy(t.nodes))
 
-Base.length(p::TemporalPath) = length(p.nodes)
+length(p::TemporalPath) = length(p.nodes)
 Base.start(P::TemporalPath) = 1
 Base.next(p::TemporalPath, state) = (p.nodes[state], state+1)
 Base.done(p::TemporalPath, state) = state > length(p.nodes)

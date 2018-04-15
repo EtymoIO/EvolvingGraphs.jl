@@ -40,8 +40,7 @@ end
 
 
 function show(io::IO, g::MatrixList)
-    title = is_directed(g)? "Directed MatrixList" : "Undirected MatrixList"
-    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_matrices(g)) matrices)")
+    print(io, "MatrixList ($(num_matrices(g)) matrices)")
 end
 
 
