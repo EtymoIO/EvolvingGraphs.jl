@@ -42,7 +42,7 @@ function egread(filename)
     try
         timestamps = [parse(Int64, s) for s in timestamps]
     end
-    return evolving_graph(ilist, jlist, timestamps, is_directed = is_directed)
+    return evolving_graph_from_arrays(ilist, jlist, timestamps, is_directed = is_directed)
 end
 
 function _egwrite(io::IO, g::AbstractEvolvingGraph)
@@ -54,7 +54,7 @@ function _egwrite(io::IO, g::AbstractEvolvingGraph)
     write(io, "$(firstline)\n")
     for i in 1:n
         es = g.edges[i]
-        edges = join([source(es), target(es), timestamp(es)], ',')
+        edges = join([source(es), target(es), edge_timestamp(es)], ',')
         write(io, "$(edges)\n")
     end
 end

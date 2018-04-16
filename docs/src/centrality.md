@@ -1,4 +1,4 @@
-# Centrality Algorithms
+# Graph Centrality
 
 ```@docs
 katz

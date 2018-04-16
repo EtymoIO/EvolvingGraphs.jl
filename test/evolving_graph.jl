@@ -1,6 +1,6 @@
 ### evolving graphs with integer nodes and timestamps
 
-g = evolving_graph()
+g = EvolvingGraph()
 add_edge!(g, 1, 2, 1)
 add_edge!(g, 1, 3, 1)
 add_edge!(g, 1, 4, 2)
@@ -17,7 +17,7 @@ ns = nodes(g)
 @test rand(1:3) in timestamps(g)
 @test num_timestamps(g) == 3
 
-g = evolving_graph(is_directed = false)
+g = EvolvingGraph(is_directed = false)
 add_edge!(g, 1, 2, 1)
 add_edge!(g, 1, 3, 1)
 add_edge!(g, 1, 4, 2)
@@ -34,7 +34,7 @@ add_edge!(g, 1, 2, 1)
 aa = ['a', 'b', 'c', 'c', 'a']
 bb = ['b', 'a', 'a', 'b', 'b']
 tt = ["t1", "t2", "t3", "t4", "t5"]
-gg = evolving_graph(aa, bb, tt, is_directed = false)
+gg = evolving_graph_from_arrays(aa, bb, tt, is_directed = false)
 display(gg)
 nodes(gg)
 N, T = eltype(gg)
@@ -50,9 +50,9 @@ timestamps(gg)
 
 
 # convert to matrix
-@test matrix(gg, "t2") == full(spmatrix(gg, "t2"))
+@test adjacency_matrix(gg, "t2") == full(sparse_adjacency_matrix(gg, "t2"))
 
-g2 = evolving_graph(Int, Char, is_directed = true)
+g2 = EvolvingGraph{Node{Int},Char}(is_directed = true)
 add_edge!(g2, 1, 2, 'a')
 add_edge!(g2, 2, 3, 'b')
 @test num_nodes(g2) == 3
@@ -60,43 +60,34 @@ add_edge!(g2, 2, 3, 'b')
 @test num_timestamps(g2) == 2
 
 # remove edge
-g = evolving_graph(Int, String)
+g = EvolvingGraph{Node{Int}, String}()
 add_edge!(g, 1, 2, "t1")
 add_edge!(g, 2, 3, "t2")
 add_edge!(g, 4, 2, "t2")
 add_edge!(g, 4, 2, "t1")
 add_edge!(g, 2, 1, "t3")
 v = EvolvingGraphs.find_node(g, 1)
-@test has_node(g, v, "t1")
+@test has_active_node(g, 1, "t1")
 
 @test num_edges(g) == 5
 
-add_edge!(g, [1,2,4], [3,4], "t1")
+add_bunch_of_edges!(g, [(1,3, "t1"), (1,4, "t2")])
+
 n = num_edges(g)
 @test is_directed(g)
 
-forward_neighbors(g, 2, "t1")
+forward_neighbors(g, active_nodes(g)[1])
 
-wg = weighted_evolving_graph(String, Int, Int, is_directed = false)
-add_edge!(wg, "a", "b", 1, 2)
-add_edge!(wg, "b", "c", 1, 1)
-add_edge!(wg, "a", "e", 2, 4)
-add_edge!(wg, "e", "f", 3, 2)
+wg = EvolvingGraph{Node{String}, Int}(is_directed = false, is_weighted = true)
+add_edge!(wg, "a", "b", 1, weight = 2.)
+add_edge!(wg, "b", "c", 1, weight = 1.)
+add_edge!(wg, "a", "e", 2, weight = 4.)
+add_edge!(wg, "e", "f", 3, weight = 2.)
 @test num_edges(wg) == 8
 display(wg)
 
-@test matrix(wg, 1) == full(spmatrix(wg, 1))
+@test adjacency_matrix(wg, 1) == full(sparse_adjacency_matrix(wg, 1))
 
-wg = weighted_evolving_graph()
-add_edge!(wg, 1, 2 ,1, 1)
-add_edge!(wg, 2, 1, 2, 2)
-
-# add a graph to an evolving graph
-g = digraph(String, Edge{String})
-add_node!(g, "1")
-add_node!(g, "2")
-add_edge!(g, "1", "2")
-eg = evolving_graph(String, Int)
-add_graph!(eg, g, 1)
-@test length(nodes(eg)) == 2
-@test length(edges(eg)) == 1
+wg = EvolvingGraph(is_weighted = true)
+add_edge!(wg, 1, 2 ,1, weight = 1)
+add_edge!(wg, 2, 1, 2, weight = 2)

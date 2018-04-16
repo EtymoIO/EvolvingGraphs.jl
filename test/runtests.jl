@@ -2,23 +2,22 @@ using EvolvingGraphs
 using Base.Test
 
 tests = [
-         "core",
-         "time_graph",
+         "base",
          "evolving_graph",
+         "adjacency_list",
          "centrality",
          "random_graph",
-         "digraph",
-         "io",
-         "aggregated_graph",
-         "int_evolving_graph",
+         "static_graph",
+         #"io",
          "matrix_list",
          "incidence_matrix",
          "bfs",
+         "dfs",
          "sort_slice",
-         "shortest_distance",
-         "shortest_temporal_distance",
-         "temporal_efficiency",
-         "components"
+         # "shortest_distance",
+         # "shortest_temporal_distance",
+         # "temporal_efficiency",
+         # "components"
          ]
 
 t_passed = falses(length(tests))

@@ -1,26 +1,39 @@
-mutable struct IntEvolvingGraph{V,T} <: AbstractEvolvingGraph{V,T}
+# simple adjacency list, which represents both nodes and timestamps as integers.
+
+"""
+    IntAdjacencyList(nv, nt)
+
+Construct a graph represented by an adjacency list with `nv` nodes and `nt` timestamps, where both nodes and timestamps are represented by integers.
+
+
+# Example
+
+```jldoctest
+julia> using EvolvingGraphs
+
+julia> g = IntAdjacencyList(4,3)
+Directed IntAdjacencyList (4 nodes, 0 static edges, 3 timestamps)
+
+julia> add_edge!(g, 1, 2, 1)
+Directed IntAdjacencyList (4 nodes, 1 static edges, 3 timestamps)
+
+julia> add_edge!(g, 2, 3, 2)
+Directed IntAdjacencyList (4 nodes, 2 static edges, 3 timestamps)
+
+julia> num_edges(g)
+2
+```
+"""
+mutable struct IntAdjacencyList
     is_directed::Bool
-    nodes::UnitRange{V}
-    timestamps::Vector{T}
+    nodes::UnitRange{Int}
+    timestamps::Vector{Int}
     nnodes::Int      # number of nodes
     nedges::Int      # number of static edges
-    forward_adjlist::Vector{Vector{V}}
-    backward_adjlist::Vector{Vector{V}}
+    forward_adjlist::Vector{Vector{Int}}
+    backward_adjlist::Vector{Vector{Int}}
 end
-
-#function IntEvolvingGraph{V, T}(is_directed::Bool, nodes::UnitRange{V}, timestamps::Vector{T},
-#                                nnodes::Int, nedges::Int, forward_adjlist::Vector{Vector{V}}, 
-#                                backward_adjlist::Vector{Vector{V}}) where {V,T}
-#    IntEvolvingGraph(is_directed,nodes,timestamps,nnodes,nedges,TimeEdge{Node{V}, T}(),forward_adjlist,backward_adjlist)
-#end
-
-"""
-    int_evolving_graph(nv, nt; is_directed)
-
-Initialize an evolving graph with `nv` nodes and `nt` timestamps, where `nv` and `nt`
-are integers.
-"""
-function int_evolving_graph(nv::Int, nt::Int; is_directed::Bool = true)
+function IntAdjacencyList(nv::Int, nt::Int; is_directed::Bool = true)
     ts = Array{Int}(nv*nt)
     f_adj = Vector{Int}[]
     b_adj = Vector{Int}[]
@@ -33,51 +46,65 @@ function int_evolving_graph(nv::Int, nt::Int; is_directed::Bool = true)
             ts[v + nv*(t-1)] = t
         end
     end
-    IntEvolvingGraph(is_directed, 1:nv*nt, ts, nv, 0, f_adj, b_adj)
+    IntAdjacencyList(is_directed, 1:nv*nt, ts, nv, 0, f_adj, b_adj)
 end
 
-"""
-    int_evolving_graph(g)
+is_directed(g::IntAdjacencyList) = g.is_directed
 
-Convert an EvolvingGraph to an IntEvolvingGraph.
 """
-function int_evolving_graph(g::EvolvingGraph)
-    g1 = int_evolving_graph(num_nodes(g), num_timestamps(g),
-                                             is_directed = is_directed(g))
+    evolving_graph_to_adj(g)
+
+Convert an evolving graph `g` to an adjacency list.
+
+# Example
+
+```jldoctest
+julia> using EvolvingGraphs
+
+julia> g = EvolvingGraph()
+Directed EvolvingGraph 0 nodes, 0 static edges, 0 timestamps
+
+julia> add_bunch_of_edges!(g, [(1,2,2001),(2,3,2002), (2,4,2002), (3,1,2003)])
+Directed EvolvingGraph 4 nodes, 4 static edges, 3 timestamps
+
+julia> evolving_graph_to_adj(g)
+Directed IntAdjacencyList (4 nodes, 4 static edges, 3 timestamps)
+```
+"""
+function evolving_graph_to_adj(g::AbstractEvolvingGraph)
+    g1 = IntAdjacencyList(num_nodes(g), num_timestamps(g), is_directed = is_directed(g))
+
+    tmap = Dict(t => i for (i, t) in enumerate(unique_timestamps(g)))
     for e in edges(g)
         v1 = node_index(source(e))
         v2 = node_index(target(e))
-        add_edge!(g1, v1, v2, e.timestamp)
+        add_edge!(g1, v1, v2, tmap[e.timestamp])
     end
     g1
 end
 
-# all temporal nodes of g
-function temporal_nodes(g::IntEvolvingGraph)
-    ns = Array(Tuple{Int, Int}, length(g.nodes))
-    b = g.nnodes
-    for i in g.nodes
-        t = g.timestamps[i]
-        ns[i] = (i - b*(t-1), t)
-    end
-    ns
-end
-nodes(g::IntEvolvingGraph) = collect(1:g.nnodes)
-num_nodes(g::IntEvolvingGraph) = g.nnodes
-num_edges(g::IntEvolvingGraph) = g.nedges
-timestamps(g::IntEvolvingGraph) = unique(g.timestamps)
-num_timestamps(g::IntEvolvingGraph) = round(Int, length(g.timestamps)/g.nnodes)
-num_edges(g::IntEvolvingGraph, t::Int) = g.nedges
 
-deepcopy(g::IntEvolvingGraph) = IntEvolvingGraph(is_directed(g),
+
+nodes(g::IntAdjacencyList) = collect(1:g.nnodes)
+num_nodes(g::IntAdjacencyList) = g.nnodes
+num_edges(g::IntAdjacencyList) = g.nedges
+timestamps(g::IntAdjacencyList) = g.timestamps
+unique_timestamps(g::IntAdjacencyList) = unique(g.timestamps)
+num_timestamps(g::IntAdjacencyList) = length(unique_timestamps(g))
+
+
+deepcopy(g::IntAdjacencyList) = IntAdjacencyList(is_directed(g),
                                              deepcopy(g.nodes),
                                              deepcopy(g.timestamps),
                                              g.nnodes,
                                              g.nedges,
-                                             deepcopy(g.forward_adjlist))
+                                             deepcopy(g.forward_adjlist),
+                                             deepcopy(g.backward_adjlist))
 
 
-function forward_neighbors(g::IntEvolvingGraph, v::Int, t::Int)
+
+
+function forward_neighbors(g::IntAdjacencyList, v::Int, t::Int)
     ns = g.nnodes
     n = v + ns*(t-1)
     nn = Tuple{Int, Int}[]
@@ -88,14 +115,9 @@ function forward_neighbors(g::IntEvolvingGraph, v::Int, t::Int)
     end
     nn
 end
-forward_neighbors(g::IntEvolvingGraph, v::Tuple) = forward_neighbors(g, v[1], v[2])
+forward_neighbors(g::IntAdjacencyList, vt::Tuple{Int,Int}) = forward_neighbors(g, vt[1], vt[2])  
 
-"""
-  add_edge!(g, v1, v2, t)
-
-Add a static edge from `v1` to `v2` at time stamp `t` to `g`.
-"""
-function add_edge!(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int)
+function add_edge!(g::IntAdjacencyList, v1::Int, v2::Int, t::Int)
     ns = g.nnodes
     n1 = v1 + ns*(t-1)
     n2 = v2 + ns*(t-1)
@@ -141,7 +163,7 @@ end
 _insertnode!(v::Vector{Int}, x::Int) = isempty(splice!(v, searchsorted(v,x), x))
 
 # has_edge on active nodes
-function _has_edge(g::IntEvolvingGraph, n1::Int, n2::Int)
+function _has_edge(g::IntAdjacencyList, n1::Int, n2::Int)
     nn = length(g.nodes)
     if n1 > nn || n2 > nn
         return false
@@ -150,12 +172,7 @@ function _has_edge(g::IntEvolvingGraph, n1::Int, n2::Int)
 end
 
 
-"""
-  has_edge(g, v1, v2, t)
-
-Returns true if `v1` to `v2` at timestamp `t` is an edge of `g`.
-"""
-function has_edge(g::IntEvolvingGraph, v1::Int, v2::Int, t::Int)
+function has_edge(g::IntAdjacencyList, v1::Int, v2::Int, t::Int)
     ns = g.nnodes
     n1 = v1 + ns*(t-1)
     n2 = v2 + ns*(t-1)

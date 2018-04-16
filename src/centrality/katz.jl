@@ -1,14 +1,68 @@
 """
-    katz(g [, α = 0.3, sorted = true]) 
+    katz(g, alpha = 0.1)
 
-Computes the broadcast centrality vector of an evolving graph `g`.
+Compute the Katz centrality for a static graph `g`.
 
-Input:
+# References:
 
-     `g`: an evolving graph
-     `α`: (= 0.3 default) a scalar the controls the influence of long walks.
+1. L. Katz A new index derived from sociometric data analysis. Psychometrika, 18:39-43, 1953.
 """
-function katz(g::AbstractEvolvingGraph, α::Real = 0.3; sorted::Bool = true)
+function katz(g::AbstractStaticGraph, alpha::Real = 0.1)
+    n = num_nodes(g)
+    ns = nodes(g)
+    v = ones(Float64, n)
+    A = sparse_adjacency_matrix(g)
+    spI = speye(Float64, n)
+    rates = (spI - alpha * A)\v
+    return [(node, rates[node.index]) for node in ns]
+end
+
+
+
+"""
+    katz(g, alpha = 0.3)
+    katz(g, alpha, beta; mode = :broadcast)
+
+Computes the katz centrality for an evolving graph `g`, where `alpha` and `beta` are scalars. `alpha` controls the influence of long walks and `beta` controls the influence of walks happened long time ago. By default, `mode = :broadcast` computes the broadcast centrality. Otherwise if `mode = :receive`, we compute the receiving centrality.
+
+# Example
+
+```jldoctest
+julia> using EvolvingGraphs
+
+julia> using EvolvingGraphs.Centrality
+
+julia> g = evolving_graph_from_arrays(["A", "B", "B", "C", "E", "A", "B", "D"], ["B", "F", "G", "E", "G", "B", "F", "F"], [1,1,1,2,2,2,2,2])
+Directed EvolvingGraph 7 nodes, 8 static edges, 2 timestamps
+
+julia> katz(g)
+7-element Array{Tuple{EvolvingGraphs.Node{String},Float64},1}:
+ (Node(A), 0.776825)
+ (Node(B), 0.3916)
+ (Node(F), 0.0910698)
+ (Node(G), 0.0910698)
+ (Node(C), 0.350619)
+ (Node(E), 0.227674)
+ (Node(D), 0.227674)
+
+julia> katz(g, 0.3, 0.4, mode = :receive)
+7-element Array{Tuple{EvolvingGraphs.Node{String},Float64},1}:
+ (Node(A), 0.0)
+ (Node(B), 0.441673)
+ (Node(F), 1.0)
+ (Node(G), 0.548645)
+ (Node(C), 0.0)
+ (Node(E), 0.42231)
+ (Node(D), 0.0)
+```
+
+# References:
+
+1. P. Grindrod, D. J. Higham, M. C. Parsons and E. Estrada Communicability across evolving networks. Physical Review E, 83 2011.
+
+2. P. Grindrod and D. J. Higham, A matrix iteration for dynamic network summaries. SIAM Review, 55 2013.
+"""
+function katz(g::AbstractEvolvingGraph, alpha::Real = 0.3)
     n = num_nodes(g)
     ns = nodes(g)
     ts = timestamps(g)
@@ -16,36 +70,14 @@ function katz(g::AbstractEvolvingGraph, α::Real = 0.3; sorted::Bool = true)
     A = spzeros(Float64, n, n)
     spI = speye(Float64, n)
     for t in ts
-        A =  spmatrix(g,t)
-        v = (spI - α*A)\v
+        A =  sparse_adjacency_matrix(g,t)
+        v = (spI - alpha*A)\v
         v =  v/norm(v)
     end
-    rate = collect(zip(ns, v))
-    if sorted
-        return sort(rate, by = x-> x[2])
-    else
-        return rate
-    end
+    return [(node, v[node.index]) for node in ns]
 end
 
-"""
-    katz(g, α, β [, mode = :broadcast])
-
-Computes the Katz centrality of an evolving graph `g`.
-
-Input:
-
-     `g`: an evolving graph
-     `α`: a scalar that controls the influence of long walks
-     `β`: a scalar that controls the influence of walks happened long time ago.
-          `mode`: `mode = :broadcast` (default) generates the broadcast centrality
-          vector; `mode = :receive` generates the receving centrality vector;
-          `mode = :matrix` generates the communicability matrix.
-"""
-function katz(g::AbstractEvolvingGraph,
-                         α::Real,
-                         β::Real;
-                         mode::Symbol = :broadcast)
+function katz(g::AbstractEvolvingGraph, alpha::Real, beta::Real; mode::Symbol = :broadcast)
     n = num_nodes(g)
     ns = nodes(g)
     ts = timestamps(g)
@@ -56,21 +88,12 @@ function katz(g::AbstractEvolvingGraph,
     Δt = 1.
     for t in ts
         Δt += 0.01
-        A =  spmatrix(g,t)
-        S =  (spI + e^(-β*Δt)*S)*(spI + α*A) - spI
+        A =  sparse_adjacency_matrix(g,t)
+        S =  (spI + e^( -beta * Δt) * S) * (spI + alpha * A) - spI
         S =  S/norm(S,1)
     end
 
-    if mode == :matrix
-        return S
-    elseif mode == :broadcast
-        v = S* ones(Float64, n)
-        return sort(collect(zip(ns, v)), by = x -> x[2])
-    elseif mode == :receive
-        v = S'*ones(Float64, n)
-        return sort(collect(zip(ns, v)), by = x -> x[2])
-    else
-        throw(ArgumentError("unknown mode $(mode)"))
-    end
+    v = mode == :broadcast ? S * ones(Float64,n) : S' * ones(Float64,n)
 
+    return [(node, v[node.index]) for node in ns]
 end

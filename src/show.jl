@@ -8,7 +8,7 @@ function show(io::IO, v::AttributeNode)
 end
 
 function show(io::IO, v::TimeNode)
-    print(io, "TimeNode($(v.node), $(v.timestamp))")
+    print(io, "TimeNode($(v.key), $(v.timestamp))")
 end
 
 function show(io::IO, e::Edge)
@@ -24,34 +24,23 @@ function show(io::IO, e::WeightedTimeEdge)
 end
 
 function show{V, E}(io::IO, g::DiGraph{V, E})
-    print(io, "DiGraph{$V, $E} $(num_nodes(g)) nodes, $(num_edges(g)) edges")
+    print(io, "DiGraph $(num_nodes(g)) nodes, $(num_edges(g)) edges")
 end
 
-function show{V, T, E}(io::IO, g::EvolvingGraph{V, T, E})
+function show{V, E, T, KV}(io::IO, g::EvolvingGraph{V, E, T, KV})
     title = is_directed(g) ? "Directed EvolvingGraph" : "Undirected EvolvingGraph"
-    print(io, "$(title){$V, $T, $E} $(num_nodes(g)) nodes, $(num_edges(g)) static edges, $(num_timestamps(g)) timestamps")
+    print(io, "$(title) $(num_nodes(g)) nodes, $(num_edges(g)) static edges, $(num_timestamps(g)) timestamps")
 end
 
-function show(io::IO, g::IntEvolvingGraph)
-    title = is_directed(g) ? "Directed IntEvolvingGraph" : "Undirected IntEvolvingGraph"
+function show(io::IO, g::IntAdjacencyList)
+    title = is_directed(g) ? "Directed IntAdjacencyList" : "Undirected IntAdjacencyList"
     print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) static edges, $(num_timestamps(g)) timestamps)")
 end
 
-function show(io::IO, g::TimeGraph)
-    title = is_directed(g) ? "Directed TimeGraph" : "Undirected TimeGraph"
-    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) static edges)")
-end
-
-
-function show(io::IO, g::AggregatedGraph)
-    title = is_directed(g)? "Directed AggregatedGraph" : "Undirected AggregatedGraph"
-    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_edges(g)) static edges)")
-end
 
 
 function show(io::IO, g::MatrixList)
-    title = is_directed(g)? "Directed MatrixList" : "Undirected MatrixList"
-    print(io, "$(title) ($(num_nodes(g)) nodes, $(num_matrices(g)) matrices)")
+    print(io, "MatrixList ($(num_matrices(g)) matrices)")
 end
 
 
@@ -59,9 +48,9 @@ function show(io::IO, p::AbstractPath)
     result = ""
     for i in 1:length(p)
         if i == length(p)
-            result = string(result, p.walks[i])
+            result = string(result, p.nodes[i])
         else
-            result = string(result, p.walks[i], "->")
+            result = string(result, p.nodes[i], "->")
         end
     end
     print(io, "$(result)")

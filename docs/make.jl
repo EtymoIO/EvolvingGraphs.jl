@@ -8,11 +8,13 @@ makedocs(
     modules=[EvolvingGraphs, EvolvingGraphs.Centrality],
     pages=[
     "Home" =>"index.md",
-    "Manual" => ["base.md",
+    "Manual" => [
+                "examples.md",
+                "base.md",
                 "graph_types.md",
                 "centrality.md",
-                "examples.md",
-                "read_write.md"
+                "read_write.md",
+                "algorithms.md"
                 ]
     ]
 )
