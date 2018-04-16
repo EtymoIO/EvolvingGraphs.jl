@@ -38,6 +38,7 @@ export
    random_time_graph, random_evolving_graph, breadth_first_visit,
 
    # metric
+   breadth_first_impl, depth_first_impl,
    shortest_temporal_path, shortest_temporal_distance,
    shortest_path, shortest_distance, temporal_efficiency, global_temporal_efficiency,
 

@@ -12,11 +12,12 @@ tests = [
          "matrix_list",
          "incidence_matrix",
          "bfs",
+         "dfs",
          "sort_slice",
-         "shortest_distance",
-         "shortest_temporal_distance",
-         "temporal_efficiency",
-         "components"
+         # "shortest_distance",
+         # "shortest_temporal_distance",
+         # "temporal_efficiency",
+         # "components"
          ]
 
 t_passed = falses(length(tests))

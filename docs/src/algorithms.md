@@ -4,6 +4,7 @@
 
 ```@docs
 EvolvingGraphs.depth_first_impl
+EvolvingGraphs.breadth_first_impl
 ```
 
 ## Random Graphs

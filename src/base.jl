@@ -329,6 +329,8 @@ Abstract supertype for all path types.
 """
 abstract type AbstractPath end
 
+
+TimeOrTuple = Union{TimeNode,Tuple{Int,Int}}
 """
     TemporalPath()
 
@@ -355,12 +357,13 @@ julia> append!(p,p)
 TimeNode(a, 2001)->TimeNode(b, 2002)->TimeNode(a, 2001)->TimeNode(b, 2002)
 ```
 """
-mutable struct TemporalPath{T<:TimeNode} <: AbstractPath
+mutable struct TemporalPath{T<:TimeOrTuple} <: AbstractPath
     nodes::Vector{T}
 end
-TemporalPath() = TemporalPath(TimeNode[])
-push!(t::TemporalPath, n::TimeNode) = (push!(t.nodes, n);  t)
-append!(t::TemporalPath, ns::Vector{TimeNode}) = (append!(t.nodes, ns);  t)
+
+TemporalPath() = TemporalPath(Union{TimeNode,Tuple{Int,Int}}[])
+push!(t::TemporalPath, n::TimeOrTuple) = (push!(t.nodes, n);  t)
+append!(t::TemporalPath, ns::Vector{TimeOrTuple}) = (append!(t.nodes, ns);  t)
 append!(t::TemporalPath, t2::TemporalPath) = (append!(t, t2.nodes);  t)
 deepcopy(t::TemporalPath) = TemporalPath(deepcopy(t.nodes))
 
@@ -369,8 +372,7 @@ Base.start(P::TemporalPath) = 1
 Base.next(p::TemporalPath, state) = (p.nodes[state], state+1)
 Base.done(p::TemporalPath, state) = state > length(p.nodes)
 
-# spatical length disregard time
-spatial_length(p::TemporalPath) = length(unique(map(x -> x[1], p.nodes)))
+
 ==(p1::TemporalPath, p2::TemporalPath) = (p1.nodes == p2.nodes)
 
 
