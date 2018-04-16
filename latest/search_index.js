@@ -37,7 +37,31 @@ var documenterSearchIndex = {"docs": [
     "page": "Tutorial",
     "title": "Tutorial",
     "category": "section",
-    "text": "Evolving graphs are"
+    "text": ""
+},
+
+{
+    "location": "examples.html#Why-Evolving-Graphs?-1",
+    "page": "Tutorial",
+    "title": "Why Evolving Graphs?",
+    "category": "section",
+    "text": "Many real-world networks store the relationship between entities with time stamps. Consider a group of online users interacting through messaging. Each message sent from user v_i to user v_j at time stamp t_i can be represented as an edge from node v_i to node v_j at t_i. It is natural to represent the user interaction network as an ordered sequence of networks, each has a time stamp label. Ignoring the time stamps in the network can give wrong information.Let\'s see a toy example. We let A, B, C be three co-workers working in the same internet company. There was a new assignment for A, B, and C.If A first found out the assignment and told B on day 1 and C on day 2. B reminded C about the assignment on day 3. Now everyone knew about this new assignment. This process is illustrated in the figure below.(Image: simple evolving graph)We can model this example using an evolving graph. In EvolvingGraphs.jl,julia> using EvolvingGraphs\n\njulia> g = EvolvingGraph{Node{String}, Int}()\nDirected EvolvingGraph 0 nodes, 0 static edges, 0 timestamps\n\njulia> add_bunch_of_edges!(g, [(\"A\", \"B\", 1), (\"A\", \"C\", 2), (\"B\", \"C\", 3)])\nDirected EvolvingGraph 3 nodes, 3 static edges, 3 timestamps\n\njulia> edges(g)\n3-element Array{EvolvingGraphs.WeightedTimeEdge{EvolvingGraphs.Node{String},Int64,Float64},1}:\n Node(A)-1.0->Node(B) at time 1\n Node(A)-1.0->Node(C) at time 2\n Node(B)-1.0->Node(C) at time 3It is clear that A is the most important person for passing this information. We use a generalised Katz centrality to evaluate the importance of A, B, and C.julia> using EvolvingGraphs.Centrality\n\njulia> katz(g)\n3-element Array{Tuple{EvolvingGraphs.Node{String},Float64},1}:\n (Node(A), 0.698297)\n (Node(B), 0.567367)\n (Node(C), 0.436436)Suppose our A was a keen person and decided to remind B again in day 2. Now the networks look like(Image: simple evolving graph)In EvolvingGraphs.jl, we add a new edge at timestamp 2.julia> add_edge!(g, \"A\", \"B\", 2)\nNode(A)-1.0->Node(B) at time 2\n\njulia> katz(g)\n3-element Array{Tuple{EvolvingGraphs.Node{String},Float64},1}:\n (Node(A), 0.84485)\n (Node(B), 0.424056)\n (Node(C), 0.326197)Notice that the rating of A is getting even higher than before.If we just aggregate an evolving graph to a simple directed graph by ignoring the timestamps, they aggregate to form the same static graph and therefore the ratings stay the same.(Image: simple graph)Evolving graphs provide richer information and allow us to have a detailed understanding of a real-world problem."
+},
+
+{
+    "location": "examples.html#Graph-Traversal-1",
+    "page": "Tutorial",
+    "title": "Graph Traversal",
+    "category": "section",
+    "text": "How do we traverse an evolving graph? In a breadth-first search (BFS) one first visits all the outward neighbors of the starting node, then visits all the outward neighbors of each of those nodes, and so on.Let\'s look at the implementation of BFS in EvolvingGraphs.jl.function breadth_first_impl(g, v)\n    level = Dict(v => 0)\n    i = 1\n    fronter = [v]\n    while length(fronter) > 0\n        next = []\n        for u in fronter\n            for v in forward_neighbors(g, u)\n                if !(v in keys(level))\n                    level[v] = i\n                    push!(next, v)\n                end\n            end\n        end\n        fronter = next\n        i += 1\n    end\n    level\nendIt looks exactly the same as a BFS in static graphs except here we use forward_neigbors not outward neighbors. forward_neigbors preserves the direction of time and make sure we do not travel back in time."
+},
+
+{
+    "location": "examples.html#A-List-of-Adjacency-Matrices-1",
+    "page": "Tutorial",
+    "title": "A List of Adjacency Matrices",
+    "category": "section",
+    "text": "Researchers often consider an evolving graph as an ordered sequence of adjacency matrices A^{k}. In EvolvingGraphs.jl, we provide a data structure called MatrixList, which stores a list of adjacency matrices.You can convert an evolving graph to an MatrixListjulia> using EvolvingGraphs\n\njulia> g = EvolvingGraph()\nDirected EvolvingGraph 0 nodes, 0 static edges, 0 timestamps\n\njulia> add_bunch_of_edges!(g, [(1,2,2001),(2,3,2002),(3,4,2002),(1,4,2002),(2,3,2003),(2,5,2005)])\nDirected EvolvingGraph 5 nodes, 6 static edges, 4 timestamps\n\njulia> ml = evolving_graph_to_matrices(g)\nMatrixList (4 matrices)and can write a for loop to access its elements.julia> for (i,m) in enumerate(ml)\n        println(\"Matrix $i\")\n        println(m)\n       end\nMatrix 1\n\n  [1, 2]  =  1.0\nMatrix 2\n\n  [2, 3]  =  1.0\n  [1, 4]  =  1.0\n  [3, 4]  =  1.0\nMatrix 3\n\n  [2, 3]  =  1.0\nMatrix 4\n\n  [2, 5]  =  1.0"
 },
 
 {
