@@ -1,3 +1,3 @@
-# Examples
+# Tutorial
 
-Evolving graphs are 
+Evolving graphs are
