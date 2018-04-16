@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Tutorial · EvolvingGraphs.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link href="assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>EvolvingGraphs.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="search.html"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li><a class="toctext" href="index.html">Home</a></li><li><span class="toctext">Manual</span><ul><li class="current"><a class="toctext" href="examples.html">Tutorial</a><ul class="internal"><li><a class="toctext" href="#Why-Evolving-Graphs?-1">Why Evolving Graphs?</a></li><li><a class="toctext" href="#Graph-Traversal-1">Graph Traversal</a></li><li><a class="toctext" href="#A-List-of-Adjacency-Matrices-1">A List of Adjacency Matrices</a></li></ul></li><li><a class="toctext" href="base.html">Base</a></li><li><a class="toctext" href="graph_types.html">Graph Types</a></li><li><a class="toctext" href="centrality.html">Graph Centrality</a></li><li><a class="toctext" href="read_write.html">Read and Write</a></li><li><a class="toctext" href="algorithms.html">Algorithms</a></li></ul></li></ul></nav><article id="docs"><header><nav><ul><li>Manual</li><li><a href="examples.html">Tutorial</a></li></ul><a class="edit-page" href="https://github.com/EtymoIO/EvolvingGraphs.jl/blob/master/docs/src/examples.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Tutorial</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="Tutorial-1" href="#Tutorial-1">Tutorial</a></h1><h2><a class="nav-anchor" id="Why-Evolving-Graphs?-1" href="#Why-Evolving-Graphs?-1">Why Evolving Graphs?</a></h2><p>Many real-world networks store the relationship between entities with time stamps. Consider a group of online users interacting through messaging. Each message sent from user <code>v_i</code> to user <code>v_j</code> at time stamp <code>t_i</code> can be represented as an edge from node <code>v_i</code> to node <code>v_j</code> at <code>t_i</code>. It is natural to represent the user interaction network as an ordered sequence of networks, each has a time stamp label. Ignoring the time stamps in the network can give wrong information.</p><p>Let&#39;s see a toy example. We let <code>A</code>, <code>B</code>, <code>C</code> be three co-workers working in the same internet company. There was a new assignment for <code>A</code>, <code>B</code>, and <code>C</code>.</p><p>If <code>A</code> first found out the assignment and told <code>B</code> on day <code>1</code> and <code>C</code> on day <code>2</code>. <code>B</code> reminded <code>C</code> about the assignment on day <code>3</code>. Now everyone knew about this new assignment. This process is illustrated in the figure below.</p><p><img src="doc_eg1.png" alt="simple evolving graph"/></p><p>We can model this example using an evolving graph. In EvolvingGraphs.jl,</p><pre><code class="language-none">julia&gt; using EvolvingGraphs
+
+julia&gt; g = EvolvingGraph{Node{String}, Int}()
+Directed EvolvingGraph 0 nodes, 0 static edges, 0 timestamps
+
+julia&gt; add_bunch_of_edges!(g, [(&quot;A&quot;, &quot;B&quot;, 1), (&quot;A&quot;, &quot;C&quot;, 2), (&quot;B&quot;, &quot;C&quot;, 3)])
+Directed EvolvingGraph 3 nodes, 3 static edges, 3 timestamps
+
+julia&gt; edges(g)
+3-element Array{EvolvingGraphs.WeightedTimeEdge{EvolvingGraphs.Node{String},Int64,Float64},1}:
+ Node(A)-1.0-&gt;Node(B) at time 1
+ Node(A)-1.0-&gt;Node(C) at time 2
+ Node(B)-1.0-&gt;Node(C) at time 3</code></pre><p>It is clear that <code>A</code> is the most important person for passing this information. We use a generalised Katz centrality to evaluate the importance of <code>A</code>, <code>B</code>, and <code>C</code>.</p><pre><code class="language-none">julia&gt; using EvolvingGraphs.Centrality
+
+julia&gt; katz(g)
+3-element Array{Tuple{EvolvingGraphs.Node{String},Float64},1}:
+ (Node(A), 0.698297)
+ (Node(B), 0.567367)
+ (Node(C), 0.436436)</code></pre><p>Suppose our <code>A</code> was a keen person and decided to remind <code>B</code> again in day <code>2</code>. Now the networks look like</p><p><img src="doc_eg2.png" alt="simple evolving graph"/></p><p>In EvolvingGraphs.jl, we add a new edge at timestamp <code>2</code>.</p><pre><code class="language-none">julia&gt; add_edge!(g, &quot;A&quot;, &quot;B&quot;, 2)
+Node(A)-1.0-&gt;Node(B) at time 2
+
+julia&gt; katz(g)
+3-element Array{Tuple{EvolvingGraphs.Node{String},Float64},1}:
+ (Node(A), 0.84485)
+ (Node(B), 0.424056)
+ (Node(C), 0.326197)</code></pre><p>Notice that the rating of <code>A</code> is getting even higher than before.</p><p>If we just aggregate an evolving graph to a simple directed graph by ignoring the timestamps, they aggregate to form the same static graph and therefore the ratings stay the same.</p><p><img src="doc_g1.png" alt="simple graph"/></p><p>Evolving graphs provide richer information and allow us to have a detailed understanding of a real-world problem.</p><h2><a class="nav-anchor" id="Graph-Traversal-1" href="#Graph-Traversal-1">Graph Traversal</a></h2><p>How do we traverse an evolving graph? In a breadth-first search (BFS) one first visits all the outward neighbors of the starting node, then visits all the outward neighbors of each of those nodes, and so on.</p><p>Let&#39;s look at the implementation of BFS in EvolvingGraphs.jl.</p><pre><code class="language-none">function breadth_first_impl(g, v)
+    level = Dict(v =&gt; 0)
+    i = 1
+    fronter = [v]
+    while length(fronter) &gt; 0
+        next = []
+        for u in fronter
+            for v in forward_neighbors(g, u)
+                if !(v in keys(level))
+                    level[v] = i
+                    push!(next, v)
+                end
+            end
+        end
+        fronter = next
+        i += 1
+    end
+    level
+end</code></pre><p>It looks exactly the same as a BFS in static graphs except here we use <code>forward_neigbors</code> not outward neighbors. <code>forward_neigbors</code> preserves the direction of time and make sure we do not travel back in time.</p><h2><a class="nav-anchor" id="A-List-of-Adjacency-Matrices-1" href="#A-List-of-Adjacency-Matrices-1">A List of Adjacency Matrices</a></h2><p>Researchers often consider an evolving graph as an ordered sequence of adjacency matrices <code>A^{k}</code>. In EvolvingGraphs.jl, we provide a data structure called <code>MatrixList</code>, which stores a list of adjacency matrices.</p><p>You can convert an evolving graph to an <code>MatrixList</code></p><pre><code class="language-none">julia&gt; using EvolvingGraphs
+
+julia&gt; g = EvolvingGraph()
+Directed EvolvingGraph 0 nodes, 0 static edges, 0 timestamps
+
+julia&gt; add_bunch_of_edges!(g, [(1,2,2001),(2,3,2002),(3,4,2002),(1,4,2002),(2,3,2003),(2,5,2005)])
+Directed EvolvingGraph 5 nodes, 6 static edges, 4 timestamps
+
+julia&gt; ml = evolving_graph_to_matrices(g)
+MatrixList (4 matrices)</code></pre><p>and can write a <code>for</code> loop to access its elements.</p><pre><code class="language-none">julia&gt; for (i,m) in enumerate(ml)
+        println(&quot;Matrix $i&quot;)
+        println(m)
+       end
+Matrix 1
+
+  [1, 2]  =  1.0
+Matrix 2
+
+  [2, 3]  =  1.0
+  [1, 4]  =  1.0
+  [3, 4]  =  1.0
+Matrix 3
+
+  [2, 3]  =  1.0
+Matrix 4
+
+  [2, 5]  =  1.0</code></pre><footer><hr/><a class="previous" href="index.html"><span class="direction">Previous</span><span class="title">Home</span></a><a class="next" href="base.html"><span class="direction">Next</span><span class="title">Base</span></a></footer></article></body></html>
