@@ -26,18 +26,18 @@ var documenterSearchIndex = {"docs": [
 
 {
     "location": "examples.html#",
-    "page": "Examples",
-    "title": "Examples",
+    "page": "Tutorial",
+    "title": "Tutorial",
     "category": "page",
     "text": ""
 },
 
 {
-    "location": "examples.html#Examples-1",
-    "page": "Examples",
-    "title": "Examples",
+    "location": "examples.html#Tutorial-1",
+    "page": "Tutorial",
+    "title": "Tutorial",
     "category": "section",
-    "text": "Evolving graphs are "
+    "text": "Evolving graphs are"
 },
 
 {
