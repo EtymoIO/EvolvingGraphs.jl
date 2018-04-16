@@ -20,7 +20,7 @@ Pkg.add("EvolvingGraphs")
 
 We model a time-dependent network, a.k.a an evolving graph, as a ordered sequence of static graphs such that each static graph represents the interaction between nodes at a specific time stamp. The figure below shows an evolving graph with 3 timestamps.
 
-![simple evolving graph](docs/eg.png)
+![simple evolving graph](docs/src/eg.png)
 
 Using `EvolvingGraphs`, we could simply construct this graph by using the function
 `add_bunch_of_edges!`, which adds a list of edges all together.
