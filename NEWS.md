@@ -1,5 +1,15 @@
 EvolvingGraphs Release Notes
-======================
+=============================
+
+v0.2.0
+---------
+
+* Only support julia v0.6 or above.
+* Use Documenter.jl for Documentation.
+* Breaking changes:
+   - using `EvolvinGraph`, `MatrixList`, `Node`, `Edge`, `TimeNode`, `TimeEdge` to construct data.
+	 - `matrix` and `spmatrix` are renamed to `adjacency_matrix` and `sparse_adjacency_matrix`.
+	 - `rev` is renamed to `edge_reverse`.
 
 v0.1.0
 ---------
@@ -14,7 +24,7 @@ v0.0.9
 * Fix test failing on Julia v0.3
 
 
-v0.0.8 
+v0.0.8
 -------
 
 * define function `matrix` for static graphs
@@ -25,7 +35,7 @@ v0.0.8
 
 * fix Julia v0.4 deprecation
 
-v0.0.7 
+v0.0.7
 -------
 
 * Introduce two graph types:
@@ -35,7 +45,7 @@ v0.0.7
 
 * rename the function `time` (defined for TimeNode, TimeEdge, TimeGraph) to `timestamp`.
 
-v0.0.6 
+v0.0.6
 -----------
 
 * new data type
@@ -47,9 +57,9 @@ v0.0.6
   mistake. This change will affect the results of
   `shortest_temporal_path` and `weak_connected_components`.
 
-* redefine type hierarchy, introduce abstraction `AbstractStaticGraph`. 
+* redefine type hierarchy, introduce abstraction `AbstractStaticGraph`.
 
-* define function `eltype` on node types. 
+* define function `eltype` on node types.
 
 * new functions:
 
@@ -57,7 +67,7 @@ v0.0.6
 		evolving graph.
 
 
-v0.0.5 
+v0.0.5
 ----------
 
 * new methods:
@@ -66,11 +76,11 @@ v0.0.5
 
 	- `slice(g, [node1, node2,...])` slice the evolving graph
       according the given nodes.
-			
-	- `sorted` option for `katz_centrality` 
+
+	- `sorted` option for `katz_centrality`
 
 * new functions:
-	
+
 	- `attributes_values(g, attrbute_key)` returns the values of
 	  the given keys of the graph attributes.
 
@@ -96,13 +106,13 @@ v0.0.5
 * update examples at README
 
 
-v0.0.4 
+v0.0.4
 -------
 
 * new metrics:
 
 	- `shortest_path(g, v1, v2)`
-	
+
 	- `shortest_distance(g, v1, v2)`
 
 	- `shortest_temporal_path(g, (v1, t1), (v2, t2))`
@@ -130,15 +140,15 @@ v0.0.3
 * define new types:
 
   - `AttributeTimeEdge`
-  
+
   - `AttributeEvolvingGraph`
 
 * add usage examples:
 
   - Working with Evolving Graphs
-  
+
   - Working with Attribute Evolving Graphs
-  
+
   - Inputting Data
 
 v0.0.2
@@ -151,8 +161,3 @@ v0.0.1
 ------
 
 Initial release.
-
-
-
-
-
