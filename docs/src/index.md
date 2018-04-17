@@ -5,7 +5,7 @@
 Install Julia v0.6.0 or later, if you haven't already.
 
 ```
-julia> Pkg.add("EvolvingGraph")
+julia> Pkg.add("EvolvingGraphs")
 ```
 
 ## Get Started
