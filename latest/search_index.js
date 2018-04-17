@@ -21,7 +21,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Home",
     "title": "Installation",
     "category": "section",
-    "text": "Install Julia v0.6.0 or later, if you haven\'t already.julia> Pkg.add(\"EvolvingGraph\")"
+    "text": "Install Julia v0.6.0 or later, if you haven\'t already.julia> Pkg.add(\"EvolvingGraphs\")"
 },
 
 {
