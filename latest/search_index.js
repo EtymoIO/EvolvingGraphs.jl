@@ -9,11 +9,27 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
-    "location": "index.html#EvolvingGraphs-Documentation-1",
+    "location": "index.html#EvolvingGraphs:-working-with-time-dependent-networks-in-Julia-1",
     "page": "Home",
-    "title": "EvolvingGraphs Documentation",
+    "title": "EvolvingGraphs: working with time-dependent networks in Julia",
     "category": "section",
-    "text": "Pages = [\"examples.md\",\"base.md\",\"graph_types.md\",\"centrality.md\", \"read_write.md\", \"algorithms.md\"]\nDepth = 3"
+    "text": ""
+},
+
+{
+    "location": "index.html#Installation-1",
+    "page": "Home",
+    "title": "Installation",
+    "category": "section",
+    "text": "Install Julia v0.6.0 or later, if you haven\'t already.julia> Pkg.add(\"EvolvingGraph\")"
+},
+
+{
+    "location": "index.html#Get-Started-1",
+    "page": "Home",
+    "title": "Get Started",
+    "category": "section",
+    "text": "We model a time-dependent network, a.k.a an evolving graph, as a ordered sequence of static graphs such that each static graph represents the interaction between nodes at a specific time stamp. The figure below shows an evolving graph with 3 timestamps.(Image: simple evolving graph)Using EvolvingGraphs, we could simply construct this graph by using the function add_bunch_of_edges!, which adds a list of edges all together.julia> using EvolvingGraphs\n\njulia> g = EvolvingGraph()\nDirected EvolvingGraph 0 nodes, 0 static edges, 0 timestamps\n\njulia> add_bunch_of_edges!(g, [(1,2,1),(1,3,2),(2,3,3)])\nDirected EvolvingGraph 3 nodes, 3 static edges, 3 timestamps\n\njulia> edges(g)\n3-element Array{EvolvingGraphs.WeightedTimeEdge{EvolvingGraphs.Node{Int64},Int64,Float64},1}:\n Node(1)-1.0->Node(2) at time 1\n Node(1)-1.0->Node(3) at time 2\n Node(2)-1.0->Node(3) at time 3Pages = [\"examples.md\",\"base.md\",\"graph_types.md\",\"centrality.md\", \"read_write.md\", \"algorithms.md\"]\nDepth = 3"
 },
 
 {
@@ -245,7 +261,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Base",
     "title": "EvolvingGraphs.TemporalPath",
     "category": "type",
-    "text": "TemporalPath()\n\nConstruct a TemporalPath, i.e., an array of TimeNode.\n\nExample\n\njulia> using EvolvingGraphs\n\njulia> p = TemporalPath()\n\n\njulia> push!(p, TimeNode(1, \"a\", 2001))\n TimeNode(a, 2001)\n\njulia> push!(p, TimeNode(1, \"b\", 2002))\nTimeNode(a, 2001)->TimeNode(b, 2002)\n\njulia> p\nTimeNode(a, 2001)->TimeNode(b, 2002)\n\njulia> append!(p,p)\nTimeNode(a, 2001)->TimeNode(b, 2002)->TimeNode(a, 2001)->TimeNode(b, 2002)\n\n\n\n"
+    "text": "TemporalPath()\n\nConstruct a TemporalPath, i.e., an array of TimeNode.\n\nExample\n\njulia> using EvolvingGraphs\n\njulia> p = TemporalPath()\n\n\njulia> push!(p, TimeNode(1, \"a\", 2001))\nTimeNode(a, 2001)\n\njulia> push!(p, TimeNode(1, \"b\", 2002))\nTimeNode(a, 2001)->TimeNode(b, 2002)\n\njulia> p\nTimeNode(a, 2001)->TimeNode(b, 2002)\n\njulia> append!(p,p)\nTimeNode(a, 2001)->TimeNode(b, 2002)->TimeNode(a, 2001)->TimeNode(b, 2002)\n\n\n\n"
 },
 
 {
