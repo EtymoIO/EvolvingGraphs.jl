@@ -345,7 +345,7 @@ julia> p = TemporalPath()
 
 
 julia> push!(p, TimeNode(1, "a", 2001))
- TimeNode(a, 2001)
+TimeNode(a, 2001)
 
 julia> push!(p, TimeNode(1, "b", 2002))
 TimeNode(a, 2001)->TimeNode(b, 2002)

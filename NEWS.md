@@ -7,8 +7,11 @@ v0.2.0
 * Only support julia v0.6 or above.
 * Use Documenter.jl for Documentation.
 * Breaking changes:
+
    - using `EvolvinGraph`, `MatrixList`, `Node`, `Edge`, `TimeNode`, `TimeEdge` to construct data.
+
 	 - `matrix` and `spmatrix` are renamed to `adjacency_matrix` and `sparse_adjacency_matrix`.
+
 	 - `rev` is renamed to `edge_reverse`.
 
 v0.1.0
