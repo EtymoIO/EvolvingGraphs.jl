@@ -70,6 +70,9 @@ include("graph_types/incidence_list.jl")
 
 include("show.jl")
 
+# LightGraphs interface
+@require LightGraphs include("read_write/lg_interface.jl")
+
 # algorithms
 include("algorithms/bfs.jl")
 include("algorithms/dfs.jl")

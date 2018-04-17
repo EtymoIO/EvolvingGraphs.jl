@@ -14,6 +14,7 @@ tests = [
          "bfs",
          "dfs",
          "sort_slice",
+         "lg_interface"
          # "shortest_distance",
          # "shortest_temporal_distance",
          # "temporal_efficiency",
