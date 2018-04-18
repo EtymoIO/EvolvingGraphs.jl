@@ -2,12 +2,12 @@ LightGraphs.nv(g::AbstractGraph{V,E}) where {V,E} = num_nodes(g)
 LightGraphs.ne(g::AbstractGraph{V,E}) where {V,E} = num_edges(g)
 LightGraphs.is_directed(g::AbstractGraph{V,E}) where {V,E} = is_directed(g)
 
-function LightGraphs.outneighbors(g::AbstractStaticGraph{V,E}, v::V) where {V,E}
+function LightGraphs.outneighbors(g::AbstractStaticGraph{NT,E}, v::V) where {V, NT<:AbstractNode{V},E}
     edges = out_edges(g, v)
     return Node{V}[target(e) for e in edges]
 end
 
-function LightGraphs.inneighbors(g::AbstractStaticGraph{V,E}, v::V) where {V,E}
+function LightGraphs.inneighbors(g::AbstractStaticGraph{NT,E}, v::V) where {V, NT<:AbstractNode{V},E}
     edges = in_edges(g, v)
     return Node{V}[source(e) for e in edges]
 end
@@ -21,7 +21,7 @@ LightGraphs.has_vertex(g::AbstractGraph{V,E}, n::AbstractNode{V}) where {V,E} = 
 Base.reverse(e::AbstractEdge{V}) where V = edge_reverse(e)
 
 LightGraphs.edges(g::AbstractGraph{V,E}) where {V,E} = edges(g)
-LightGraphs.edgetype(::AbstractGraph{V,E}) where {V,E} = AbstractEdge{V}
+LightGraphs.edgetype(::AbstractGraph{V,E}) where {V,E} = E
 
 LightGraphs.vertices(g::AbstractGraph{V,E}) where {V,E} = nodes(g)
 

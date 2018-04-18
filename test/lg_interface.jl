@@ -15,3 +15,10 @@ e = Edge("b", "a")
 
 LightGraphs.add_edge!(g, e)
 @test LightGraphs.ne(g) == 2
+
+@test LightGraphs.outneighbors(g, "b") == [Node(1, "a")]
+@test LightGraphs.inneighbors(g, "b") == [Node(1, "a")]
+
+@test reverse(e) == Edge("a", "b")
+@test LightGraphs.vertices(g) == [Node(1,"a"), Node(2,"b")]
+@test LightGraphs.edgetype(g) == Edge{Node{String}}
