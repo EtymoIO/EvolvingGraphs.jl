@@ -1,6 +1,6 @@
 module EvolvingGraphs
 
-import Base: ==, show, issorted, deepcopy, length, eltype, push!, append!
+import Base: ==, show, issorted, deepcopy, length, eltype, push!, append!, reverse
 using Requires
 
 
