@@ -55,6 +55,9 @@ include("read_write/evolving_graph_io.jl")
 # need to import EzXML
 @require EzXML include("read_write/graphml.jl")
 
+# need to import LightGraphs
+@require LightGraphs include("graph_types/lightgraphs_interface.jl")
+
 # graph types
 ## static graphs
 include("graph_types/static_dgraph.jl")
