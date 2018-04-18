@@ -9,5 +9,9 @@ add_edge!(g, "a", "b")
 
 @test LightGraphs.nv(g) == 2
 @test LightGraphs.ne(g) == 1
-LightGraphs.add_edge!(g, Edge("b", "a"))
+e = Edge("b", "a")
+@test LightGraphs.src(e) == source(e)
+@test LightGraphs.dst(e) == target(e)
+
+LightGraphs.add_edge!(g, e)
 @test LightGraphs.ne(g) == 2
