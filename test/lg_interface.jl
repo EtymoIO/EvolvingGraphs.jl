@@ -25,3 +25,5 @@ LightGraphs.add_edge!(g, e)
 
 ## issue with package: not defined for StaticGraphs
 @test_broken LightGraphs.is_directed(g) == is_directed(g) == true
+
+@test LightGraphs.nv(LightGraphs.SimpleDiGraph(g)) == 2

@@ -37,7 +37,7 @@ function LightGraphs.add_vertex!(g::AbstractStaticGraph{V,E}) where {V,E}
 end
 
 # conversions
-LightGraphs.SimpleGraph(g::AbstractStaticGraph{V}) where V = LightGraphs.SimpleGraph(sparse_adjacency_matrix(g))
+LightGraphs.SimpleDiGraph(g::AbstractStaticGraph{V}) where V = LightGraphs.SimpleDiGraph(sparse_adjacency_matrix(g))
 
 # TODO not implemented
 # interface to implement
