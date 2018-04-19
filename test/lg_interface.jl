@@ -24,7 +24,7 @@ LightGraphs.add_edge!(g, e)
 @test LightGraphs.edgetype(g) == Edge{Node{String}}
 
 ## issue with package: not defined for StaticGraphs
-@test_broken LightGraphs.is_directed(g) == is_directed(g) == true
+@test LightGraphs.is_directed(g) == is_directed(g) == true
 
 gint = DiGraph{Node{Int},Edge{Node{Int}}}()
 const nnodes = 100
