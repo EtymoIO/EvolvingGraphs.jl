@@ -1,3 +1,7 @@
+if !Pkg.installed("LightGraphs")
+    Pkg.add("LightGraphs")
+end
+
 import LightGraphs
 
 g = DiGraph{Node{String}, Edge{Node{String}}}()
