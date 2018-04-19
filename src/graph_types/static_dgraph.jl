@@ -46,7 +46,7 @@ end
 DiGraph{V, E}() where V where E = DiGraph(V[], E[], [], [], Dict{eltype(V), Int}())
 DiGraph{V}() where V = DiGraph{V, Edge{V}}()
 DiGraph() = DiGraph{Node{Int}, Edge{Node{Int}}}()
-
+is_directed(g::DiGraph) = true
 
 nodes(g::DiGraph) = g.nodes
 num_nodes(g::DiGraph) = length(g.nodes)

@@ -3,7 +3,7 @@
 [![Build Status](https://travis-ci.org/EtymoIO/EvolvingGraphs.jl.svg?branch=master)](https://travis-ci.org/EtymoIO/EvolvingGraphs.jl)
 [![codecov.io](https://codecov.io/github/EtymoIO/EvolvingGraphs.jl/coverage.svg?branch=master)](https://codecov.io/github/EtymoIO/EvolvingGraphs.jl?branch=master)
 
-Studying networks that evolve over time.
+Working with time-dependent networks in Julia
 
 * Installation:
 

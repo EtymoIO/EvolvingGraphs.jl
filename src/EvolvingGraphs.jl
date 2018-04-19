@@ -55,6 +55,7 @@ include("read_write/evolving_graph_io.jl")
 # need to import EzXML
 @require EzXML include("read_write/graphml.jl")
 
+
 # graph types
 ## static graphs
 include("graph_types/static_dgraph.jl")

@@ -1,5 +1,6 @@
 # Tutorial
 
+
 ## Why Evolving Graphs?
 
 Many real-world networks store the relationship between entities with time stamps. Consider a group of online users interacting through messaging. Each message sent from user `v_i` to user `v_j` at time stamp `t_i` can be represented as an edge from node `v_i` to node `v_j` at `t_i`. It is natural to represent the user interaction network as an ordered sequence of networks, each has a time stamp label.
