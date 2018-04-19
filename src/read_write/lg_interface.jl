@@ -1,6 +1,5 @@
 LightGraphs.nv(g::AbstractGraph{V,E}) where {V,E} = num_nodes(g)
 LightGraphs.ne(g::AbstractGraph{V,E}) where {V,E} = num_edges(g)
-LightGraphs.is_directed(g::AbstractGraph{V,E}) where {V,E} = is_directed(g)
 
 function LightGraphs.outneighbors(g::AbstractStaticGraph{NT,E}, v::V) where {V, NT<:AbstractNode{V},E}
     edges = out_edges(g, v)
@@ -25,6 +24,8 @@ LightGraphs.edgetype(::AbstractGraph{V,E}) where {V,E} = E
 
 LightGraphs.vertices(g::AbstractGraph{V,E}) where {V,E} = nodes(g)
 
+LightGraphs.is_directed(g::AbstractGraph{V,E}) where {V,E} = is_directed(g)
+
 LightGraphs.add_edge!(g::AbstractStaticGraph{V}, e::AbstractEdge{ET}) where {V,ET} = add_edge!(g, LightGraphs.src(e), LightGraphs.dst(e))
 LightGraphs.add_edge!(g::AbstractEvolvingGraph{V,E,T}, e::TimeEdge{ET}) where {V, E, T, ET} = add_edge!(g, LightGraphs.src(e), LightGraphs.dst(e), e.timestamp)
 LightGraphs.add_edge!(g::AbstractEvolvingGraph{V,E,T}, e::WeightedTimeEdge{EV,ET,EW}) where {V,E,T,EV,ET,EW} = 
@@ -35,6 +36,11 @@ function LightGraphs.add_vertex!(g::AbstractStaticGraph{V,E}) where {V,E}
     add_node!(g,nnodes+1)
 end
 
+# conversions
+LightGraphs.SimpleGraph(g::AbstractStaticGraph{V}) where V = LightGraphs.SimpleGraph(sparse_adjacency_matrix(g))
+
+
+# TODO not implemented
 # interface to implement
     # LightGraphs.AbstractEdge
     # LightGraphs.AbstractEdgeIter

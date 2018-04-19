@@ -22,5 +22,6 @@ LightGraphs.add_edge!(g, e)
 @test reverse(e) == Edge("a", "b")
 @test LightGraphs.vertices(g) == [Node(1,"a"), Node(2,"b")]
 @test LightGraphs.edgetype(g) == Edge{Node{String}}
+
 ## issue with package: not defined for StaticGraphs
-@test LightGraphs.is_directed(g) == is_directed(g) == true
+@test_broken LightGraphs.is_directed(g) == is_directed(g) == true
