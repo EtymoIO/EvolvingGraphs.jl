@@ -39,7 +39,6 @@ end
 # conversions
 LightGraphs.SimpleGraph(g::AbstractStaticGraph{V}) where V = LightGraphs.SimpleGraph(sparse_adjacency_matrix(g))
 
-
 # TODO not implemented
 # interface to implement
     # LightGraphs.AbstractEdge
