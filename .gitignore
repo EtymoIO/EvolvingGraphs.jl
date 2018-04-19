@@ -5,3 +5,4 @@ _build
 docs/build/
 docs/site/
 .DS_Store
+*.cov

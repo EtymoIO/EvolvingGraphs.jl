@@ -31,13 +31,13 @@ LightGraphs.add_edge!(g::AbstractEvolvingGraph{V,E,T}, e::TimeEdge{ET}) where {V
 LightGraphs.add_edge!(g::AbstractEvolvingGraph{V,E,T}, e::WeightedTimeEdge{EV,ET,EW}) where {V,E,T,EV,ET,EW} = 
     add_edge!(g, source(v1), target(v2), e.timestamp, weight = e.weight)
 
-function LightGraphs.add_vertex!(g::AbstractStaticGraph{V,E}) where {V,E}
+function LightGraphs.add_vertex!(g::AbstractStaticGraph{V,E}) where {V<:AbstractNode{T},E} where T<:Integer
     nnodes = num_nodes(g)
     add_node!(g,nnodes+1)
 end
 
 # conversions
-LightGraphs.SimpleDiGraph(g::AbstractStaticGraph{V}) where V = LightGraphs.SimpleDiGraph(sparse_adjacency_matrix(g))
+LightGraphs.SimpleDiGraph(g::AbstractStaticGraph{V,E}) where {V,E} = LightGraphs.SimpleDiGraph(sparse_adjacency_matrix(g))
 
 # TODO not implemented
 # interface to implement

@@ -26,4 +26,12 @@ LightGraphs.add_edge!(g, e)
 ## issue with package: not defined for StaticGraphs
 @test_broken LightGraphs.is_directed(g) == is_directed(g) == true
 
-@test LightGraphs.nv(LightGraphs.SimpleDiGraph(g)) == 2
+gint = DiGraph{Node{Int},Edge{Node{Int}}}()
+const nnodes = 100
+foreach(i->add_node!(gint, i), 1:nnodes)
+@test LightGraphs.nv(LightGraphs.SimpleDiGraph(gint)) == nnodes
+
+@test LightGraphs.edgetype(gint) <: EvolvingGraphs.AbstractEdge{NT} where {NT<:EvolvingGraphs.AbstractNode{I}} where {I<:Integer}
+
+LightGraphs.add_vertex!(gint)
+@test LightGraphs.nv(gint) == nnodes + 1
