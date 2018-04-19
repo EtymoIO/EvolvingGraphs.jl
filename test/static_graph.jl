@@ -8,7 +8,7 @@ add_edge!(g, "a", "b")
 @test length(nodes(g)) == 2
 @test length(edges(g)) == 1
 @test out_edges(g, "a") == in_edges(g, "b")
-
+@test is_directed(g) == true
 
 g2 = EvolvingGraph{Node{String}, String}()
 add_edge!(g2, "a", "b", "t1")
