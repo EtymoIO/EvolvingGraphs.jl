@@ -1,6 +1,6 @@
 module EvolvingGraphs
 
-import Base: ==, show, issorted, deepcopy, length, eltype, push!, append!
+import Base: ==, show, issorted, deepcopy, length, eltype, push!, append!, reverse
 using Requires
 
 
@@ -70,6 +70,9 @@ include("graph_types/adjacency_list.jl")
 include("graph_types/incidence_list.jl")
 
 include("show.jl")
+
+# LightGraphs interface
+@require LightGraphs include("read_write/lg_interface.jl")
 
 # algorithms
 include("algorithms/bfs.jl")
