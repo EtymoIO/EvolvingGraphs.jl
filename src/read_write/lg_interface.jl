@@ -30,9 +30,6 @@ LightGraphs.is_directed(g::AbstractStaticGraph{V,E}) where {V,E} = is_directed(g
 
 LightGraphs.add_edge!(g::AbstractStaticGraph{V,E}, e::AbstractEdge{V}) where {V,E} = add_edge!(g, LightGraphs.src(e), LightGraphs.dst(e))
 LightGraphs.add_edge!(g::AbstractStaticGraph{V,E}, e::AbstractEdge{T}) where {T, V<:AbstractNode{T},E} = add_edge!(g, LightGraphs.src(e), LightGraphs.dst(e))
-LightGraphs.add_edge!(g::AbstractEvolvingGraph{V,E,T}, e::TimeEdge{ET}) where {V, E, T, ET} = add_edge!(g, LightGraphs.src(e), LightGraphs.dst(e), e.timestamp)
-LightGraphs.add_edge!(g::AbstractEvolvingGraph{V,E,T}, e::WeightedTimeEdge{EV,ET,EW}) where {V,E,T,EV,ET,EW} = 
-    add_edge!(g, source(v1), target(v2), e.timestamp, weight = e.weight)
 
 function LightGraphs.add_vertex!(g::AbstractStaticGraph{V,E}) where {V<:AbstractNode{T},E} where T<:Integer
     nnodes = num_nodes(g)
