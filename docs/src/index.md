@@ -15,7 +15,7 @@ We model a time-dependent network, a.k.a an evolving graph, as a ordered sequenc
 ![simple evolving graph](eg.png)
 
 Using `EvolvingGraphs`, we could simply construct this graph by using the function
-`add_bunch_of_edges!`, which adds a list of edges all together.
+[`add_bunch_of_edges!`](@ref), which adds a list of edges all together.
 
 ```julia
 julia> using EvolvingGraphs

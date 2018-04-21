@@ -393,7 +393,32 @@ function num_nodes end
 """
     active_nodes(g)
 
-Return the active nodes of an evolving graph `g`.
+Return the active nodes of an evolving graph `g`. An active node is a node at a specific time stamp.
+
+```jldoctest
+julia> using EvolvingGraphs
+
+julia> g = EvolvingGraph()
+Directed EvolvingGraph 0 nodes, 0 static edges, 0 timestamps
+
+julia> add_edge!(g, 1, 2, 2001)
+Node(1)-1.0->Node(2) at time 2001
+
+julia> add_edge!(g, 1, 2, 2002)
+Node(1)-1.0->Node(2) at time 2002
+
+julia> nodes(g)
+2-element Array{EvolvingGraphs.Node{Int64},1}:
+ Node(1)
+ Node(2)
+
+julia> active_nodes(g)
+4-element Array{EvolvingGraphs.TimeNode{Int64,Int64},1}:
+ TimeNode(1, 2001)
+ TimeNode(2, 2001)
+ TimeNode(1, 2002)
+ TimeNode(2, 2002)
+```
 """
 function active_nodes end
 

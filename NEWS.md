@@ -1,6 +1,11 @@
 EvolvingGraphs Release Notes
 =============================
 
+v0.2.1 (In preparation)
+--------
+
+* Add LightGraphs.jl interface (credit [@mbesancon](https://github.com/mbesancon))
+
 v0.2.0
 ---------
 
@@ -8,11 +13,11 @@ v0.2.0
 * Use Documenter.jl for Documentation.
 * Breaking changes:
 
-   - using `EvolvinGraph`, `MatrixList`, `Node`, `Edge`, `TimeNode`, `TimeEdge` to construct data.
+1. using `EvolvinGraph`, `MatrixList`, `Node`, `Edge`, `TimeNode`, `TimeEdge` to construct data.
 
-	 - `matrix` and `spmatrix` are renamed to `adjacency_matrix` and `sparse_adjacency_matrix`.
+2. `matrix` and `spmatrix` are renamed to `adjacency_matrix` and `sparse_adjacency_matrix`.
 
-	 - `rev` is renamed to `edge_reverse`.
+3.  `rev` is renamed to `edge_reverse`.
 
 v0.1.0
 ---------
