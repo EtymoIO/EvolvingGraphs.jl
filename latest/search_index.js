@@ -493,7 +493,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Graph Types",
     "title": "EvolvingGraphs.active_nodes",
     "category": "function",
-    "text": "active_nodes(g)\n\nReturn the active nodes of an evolving graph g.\n\n\n\n"
+    "text": "active_nodes(g)\n\nReturn the active nodes of an evolving graph g. An active node is a node at a specific time stamp.\n\njulia> using EvolvingGraphs\n\njulia> g = EvolvingGraph()\nDirected EvolvingGraph 0 nodes, 0 static edges, 0 timestamps\n\njulia> add_edge!(g, 1, 2, 2001)\nNode(1)-1.0->Node(2) at time 2001\n\njulia> add_edge!(g, 1, 2, 2002)\nNode(1)-1.0->Node(2) at time 2002\n\njulia> nodes(g)\n2-element Array{EvolvingGraphs.Node{Int64},1}:\n Node(1)\n Node(2)\n\njulia> active_nodes(g)\n4-element Array{EvolvingGraphs.TimeNode{Int64,Int64},1}:\n TimeNode(1, 2001)\n TimeNode(2, 2001)\n TimeNode(1, 2002)\n TimeNode(2, 2002)\n\n\n\n"
 },
 
 {
