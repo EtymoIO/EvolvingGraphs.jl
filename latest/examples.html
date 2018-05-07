@@ -15,16 +15,16 @@ julia&gt; edges(g)
 
 julia&gt; katz(g)
 3-element Array{Tuple{EvolvingGraphs.Node{String},Float64},1}:
- (Node(A), 0.698297)
- (Node(B), 0.567367)
- (Node(C), 0.436436)</code></pre><p>Suppose our <code>A</code> was a keen person and decided to remind <code>B</code> again in day <code>2</code>. Now the networks look like</p><p><img src="doc_eg2.png" alt="simple evolving graph"/></p><p>In EvolvingGraphs.jl, we add a new edge at timestamp <code>2</code>.</p><pre><code class="language-none">julia&gt; add_edge!(g, &quot;A&quot;, &quot;B&quot;, 2)
+ (Node(A), 0.717617)
+ (Node(B), 0.552013)
+ (Node(C), 0.424626)</code></pre><p>Suppose our <code>A</code> was a keen person and decided to remind <code>B</code> again in day <code>2</code>. Now the networks look like</p><p><img src="doc_eg2.png" alt="simple evolving graph"/></p><p>In EvolvingGraphs.jl, we add a new edge at timestamp <code>2</code>.</p><pre><code class="language-none">julia&gt; add_edge!(g, &quot;A&quot;, &quot;B&quot;, 2)
 Node(A)-1.0-&gt;Node(B) at time 2
 
 julia&gt; katz(g)
 3-element Array{Tuple{EvolvingGraphs.Node{String},Float64},1}:
- (Node(A), 0.84485)
- (Node(B), 0.424056)
- (Node(C), 0.326197)</code></pre><p>Notice that the rating of <code>A</code> is getting even higher than before.</p><p>If we just aggregate an evolving graph to a simple directed graph by ignoring the timestamps, they aggregate to form the same static graph and therefore the ratings stay the same.</p><p><img src="doc_g1.png" alt="simple graph"/></p><p>Evolving graphs provide richer information and allow us to have a detailed understanding of a real-world problem.</p><h2><a class="nav-anchor" id="Graph-Traversal-1" href="#Graph-Traversal-1">Graph Traversal</a></h2><p>How do we traverse an evolving graph? In a breadth-first search (BFS) one first visits all the outward neighbors of the starting node, then visits all the outward neighbors of each of those nodes, and so on.</p><p>Let&#39;s look at the implementation of BFS in EvolvingGraphs.jl.</p><pre><code class="language-none">function breadth_first_impl(g, v)
+ (Node(A), 0.785247)
+ (Node(B), 0.490779)
+ (Node(C), 0.377522)</code></pre><p>Notice that the rating of <code>A</code> is getting even higher than before.</p><p>If we just aggregate an evolving graph to a simple directed graph by ignoring the timestamps, they aggregate to form the same static graph and therefore the ratings stay the same.</p><p><img src="doc_g1.png" alt="simple graph"/></p><p>Evolving graphs provide richer information and allow us to have a detailed understanding of a real-world problem.</p><h2><a class="nav-anchor" id="Graph-Traversal-1" href="#Graph-Traversal-1">Graph Traversal</a></h2><p>How do we traverse an evolving graph? In a breadth-first search (BFS) one first visits all the outward neighbors of the starting node, then visits all the outward neighbors of each of those nodes, and so on.</p><p>Let&#39;s look at the implementation of BFS in EvolvingGraphs.jl.</p><pre><code class="language-none">function breadth_first_impl(g, v)
     level = Dict(v =&gt; 0)
     i = 1
     fronter = [v]
