@@ -37,22 +37,22 @@ Directed EvolvingGraph 7 nodes, 8 static edges, 2 timestamps
 
 julia> katz(g)
 7-element Array{Tuple{EvolvingGraphs.Node{String},Float64},1}:
- (Node(A), 0.776825)
- (Node(B), 0.3916)
- (Node(F), 0.0910698)
- (Node(G), 0.0910698)
- (Node(C), 0.350619)
- (Node(E), 0.227674)
- (Node(D), 0.227674)
+ (Node(A), 0.510104)
+ (Node(B), 0.494488)
+ (Node(F), 0.260257)
+ (Node(G), 0.260257)
+ (Node(C), 0.361757)
+ (Node(E), 0.338334)
+ (Node(D), 0.338334)
 
 julia> katz(g, 0.3, 0.4, mode = :receive)
 7-element Array{Tuple{EvolvingGraphs.Node{String},Float64},1}:
  (Node(A), 0.0)
- (Node(B), 0.441673)
+ (Node(B), 0.658926)
  (Node(F), 1.0)
- (Node(G), 0.548645)
+ (Node(G), 0.658926)
  (Node(C), 0.0)
- (Node(E), 0.42231)
+ (Node(E), 0.204852)
  (Node(D), 0.0)
 ```
 
@@ -65,11 +65,12 @@ julia> katz(g, 0.3, 0.4, mode = :receive)
 function katz(g::AbstractEvolvingGraph, alpha::Real = 0.3)
     n = num_nodes(g)
     ns = nodes(g)
-    ts = timestamps(g)
+    ts = unique_timestamps(g)
+    ts_sorted = sort(ts, rev=true)
     v = ones(Float64, n)
     A = spzeros(Float64, n, n)
     spI = speye(Float64, n)
-    for t in ts
+    for t in ts_sorted
         A =  sparse_adjacency_matrix(g,t)
         v = (spI - alpha*A)\v
         v =  v/norm(v)
@@ -80,7 +81,7 @@ end
 function katz(g::AbstractEvolvingGraph, alpha::Real, beta::Real; mode::Symbol = :broadcast)
     n = num_nodes(g)
     ns = nodes(g)
-    ts = timestamps(g)
+    ts = unique_timestamps(g)
     S = spzeros(Float64, n, n)
     A = spzeros(Float64, n, n)
     spI = speye(Float64, n)

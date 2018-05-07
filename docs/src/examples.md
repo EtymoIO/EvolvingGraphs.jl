@@ -38,9 +38,9 @@ julia> using EvolvingGraphs.Centrality
 
 julia> katz(g)
 3-element Array{Tuple{EvolvingGraphs.Node{String},Float64},1}:
- (Node(A), 0.698297)
- (Node(B), 0.567367)
- (Node(C), 0.436436)
+ (Node(A), 0.717617)
+ (Node(B), 0.552013)
+ (Node(C), 0.424626)
 ```
 
 Suppose our `A` was a keen person and decided to remind `B` again in day `2`. Now the networks look like
@@ -55,9 +55,9 @@ Node(A)-1.0->Node(B) at time 2
 
 julia> katz(g)
 3-element Array{Tuple{EvolvingGraphs.Node{String},Float64},1}:
- (Node(A), 0.84485)
- (Node(B), 0.424056)
- (Node(C), 0.326197)
+ (Node(A), 0.785247)
+ (Node(B), 0.490779)
+ (Node(C), 0.377522)
 ```
 
 Notice that the rating of `A` is getting even higher than before.
