@@ -24,7 +24,7 @@ julia> num_edges(g)
 2
 ```
 """
-mutable struct IntAdjacencyList
+mutable struct IntAdjacencyList <: AbstractEvolvingGraph{Int, Tuple{Int,Int}, Int}
     is_directed::Bool
     nodes::UnitRange{Int}
     timestamps::Vector{Int}
@@ -115,7 +115,7 @@ function forward_neighbors(g::IntAdjacencyList, v::Int, t::Int)
     end
     nn
 end
-forward_neighbors(g::IntAdjacencyList, vt::Tuple{Int,Int}) = forward_neighbors(g, vt[1], vt[2])  
+forward_neighbors(g::IntAdjacencyList, vt::Tuple{Int,Int}) = forward_neighbors(g, vt[1], vt[2])
 
 function add_edge!(g::IntAdjacencyList, v1::Int, v2::Int, t::Int)
     ns = g.nnodes
