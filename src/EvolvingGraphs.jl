@@ -32,7 +32,7 @@ export
    random_graph, random_evolving_graph,
 
    # io
-   egread, egwrite,
+   egread, egwrite, load_graphml,
 
    # algorithms
    random_time_graph, random_evolving_graph, breadth_first_visit,
