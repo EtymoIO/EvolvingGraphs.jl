@@ -409,6 +409,32 @@ backward_neighbors{V,E,T,KV}(g::EvolvingGraph{V,E,T,KV}, v::TimeNode{KV,T}) = ne
     add_graph!(eg, g, t)
 
 Add a static graph `g` at timestamp `t` to an evolving graph `eg`.
+
+# Examples
+
+```jldoctest
+julia> using EvolvingGraphs
+
+julia> g = EvolvingGraph()
+Directed EvolvingGraph 0 nodes, 0 static edges, 0 timestamps
+
+julia> sg = DiGraph()
+DiGraph 0 nodes, 0 edges
+
+julia> add_edge!(sg, 1, 2)
+Node(1)->Node(2)
+
+julia> add_edge!(sg, 2, 3)
+Node(2)->Node(3)
+
+julia> add_graph!(g, sg, 1)
+Directed EvolvingGraph 3 nodes, 2 static edges, 1 timestamps
+
+julia> edges(g)
+2-element Array{EvolvingGraphs.WeightedTimeEdge{EvolvingGraphs.Node{Int64},Int64,Float64},1}:
+ Node(1)-1.0->Node(2) at time 1
+ Node(2)-1.0->Node(3) at time 1
+```
 """
 function add_graph!{V, E, T}(eg::EvolvingGraph{V, E, T}, g::AbstractStaticGraph, t::T)
     es = edges(g)

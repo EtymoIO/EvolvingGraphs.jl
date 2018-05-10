@@ -13,6 +13,7 @@ EvolvingGraphs.EvolvingGraph
 EvolvingGraphs.evolving_graph_from_arrays
 EvolvingGraphs.adjacency_matrix
 EvolvingGraphs.sparse_adjacency_matrix
+EvolvingGraphs.add_graph!
 ```
 
 ## Matrix List
