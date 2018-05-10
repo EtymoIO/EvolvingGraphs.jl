@@ -345,11 +345,19 @@ var documenterSearchIndex = {"docs": [
 },
 
 {
+    "location": "graph_types.html#EvolvingGraphs.add_graph!",
+    "page": "Graph Types",
+    "title": "EvolvingGraphs.add_graph!",
+    "category": "function",
+    "text": "add_graph!(eg, g, t)\n\nAdd a static graph g at timestamp t to an evolving graph eg.\n\nExamples\n\njulia> using EvolvingGraphs\n\njulia> g = EvolvingGraph()\nDirected EvolvingGraph 0 nodes, 0 static edges, 0 timestamps\n\njulia> sg = DiGraph()\nDiGraph 0 nodes, 0 edges\n\njulia> add_edge!(sg, 1, 2)\nNode(1)->Node(2)\n\njulia> add_edge!(sg, 2, 3)\nNode(2)->Node(3)\n\njulia> add_graph!(g, sg, 1)\nDirected EvolvingGraph 3 nodes, 2 static edges, 1 timestamps\n\njulia> edges(g)\n2-element Array{EvolvingGraphs.WeightedTimeEdge{EvolvingGraphs.Node{Int64},Int64,Float64},1}:\n Node(1)-1.0->Node(2) at time 1\n Node(2)-1.0->Node(3) at time 1\n\n\n\n"
+},
+
+{
     "location": "graph_types.html#Evolving-Graphs-1",
     "page": "Graph Types",
     "title": "Evolving Graphs",
     "category": "section",
-    "text": "EvolvingGraphs.EvolvingGraph\nEvolvingGraphs.evolving_graph_from_arrays\nEvolvingGraphs.adjacency_matrix\nEvolvingGraphs.sparse_adjacency_matrix"
+    "text": "EvolvingGraphs.EvolvingGraph\nEvolvingGraphs.evolving_graph_from_arrays\nEvolvingGraphs.adjacency_matrix\nEvolvingGraphs.sparse_adjacency_matrix\nEvolvingGraphs.add_graph!"
 },
 
 {
