@@ -709,7 +709,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Algorithms",
     "title": "EvolvingGraphs.random_evolving_graph",
     "category": "function",
-    "text": "random_evolving_graph(nv, nt, p=0.5, is_directed=true, has_self_loops=false)\n\nGenerate a random evolving graph g with nv nodes, nt timestamps. The probability to include each edge is equal to p. If has_self_loops, we allow g to have self loops.\n\n\n\n"
+    "text": "random_evolving_graph(nn, nt, p=0.5, is_directed=true, has_self_loops=false)\nrandom_evolving_graph(g, nn, nt, p=0.5, is_directed=true, has_self_loops=false)\n\nGenerate a random evolving graph g with nn nodes, nt timestamps. The random evolving graph has integer nodes and timestamps.  The probability to include each edge is equal to p. If has_self_loops, we allow g to have self loops. If g is not given, we generate a random IntAdjacencyList evolving graph.\n\nExample\n\njulia> using EvolvingGraphs\n\njulia> random_evolving_graph(10, 4, 0.1)\nDirected IntAdjacencyList (10 nodes, 37 static edges, 4 timestamps)\n\njulia> g = EvolvingGraph()\nDirected EvolvingGraph 0 nodes, 0 static edges, 0 timestamps\n\njulia> random_evolving_graph(g, 20, 3, 0.5)\nDirected EvolvingGraph 20 nodes, 558 static edges, 3 timestamps\n\n\n\n"
 },
 
 {
