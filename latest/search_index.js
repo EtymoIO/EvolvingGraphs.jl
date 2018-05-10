@@ -341,7 +341,7 @@ var documenterSearchIndex = {"docs": [
     "page": "Graph Types",
     "title": "EvolvingGraphs.sparse_adjacency_matrix",
     "category": "function",
-    "text": "sparse_adjacency_matrix(g, t)\n\nReturn a sparse adjacency matrix representation of an evolving graph g at timestamp t.\n\nExample\n\njulia> using EvolvingGraphs\n\njulia> g = evolving_graph_from_arrays([1,2,3], [4,5,2], [1,1,2])\nDirected EvolvingGraph 5 nodes, 3 static edges, 2 timestamps\n\njulia> sparse_adjacency_matrix(g,2)\n5×5 SparseMatrixCSC{Float64,Int64} with 1 stored entry:\n  [5, 3]  =  1.0\n\njulia> sparse_adjacency_matrix(g,1)\n5×5 SparseMatrixCSC{Float64,Int64} with 2 stored entries:\n  [1, 2]  =  1.0\n  [3, 4]  =  1.0\n\n\n\n"
+    "text": "sparse_adjacency_matrix(g, t)\n\nReturn a sparse adjacency matrix representation of an evolving graph g at timestamp t.\n\nExample\n\njulia> using EvolvingGraphs\n\njulia> g = EvolvingGraph()\nDirected EvolvingGraph 0 nodes, 0 static edges, 0 timestamps\n\njulia> add_bunch_of_edges!(g, [(1,2,1), (1,3, 2), (2,4,3), (3,4,3)])\nDirected EvolvingGraph 4 nodes, 4 static edges, 3 timestamps\n\njulia> sparse_adjacency_matrix(g, 1)\n4×4 SparseMatrixCSC{Float64,Int64} with 1 stored entry:\n  [1, 2]  =  1.0\n\njulia> sparse_adjacency_matrix(g, 3)\n4×4 SparseMatrixCSC{Float64,Int64} with 2 stored entries:\n  [2, 4]  =  1.0\n  [3, 4]  =  1.0\n\njulia> sparse_adjacency_matrix(g, 2)\n4×4 SparseMatrixCSC{Float64,Int64} with 1 stored entry:\n  [1, 3]  =  1.0\n\n\n\n"
 },
 
 {
