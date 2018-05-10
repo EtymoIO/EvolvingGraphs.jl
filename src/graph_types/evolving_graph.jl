@@ -136,7 +136,6 @@ end
 evolving_graph_from_arrays{V,T}(ils::Vector{V}, jls::Vector{V}, timestamps::Vector{T}; is_directed::Bool = true) = evolving_graph_from_arrays(ils, jls, ones(Float64,length(ils)), timestamps, is_directed = is_directed)
 
 
-
 deepcopy(g::EvolvingGraph) = EvolvingGraph(is_directed(g),
                                            deepcopy(g.nodes),
                                            deepcopy(g.node_indexof),
@@ -319,17 +318,24 @@ Return a sparse adjacency matrix representation of an evolving graph
 ```jldoctest
 julia> using EvolvingGraphs
 
-julia> g = evolving_graph_from_arrays([1,2,3], [4,5,2], [1,1,2])
-Directed EvolvingGraph 5 nodes, 3 static edges, 2 timestamps
+julia> g = EvolvingGraph()
+Directed EvolvingGraph 0 nodes, 0 static edges, 0 timestamps
 
-julia> sparse_adjacency_matrix(g,2)
-5×5 SparseMatrixCSC{Float64,Int64} with 1 stored entry:
-  [5, 3]  =  1.0
+julia> add_bunch_of_edges!(g, [(1,2,1), (1,3, 2), (2,4,3), (3,4,3)])
+Directed EvolvingGraph 4 nodes, 4 static edges, 3 timestamps
 
-julia> sparse_adjacency_matrix(g,1)
-5×5 SparseMatrixCSC{Float64,Int64} with 2 stored entries:
+julia> sparse_adjacency_matrix(g, 1)
+4×4 SparseMatrixCSC{Float64,Int64} with 1 stored entry:
   [1, 2]  =  1.0
+
+julia> sparse_adjacency_matrix(g, 3)
+4×4 SparseMatrixCSC{Float64,Int64} with 2 stored entries:
+  [2, 4]  =  1.0
   [3, 4]  =  1.0
+
+julia> sparse_adjacency_matrix(g, 2)
+4×4 SparseMatrixCSC{Float64,Int64} with 1 stored entry:
+  [1, 3]  =  1.0
 ```
 """
 function sparse_adjacency_matrix{V,E,T}(g::EvolvingGraph{V,E,T}, t::T, M::Type = Float64)
