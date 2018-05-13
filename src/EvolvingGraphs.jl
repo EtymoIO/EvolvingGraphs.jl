@@ -17,7 +17,7 @@ export
    EvolvingGraph, DiGraph, IntAdjacencyList, MatrixList,
 
    evolving_graph_from_arrays, add_bunch_of_edges!,
-   adjacency_matrix, sparse_adjacency_matrix,
+   adjacency_matrix, sparse_adjacency_matrix, block_adjacency_matrix,
    evolving_graph_to_adj, evolving_graph_to_matrices,
 
    # graph functions

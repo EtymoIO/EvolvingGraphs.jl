@@ -117,6 +117,19 @@ function forward_neighbors(g::IntAdjacencyList, v::Int, t::Int)
 end
 forward_neighbors(g::IntAdjacencyList, vt::Tuple{Int,Int}) = forward_neighbors(g, vt[1], vt[2])
 
+function backward_neighbors(g::IntAdjacencyList, v::Int, t::Int)
+    ns = g.nnodes
+    n = v + ns*(t-1)
+    nn = Tuple{Int, Int}[]
+    for node in g.backward_adjlist[n]
+        t = g.timestamps[node]
+        v1 = node - ns*(t-1)
+        push!(nn, (v1, t))
+    end
+    nn
+end
+backward_neighbors(g::IntAdjacencyList, vt::Tuple{Int,Int}) = backward_neighbors(g, vt[1], vt[2])
+
 function add_edge!(g::IntAdjacencyList, v1::Int, v2::Int, t::Int)
     ns = g.nnodes
     n1 = v1 + ns*(t-1)
@@ -177,4 +190,56 @@ function has_edge(g::IntAdjacencyList, v1::Int, v2::Int, t::Int)
     n1 = v1 + ns*(t-1)
     n2 = v2 + ns*(t-1)
     return _has_edge(g, n1, n2)
+end
+
+
+function adjacency_matrix(g::IntAdjacencyList, t::Int)
+    ns = nodes(g)
+    num_ns = num_nodes(g)
+    A = zeros(Float64, num_ns, num_ns)
+    for n in ns
+        fns = forward_neighbors(g, n, t)
+        for (fn, ft) in fns
+            if ft == t
+                 A[n, fn] = 1.0
+             end
+         end
+     end
+     return A
+end
+
+
+function sparse_adjacency_matrix(g::IntAdjacencyList, t::Int)
+    is = Int[]
+    js = Int[]
+    ns = nodes(g)
+    num_ns = num_nodes(g)
+    for n in ns
+        fns = forward_neighbors(g, n, t)
+        for (fn, ft) in fns
+            if ft == t
+                push!(is, n)
+                push!(js, fn)
+            end
+        end
+    end
+    return sparse(is, js, ones(is), num_ns, num_ns)
+end
+
+
+function block_adjacency_matrix(g::IntAdjacencyList)
+    ns = nodes(g)
+    num_ns = num_nodes(g)
+    uts = unique_timestamps(g)
+    num_ts = num_timestamps(g)
+    A = zeros(Float64, num_ns*num_ts, num_ns*num_ts)
+    for n in ns
+        for t in uts
+            fns = forward_neighbors(g, n, t)
+            for (fn, ft) in fns
+                A[n + num_ns*(t-1), fn + num_ns*(ft-1)] = 1.0
+            end
+        end
+    end
+    return A
 end
