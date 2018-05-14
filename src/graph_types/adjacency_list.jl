@@ -232,14 +232,16 @@ function block_adjacency_matrix(g::IntAdjacencyList)
     num_ns = num_nodes(g)
     uts = unique_timestamps(g)
     num_ts = num_timestamps(g)
-    A = zeros(Float64, num_ns*num_ts, num_ns*num_ts)
+    is = Int[]
+    js = Int[]
     for n in ns
         for t in uts
             fns = forward_neighbors(g, n, t)
             for (fn, ft) in fns
-                A[n + num_ns*(t-1), fn + num_ns*(ft-1)] = 1.0
+                push!(is, n + num_ns*(t-1))
+                push!(js, fn + num_ns*(ft-1))
             end
         end
     end
-    return A
+    return sparse(is, js, ones(is), num_ns*num_ts, num_ns*num_ts)
 end
