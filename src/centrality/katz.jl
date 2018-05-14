@@ -14,7 +14,7 @@ function katz(g::AbstractStaticGraph, alpha::Real = 0.1)
     A = sparse_adjacency_matrix(g)
     spI = speye(Float64, n)
     rates = (spI - alpha * A)\v
-    return [(node, rates[node.index]) for node in ns]
+    return [(node, rates[node_index(g, node)]) for node in ns]
 end
 
 
@@ -75,7 +75,7 @@ function katz(g::AbstractEvolvingGraph, alpha::Real = 0.3)
         v = (spI - alpha*A)\v
         v =  v/norm(v)
     end
-    return [(node, v[node.index]) for node in ns]
+    return [(node, v[node_index(g, node)]) for node in ns]
 end
 
 function katz(g::AbstractEvolvingGraph, alpha::Real, beta::Real; mode::Symbol = :broadcast)
@@ -96,5 +96,5 @@ function katz(g::AbstractEvolvingGraph, alpha::Real, beta::Real; mode::Symbol = 
 
     v = mode == :broadcast ? S * ones(Float64,n) : S' * ones(Float64,n)
 
-    return [(node, v[node.index]) for node in ns]
+    return [(node, v[node_index(g, node)]) for node in ns]
 end

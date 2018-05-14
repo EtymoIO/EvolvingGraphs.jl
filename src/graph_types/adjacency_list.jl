@@ -91,7 +91,7 @@ num_edges(g::IntAdjacencyList) = g.nedges
 timestamps(g::IntAdjacencyList) = g.timestamps
 unique_timestamps(g::IntAdjacencyList) = unique(g.timestamps)
 num_timestamps(g::IntAdjacencyList) = length(unique_timestamps(g))
-
+node_index(g::IntAdjacencyList, node::Int) = node
 
 deepcopy(g::IntAdjacencyList) = IntAdjacencyList(is_directed(g),
                                              deepcopy(g.nodes),

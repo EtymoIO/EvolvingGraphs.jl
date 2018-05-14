@@ -13,3 +13,9 @@ try
 catch ArgumentError
     println("unknown mode")
 end
+
+g = IntAdjacencyList(4,3)
+add_edge!(g, 1, 2, 1)
+add_edge!(g, 2, 3, 1)
+add_edge!(g, 1, 4, 2)
+katz(g)
