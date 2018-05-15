@@ -223,7 +223,7 @@ function sparse_adjacency_matrix(g::IntAdjacencyList, t::Int)
             end
         end
     end
-    return sparse(is, js, ones(is), num_ns, num_ns)
+    return sparse(is, js, ones(is, Float64), num_ns, num_ns)
 end
 
 
@@ -243,5 +243,5 @@ function block_adjacency_matrix(g::IntAdjacencyList)
             end
         end
     end
-    return sparse(is, js, ones(is), num_ns*num_ts, num_ns*num_ts)
+    return sparse(is, js, ones(is,Float64), num_ns*num_ts, num_ns*num_ts)
 end
