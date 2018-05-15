@@ -33,5 +33,5 @@ A = block_adjacency_matrix(g)
 @test full(A)[1:4,1:4] ≈ adjacency_matrix(g, 1)
 @test full(A)[5:8,5:8] ≈ adjacency_matrix(g, 2)
 @test A[1, 5] ≈ 1.
-@test A[2, 10] ≈ 1.
+@test A[2, 10] ≈ 0.5
 @test A[8, 12] ≈ 1.
